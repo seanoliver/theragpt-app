@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "next": "^15.3.0",
-    "@theragpt/ui": "workspace:*",
     "@theragpt/logic": "workspace:*",
     "@theragpt/config": "workspace:*",
     "uuid": "^9.0.1"

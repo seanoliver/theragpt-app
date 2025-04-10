@@ -25,9 +25,6 @@
       },
       "package": "com.helloseanoliver.theragpt"
     },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
-    },
     "plugins": [
       "expo-router"
     ]

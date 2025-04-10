@@ -15,7 +15,6 @@ theragpt-app/
 │   └── mobile/              # Expo mobile application
 ├── packages/
 │   ├── logic/               # Shared business logic
-│   ├── ui/                  # Shared UI components using Gluestack
 │   └── config/              # Shared configuration
 ├── turbo.json               # Turborepo configuration
 ├── package.json             # Root package.json
@@ -31,12 +30,10 @@ theragpt-app/
 ### Frontend Frameworks
 - **Web**: Next.js with App Router
 - **Mobile**: Expo with Expo Router
-- **Shared UI**: Gluestack UI components
 
 ### Code Quality
 - **ESLint**: Modern configuration with:
   - No semicolons
-  - 80 character line width
   - Preference for arrow functions
 - **Prettier**: Consistent code formatting
 
@@ -145,6 +142,7 @@ theragpt-app/
 - Consistent user experience across web and mobile
 - Shared data and progress between platforms
 - Platform-specific optimizations
+- Web and mobile maintain their UI components independently for simplicity (shared UI components may be implemented later if needed)
 
 #### Edge Cases
 - Handling different screen sizes and orientations
@@ -192,7 +190,6 @@ function initializeMonorepo():
   createDirectory("apps/web")
   createDirectory("apps/mobile")
   createDirectory("packages/logic")
-  createDirectory("packages/ui")
   createDirectory("packages/config")
 
   createFile("turbo.json", turboConfig)
@@ -286,7 +283,7 @@ function calculateNextReviewDate(reframeRecord, reviewResult):
   return currentDate() + interval
 ```
 
-### 3. UI Package
+### 3. UI Components
 
 ```pseudocode
 // TDD: Verify ThoughtInput component renders correctly
@@ -915,7 +912,7 @@ function calculateNewInterval(reframe, difficulty):
 ### Phase 2: Core Functionality
 1. Implement shared logic package
 2. Develop OpenAI integration
-3. Create basic UI components with Gluestack
+3. Create platform-specific UI components for web and mobile
 4. Implement thought entry and analysis flow
 
 ### Phase 3: User Experience
