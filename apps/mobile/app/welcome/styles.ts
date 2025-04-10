@@ -9,17 +9,17 @@ export const getResponsiveSpacing = () => {
   if (SCREEN_WIDTH < BREAKPOINT_SMALL) {
     return {
       componentSpacing: tokens.space.md,
-      inputMaxHeight: 120 // Fixed height instead of percentage
+      inputMaxHeight: 120, // Fixed height instead of percentage
     }
   } else if (SCREEN_WIDTH < BREAKPOINT_MEDIUM) {
     return {
       componentSpacing: tokens.space.lg,
-      inputMaxHeight: 160 // Fixed height instead of percentage
+      inputMaxHeight: 160, // Fixed height instead of percentage
     }
   } else {
     return {
       componentSpacing: tokens.space.xl,
-      inputMaxHeight: 200 // Fixed height instead of percentage
+      inputMaxHeight: 200, // Fixed height instead of percentage
     }
   }
 }
@@ -32,25 +32,25 @@ const { componentSpacing, inputMaxHeight } = getResponsiveSpacing()
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
   keyboardAvoidingView: {
-    flex: 1
+    flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
-    padding: tokens.space.lg
+    padding: tokens.space.lg,
   },
   headerContainer: {
-    marginBottom: componentSpacing
+    marginBottom: componentSpacing,
   },
   headerText: {
     fontWeight: 'bold',
     color: '#212121',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   inputContainer: {
-    marginBottom: componentSpacing
+    marginBottom: componentSpacing,
   },
   thoughtInput: {
     borderWidth: 1,
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     marginBottom: tokens.space.md,
     fontSize: tokens.fontSizes.md,
     color: '#212121',
-    backgroundColor: '#f9f9f9'
+    backgroundColor: '#f9f9f9',
   },
   button: {
     paddingVertical: tokens.space.md,
@@ -70,18 +70,18 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     alignSelf: 'flex-end',
-    marginTop: tokens.space.sm
+    marginTop: tokens.space.sm,
   },
   buttonEnabled: {
-    backgroundColor: tokens.colors.primary500
+    backgroundColor: tokens.colors.primary500,
   },
   buttonDisabled: {
-    backgroundColor: tokens.colors.gray300
+    backgroundColor: tokens.colors.gray300,
   },
   buttonText: {
     color: '#ffffff',
     fontWeight: 'bold',
-    fontSize: tokens.fontSizes.md
+    fontSize: tokens.fontSizes.md,
   },
   lockedThoughtContainer: {
     borderWidth: 1,
@@ -90,14 +90,14 @@ export const styles = StyleSheet.create({
     padding: tokens.space.md,
     minHeight: 120,
     marginBottom: componentSpacing,
-    backgroundColor: '#f5f5f5'
+    backgroundColor: '#f5f5f5',
   },
   lockedThoughtText: {
     fontSize: tokens.fontSizes.md,
-    color: '#212121'
+    color: '#212121',
   },
   additionalContextContainer: {
-    marginBottom: componentSpacing
+    marginBottom: componentSpacing,
   },
   additionalContextInput: {
     borderWidth: 1,
@@ -108,6 +108,6 @@ export const styles = StyleSheet.create({
     marginBottom: tokens.space.md,
     fontSize: tokens.fontSizes.md,
     color: '#212121',
-    backgroundColor: '#f9f9f9'
-  }
+    backgroundColor: '#f9f9f9',
+  },
 })

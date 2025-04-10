@@ -8,7 +8,7 @@ import {
   ThoughtInputComponent,
   LockedThoughtDisplay,
   AdditionalContextInput,
-  SubmitButtonComponent
+  SubmitButtonComponent,
 } from './components'
 
 /**
@@ -23,7 +23,7 @@ export default function WelcomeScreen() {
     updateAdditionalContext,
     handleAdditionalContextFocus,
     handleAdditionalContextSubmission,
-    handleSkip
+    handleSkip,
   } = useWelcomeState()
 
   // Animation values
@@ -32,7 +32,7 @@ export default function WelcomeScreen() {
     lockedThoughtOpacity,
     additionalContextTranslateY,
     additionalContextOpacity,
-    animateThoughtSubmission
+    animateThoughtSubmission,
   } = useAnimations()
 
   // Handle thought submission with animation
@@ -71,7 +71,7 @@ export default function WelcomeScreen() {
               <Animated.View
                 style={{
                   opacity: additionalContextOpacity,
-                  transform: [{ translateY: additionalContextTranslateY }]
+                  transform: [{ translateY: additionalContextTranslateY }],
                 }}
               >
                 <AdditionalContextInput

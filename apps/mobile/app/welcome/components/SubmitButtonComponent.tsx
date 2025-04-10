@@ -12,13 +12,13 @@ const SubmitButtonComponent: React.FC<SubmitButtonComponentProps> = ({
   enabled,
   text,
   testID = TEST_IDS.submitThoughtButton,
-  accessibilityLabel = "Submit your thought"
+  accessibilityLabel = 'Submit your thought',
 }) => {
   return (
     <TouchableOpacity
       style={[
         styles.button,
-        enabled ? styles.buttonEnabled : styles.buttonDisabled
+        enabled ? styles.buttonEnabled : styles.buttonDisabled,
       ]}
       onPress={onPress}
       disabled={!enabled}

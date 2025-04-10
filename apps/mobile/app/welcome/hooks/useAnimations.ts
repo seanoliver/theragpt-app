@@ -21,25 +21,25 @@ export const useAnimations = () => {
       Animated.timing(thoughtInputOpacity, {
         toValue: 0,
         duration: ANIMATION_DURATION,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       // Fade in locked thought display
       Animated.timing(lockedThoughtOpacity, {
         toValue: 1,
         duration: ANIMATION_DURATION,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       // Animate additional context input
       Animated.timing(additionalContextTranslateY, {
         toValue: 0,
         duration: ANIMATION_DURATION,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(additionalContextOpacity, {
         toValue: 1,
         duration: ANIMATION_DURATION,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start()
   }
 
@@ -48,6 +48,6 @@ export const useAnimations = () => {
     lockedThoughtOpacity,
     additionalContextTranslateY,
     additionalContextOpacity,
-    animateThoughtSubmission
+    animateThoughtSubmission,
   }
 }

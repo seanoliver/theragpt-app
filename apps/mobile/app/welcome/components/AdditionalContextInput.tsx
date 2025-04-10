@@ -10,7 +10,7 @@ import { AdditionalContextInputProps } from '../types'
 const AdditionalContextInput: React.FC<AdditionalContextInputProps> = ({
   value,
   onChange,
-  onFocus
+  onFocus,
 }) => {
   const inputRef = useRef<TextInput>(null)
 

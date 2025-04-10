@@ -13,7 +13,7 @@ export const useWelcomeState = () => {
   const updateThought = (text: string) => {
     setState(prevState => ({
       ...prevState,
-      currentThought: text
+      currentThought: text,
     }))
   }
 
@@ -21,7 +21,7 @@ export const useWelcomeState = () => {
   const handleThoughtSubmission = () => {
     setState(prevState => ({
       ...prevState,
-      isThoughtSubmitted: true
+      isThoughtSubmitted: true,
     }))
   }
 
@@ -29,7 +29,7 @@ export const useWelcomeState = () => {
   const updateAdditionalContext = (text: string) => {
     setState(prevState => ({
       ...prevState,
-      additionalContext: text
+      additionalContext: text,
     }))
   }
 
@@ -37,7 +37,7 @@ export const useWelcomeState = () => {
   const handleAdditionalContextFocus = () => {
     setState(prevState => ({
       ...prevState,
-      isAdditionalContextFocused: true
+      isAdditionalContextFocused: true,
     }))
   }
 
@@ -62,6 +62,6 @@ export const useWelcomeState = () => {
     updateAdditionalContext,
     handleAdditionalContextFocus,
     handleAdditionalContextSubmission,
-    handleSkip
+    handleSkip,
   }
 }

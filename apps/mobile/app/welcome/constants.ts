@@ -4,13 +4,13 @@ import { Dimensions } from 'react-native'
  * Test IDs for component testing
  */
 export const TEST_IDS = {
-  headerComponent: "welcome-screen-header",
-  thoughtInputField: "thought-input-field",
-  submitThoughtButton: "submit-thought-button",
-  lockedThoughtDisplay: "locked-thought-display",
-  additionalContextField: "additional-context-field",
-  skipContextButton: "skip-context-button",
-  submitContextButton: "submit-context-button"
+  headerComponent: 'welcome-screen-header',
+  thoughtInputField: 'thought-input-field',
+  submitThoughtButton: 'submit-thought-button',
+  lockedThoughtDisplay: 'locked-thought-display',
+  additionalContextField: 'additional-context-field',
+  skipContextButton: 'skip-context-button',
+  submitContextButton: 'submit-context-button',
 }
 
 /**
@@ -33,8 +33,8 @@ export const ANIMATION_DURATION = 300
  * Initial state for the thought entry process
  */
 export const INITIAL_STATE = {
-  currentThought: "",
+  currentThought: '',
   isThoughtSubmitted: false,
-  additionalContext: "",
-  isAdditionalContextFocused: false
+  additionalContext: '',
+  isAdditionalContextFocused: false,
 }
