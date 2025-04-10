@@ -31,7 +31,17 @@ module.exports = {
     'quotes': ['error', 'single'],
     'object-curly-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/no-explicit-any': 'off',
   },
+  overrides: [
+    {
+      // Disable func-style rule for theme/index.tsx
+      files: ['packages/ui/src/theme/index.tsx'],
+      rules: {
+        'func-style': 'off',
+      },
+    },
+  ],
   ignorePatterns: [
     'node_modules/',
     'dist/',
