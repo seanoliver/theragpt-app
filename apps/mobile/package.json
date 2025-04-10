@@ -14,16 +14,18 @@
   },
   "dependencies": {
     "@theragpt/config": "workspace:*",
+    "@theragpt/logic": "workspace:*",
+    "@theragpt/ui": "workspace:*",
     "expo": "~52.0.44",
     "expo-router": "~4.0.20",
     "expo-status-bar": "~2.0.1",
-    "@theragpt/logic": "workspace:*",
+    "react-native": "0.76.0",
     "react-native-safe-area-context": "4.12.0",
-    "react-native-screens": "~4.4.0",
-    "@theragpt/ui": "workspace:*"
+    "react-native-screens": "~4.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@react-native-community/cli": "^18.0.0"
   },
   "private": true
 }
