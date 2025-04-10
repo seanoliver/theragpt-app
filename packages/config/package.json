@@ -1,5 +1,5 @@
 {
-  "name": "config",
+  "name": "@theragpt/config",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -8,10 +8,5 @@
     "lint": "eslint .",
     "build": "tsc",
     "clean": "rm -rf .turbo node_modules dist"
-  },
-  "devDependencies": {
-    "eslint": "^8.40.0",
-    "typescript": "^5.0.0",
-    "zod": "^3.22.0"
   }
 }

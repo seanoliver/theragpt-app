@@ -1,5 +1,5 @@
 {
-  "name": "logic",
+  "name": "@theragpt/logic",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -10,12 +10,6 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
-    "config": "workspace:*",
-    "zod": "^3.22.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "eslint": "^8.40.0",
-    "typescript": "^5.0.0"
+    "@theragpt/config": "workspace:*"
   }
 }
