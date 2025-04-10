@@ -1,3 +1,2 @@
-import WelcomeScreen from './welcome'
-
-export default WelcomeScreen
+// Re-export the WelcomeScreen component directly from the welcome folder
+export { default } from './welcome/index'

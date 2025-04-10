@@ -46,20 +46,21 @@ export default function WelcomeScreen() {
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
           <HeaderComponent />
 
           {!state.isThoughtSubmitted ? (
-            <Animated.View style={{ opacity: thoughtInputOpacity }}>
+            <Animated.View style={[styles.inputContainer, { opacity: thoughtInputOpacity }]}>
               <ThoughtInputComponent
                 value={state.currentThought}
                 onChange={updateThought}
                 onSubmit={onThoughtSubmit}
-                isSubmitEnabled={state.currentThought.length > 0}
               />
             </Animated.View>
           ) : (

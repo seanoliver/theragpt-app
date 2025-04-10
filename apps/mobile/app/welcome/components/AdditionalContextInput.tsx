@@ -6,6 +6,7 @@ import { AdditionalContextInputProps } from '../types'
 
 /**
  * AdditionalContextInput for entering optional context
+ * Uses a minimalist design with serif font for a clean, elegant look
  */
 const AdditionalContextInput: React.FC<AdditionalContextInputProps> = ({
   value,

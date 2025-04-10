@@ -26,7 +26,6 @@ export interface ThoughtInputComponentProps {
   value: string
   onChange: (text: string) => void
   onSubmit: () => void
-  isSubmitEnabled: boolean
 }
 
 /**

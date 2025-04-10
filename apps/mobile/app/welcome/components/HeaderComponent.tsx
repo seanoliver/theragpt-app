@@ -1,33 +1,45 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { SCREEN_WIDTH, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM, TEST_IDS } from '../constants'
+import React, { useEffect } from 'react'
+import { View, Text, Animated } from 'react-native'
+import { TEST_IDS } from '../constants'
 import { styles } from '../styles'
-import { tokens } from '../../theme'
-import { HeaderComponentProps } from '../types'
 
 /**
- * HeaderComponent displays the main heading
+ * HeaderComponent displays the main heading with a serif font
  */
-const HeaderComponent: React.FC<HeaderComponentProps> = () => {
-  // Apply responsive font size based on screen width
-  let fontSize = tokens.fontSizes.xl
-  if (SCREEN_WIDTH < BREAKPOINT_SMALL) {
-    fontSize = tokens.fontSizes.lg
-  } else if (SCREEN_WIDTH < BREAKPOINT_MEDIUM) {
-    fontSize = tokens.fontSizes.xl
-  } else {
-    fontSize = 28 // Larger than xl
-  }
+const HeaderComponent: React.FC = () => {
+  const fadeAnim = React.useRef(new Animated.Value(0)).current
+  const slideAnim = React.useRef(new Animated.Value(-20)).current
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start()
+  }, [])
 
   return (
     <View style={styles.headerContainer} testID={TEST_IDS.headerComponent}>
-      <Text
-        style={[styles.headerText, { fontSize }]}
+      <Animated.Text
+        style={[
+          styles.headerText,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
         accessibilityRole="header"
-        accessibilityLabel="What's bothering you?"
+        accessibilityLabel="What's on your mind?"
       >
-        What's bothering you?
-      </Text>
+        What's on your mind?
+      </Animated.Text>
     </View>
   )
 }

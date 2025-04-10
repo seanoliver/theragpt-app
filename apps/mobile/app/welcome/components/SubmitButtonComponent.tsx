@@ -6,6 +6,7 @@ import { SubmitButtonComponentProps } from '../types'
 
 /**
  * SubmitButtonComponent for submitting the thought
+ * Styled with a minimalist design to complement the overall UI
  */
 const SubmitButtonComponent: React.FC<SubmitButtonComponentProps> = ({
   onPress,

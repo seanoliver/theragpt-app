@@ -10,21 +10,27 @@ export const getResponsiveSpacing = () => {
     return {
       componentSpacing: tokens.space.md,
       inputMaxHeight: 120, // Fixed height instead of percentage
+      fontSize: tokens.fontSizes.lg,
+      headerFontSize: tokens.fontSizes.lg,
     }
   } else if (SCREEN_WIDTH < BREAKPOINT_MEDIUM) {
     return {
       componentSpacing: tokens.space.lg,
       inputMaxHeight: 160, // Fixed height instead of percentage
+      fontSize: tokens.fontSizes.xl,
+      headerFontSize: tokens.fontSizes.xl,
     }
   } else {
     return {
       componentSpacing: tokens.space.xl,
       inputMaxHeight: 200, // Fixed height instead of percentage
+      fontSize: tokens.fontSizes.xxl,
+      headerFontSize: tokens.fontSizes.xxl,
     }
   }
 }
 
-const { componentSpacing, inputMaxHeight } = getResponsiveSpacing()
+const { componentSpacing, inputMaxHeight, fontSize, headerFontSize } = getResponsiveSpacing()
 
 /**
  * Styles for the welcome screen components
@@ -40,29 +46,36 @@ export const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     padding: tokens.space.lg,
+    justifyContent: 'space-between',
+    minHeight: '100%',
   },
   headerContainer: {
     marginBottom: componentSpacing,
   },
   headerText: {
-    fontWeight: 'bold',
+    fontFamily: tokens.fontFamilies.serif,
+    fontWeight: '400',
     color: '#212121',
-    textAlign: 'center',
+    fontSize: headerFontSize,
+    letterSpacing: 0.5,
   },
   inputContainer: {
-    marginBottom: componentSpacing,
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: tokens.space.lg,
+    backgroundColor: '#ffffff',
   },
   thoughtInput: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: tokens.space.md,
-    minHeight: 120,
+    borderWidth: 0,
+    padding: 0,
     maxHeight: inputMaxHeight,
-    marginBottom: tokens.space.md,
-    fontSize: tokens.fontSizes.md,
+    fontSize: fontSize,
     color: '#212121',
-    backgroundColor: '#f9f9f9',
+    fontFamily: tokens.fontFamilies.serif,
+    lineHeight: fontSize * 1.5,
   },
   button: {
     paddingVertical: tokens.space.md,
@@ -84,30 +97,29 @@ export const styles = StyleSheet.create({
     fontSize: tokens.fontSizes.md,
   },
   lockedThoughtContainer: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
+    borderWidth: 0, // Remove border for a cleaner look
     padding: tokens.space.md,
     minHeight: 120,
     marginBottom: componentSpacing,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fafafa', // Very light gray background
   },
   lockedThoughtText: {
-    fontSize: tokens.fontSizes.md,
+    fontSize: fontSize,
     color: '#212121',
+    fontFamily: tokens.fontFamilies.serif,
+    lineHeight: fontSize * 1.5,
   },
   additionalContextContainer: {
     marginBottom: componentSpacing,
   },
   additionalContextInput: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
+    borderWidth: 0, // Remove border for a cleaner look
     padding: tokens.space.md,
     minHeight: 100,
     marginBottom: tokens.space.md,
-    fontSize: tokens.fontSizes.md,
+    fontSize: fontSize,
     color: '#212121',
-    backgroundColor: '#f9f9f9',
+    fontFamily: tokens.fontFamilies.serif,
+    lineHeight: fontSize * 1.5,
   },
 })

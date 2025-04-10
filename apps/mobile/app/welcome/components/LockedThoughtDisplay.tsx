@@ -6,6 +6,7 @@ import { LockedThoughtDisplayProps } from '../types'
 
 /**
  * LockedThoughtDisplay shows the submitted thought in read-only format
+ * Uses a minimalist design with serif font for a clean, elegant look
  */
 const LockedThoughtDisplay: React.FC<LockedThoughtDisplayProps> = ({ thought }) => {
   return (
