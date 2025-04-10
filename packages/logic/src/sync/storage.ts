@@ -1,5 +1,3 @@
-import { Reframe } from '../reframe/types'
-
 // Import AsyncStorage conditionally to avoid issues in web environments
 let AsyncStorage: any
 try {
@@ -21,147 +19,149 @@ const isReactNative = (): boolean => {
  */
 export interface StorageService {
   /**
-   * Saves a reframe to storage
-   * @param reframe The reframe to save
+   * Gets an item from storage
+   * @param key The key to get
+   * @returns The item or null if not found
    */
-  saveReframe(reframe: Reframe): Promise<void>
+  getItem<T>(key: string): Promise<T | null>
 
   /**
-   * Gets a reframe by ID
-   * @param id The reframe ID
-   * @returns The reframe or null if not found
+   * Sets an item in storage
+   * @param key The key to set
+   * @param value The value to set
    */
-  getReframeById(id: string): Promise<Reframe | null>
+  setItem<T>(key: string, value: T): Promise<void>
 
   /**
-   * Gets all reframes from storage
-   * @returns Array of reframes
+   * Removes an item from storage
+   * @param key The key to remove
+   * @returns True if removed, false if not found
    */
-  getAllReframes(): Promise<Reframe[]>
+  removeItem(key: string): Promise<boolean>
 
   /**
-   * Deletes a reframe by ID
-   * @param id The reframe ID
-   * @returns True if deleted, false if not found
+   * Gets all keys in storage
+   * @returns Array of keys
    */
-  deleteReframe(id: string): Promise<boolean>
+  getAllKeys(): Promise<string[]>
 
   /**
-   * Clears all reframes from storage
+   * Clears all items in storage
    */
-  clearReframes(): Promise<void>
+  clear(): Promise<void>
 }
 
 /**
  * Storage service implementation that works in both web and mobile environments
  */
 export class CrossPlatformStorageService implements StorageService {
-  private storageKey = 'theragpt_reframes'
-
   /**
-   * Saves a reframe to storage
-   * @param reframe The reframe to save
+   * Gets an item from storage
+   * @param key The key to get
+   * @returns The item or null if not found
    */
-  public async saveReframe(reframe: Reframe): Promise<void> {
-    const reframes = await this.getAllReframes()
-    const index = reframes.findIndex(r => r.id === reframe.id)
-
-    if (index >= 0) {
-      // Update existing reframe
-      reframes[index] = reframe
-    } else {
-      // Add new reframe
-      reframes.push(reframe)
-    }
-
-    await this.saveReframes(reframes)
-  }
-
-  /**
-   * Gets a reframe by ID
-   * @param id The reframe ID
-   * @returns The reframe or null if not found
-   */
-  public async getReframeById(id: string): Promise<Reframe | null> {
-    const reframes = await this.getAllReframes()
-    return reframes.find(r => r.id === id) || null
-  }
-
-  /**
-   * Gets all reframes from storage
-   * @returns Array of reframes
-   */
-  public async getAllReframes(): Promise<Reframe[]> {
+  public async getItem<T>(key: string): Promise<T | null> {
     try {
       let data: string | null = null
 
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        data = await AsyncStorage.getItem(this.storageKey)
+        data = await AsyncStorage.getItem(key)
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
-        data = localStorage.getItem(this.storageKey)
+        data = localStorage.getItem(key)
       }
 
-      return data ? JSON.parse(data) : []
+      return data ? JSON.parse(data) : null
     } catch (error) {
-      console.error('Error getting reframes from storage', error)
+      console.error(`Error getting item from storage: ${key}`, error)
+      return null
+    }
+  }
+
+  /**
+   * Sets an item in storage
+   * @param key The key to set
+   * @param value The value to set
+   */
+  public async setItem<T>(key: string, value: T): Promise<void> {
+    try {
+      const data = JSON.stringify(value)
+
+      if (isReactNative()) {
+        // React Native environment - use AsyncStorage
+        await AsyncStorage.setItem(key, data)
+      } else if (typeof localStorage !== 'undefined') {
+        // Browser environment - use localStorage
+        localStorage.setItem(key, data)
+      }
+    } catch (error) {
+      console.error(`Error setting item in storage: ${key}`, error)
+    }
+  }
+
+  /**
+   * Removes an item from storage
+   * @param key The key to remove
+   * @returns True if removed, false if not found
+   */
+  public async removeItem(key: string): Promise<boolean> {
+    try {
+      if (isReactNative()) {
+        // React Native environment - use AsyncStorage
+        await AsyncStorage.removeItem(key)
+      } else if (typeof localStorage !== 'undefined') {
+        // Browser environment - use localStorage
+        localStorage.removeItem(key)
+      }
+      return true
+    } catch (error) {
+      console.error(`Error removing item from storage: ${key}`, error)
+      return false
+    }
+  }
+
+  /**
+   * Gets all keys in storage
+   * @returns Array of keys
+   */
+  public async getAllKeys(): Promise<string[]> {
+    try {
+      if (isReactNative()) {
+        // React Native environment - use AsyncStorage
+        return await AsyncStorage.getAllKeys()
+      } else if (typeof localStorage !== 'undefined') {
+        // Browser environment - use localStorage
+        const keys: string[] = []
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key) {
+            keys.push(key)
+          }
+        }
+        return keys
+      }
+      return []
+    } catch (error) {
+      console.error('Error getting all keys from storage', error)
       return []
     }
   }
 
   /**
-   * Deletes a reframe by ID
-   * @param id The reframe ID
-   * @returns True if deleted, false if not found
+   * Clears all items in storage
    */
-  public async deleteReframe(id: string): Promise<boolean> {
-    const reframes = await this.getAllReframes()
-    const initialLength = reframes.length
-    const filteredReframes = reframes.filter(r => r.id !== id)
-
-    if (filteredReframes.length === initialLength) {
-      return false
-    }
-
-    await this.saveReframes(filteredReframes)
-    return true
-  }
-
-  /**
-   * Clears all reframes from storage
-   */
-  public async clearReframes(): Promise<void> {
+  public async clear(): Promise<void> {
     try {
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        await AsyncStorage.removeItem(this.storageKey)
+        await AsyncStorage.clear()
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
-        localStorage.removeItem(this.storageKey)
+        localStorage.clear()
       }
     } catch (error) {
-      console.error('Error clearing reframes from storage', error)
-    }
-  }
-
-  /**
-   * Saves reframes to storage
-   * @param reframes The reframes to save
-   */
-  private async saveReframes(reframes: Reframe[]): Promise<void> {
-    try {
-      const data = JSON.stringify(reframes)
-
-      if (isReactNative()) {
-        // React Native environment - use AsyncStorage
-        await AsyncStorage.setItem(this.storageKey, data)
-      } else if (typeof localStorage !== 'undefined') {
-        // Browser environment - use localStorage
-        localStorage.setItem(this.storageKey, data)
-      }
-    } catch (error) {
-      console.error('Error saving reframes to storage', error)
+      console.error('Error clearing storage', error)
     }
   }
 }

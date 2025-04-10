@@ -1,5 +1,5 @@
 // This module will contain the Spaced Repetition System (SRS) functionality
-// in a future version of the app. For the MVP, we're keeping this as a placeholder.
+// in a future version of the app. For the MVP, this is a placeholder.
 
 /**
  * @todo Implement SRS functionality in a future version

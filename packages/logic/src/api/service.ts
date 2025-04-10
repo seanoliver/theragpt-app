@@ -1,5 +1,4 @@
 import { thoughtValidator } from '../thought/validation'
-import { Thought } from '../thought/types'
 import {
   APIError,
   APIErrorType,
@@ -44,18 +43,19 @@ export class APIService {
    * @returns The thought analysis response
    */
   public async analyzeThought(
-    request: ThoughtAnalysisRequest
+    request: ThoughtAnalysisRequest,
   ): Promise<ThoughtAnalysisResponse> {
     // Validate the thought
-    const thought = typeof request.thought === 'string'
-      ? request.thought
-      : request.thought.content
+    const thought =
+      typeof request.thought === 'string'
+        ? request.thought
+        : request.thought.content
 
     const validationResult = thoughtValidator.validateContent(thought)
     if (!validationResult.valid) {
       throw new APIError(
         validationResult.error || 'Invalid thought',
-        APIErrorType.VALIDATION_ERROR
+        APIErrorType.VALIDATION_ERROR,
       )
     }
 
@@ -85,7 +85,7 @@ export class APIService {
    */
   private async makeRequestWithRetry(
     url: string,
-    options: RequestInit
+    options: RequestInit,
   ): Promise<ThoughtAnalysisResponse> {
     let lastError: Error | null = null
     let retries = 0
@@ -97,9 +97,10 @@ export class APIService {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}))
           throw new APIError(
-            errorData.error || `API request failed with status ${response.status}`,
+            errorData.error ||
+              `API request failed with status ${response.status}`,
             APIErrorType.API_ERROR,
-            response.status
+            response.status,
           )
         }
 
@@ -109,7 +110,10 @@ export class APIService {
         lastError = error instanceof Error ? error : new Error(String(error))
 
         // Don't retry validation errors
-        if (error instanceof APIError && error.type === APIErrorType.VALIDATION_ERROR) {
+        if (
+          error instanceof APIError &&
+          error.type === APIErrorType.VALIDATION_ERROR
+        ) {
           throw error
         }
 
@@ -118,13 +122,18 @@ export class APIService {
 
         // If we have more retries, wait before trying again
         if (retries < this.config.maxRetries) {
-          await new Promise(resolve => setTimeout(resolve, this.config.retryDelay))
+          await new Promise(resolve =>
+            setTimeout(resolve, this.config.retryDelay),
+          )
         }
       }
     }
 
     // If we've exhausted retries, throw the last error
-    throw lastError || new APIError('Request failed after retries', APIErrorType.UNKNOWN_ERROR)
+    throw (
+      lastError ||
+      new APIError('Request failed after retries', APIErrorType.UNKNOWN_ERROR)
+    )
   }
 }
 

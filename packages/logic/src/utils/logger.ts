@@ -144,8 +144,8 @@ export class Logger {
           message: error.message,
           name: error.name,
           stack: error.stack,
-        }
-      } : {})
+        },
+      } : {}),
     }
 
     this.log(LogLevel.ERROR, message, Object.keys(logData).length > 0 ? logData : undefined)

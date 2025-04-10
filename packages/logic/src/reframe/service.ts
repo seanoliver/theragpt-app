@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-import { Thought } from '../thought/types'
 import {
   Reframe,
   CreateReframeParams,
@@ -8,12 +7,15 @@ import {
   ReframeSortOption,
 } from './types'
 import { StorageService, storageService } from '../sync/storage'
+import { logger } from '../utils/logger'
+import { NotFoundError } from '../utils/error'
 
 /**
  * Service for managing reframes
  */
 export class ReframeService {
   private storageService: StorageService
+  private storageKey = 'theragpt_reframes'
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
@@ -29,6 +31,7 @@ export class ReframeService {
       id: uuidv4(),
       userId: params.userId,
       originalThought: params.originalThought,
+      distortionId: params.distortionId,
       reframe: params.reframe,
       explanation: params.explanation,
       createdAt: Date.now(),
@@ -40,7 +43,8 @@ export class ReframeService {
       category: params.category,
     }
 
-    await this.storageService.saveReframe(reframe)
+    await this.saveReframe(reframe)
+    logger.info('Created new reframe', { reframeId: reframe.id })
     return reframe
   }
 
@@ -53,7 +57,7 @@ export class ReframeService {
     const reframe = await this.getReframeById(params.id)
 
     if (!reframe) {
-      throw new Error(`Reframe with ID ${params.id} not found`)
+      throw new NotFoundError(`Reframe with ID ${params.id} not found`)
     }
 
     // Update fields if provided
@@ -77,7 +81,8 @@ export class ReframeService {
       reframe.category = params.category
     }
 
-    await this.storageService.saveReframe(reframe)
+    await this.saveReframe(reframe)
+    logger.info('Updated reframe', { reframeId: reframe.id })
     return reframe
   }
 
@@ -90,11 +95,15 @@ export class ReframeService {
     const reframe = await this.getReframeById(id)
 
     if (!reframe) {
-      throw new Error(`Reframe with ID ${id} not found`)
+      throw new NotFoundError(`Reframe with ID ${id} not found`)
     }
 
     reframe.isFavorite = !reframe.isFavorite
-    await this.storageService.saveReframe(reframe)
+    await this.saveReframe(reframe)
+    logger.info('Toggled reframe favorite status', {
+      reframeId: id,
+      isFavorite: reframe.isFavorite,
+    })
     return reframe
   }
 
@@ -104,7 +113,8 @@ export class ReframeService {
    * @returns The reframe or null if not found
    */
   public async getReframeById(id: string): Promise<Reframe | null> {
-    return this.storageService.getReframeById(id)
+    const reframes = await this.getAllReframes()
+    return reframes.find(r => r.id === id) || null
   }
 
   /**
@@ -117,11 +127,17 @@ export class ReframeService {
     options: ReframeFilterOptions = {},
     sortBy: ReframeSortOption = ReframeSortOption.CREATED_DESC,
   ): Promise<Reframe[]> {
-    let reframes = await this.storageService.getAllReframes()
+    let reframes = await this.getAllReframes()
 
     // Apply filters
     if (options.userId) {
       reframes = reframes.filter((r: Reframe) => r.userId === options.userId)
+    }
+
+    if (options.distortionId) {
+      reframes = reframes.filter(
+        (r: Reframe) => r.distortionId === options.distortionId,
+      )
     }
 
     if (options.isFavorite !== undefined) {
@@ -199,7 +215,17 @@ export class ReframeService {
    * @returns True if deleted, false if not found
    */
   public async deleteReframe(id: string): Promise<boolean> {
-    return this.storageService.deleteReframe(id)
+    const reframes = await this.getAllReframes()
+    const initialLength = reframes.length
+    const updatedReframes = reframes.filter(r => r.id !== id)
+
+    if (updatedReframes.length === initialLength) {
+      return false
+    }
+
+    await this.saveAllReframes(updatedReframes)
+    logger.info('Deleted reframe', { reframeId: id })
+    return true
   }
 
   /**
@@ -208,7 +234,7 @@ export class ReframeService {
    * @returns Array of unique tags
    */
   public async getAllTags(userId?: string): Promise<string[]> {
-    const reframes = await this.storageService.getAllReframes()
+    const reframes = await this.getAllReframes()
 
     const filteredReframes = userId
       ? reframes.filter((r: Reframe) => r.userId === userId)
@@ -229,7 +255,7 @@ export class ReframeService {
    * @returns Array of unique categories
    */
   public async getAllCategories(userId?: string): Promise<string[]> {
-    const reframes = await this.storageService.getAllReframes()
+    const reframes = await this.getAllReframes()
 
     const filteredReframes = userId
       ? reframes.filter((r: Reframe) => r.userId === userId)
@@ -244,6 +270,49 @@ export class ReframeService {
     })
 
     return Array.from(categorySet)
+  }
+
+  /**
+   * Gets all reframes from storage
+   * @returns Array of reframes
+   */
+  private async getAllReframes(): Promise<Reframe[]> {
+    try {
+      const data = await this.storageService.getItem<Reframe[]>(this.storageKey)
+      return data || []
+    } catch (error) {
+      logger.error('Error getting reframes from storage', error as Error)
+      return []
+    }
+  }
+
+  /**
+   * Saves a reframe to storage
+   * @param reframe The reframe to save
+   */
+  private async saveReframe(reframe: Reframe): Promise<void> {
+    const reframes = await this.getAllReframes()
+    const index = reframes.findIndex(r => r.id === reframe.id)
+
+    if (index >= 0) {
+      reframes[index] = reframe
+    } else {
+      reframes.push(reframe)
+    }
+
+    await this.saveAllReframes(reframes)
+  }
+
+  /**
+   * Saves all reframes to storage
+   * @param reframes The reframes to save
+   */
+  private async saveAllReframes(reframes: Reframe[]): Promise<void> {
+    try {
+      await this.storageService.setItem(this.storageKey, reframes)
+    } catch (error) {
+      logger.error('Error saving reframes to storage', error as Error)
+    }
   }
 }
 

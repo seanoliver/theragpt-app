@@ -2,7 +2,9 @@ import { z } from 'zod'
 
 // Define environment schema
 const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NODE_ENV: z
+    .enum(['development', 'production', 'test'])
+    .default('development'),
   OPENAI_API_URL: z.string().url().default('https://api.openai.com/v1'),
   // API keys only available server-side
   OPENAI_API_KEY: z.string().optional(),

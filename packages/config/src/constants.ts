@@ -6,9 +6,9 @@ export const MAX_THOUGHT_LENGTH = 500
 export const MAX_CONTEXT_LENGTH = 1000
 
 // SRS constants
-export const MIN_INTERVAL = 24 * 60 * 60 * 1000 // 1 day in milliseconds
-export const MAX_INTERVAL = 365 * 24 * 60 * 60 * 1000 // 1 year in milliseconds
-export const DEFAULT_INITIAL_INTERVAL = 24 * 60 * 60 * 1000 // 1 day in milliseconds
+export const MIN_INTERVAL = 24 * 60 * 60 * 1000 // 1 day in ms
+export const MAX_INTERVAL = 365 * 24 * 60 * 60 * 1000 // 1 year in ms
+export const DEFAULT_INITIAL_INTERVAL = 24 * 60 * 60 * 1000 // 1 day in ms
 
 // Difficulty multipliers for SRS
 export const DIFFICULTY_MULTIPLIERS = {

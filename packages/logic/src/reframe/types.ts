@@ -7,8 +7,9 @@ export interface Reframe {
   id: string
   userId?: string
   originalThought: Thought
+  distortionId: string
   reframe: string
-  explanation: string // Explanation of why this reframe is more realistic/believable
+  explanation: string
   createdAt: number
   lastReviewed: number | null
   nextReviewDate: number | null
@@ -23,6 +24,7 @@ export interface Reframe {
  */
 export interface CreateReframeParams {
   originalThought: Thought
+  distortionId: string
   reframe: string
   explanation: string
   userId?: string
@@ -47,6 +49,7 @@ export interface UpdateReframeParams {
  */
 export interface ReframeFilterOptions {
   userId?: string
+  distortionId?: string
   isFavorite?: boolean
   tags?: string[]
   category?: string

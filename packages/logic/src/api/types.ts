@@ -1,4 +1,4 @@
-import { Thought, CognitiveDistortion, ThoughtAnalysis } from '../thought/types'
+import { Thought, ThoughtAnalysis } from '../thought/types'
 
 /**
  * Supported LLM providers
