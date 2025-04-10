@@ -1,0 +1,29 @@
+{
+  "name": "theragpt-app",
+  "version": "1.0.0",
+  "description": "A Cognitive Behavioral Therapy (CBT) application to help users identify cognitive distortions and reframe thoughts",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "keywords": [
+    "cbt",
+    "therapy",
+    "cognitive",
+    "distortions",
+    "mental health"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.7.1",
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "prettier": "^3.0.0",
+    "eslint": "^8.40.0"
+  }
+}
