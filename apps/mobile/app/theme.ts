@@ -1,19 +1,37 @@
-// Re-export the tokens from the UI package
-import { tokens } from '@theragpt/ui/src/theme'
-
 // Define colors for the mobile app
 export const colors = {
-  primary: tokens.colors.primary500,
-  secondary: tokens.colors.secondary500,
+  primary: '#007bff',
+  secondary: '#6c757d',
   background: '#ffffff',
   text: '#212121',
   headerBackground: '#f4f4f4',
   headerText: '#333333',
-  tabBarActive: tokens.colors.primary500,
-  tabBarInactive: tokens.colors.gray600,
+  tabBarActive: '#007bff',
+  tabBarInactive: '#6c757d',
   tabBarBackground: '#ffffff',
-  tabBarBorder: tokens.colors.gray300,
+  tabBarBorder: '#e0e0e0',
 }
 
-// Export the tokens for direct use
-export { tokens }
+// Define tokens for consistent styling
+export const tokens = {
+  colors: {
+    primary500: '#007bff',
+    secondary500: '#6c757d',
+    gray300: '#e0e0e0',
+    gray600: '#6c757d',
+  },
+  space: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+  },
+  fontSizes: {
+    xs: 12,
+    sm: 14,
+    md: 16,
+    lg: 18,
+    xl: 20,
+  },
+}
