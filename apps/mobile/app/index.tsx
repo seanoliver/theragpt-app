@@ -1,8 +1,15 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router'
 
 export default function HomeScreen() {
+    const router = useRouter()
+
+    const navigateToWelcome = () => {
+        router.push('/welcome')
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
@@ -12,6 +19,15 @@ export default function HomeScreen() {
                     identify cognitive distortions in your thoughts and reframe them in a
                     more balanced way.
                 </Text>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={navigateToWelcome}
+                    accessibilityRole="button"
+                    accessibilityLabel="Get Started"
+                >
+                    <Text style={styles.buttonText}>Get Started</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
@@ -38,5 +54,19 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         lineHeight: 24,
+        marginBottom: 32,
+    },
+    button: {
+        backgroundColor: '#007bff',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        marginTop: 16,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 })

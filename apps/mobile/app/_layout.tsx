@@ -23,6 +23,13 @@ export default function RootLayout() {
                         title: 'TheraGPT',
                     }}
                 />
+                <Stack.Screen
+                    name="welcome"
+                    options={{
+                        title: 'Welcome',
+                        headerShown: false,
+                    }}
+                />
             </Stack>
         </ThemeProvider>
     )
