@@ -35,7 +35,9 @@ export class ThoughtService {
     // Validate the thought content
     const validationResult = thoughtValidator.validateContent(params.content)
     if (!validationResult.valid) {
-      throw new ValidationError(validationResult.error || 'Invalid thought content')
+      throw new ValidationError(
+        validationResult.error || 'Invalid thought content'
+      )
     }
 
     const thought: Thought = {
@@ -56,7 +58,9 @@ export class ThoughtService {
    * @param params The thought creation parameters
    * @returns The created thought entry
    */
-  public async createThoughtEntry(params: CreateThoughtParams): Promise<ThoughtEntry> {
+  public async createThoughtEntry(
+    params: CreateThoughtParams
+  ): Promise<ThoughtEntry> {
     const thought = await this.createThought(params)
 
     const thoughtEntry: ThoughtEntry = {
@@ -70,7 +74,9 @@ export class ThoughtService {
     }
 
     await this.saveThoughtEntry(thoughtEntry)
-    logger.info('Created new thought entry', { thoughtEntryId: thoughtEntry.id })
+    logger.info('Created new thought entry', {
+      thoughtEntryId: thoughtEntry.id,
+    })
     return thoughtEntry
   }
 
@@ -110,7 +116,9 @@ export class ThoughtService {
     if (params.content) {
       const validationResult = thoughtValidator.validateContent(params.content)
       if (!validationResult.valid) {
-        throw new ValidationError(validationResult.error || 'Invalid thought content')
+        throw new ValidationError(
+          validationResult.error || 'Invalid thought content'
+        )
       }
       thought.content = params.content
     }
@@ -171,11 +179,15 @@ export class ThoughtService {
    * @param params The distortion parameters
    * @returns The updated thought entry
    */
-  public async addDistortion(params: AddDistortionParams): Promise<ThoughtEntry> {
+  public async addDistortion(
+    params: AddDistortionParams
+  ): Promise<ThoughtEntry> {
     const entry = await this.getThoughtEntryByThoughtId(params.thoughtId)
 
     if (!entry) {
-      throw new NotFoundError(`Thought entry with thought ID ${params.thoughtId} not found`)
+      throw new NotFoundError(
+        `Thought entry with thought ID ${params.thoughtId} not found`
+      )
     }
 
     const distortion: CognitiveDistortion = {
@@ -203,14 +215,18 @@ export class ThoughtService {
    * @param params The association parameters
    * @returns The updated thought entry
    */
-  public async associateReframe(params: AssociateReframeParams): Promise<ThoughtEntry> {
+  public async associateReframe(
+    params: AssociateReframeParams
+  ): Promise<ThoughtEntry> {
     // Find the thought entry containing the distortion
     const entries = await this.getAllThoughtEntries()
     let targetEntry: ThoughtEntry | null = null
     let targetDistortion: CognitiveDistortion | null = null
 
     for (const entry of entries) {
-      const distortion = entry.distortions.find(d => d.id === params.distortionId)
+      const distortion = entry.distortions.find(
+        d => d.id === params.distortionId
+      )
       if (distortion) {
         targetEntry = entry
         targetDistortion = distortion
@@ -219,7 +235,9 @@ export class ThoughtService {
     }
 
     if (!targetEntry || !targetDistortion) {
-      throw new NotFoundError(`Distortion with ID ${params.distortionId} not found`)
+      throw new NotFoundError(
+        `Distortion with ID ${params.distortionId} not found`
+      )
     }
 
     // Check if the reframe is already associated
@@ -282,7 +300,8 @@ export class ThoughtService {
       const searchLower = options.searchText.toLowerCase()
       entries = entries.filter(e =>
         e.thought.content.toLowerCase().includes(searchLower) ||
-        (e.thought.context && e.thought.context.toLowerCase().includes(searchLower))
+        (e.thought.context &&
+          e.thought.context.toLowerCase().includes(searchLower))
       )
     }
 
@@ -326,7 +345,9 @@ export class ThoughtService {
    * @param thoughtId The thought ID
    * @returns The thought entry or null if not found
    */
-  public async getThoughtEntryByThoughtId(thoughtId: string): Promise<ThoughtEntry | null> {
+  public async getThoughtEntryByThoughtId(
+    thoughtId: string
+  ): Promise<ThoughtEntry | null> {
     const entries = await this.getAllThoughtEntries()
     return entries.find(e => e.thought.id === thoughtId) || null
   }
@@ -444,7 +465,9 @@ export class ThoughtService {
    */
   private async getAllThoughtEntries(): Promise<ThoughtEntry[]> {
     try {
-      const data = await this.storageService.getItem<ThoughtEntry[]>(this.storageKey)
+      const data = await this.storageService.getItem<ThoughtEntry[]>(
+        this.storageKey
+      )
       return data || []
     } catch (error) {
       logger.error('Error getting thought entries from storage', error as Error)
@@ -456,7 +479,7 @@ export class ThoughtService {
    * Saves a thought to storage
    * @param thought The thought to save
    */
-  private async saveThought(thought: Thought): Promise<void> {
+  private async saveThought(_thought: Thought): Promise<void> {
     // This is a no-op since thoughts are now stored within thought entries
     // We keep this method for potential future use
   }

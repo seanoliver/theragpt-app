@@ -1,9 +1,21 @@
 // Import AsyncStorage conditionally to avoid issues in web environments
-let AsyncStorage: any
+// Define a type for AsyncStorage to avoid using 'any'
+interface AsyncStorageType {
+  getItem: (key: string) => Promise<string | null>
+  setItem: (key: string, value: string) => Promise<void>
+  removeItem: (key: string) => Promise<void>
+  getAllKeys: () => Promise<readonly string[]>
+  clear: () => Promise<void>
+}
+
+let AsyncStorage: AsyncStorageType | undefined
 try {
   // This will only succeed in a React Native environment
-  AsyncStorage = require('@react-native-async-storage/async-storage').default
-} catch (error) {
+  // Use dynamic import instead of require
+  import('@react-native-async-storage/async-storage').then(module => {
+    AsyncStorage = module.default
+  })
+} catch {
   // AsyncStorage is not available, we're in a web environment
 }
 
@@ -66,7 +78,7 @@ export class CrossPlatformStorageService implements StorageService {
 
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        data = await AsyncStorage.getItem(key)
+        data = (await AsyncStorage?.getItem(key)) || null
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
         data = localStorage.getItem(key)
@@ -90,7 +102,7 @@ export class CrossPlatformStorageService implements StorageService {
 
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        await AsyncStorage.setItem(key, data)
+        await AsyncStorage?.setItem(key, data)
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
         localStorage.setItem(key, data)
@@ -109,7 +121,7 @@ export class CrossPlatformStorageService implements StorageService {
     try {
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        await AsyncStorage.removeItem(key)
+        await AsyncStorage?.removeItem(key)
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
         localStorage.removeItem(key)
@@ -129,7 +141,9 @@ export class CrossPlatformStorageService implements StorageService {
     try {
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        return await AsyncStorage.getAllKeys()
+        const keys = (await AsyncStorage?.getAllKeys()) || []
+        // Convert readonly array to mutable array
+        return [...keys]
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
         const keys: string[] = []
@@ -155,7 +169,7 @@ export class CrossPlatformStorageService implements StorageService {
     try {
       if (isReactNative()) {
         // React Native environment - use AsyncStorage
-        await AsyncStorage.clear()
+        await AsyncStorage?.clear()
       } else if (typeof localStorage !== 'undefined') {
         // Browser environment - use localStorage
         localStorage.clear()

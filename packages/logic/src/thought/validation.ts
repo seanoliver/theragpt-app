@@ -14,7 +14,8 @@ export class ThoughtValidator {
       .string()
       .min(1, { message: 'Thought cannot be empty' })
       .max(MAX_THOUGHT_LENGTH, {
-        message: `Thought exceeds maximum length of ${MAX_THOUGHT_LENGTH} characters`,
+        message: `Thought exceeds maximum length of ${MAX_THOUGHT_LENGTH} ` +
+          'characters',
       }),
     context: z.string().optional(),
     userId: z.string().optional(),
@@ -28,7 +29,8 @@ export class ThoughtValidator {
     .string()
     .min(1, { message: 'Thought cannot be empty' })
     .max(MAX_THOUGHT_LENGTH, {
-      message: `Thought exceeds maximum length of ${MAX_THOUGHT_LENGTH} characters`,
+      message: `Thought exceeds maximum length of ${MAX_THOUGHT_LENGTH} ` +
+        'characters',
     })
 
   /**

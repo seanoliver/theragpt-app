@@ -29,6 +29,11 @@ const DEFAULT_CONFIG: LoggerConfig = {
 }
 
 /**
+ * Type for log data to avoid using 'any'
+ */
+export type LogData = Record<string, unknown>
+
+/**
  * Logger class for consistent logging across the application
  *
  * @example
@@ -70,7 +75,7 @@ export class Logger {
    *
    * // Output: [2025-04-10T17:00:11.123Z] [DEBUG] [AuthService] Processing user input { input: 'Hello world', length: 11 }
    */
-  public debug(message: string, data?: any): void {
+  public debug(message: string, data?: LogData): void {
     this.log(LogLevel.DEBUG, message, data)
   }
 
@@ -89,7 +94,7 @@ export class Logger {
    *
    * // Output: [2025-04-10T17:00:11.123Z] [INFO] [AuthService] User registered successfully { userId: '123', email: 'user@example.com' }
    */
-  public info(message: string, data?: any): void {
+  public info(message: string, data?: LogData): void {
     this.log(LogLevel.INFO, message, data)
   }
 
@@ -108,7 +113,7 @@ export class Logger {
    *
    * // Output: [2025-04-10T17:00:11.123Z] [WARN] [ApiService] API rate limit approaching { currentRate: 9, limit: 10, endpoint: '/api/users' }
    */
-  public warn(message: string, data?: any): void {
+  public warn(message: string, data?: LogData): void {
     this.log(LogLevel.WARN, message, data)
   }
 
@@ -136,7 +141,7 @@ export class Logger {
    *
    * // Output: [2025-04-10T17:00:11.123Z] [ERROR] [UserService] Failed to save user data { error: { message: 'Database connection failed', name: 'Error', stack: '...' }, userId: '123', retryCount: 3 }
    */
-  public error(message: string, error?: Error, data?: any): void {
+  public error(message: string, error?: Error, data?: LogData): void {
     const logData = {
       ...(data || {}),
       ...(error ? {
@@ -157,7 +162,7 @@ export class Logger {
    * @param message The message to log
    * @param data Additional data to log
    */
-  private log(level: LogLevel, message: string, data?: any): void {
+  private log(level: LogLevel, message: string, data?: LogData): void {
     // Skip if below minimum level
     if (!this.shouldLog(level)) {
       return
@@ -196,7 +201,7 @@ export class Logger {
    * @param message The formatted message
    * @param data Additional data to log
    */
-  private logToConsole(level: LogLevel, message: string, data?: any): void {
+  private logToConsole(level: LogLevel, message: string, data?: LogData): void {
     switch (level) {
       case LogLevel.DEBUG:
         console.debug(message, data || '')
@@ -216,11 +221,11 @@ export class Logger {
   /**
    * Log a message to a remote logging service
    * This is a placeholder for future implementation
-   * @param level The log level
-   * @param message The formatted message
-   * @param data Additional data to log
+   * @param _level The log level
+   * @param _message The formatted message
+   * @param _data Additional data to log
    */
-  private logToRemote(level: LogLevel, message: string, data?: any): void {
+  private logToRemote(_level: LogLevel, _message: string, _data?: LogData): void {
     // Placeholder for future implementation
     // This would send logs to a remote service like Sentry, LogRocket, etc.
   }

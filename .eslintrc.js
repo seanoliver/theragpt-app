@@ -14,13 +14,15 @@ module.exports = {
   rules: {
     // No semicolons
     'semi': ['error', 'never'],
-    // 80 character line width
-    'max-len': ['error', { 'code': 80 }],
+    // Line length is handled by Prettier
+    'max-len': 'off',
     // Prefer arrow functions
     'prefer-arrow-callback': 'error',
     'func-style': ['error', 'expression', { 'allowArrowFunctions': true }],
     // Other common rules
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-console': ['warn', {
+      allow: ['warn', 'error', 'info', 'debug']
+    }],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', {
       'argsIgnorePattern': '^_',
