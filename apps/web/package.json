@@ -13,9 +13,11 @@
     "next": "^15.3.0",
     "@theragpt/ui": "workspace:*",
     "@theragpt/logic": "workspace:*",
-    "@theragpt/config": "workspace:*"
+    "@theragpt/config": "workspace:*",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.8",
     "eslint-config-next": "^15.3.0"
   }
 }

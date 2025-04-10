@@ -15,7 +15,7 @@
 3. [Data Flow](#data-flow)
    - [Thought Analysis Flow](#thought-analysis-flow)
    - [Reframe Storage Flow](#reframe-storage-flow)
-   - [SRS Review Flow](#srs-review-flow)
+   - [SRS Review Flow](#srs-review-flow) (Future Consideration)
    - [Synchronization Flow](#synchronization-flow)
 4. [State Management](#state-management)
    - [Client-Side State](#client-side-state)
@@ -171,7 +171,7 @@ The shared logic package contains all business logic that is common between web 
 
 - Thought validation and processing
 - OpenAI API integration and response parsing
-- SRS algorithm implementation
+- SRS algorithm implementation (future)
 - Data synchronization logic
 - Error handling and logging
 
@@ -284,7 +284,9 @@ sequenceDiagram
     end
 ```
 
-### SRS Review Flow
+### SRS Review Flow (Future Consideration)
+
+*Note: SRS Review functionality is planned for future implementation and is not part of the initial development phases.*
 
 ```mermaid
 sequenceDiagram
@@ -438,7 +440,7 @@ interface GetReframesResponse {
 }
 ```
 
-#### SRS Review API
+#### SRS Review API (Future Consideration)
 
 ```typescript
 // Get Due Reframes Request
@@ -769,8 +771,8 @@ The architecture is designed to scale efficiently:
 **Objective**: Enhance the user experience with SRS review and improved UI.
 
 **Key Tasks**:
-1. Implement SRS algorithm and review system
-2. Develop flashcard UI for review
+1. Enhance user experience with improved UI and interactions
+2. Develop organization features for saved reframes
 3. Create saved reframes view with organization
 4. Enhance cross-platform experience and responsiveness
 5. Implement favoriting and tagging functionality
@@ -778,8 +780,8 @@ The architecture is designed to scale efficiently:
 **Dependencies**: Phase 2
 
 **Deliverables**:
-- SRS review system
-- Flashcard UI
+- Enhanced user experience
+- Improved organization features
 - Saved reframes management
 - Improved cross-platform experience
 
@@ -808,7 +810,9 @@ The architecture is designed to scale efficiently:
 **Objective**: Extend the application with authentication, database integration, and monetization.
 
 **Key Tasks**:
-1. Integrate Supabase for authentication and database
+1. Implement SRS algorithm and review system
+2. Develop flashcard UI for review
+3. Integrate Supabase for authentication and database
 2. Implement user accounts and profiles
 3. Develop advanced analytics and insights
 4. Explore and implement monetization options
@@ -817,6 +821,8 @@ The architecture is designed to scale efficiently:
 **Dependencies**: Phase 4
 
 **Deliverables**:
+- SRS review system
+- Flashcard UI
 - User authentication system
 - Cloud database integration
 - Analytics dashboard
