@@ -59,24 +59,27 @@ export default function WelcomeScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <ScrollView
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[
+            styles.scrollContent,
+            { paddingBottom: 100 } // Add padding to prevent messages from being hidden behind input
+          ]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
           {conversationThread.map(message => (
             <Message key={message.id} message={message} />
           ))}
-
-          <Animated.View
-            style={[styles.inputContainer, { opacity: thoughtInputOpacity }]}
-          >
-            <ThoughtInputComponent
-              value={state.currentThought}
-              onChange={updateThought}
-              onSubmit={onThoughtSubmit}
-            />
-          </Animated.View>
         </ScrollView>
+
+        <Animated.View
+          style={[styles.inputContainer, { opacity: thoughtInputOpacity }]}
+        >
+          <ThoughtInputComponent
+            value={state.currentThought}
+            onChange={updateThought}
+            onSubmit={onThoughtSubmit}
+          />
+        </Animated.View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   )

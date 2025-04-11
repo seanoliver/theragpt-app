@@ -28,6 +28,8 @@ export const Message = ({ message }: { message: IMessage }) => {
     ]).start()
   }, [])
 
+  console.log('fadeAnim:', fadeAnim)
+  console.log('Message:', message)
   return (
     <View
       style={[
@@ -55,12 +57,11 @@ export const Message = ({ message }: { message: IMessage }) => {
 
 const styles = StyleSheet.create({
   messageContainer: {
-    marginTop: componentSpacing,
     marginBottom: componentSpacing,
     maxWidth: '80%',
   },
   messageText: {
-    color: '#ffffff',
+    color: '#000',
     fontSize: fontSize,
     fontFamily: tokens.fontFamilies.serif,
     lineHeight: fontSize * 1.5,

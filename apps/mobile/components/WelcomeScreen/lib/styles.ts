@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { tokens } from '../../../lib/theme'
+import { tokens } from '@/apps/mobile/lib/theme'
 import { SCREEN_WIDTH, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM } from './constants'
 
 /**
@@ -9,21 +9,21 @@ export const getResponsiveSpacing = () => {
   if (SCREEN_WIDTH < BREAKPOINT_SMALL) {
     return {
       componentSpacing: tokens.space.md,
-      inputMaxHeight: 120, // Fixed height instead of percentage
+      inputMaxHeight: 120,
       fontSize: tokens.fontSizes.lg,
       headerFontSize: tokens.fontSizes.lg,
     }
   } else if (SCREEN_WIDTH < BREAKPOINT_MEDIUM) {
     return {
       componentSpacing: tokens.space.lg,
-      inputMaxHeight: 160, // Fixed height instead of percentage
+      inputMaxHeight: 160,
       fontSize: tokens.fontSizes.xl,
       headerFontSize: tokens.fontSizes.xl,
     }
   } else {
     return {
       componentSpacing: tokens.space.xl,
-      inputMaxHeight: 200, // Fixed height instead of percentage
+      inputMaxHeight: 200,
       fontSize: tokens.fontSizes.xxl,
       headerFontSize: tokens.fontSizes.xxl,
     }
@@ -45,9 +45,8 @@ export const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: tokens.space.lg,
-    justifyContent: 'space-between',
-    minHeight: '100%',
+    padding: componentSpacing,
+    paddingBottom: 0, // Remove bottom padding since input has its own
   },
   headerContainer: {
     marginBottom: componentSpacing,
@@ -60,12 +59,11 @@ export const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   inputContainer: {
-    width: '100%',
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    padding: tokens.space.lg,
+    padding: componentSpacing,
     backgroundColor: '#ffffff',
   },
   thoughtInput: {
