@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ThoughtEntryState } from '../types'
-import { INITIAL_STATE } from '../constants'
+import { ThoughtEntryState } from '../lib/types'
+import { INITIAL_STATE } from '../lib/constants'
 
 /**
  * Hook for managing the welcome screen state

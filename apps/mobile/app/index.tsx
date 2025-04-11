@@ -1,7 +1,7 @@
 import React from 'react'
-import WelcomeScreen from './welcome/index'
+import WelcomeScreen from '../components/WelcomeScreen/WelcomeScreen'
 
-// Directly render the WelcomeScreen component as the home screen
-export default function HomeScreen() {
-    return <WelcomeScreen />
+export const HomeScreen = () => {
+  return <WelcomeScreen />
 }
+export default HomeScreen

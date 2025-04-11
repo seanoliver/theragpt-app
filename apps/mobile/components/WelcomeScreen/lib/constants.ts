@@ -11,6 +11,7 @@ export const TEST_IDS = {
   additionalContextField: 'additional-context-field',
   skipContextButton: 'skip-context-button',
   submitContextButton: 'submit-context-button',
+  chatBubble: 'chat-bubble',
 }
 
 /**

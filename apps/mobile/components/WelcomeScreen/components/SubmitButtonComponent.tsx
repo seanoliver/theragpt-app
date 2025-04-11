@@ -1,8 +1,8 @@
 import React from 'react'
 import { TouchableOpacity, Text } from 'react-native'
-import { styles } from '../styles'
-import { TEST_IDS } from '../constants'
-import { SubmitButtonComponentProps } from '../types'
+import { styles } from '../lib/styles'
+import { TEST_IDS } from '../lib/constants'
+import { SubmitButtonComponentProps } from '../lib/types'
 
 /**
  * SubmitButtonComponent for submitting the thought

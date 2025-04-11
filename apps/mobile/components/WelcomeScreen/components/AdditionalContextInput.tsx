@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { View, TextInput } from 'react-native'
-import { styles } from '../styles'
-import { TEST_IDS } from '../constants'
-import { AdditionalContextInputProps } from '../types'
+import { styles } from '../lib/styles'
+import { TEST_IDS } from '../lib/constants'
+import { AdditionalContextInputProps } from '../lib/types'
 
 /**
  * AdditionalContextInput for entering optional context

@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Animated } from 'react-native'
-import { ANIMATION_DURATION } from '../constants'
+import { ANIMATION_DURATION } from '../lib/constants'
 
 /**
  * Hook for managing animations in the welcome screen
@@ -11,9 +11,11 @@ export const useAnimations = () => {
   const lockedThoughtOpacity = useRef(new Animated.Value(0)).current
   const additionalContextTranslateY = useRef(new Animated.Value(20)).current
   const additionalContextOpacity = useRef(new Animated.Value(0)).current
+  const chatBubbleOpacity = useRef(new Animated.Value(0)).current
+  const chatBubbleTranslateY = useRef(new Animated.Value(100)).current
 
   /**
-   * Animate the transition from thought input to locked display
+   * Animate the transition from thought input to chat bubble
    */
   const animateThoughtSubmission = () => {
     Animated.parallel([
@@ -23,9 +25,15 @@ export const useAnimations = () => {
         duration: ANIMATION_DURATION,
         useNativeDriver: true,
       }),
-      // Fade in locked thought display
-      Animated.timing(lockedThoughtOpacity, {
+      // Fade in chat bubble
+      Animated.timing(chatBubbleOpacity, {
         toValue: 1,
+        duration: ANIMATION_DURATION,
+        useNativeDriver: true,
+      }),
+      // Animate chat bubble up
+      Animated.timing(chatBubbleTranslateY, {
+        toValue: 0,
         duration: ANIMATION_DURATION,
         useNativeDriver: true,
       }),
@@ -48,6 +56,8 @@ export const useAnimations = () => {
     lockedThoughtOpacity,
     additionalContextTranslateY,
     additionalContextOpacity,
+    chatBubbleOpacity,
+    chatBubbleTranslateY,
     animateThoughtSubmission,
   }
 }

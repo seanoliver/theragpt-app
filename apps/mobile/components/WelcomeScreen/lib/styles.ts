@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { tokens } from '../theme'
+import { tokens } from '../../../lib/theme'
 import { SCREEN_WIDTH, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM } from './constants'
 
 /**
@@ -30,7 +30,7 @@ export const getResponsiveSpacing = () => {
   }
 }
 
-const { componentSpacing, inputMaxHeight, fontSize, headerFontSize } = getResponsiveSpacing()
+export const { componentSpacing, inputMaxHeight, fontSize, headerFontSize } = getResponsiveSpacing()
 
 /**
  * Styles for the welcome screen components
@@ -76,6 +76,9 @@ export const styles = StyleSheet.create({
     color: '#212121',
     fontFamily: tokens.fontFamilies.serif,
     lineHeight: fontSize * 1.5,
+    textAlignVertical: 'top',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   button: {
     paddingVertical: tokens.space.md,
@@ -119,6 +122,24 @@ export const styles = StyleSheet.create({
     marginBottom: tokens.space.md,
     fontSize: fontSize,
     color: '#212121',
+    fontFamily: tokens.fontFamilies.serif,
+    lineHeight: fontSize * 1.5,
+  },
+  chatBubbleContainer: {
+    marginTop: componentSpacing,
+    marginBottom: componentSpacing,
+    alignSelf: 'flex-start',
+    maxWidth: '80%',
+  },
+  chatBubble: {
+    backgroundColor: tokens.colors.primary500,
+    padding: tokens.space.md,
+    borderRadius: 20,
+    borderTopLeftRadius: 4,
+  },
+  chatBubbleText: {
+    color: '#ffffff',
+    fontSize: fontSize,
     fontFamily: tokens.fontFamilies.serif,
     lineHeight: fontSize * 1.5,
   },

@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { View, TextInput } from 'react-native'
-import { styles } from '../styles'
-import { TEST_IDS } from '../constants'
-import { ThoughtInputComponentProps } from '../types'
+import { styles } from '../lib/styles'
+import { TEST_IDS } from '../lib/constants'
+import { ThoughtInputComponentProps } from '../lib/types'
 
 /**
  * ThoughtInputComponent for entering the user's thought
@@ -35,9 +35,11 @@ const ThoughtInputComponent: React.FC<ThoughtInputComponentProps> = ({
         textAlignVertical="top"
         testID={TEST_IDS.thoughtInputField}
         accessibilityLabel="Enter any troubling thought or feeling"
-        accessibilityHint="Type the thought that's bothering you"
+        accessibilityHint="Type the thought that's bothering you and press return to submit"
         onSubmitEditing={onSubmit}
         returnKeyType="done"
+        blurOnSubmit={true}
+        enablesReturnKeyAutomatically={true}
       />
     </View>
   )

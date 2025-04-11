@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { styles } from '../styles'
-import { TEST_IDS } from '../constants'
-import { LockedThoughtDisplayProps } from '../types'
+import { styles } from '../lib/styles'
+import { TEST_IDS } from '../lib/constants'
+import { LockedThoughtDisplayProps } from '../lib/types'
 
 /**
  * LockedThoughtDisplay shows the submitted thought in read-only format
