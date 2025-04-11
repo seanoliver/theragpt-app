@@ -20,9 +20,9 @@ export interface HeaderComponentProps {
 }
 
 /**
- * Props for the ThoughtInputComponent
+ * Props for the MessageInput
  */
-export interface ThoughtInputComponentProps {
+export interface MessageInputProps {
   value: string
   onChange: (text: string) => void
   onSubmit: () => void

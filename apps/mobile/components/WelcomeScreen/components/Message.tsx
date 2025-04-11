@@ -28,8 +28,6 @@ export const Message = ({ message }: { message: IMessage }) => {
     ]).start()
   }, [])
 
-  console.log('fadeAnim:', fadeAnim)
-  console.log('Message:', message)
   return (
     <View
       style={[

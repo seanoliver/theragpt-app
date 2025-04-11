@@ -6,8 +6,9 @@ import {
   ScrollView,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ThoughtInputComponent, Message } from './components'
-import { useAnimations, useConversationThread, useWelcomeState } from './hooks'
+import { Message } from './components/Message'
+import { MessageInput } from './components/MessageInput'
+import { useConversationThread, useWelcomeState } from './hooks'
 import { styles } from './lib/styles'
 
 const conversationConfig = {
@@ -19,24 +20,15 @@ const conversationConfig = {
       content:
         "Can you share any more context about what's causing you to feel this way?",
     },
-    // Add more follow-up messages here as needed
   ],
 }
 
-/**
- * WelcomeScreen is the main component for the welcome screen
- */
 export default function WelcomeScreen() {
-  // State management
-  const { state, updateThought, handleThoughtSubmission } = useWelcomeState()
+  const { state, updateThought } = useWelcomeState()
 
   const { conversationThread, addMessage, addFollowUpMessage } =
     useConversationThread(conversationConfig)
 
-  // Animation values
-  const { thoughtInputOpacity, animateThoughtSubmission } = useAnimations()
-
-  // Handle thought submission with animation
   const onThoughtSubmit = () => {
     if (state.currentThought.trim()) {
       addMessage({
@@ -44,9 +36,6 @@ export default function WelcomeScreen() {
         content: state.currentThought,
         role: 'user',
       })
-      // handleThoughtSubmission()
-      // animateThoughtSubmission()
-      // Add a slight delay before showing the follow-up message
       setTimeout(addFollowUpMessage, 1000)
     }
   }
@@ -61,7 +50,7 @@ export default function WelcomeScreen() {
         <ScrollView
           contentContainerStyle={[
             styles.scrollContent,
-            { paddingBottom: 100 } // Add padding to prevent messages from being hidden behind input
+            { paddingBottom: 100 },
           ]}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -72,9 +61,9 @@ export default function WelcomeScreen() {
         </ScrollView>
 
         <Animated.View
-          style={[styles.inputContainer, { opacity: thoughtInputOpacity }]}
+          style={styles.inputContainer}
         >
-          <ThoughtInputComponent
+          <MessageInput
             value={state.currentThought}
             onChange={updateThought}
             onSubmit={onThoughtSubmit}
