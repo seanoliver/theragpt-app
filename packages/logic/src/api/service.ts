@@ -82,7 +82,8 @@ export class APIService {
     const messages = [
       {
         role: 'system',
-        content: 'You are a CBT assistant helping identify cognitive distortions in thoughts.',
+        content:
+          'You are a CBT assistant helping identify cognitive distortions in thoughts.',
       },
       {
         role: 'user',
