@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
-import { View, Text, Animated, StyleSheet } from 'react-native'
+import { View, Animated, StyleSheet } from 'react-native'
 import { TEST_IDS } from '../lib/constants'
 import {
   componentSpacing,
   fontSize,
-  styles as sharedStyles,
 } from '../lib/styles'
 import { tokens } from '@/apps/mobile/lib/theme'
 import { IMessage } from '../hooks'

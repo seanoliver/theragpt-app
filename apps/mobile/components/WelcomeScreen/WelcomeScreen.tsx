@@ -14,6 +14,7 @@ import { styles } from './lib/styles'
 const conversationConfig = {
   initialMessage: {
     content: "What's on your mind?",
+    options: [],
   },
   followUpMessages: [
     {
@@ -22,6 +23,8 @@ const conversationConfig = {
     },
   ],
 }
+
+const options = conversationConfig?.initialMessage?.options
 
 export default function WelcomeScreen() {
   const { state, updateThought } = useWelcomeState()
@@ -67,6 +70,7 @@ export default function WelcomeScreen() {
             value={state.currentThought}
             onChange={updateThought}
             onSubmit={onThoughtSubmit}
+            options={options}
           />
         </Animated.View>
       </KeyboardAvoidingView>

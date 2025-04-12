@@ -20,15 +20,6 @@ export interface HeaderComponentProps {
 }
 
 /**
- * Props for the MessageInput
- */
-export interface MessageInputProps {
-  value: string
-  onChange: (text: string) => void
-  onSubmit: () => void
-}
-
-/**
  * Props for the SubmitButtonComponent
  */
 export interface SubmitButtonComponentProps {
