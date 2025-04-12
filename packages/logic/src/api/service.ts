@@ -6,6 +6,7 @@ import {
   ThoughtAnalysisRequest,
   ThoughtAnalysisResponse,
 } from './types'
+import { TOOLS } from './tools'
 
 /**
  * Configuration for the API service
@@ -59,81 +60,44 @@ export class APIService {
       )
     }
 
-    // Prepare the request
-    const provider = request.provider || this.config.defaultProvider
-    const endpoint = `${this.config.baseUrl}/analyze`
+    // Prepare the OpenAI API request
+    const response = await this.makeOpenAIRequest(thought, request.context)
 
-    // Make the request with retry logic
-    return this.makeRequestWithRetry(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        thought: request.thought,
-        context: request.context,
-        provider,
-      }),
-    })
+    return {
+      success: true,
+      data: response,
+    }
   }
 
   /**
-   * Makes an API request with retry logic
-   * @param url The URL to request
-   * @param options The fetch options
-   * @returns The parsed response
+   * Makes a request to the OpenAI API
+   * @param thought The thought to analyze
+   * @param context Optional context for the thought
+   * @returns The analysis response
    */
-  private async makeRequestWithRetry(
-    url: string,
-    options: RequestInit,
-  ): Promise<ThoughtAnalysisResponse> {
-    let lastError: Error | null = null
-    let retries = 0
+  private async makeOpenAIRequest(
+    thought: string,
+    context?: string,
+  ): Promise<any> {
+    const messages = [
+      {
+        role: 'system',
+        content: 'You are a CBT assistant helping identify cognitive distortions in thoughts.',
+      },
+      {
+        role: 'user',
+        content: context
+          ? `Thought: ${thought}\nContext: ${context}`
+          : `Thought: ${thought}`,
+      },
+    ]
 
-    while (retries < this.config.maxRetries) {
-      try {
-        const response = await fetch(url, options)
-
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}))
-          throw new APIError(
-            errorData.error ||
-              `API request failed with status ${response.status}`,
-            APIErrorType.API_ERROR,
-            response.status,
-          )
-        }
-
-        const data = await response.json()
-        return data as ThoughtAnalysisResponse
-      } catch (error) {
-        lastError = error instanceof Error ? error : new Error(String(error))
-
-        // Don't retry validation errors
-        if (
-          error instanceof APIError &&
-          error.type === APIErrorType.VALIDATION_ERROR
-        ) {
-          throw error
-        }
-
-        // Increment retry counter
-        retries++
-
-        // If we have more retries, wait before trying again
-        if (retries < this.config.maxRetries) {
-          await new Promise(resolve =>
-            setTimeout(resolve, this.config.retryDelay),
-          )
-        }
-      }
+    return {
+      model: 'gpt-4-turbo-preview',
+      messages,
+      tools: TOOLS,
+      tool_choice: { type: 'function', function: { name: 'analyze_thought' } },
     }
-
-    // If we've exhausted retries, throw the last error
-    throw (
-      lastError ||
-      new APIError('Request failed after retries', APIErrorType.UNKNOWN_ERROR)
-    )
   }
 }
 
