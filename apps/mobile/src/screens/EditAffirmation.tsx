@@ -1,22 +1,54 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
+import { Link, router, useLocalSearchParams } from 'expo-router';
+import { useState, useEffect } from 'react';
 import { colors } from '../../lib/theme';
+import { affirmationService } from '@still/logic/src/affirmation/service';
+import { Affirmation } from '@still/logic/src/affirmation/types';
 
 export function EditAffirmationScreen() {
-  const [affirmation, setAffirmation] = useState('I am worthy of love and respect');
+  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>();
+  const [affirmation, setAffirmation] = useState<Affirmation | null>(null);
+  const [text, setText] = useState('');
 
-  const handleSave = () => {
-    // TODO: Save the affirmation
-    router.push('/daily');
+  useEffect(() => {
+    loadAffirmation();
+  }, [affirmationId]);
+
+  const loadAffirmation = async () => {
+    if (affirmationId) {
+      const affirmations = await affirmationService.getAllAffirmations();
+      const foundAffirmation = affirmations.find(a => a.id === affirmationId);
+      if (foundAffirmation) {
+        setAffirmation(foundAffirmation);
+        setText(foundAffirmation.text);
+      }
+    }
   };
+
+  const handleSave = async () => {
+    if (affirmation) {
+      await affirmationService.updateAffirmation({
+        id: affirmation.id,
+        text,
+      });
+      router.push(`/daily?affirmationId=${affirmation.id}`);
+    }
+  };
+
+  if (!affirmation) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Link href="/daily" asChild>
+        <Link href={`/daily?affirmationId=${affirmation.id}`} asChild>
           <TouchableOpacity>
-            <Text style={styles.backButton}>← Edit Affirmation</Text>
+            <Text style={styles.backButton}>← Back to Affirmation</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -24,8 +56,8 @@ export function EditAffirmationScreen() {
       <View style={styles.content}>
         <TextInput
           style={styles.input}
-          value={affirmation}
-          onChangeText={setAffirmation}
+          value={text}
+          onChangeText={setText}
           multiline
           placeholder="Enter your affirmation"
           placeholderTextColor="#666"
@@ -76,5 +108,11 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontSize: 16,
     fontWeight: '600',
+  },
+  loadingText: {
+    color: colors.text.primary,
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 60,
   },
 });

@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../lib/theme';
-import { useState } from 'react';
-import { SAMPLE_AFFIRMATIONS } from './Library';
+import { useState, useEffect } from 'react';
+import { affirmationService } from '@still/logic/src/affirmation/service';
+import { Affirmation } from '@still/logic/src/affirmation/types';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -20,9 +21,24 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
 
 export function DailyAffirmationScreen() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>();
+  const [affirmation, setAffirmation] = useState<Affirmation | null>(null);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
+
+  useEffect(() => {
+    loadAffirmation();
+  }, [affirmationId]);
+
+  const loadAffirmation = async () => {
+    if (affirmationId) {
+      const affirmations = await affirmationService.getAllAffirmations();
+      const foundAffirmation = affirmations.find(a => a.id === affirmationId);
+      if (foundAffirmation) {
+        setAffirmation(foundAffirmation);
+      }
+    }
+  };
 
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
@@ -32,11 +48,7 @@ export function DailyAffirmationScreen() {
     .onEnd((event) => {
       if (Math.abs(event.translationX) > SWIPE_THRESHOLD) {
         const direction = event.translationX > 0 ? -1 : 1;
-        const newIndex = currentIndex + direction;
-
-        if (newIndex >= 0 && newIndex < SAMPLE_AFFIRMATIONS.length) {
-          runOnJS(setCurrentIndex)(newIndex);
-        }
+        // TODO: Load next/previous affirmation
       }
       translateX.value = withSpring(0);
       translateY.value = withSpring(0);
@@ -51,30 +63,28 @@ export function DailyAffirmationScreen() {
     };
   });
 
+  if (!affirmation) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.affirmationContainer}>
         <GestureDetector gesture={panGesture}>
           <Animated.View style={[styles.card, animatedStyle]}>
-            <Text style={styles.affirmationText}>
-              {SAMPLE_AFFIRMATIONS[currentIndex]}
-            </Text>
+            <Text style={styles.affirmationText}>{affirmation.text}</Text>
 
             <View style={styles.cardFooter}>
               <View style={styles.progressContainer}>
-                {SAMPLE_AFFIRMATIONS.map((_, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.progressDot,
-                      index === currentIndex && styles.activeDot,
-                    ]}
-                  />
-                ))}
+                <View style={[styles.progressDot, styles.activeDot]} />
               </View>
 
               <View style={styles.actions}>
-                <Link href="/edit" asChild>
+                <Link href={`/edit?affirmationId=${affirmation.id}`} asChild>
                   <Ionicons name="create-outline" size={20} color={colors.text.primary} />
                 </Link>
                 <Link href="/library" asChild>
@@ -146,5 +156,11 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     gap: 16,
+  },
+  loadingText: {
+    color: colors.text.primary,
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 60,
   },
 });
