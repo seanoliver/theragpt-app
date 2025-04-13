@@ -33,5 +33,12 @@ export const tokens = {
     md: 16,
     lg: 18,
     xl: 20,
+    xxl: 24,
+    xxxl: 32,
   },
+  fontFamilies: {
+    sans: 'System',
+    serif: 'Georgia',
+    serifAlt: 'Times New Roman',
+  }
 }
