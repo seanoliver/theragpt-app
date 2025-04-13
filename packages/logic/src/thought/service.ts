@@ -20,7 +20,7 @@ import { NotFoundError, ValidationError } from '../utils/error'
  */
 export class ThoughtService {
   private storageService: StorageService
-  private storageKey = 'northstar_thoughts'
+  private storageKey = 'still_thoughts'
 
   constructor(storageService: StorageService) {
     this.storageService = storageService

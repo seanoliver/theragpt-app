@@ -1,11 +1,11 @@
-# Northstar MVP Roadmap
+# Still MVP Roadmap
 
 ## Phase 0: Setup & Infra
 
 Goal: Get the dev environment ready and basic repo structure in place.
 
-    •	Create /apps/northstar-app (Expo app)
-    •	Create /apps/northstar-backend (Next.js API routes for OpenAI)
+    •	Create /apps/still-app (Expo app)
+    •	Create /apps/still-backend (Next.js API routes for OpenAI)
     •	Set up /packages/api-client, /utils/posthog.ts
     •	Install and configure PostHog
     •	Setup local data storage (AsyncStorage or SQLite)

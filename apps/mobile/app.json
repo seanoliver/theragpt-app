@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Northstar",
-    "slug": "northstar",
+    "name": "Still",
+    "slug": "still",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.helloseanoliver.northstar"
+      "bundleIdentifier": "com.helloseanoliver.still"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.helloseanoliver.northstar"
+      "package": "com.helloseanoliver.still"
     },
     "web": {
       "bundler": "metro"

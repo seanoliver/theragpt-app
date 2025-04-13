@@ -1,4 +1,4 @@
-import { getEnvironment } from '@northstar/config'
+import { getEnvironment } from '@still/config'
 
 /**
  * Log levels
@@ -236,11 +236,11 @@ export class Logger {
  *
  * @example
  * // Import the default logger
- * import { logger } from '@northstar/logic/utils/logger'
+ * import { logger } from '@still/logic/utils/logger'
  *
  * // Use the default logger
  * logger.info('Application started')
  *
- * // Output: [2025-04-10T17:00:11.123Z] [INFO] [Northstar] Application started
+ * // Output: [2025-04-10T17:00:11.123Z] [INFO] [Still] Application started
  */
-export const logger = new Logger('Northstar')
+export const logger = new Logger('Still')

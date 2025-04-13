@@ -5,7 +5,7 @@ export function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.logo}>Northstar</Text>
+        <Text style={styles.logo}>Still</Text>
       </View>
       <View style={styles.content}>
         <Text style={styles.subtitle}>Reconnect with your North star</Text>

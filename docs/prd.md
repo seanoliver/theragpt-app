@@ -1,10 +1,10 @@
-# Northstar — Product Requirements Document (PRD) v1.2
+# Still — Product Requirements Document (PRD) v1.2
 
 ⸻
 
 1. Overview
 
-Northstar is a mobile-first app designed to help users start each day with clarity and confidence through personal affirmations. Users can swipe through affirmations, edit them with AI assistance, and mark the ones that resonate most each day. The goal is to foster a consistent, lightweight ritual that reinforces self-identity and emotional well-being.
+Still is a mobile-first app designed to help users start each day with clarity and confidence through personal affirmations. Users can swipe through affirmations, edit them with AI assistance, and mark the ones that resonate most each day. The goal is to foster a consistent, lightweight ritual that reinforces self-identity and emotional well-being.
 
 ⸻
 
@@ -24,7 +24,7 @@ Northstar is a mobile-first app designed to help users start each day with clari
 
 4. Core User Story
 
-“As someone who wants to feel anchored each morning, I want an app that presents me with affirmations I’ve refined over time, so I can reconnect with who I am—and mark the ones that resonate most in the moment.”
+"As someone who wants to feel anchored each morning, I want an app that presents me with affirmations I've refined over time, so I can reconnect with who I am—and mark the ones that resonate most in the moment."
 
 ⸻
 
@@ -35,7 +35,7 @@ Must-Have (MVP)
 • Create/edit affirmations manually
 • AI-assisted affirmation rewriting
 • View all saved affirmations (library)
-• Daily “resonance” marker (dot → sunburst interaction)
+• Daily "resonance" marker (dot → sunburst interaction)
 • Starter affirmation pack for new users
 • Local data storage (persisted across app sessions)
 
@@ -51,7 +51,7 @@ Nice-to-Have (Post-MVP)
 
 6. Success Metrics
    • Engagement: User opens app 5+ times per week
-   • Emotional Resonance: At least one affirmation marked as “resonated” each day
+   • Emotional Resonance: At least one affirmation marked as "resonated" each day
    • Personalization: 50%+ of users create or edit at least one affirmation
    • Qualitative Feedback: Positive user feedback regarding clarity and mood improvement
 

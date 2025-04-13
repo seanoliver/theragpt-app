@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "next": "^15.3.0",
-    "@northstar/logic": "workspace:*",
-    "@northstar/config": "workspace:*",
+    "@still/logic": "workspace:*",
+    "@still/config": "workspace:*",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

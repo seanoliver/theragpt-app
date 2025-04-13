@@ -15,7 +15,7 @@ import { NotFoundError } from '../utils/error'
  */
 export class ReframeService {
   private storageService: StorageService
-  private storageKey = 'northstar_reframes'
+  private storageKey = 'still_reframes'
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
