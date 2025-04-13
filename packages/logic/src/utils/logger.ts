@@ -241,6 +241,6 @@ export class Logger {
  * // Use the default logger
  * logger.info('Application started')
  *
- * // Output: [2025-04-10T17:00:11.123Z] [INFO] [TheraGPT] Application started
+ * // Output: [2025-04-10T17:00:11.123Z] [INFO] [Northstar] Application started
  */
-export const logger = new Logger('TheraGPT')
+export const logger = new Logger('Northstar')

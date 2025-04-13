@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TheraGPT",
-    "slug": "theragpt",
+    "name": "Northstar",
+    "slug": "northstar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.helloseanoliver.theragpt"
+      "bundleIdentifier": "com.helloseanoliver.northstar"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.helloseanoliver.theragpt"
+      "package": "com.helloseanoliver.northstar"
     },
     "plugins": [
       "expo-router"

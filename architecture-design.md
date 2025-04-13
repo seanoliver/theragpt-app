@@ -1,4 +1,4 @@
-# TheraGPT Architecture Design
+# Northstar Architecture Design
 
 ## Table of Contents
 1. [System Architecture](#system-architecture)
@@ -43,7 +43,7 @@
 
 ### Overview
 
-TheraGPT is a cross-platform Cognitive Behavioral Therapy (CBT) application designed to help users identify cognitive distortions in their thoughts and reframe them in a more balanced way. The application leverages AI (specifically OpenAI's API) to analyze user-submitted thoughts, identify potential cognitive distortions, and suggest reframed perspectives.
+Northstar is a cross-platform mobile application designed to help users start each day with clarity and confidence through personal affirmations. The application will leverage AI to help users create and refine their affirmations.
 
 The system follows a monorepo architecture with shared packages for logic, UI components, and configuration, supporting both web (Next.js) and mobile (Expo) platforms.
 
@@ -134,7 +134,7 @@ graph TB
 
 ### Web Application
 
-The Next.js web application serves as the primary web interface for TheraGPT, with the following responsibilities:
+The Next.js web application serves as the primary web interface for Northstar, with the following responsibilities:
 
 - Render user interface for thought entry, analysis, and review
 - Handle client-side state management
@@ -151,7 +151,7 @@ Key components:
 
 ### Mobile Application
 
-The Expo mobile application provides the native mobile experience for TheraGPT, with the following responsibilities:
+The Expo mobile application provides the native mobile experience for Northstar, with the following responsibilities:
 
 - Implement native mobile UI for all application features
 - Handle mobile-specific navigation

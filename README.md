@@ -1,10 +1,10 @@
-# TheraGPT
+# Northstar
 
-A Cognitive Behavioral Therapy (CBT) application designed to help users identify cognitive distortions in their thoughts and reframe them in a more balanced way.
+Northstar is a mobile-first app designed to help users start each day with clarity and confidence through personal affirmations. Users can swipe through affirmations, edit them with AI assistance, and mark the ones that resonate most each day. The goal is to foster a consistent, lightweight ritual that reinforces self-identity and emotional well-being.
 
 ## Overview
 
-TheraGPT leverages AI (specifically OpenAI's API) to analyze user-submitted thoughts, identify potential cognitive distortions, and suggest reframed perspectives. The application includes a spaced repetition system (SRS) to help users internalize healthier thought patterns over time.
+Northstar leverages AI to help users create and customize personal affirmations that resonate with their goals and values. The application includes features for daily affirmation review, AI-assisted editing, and tracking which affirmations resonate most strongly.
 
 ## Project Structure
 

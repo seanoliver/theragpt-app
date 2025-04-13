@@ -1,8 +1,8 @@
-# TheraGPT App Specification
+# Northstar App Specification
 
 ## Overview
 
-This document outlines the specifications for TheraGPT, a Cognitive Behavioral Therapy (CBT) application designed to help users identify cognitive distortions in their thoughts and reframe them in a more balanced way. The application will leverage AI (specifically OpenAI's API) to analyze user-submitted thoughts, identify potential cognitive distortions, and suggest reframed perspectives.
+This document outlines the specifications for Northstar, a mobile application designed to help users start each day with clarity and confidence through personal affirmations. The application will leverage AI to help users create and refine their affirmations.
 
 ## Project Structure
 
@@ -935,6 +935,6 @@ function calculateNewInterval(reframe, difficulty):
 
 ## Conclusion
 
-This specification outlines a comprehensive plan for developing TheraGPT, a cognitive behavioral therapy application using a monorepo structure with Next.js and Expo. The application will leverage OpenAI's API to analyze user thoughts, identify cognitive distortions, and suggest healthier reframes. The SRS flashcard system will help users internalize these reframes through spaced repetition.
+This specification outlines a comprehensive plan for developing Northstar, a mobile application using a monorepo structure with Next.js and Expo. The application will leverage AI to help users create and refine their affirmations, fostering a consistent, lightweight ritual that reinforces self-identity and emotional well-being.
 
 The modular pseudocode provides clear guidance for implementation, with TDD anchors to ensure proper testing throughout the development process. The implementation plan provides a phased approach to building the application, starting with the core infrastructure and gradually adding features and polish.

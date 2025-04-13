@@ -1,5 +1,5 @@
 // Application constants
-export const APP_NAME = 'TheraGPT'
+export const APP_NAME = 'Northstar'
 
 // Thought validation constants
 export const MAX_THOUGHT_LENGTH = 500

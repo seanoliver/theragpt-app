@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TheraGPT - Cognitive Behavioral Therapy App',
+  title: 'Northstar - Daily Affirmations App',
   description: 'Identify cognitive distortions and reframe thoughts with AI assistance',
 }
 
