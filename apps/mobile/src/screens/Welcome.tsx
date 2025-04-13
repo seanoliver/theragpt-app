@@ -9,7 +9,7 @@ export function WelcomeScreen() {
       </View>
       <View style={styles.content}>
         <Text style={styles.subtitle}>Reconnect with your North star</Text>
-        <Link href="/examples" asChild>
+        <Link href="/daily" asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Start with examples</Text>
           </TouchableOpacity>
