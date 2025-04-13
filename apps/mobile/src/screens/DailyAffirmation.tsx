@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../lib/theme';
@@ -115,11 +115,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   affirmationText: {
-    fontSize: 32,
+    fontSize: 36,
     color: colors.text.primary,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: '300',
     marginBottom: 20,
+    letterSpacing: 0.5,
+    lineHeight: 48,
+    fontFamily: 'System',
   },
   cardFooter: {
     flexDirection: 'row',

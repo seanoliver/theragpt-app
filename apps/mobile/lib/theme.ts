@@ -1,39 +1,39 @@
 // Define colors for the mobile app
 export const colors = {
   charcoal: {
-    100: '#1F2A35', // Main background
-    200: '#2C2C2E', // Cards, buttons, inputs
-    300: '#3A3A3C', // Hover states
-    400: '#48484A', // Borders
+    100: '#121212', // Main background - deep dark
+    200: '#1E1E1E', // Cards - slightly lighter
+    300: '#2D2D2D', // Hover states
+    400: '#3D3D3D', // Borders
   },
   text: {
-    primary: '#FFFFFF',
-    secondary: '#AEAEB2',
-    placeholder: '#666666',
+    primary: '#FFFFFF', // White for primary text
+    secondary: '#B3B3B3', // Light gray for secondary text
+    placeholder: '#666666', // Medium gray for placeholders
   },
   accent: {
-    primary: '#007bff',
-    secondary: '#6c757d',
+    primary: '#7B61FF', // Modern purple
+    secondary: '#6C757D', // Neutral gray
   },
   header: {
-    background: '#f4f4f4',
-    text: '#333333',
+    background: '#1E1E1E',
+    text: '#FFFFFF',
   },
   tabBar: {
-    active: '#007bff',
-    inactive: '#6c757d',
-    background: '#ffffff',
-    border: '#e0e0e0',
+    active: '#7B61FF',
+    inactive: '#6C757D',
+    background: '#1E1E1E',
+    border: '#2D2D2D',
   }
 }
 
 // Define tokens for consistent styling
 export const tokens = {
   colors: {
-    primary500: '#007bff',
-    secondary500: '#6c757d',
-    gray300: '#e0e0e0',
-    gray600: '#6c757d',
+    primary500: '#7B61FF',
+    secondary500: '#6C757D',
+    gray300: '#2D2D2D',
+    gray600: '#6C757D',
   },
   space: {
     xs: 4,
