@@ -1,28 +1,68 @@
-import { Stack } from 'expo-router'
+import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { colors } from '../lib/theme'
+import { FontAwesome } from '@expo/vector-icons'
 
 export default function RootLayout() {
   return (
     <>
       <StatusBar style="auto" />
-      <Stack
+      <Tabs
         screenOptions={{
-          headerStyle: {
-            backgroundColor: '#f4f4f4',
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: colors.charcoal[100],
+            borderTopColor: colors.charcoal[200],
           },
-          headerTintColor: '#333',
+          tabBarActiveTintColor: colors.text.primary,
+          tabBarInactiveTintColor: colors.text.secondary,
+          headerStyle: {
+            backgroundColor: colors.charcoal[100],
+          },
+          headerTintColor: colors.text.primary,
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            paddingTop: 4,
+          },
         }}
       >
-        <Stack.Screen
+        <Tabs.Screen
           name="index"
           options={{
-            headerShown: false,
+            title: 'Manifesto',
+            tabBarIcon: ({ color }) => <FontAwesome name="book" size={22} color={color} />,
           }}
         />
-      </Stack>
+        <Tabs.Screen
+          name="daily"
+          options={{
+            title: 'Review',
+            tabBarIcon: ({ color }) => <FontAwesome name="history" size={28} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="library"
+          options={{
+            title: 'Backlog',
+            tabBarIcon: ({ color }) => <FontAwesome name="archive" size={22} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="edit"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="new"
+          options={{
+            href: null,
+          }}
+        />
+      </Tabs>
     </>
   )
 }

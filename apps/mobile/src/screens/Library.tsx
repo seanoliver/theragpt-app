@@ -3,7 +3,7 @@ import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../lib/theme';
 
-const SAMPLE_AFFIRMATIONS = [
+export const SAMPLE_AFFIRMATIONS = [
   'I am finding meaning and purpose in my work',
   'Setbacks are a chance to learn and grow',
   'I have the power to create change in my life',
