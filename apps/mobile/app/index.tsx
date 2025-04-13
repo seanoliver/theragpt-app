@@ -1,7 +1,5 @@
-import React from 'react'
-import WelcomeScreen from '../components/WelcomeScreen/WelcomeScreen'
+import { WelcomeScreen } from '../src/screens/Welcome';
 
-export const HomeScreen = () => {
-  return <WelcomeScreen />
+export default function Page() {
+  return <WelcomeScreen />;
 }
-export default HomeScreen
