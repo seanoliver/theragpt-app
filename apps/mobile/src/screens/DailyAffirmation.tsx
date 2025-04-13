@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '../../lib/theme';
 
 export function DailyAffirmationScreen() {
   return (
@@ -22,7 +23,7 @@ export function DailyAffirmationScreen() {
 
         <Link href="/library" asChild>
           <TouchableOpacity style={styles.likeButton}>
-            <Ionicons name="heart-outline" size={24} color="white" />
+            <Ionicons name="heart-outline" size={24} color={colors.text.primary} />
           </TouchableOpacity>
         </Link>
       </View>
@@ -33,13 +34,13 @@ export function DailyAffirmationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.charcoal[100],
     padding: 20,
     justifyContent: 'space-between',
   },
   header: {
     fontSize: 24,
-    color: '#FFFFFF',
+    color: colors.text.primary,
     textAlign: 'center',
     marginTop: 60,
   },
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
   affirmationText: {
     fontSize: 32,
-    color: '#FFFFFF',
+    color: colors.text.primary,
     textAlign: 'center',
     fontWeight: '600',
   },
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   editButton: {
-    backgroundColor: '#2C2C2E',
+    backgroundColor: colors.charcoal[200],
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: colors.text.primary,
     fontSize: 16,
   },
 });

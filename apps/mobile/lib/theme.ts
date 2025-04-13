@@ -1,15 +1,30 @@
 // Define colors for the mobile app
 export const colors = {
-  primary: '#007bff',
-  secondary: '#6c757d',
-  background: '#ffffff',
-  text: '#212121',
-  headerBackground: '#f4f4f4',
-  headerText: '#333333',
-  tabBarActive: '#007bff',
-  tabBarInactive: '#6c757d',
-  tabBarBackground: '#ffffff',
-  tabBarBorder: '#e0e0e0',
+  charcoal: {
+    100: '#1F2A35', // Main background
+    200: '#2C2C2E', // Cards, buttons, inputs
+    300: '#3A3A3C', // Hover states
+    400: '#48484A', // Borders
+  },
+  text: {
+    primary: '#FFFFFF',
+    secondary: '#AEAEB2',
+    placeholder: '#666666',
+  },
+  accent: {
+    primary: '#007bff',
+    secondary: '#6c757d',
+  },
+  header: {
+    background: '#f4f4f4',
+    text: '#333333',
+  },
+  tabBar: {
+    active: '#007bff',
+    inactive: '#6c757d',
+    background: '#ffffff',
+    border: '#e0e0e0',
+  }
 }
 
 // Define tokens for consistent styling

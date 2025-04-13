@@ -1,6 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
+import { colors } from '../../lib/theme';
 
 export function EditAffirmationScreen() {
   const [affirmation, setAffirmation] = useState('I am worthy of love and respect');
@@ -41,7 +42,7 @@ export function EditAffirmationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.charcoal[100],
     padding: 20,
   },
   header: {
@@ -49,30 +50,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backButton: {
-    color: '#FFFFFF',
+    color: colors.text.primary,
     fontSize: 18,
   },
   content: {
     flex: 1,
   },
   input: {
-    color: '#FFFFFF',
+    color: colors.text.primary,
     fontSize: 24,
     padding: 20,
-    backgroundColor: '#2C2C2E',
+    backgroundColor: colors.charcoal[200],
     borderRadius: 10,
     minHeight: 150,
     textAlignVertical: 'top',
   },
   saveButton: {
-    backgroundColor: '#2C2C2E',
+    backgroundColor: colors.charcoal[200],
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
   },
   saveButtonText: {
-    color: '#FFFFFF',
+    color: colors.text.primary,
     fontSize: 16,
     fontWeight: '600',
   },

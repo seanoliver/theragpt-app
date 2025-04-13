@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '../../lib/theme';
 
 const SAMPLE_AFFIRMATIONS = [
   'I am finding meaning and purpose in my work',
@@ -25,7 +26,7 @@ export function LibraryScreen() {
 
       <Link href="/new" asChild>
         <TouchableOpacity style={styles.addButton}>
-          <Ionicons name="add" size={24} color="white" />
+          <Ionicons name="add" size={24} color={colors.text.primary} />
         </TouchableOpacity>
       </Link>
     </View>
@@ -35,12 +36,12 @@ export function LibraryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.charcoal[100],
     padding: 20,
   },
   header: {
     fontSize: 24,
-    color: '#FFFFFF',
+    color: colors.text.primary,
     marginTop: 60,
     marginBottom: 20,
   },
@@ -48,20 +49,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   affirmationCard: {
-    backgroundColor: '#2C2C2E',
+    backgroundColor: colors.charcoal[200],
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
   },
   affirmationText: {
-    color: '#FFFFFF',
+    color: colors.text.primary,
     fontSize: 16,
   },
   addButton: {
     position: 'absolute',
     right: 20,
     bottom: 20,
-    backgroundColor: '#2C2C2E',
+    backgroundColor: colors.charcoal[200],
     width: 50,
     height: 50,
     borderRadius: 25,
