@@ -25,6 +25,9 @@
       },
       "package": "com.helloseanoliver.northstar"
     },
+    "web": {
+      "bundler": "metro"
+    },
     "plugins": [
       "expo-router"
     ]
