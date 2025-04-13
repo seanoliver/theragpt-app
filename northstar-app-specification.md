@@ -9,7 +9,7 @@ This document outlines the specifications for Northstar, a mobile application de
 The project will follow a monorepo architecture with the following components:
 
 ```
-theragpt-app/
+northstar-app/
 ├── apps/
 │   ├── web/                 # Next.js web application
 │   └── mobile/              # Expo mobile application

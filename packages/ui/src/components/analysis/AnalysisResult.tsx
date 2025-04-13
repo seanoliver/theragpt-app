@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Box, VStack, HStack } from '@gluestack-ui/themed'
 import {
-  NestedThoughtAnalysis,
-  DistortionWithReframes,
-} from '@theragpt/logic/src/thought/analyzer'
+  AnalysisResult as IAnalysisResult,
+  CognitiveDistortion,
+} from '@northstar/logic/src/thought/analyzer'
 import {
   Card,
   Text,
@@ -20,7 +20,7 @@ export interface AnalysisResultProps {
   /**
    * The analysis result to display
    */
-  analysis: NestedThoughtAnalysis
+  analysis: IAnalysisResult
 
   /**
    * Whether the component is in a loading state
@@ -152,7 +152,7 @@ interface DistortionCardProps {
   /**
    * The distortion to display
    */
-  distortion: DistortionWithReframes
+  distortion: CognitiveDistortion
 
   /**
    * The index of the selected reframe
@@ -276,7 +276,7 @@ const getConfidenceColor = (confidence: number): string => {
  * Simple analysis result component without reframe selection
  */
 type SimpleAnalysisResultProps = {
-  analysis: NestedThoughtAnalysis
+  analysis: IAnalysisResult
   isLoading?: boolean
   [key: string]: unknown
 }
@@ -316,7 +316,7 @@ export const SimpleAnalysisResult: React.FC<SimpleAnalysisResultProps> = ({
             </Text>
           </Card>
         ) : (
-          analysis.distortions.map((distortion: DistortionWithReframes) => (
+          analysis.distortions.map((distortion: CognitiveDistortion) => (
             <Card key={distortion.id}>
               <VStack gap={12}>
                 {/* Distortion header */}

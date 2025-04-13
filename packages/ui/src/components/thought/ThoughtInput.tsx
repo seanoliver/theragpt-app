@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box } from '@gluestack-ui/themed'
-import { thoughtValidator } from '@theragpt/logic/src/thought'
-import { MAX_THOUGHT_LENGTH } from '@theragpt/config'
+import { thoughtValidator } from '@northstar/logic/src/thought'
+import { MAX_THOUGHT_LENGTH } from '@northstar/config'
 import {
   Input,
   PrimaryButton,

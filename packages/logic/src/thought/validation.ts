@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { MAX_THOUGHT_LENGTH } from '@theragpt/config'
+import { MAX_THOUGHT_LENGTH } from '@northstar/config'
 import { Thought, ValidationResult } from './types'
 
 /**

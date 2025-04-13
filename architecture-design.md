@@ -509,7 +509,7 @@ The project will use a monorepo structure managed by Turborepo and PNPM workspac
 The monorepo will be structured as follows:
 
 ```
-theragpt-app/
+northstar-app/
 ├── apps/
 │   ├── web/                 # Next.js web application
 │   └── mobile/              # Expo mobile application

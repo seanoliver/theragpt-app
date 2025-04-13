@@ -11,17 +11,14 @@ Northstar leverages AI to help users create and customize personal affirmations 
 This project follows a monorepo architecture using Turborepo and PNPM workspaces:
 
 ```
-theragpt-app/
+northstar-app/
 ├── apps/
-│   ├── web/                 # Next.js web application
-│   └── mobile/              # Expo mobile application
-├── packages/
-│   ├── logic/               # Shared business logic
-│   ├── ui/                  # Shared UI components using Gluestack
-│   └── config/              # Shared configuration
-├── turbo.json               # Turborepo configuration
-├── package.json             # Root package.json
-└── pnpm-workspace.yaml      # PNPM workspace configuration
+│   ├── mobile/     # Expo mobile app
+│   └── web/        # Next.js web app
+└── packages/
+    ├── config/     # Shared configuration
+    ├── logic/      # Shared business logic
+    └── ui/         # Shared UI components
 ```
 
 ## Getting Started
@@ -35,29 +32,9 @@ theragpt-app/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/theragpt-app.git
-   cd theragpt-app
+   git clone https://github.com/yourusername/northstar-app.git
+   cd northstar-app
    ```
 
 2. Install dependencies:
-   ```bash
-   pnpm install
    ```
-
-3. Start the development servers:
-   ```bash
-   pnpm dev
-   ```
-
-## Available Scripts
-
-- `pnpm build` - Build all applications and packages
-- `pnpm dev` - Start all development servers
-- `pnpm lint` - Run linting across the monorepo
-- `pnpm test` - Run tests across the monorepo
-- `pnpm clean` - Clean build artifacts
-- `pnpm format` - Format code with Prettier
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

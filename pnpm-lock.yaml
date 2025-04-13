@@ -54,10 +54,10 @@ importers:
       '@expo/vector-icons':
         specifier: ^14.0.0
         version: 14.1.0(expo-font@13.0.4(expo@52.0.44(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)))(graphql@15.8.0)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
-      '@theragpt/config':
+      '@northstar/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@theragpt/logic':
+      '@northstar/logic':
         specifier: workspace:*
         version: link:../../packages/logic
       expo:
@@ -103,10 +103,10 @@ importers:
 
   apps/web:
     dependencies:
-      '@theragpt/config':
+      '@northstar/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@theragpt/logic':
+      '@northstar/logic':
         specifier: workspace:*
         version: link:../../packages/logic
       next:
@@ -127,12 +127,12 @@ importers:
 
   packages/logic:
     dependencies:
+      '@northstar/config':
+        specifier: workspace:*
+        version: link:../config
       '@react-native-async-storage/async-storage':
         specifier: ^1.19.3
         version: 1.24.0(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.2.79)(react@18.3.1))
-      '@theragpt/config':
-        specifier: workspace:*
-        version: link:../config
       uuid:
         specifier: ^9.0.0
         version: 9.0.1
@@ -898,7 +898,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
 
   '@expo/cli@0.22.24':
     resolution: {integrity: sha512-lhdenxBC8/x/vL39j79eXE09mOaqNNLmiSDdY/PblnI+UNzGgsQ48hBTYa/MQhd0ioXXVKurZL2941dLKwcxJw==}

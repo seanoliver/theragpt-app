@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { apiService } from '@theragpt/logic/src/api'
-import { getEnvironment } from '@theragpt/config'
+import { apiService } from '@northstar/logic/src/api'
+import { getEnvironment } from '@northstar/config'
 
 /**
  * API route for analyzing thoughts

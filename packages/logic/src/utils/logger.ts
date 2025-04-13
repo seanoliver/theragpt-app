@@ -1,4 +1,4 @@
-import { getEnvironment } from '@theragpt/config'
+import { getEnvironment } from '@northstar/config'
 
 /**
  * Log levels
@@ -236,7 +236,7 @@ export class Logger {
  *
  * @example
  * // Import the default logger
- * import { logger } from '@theragpt/logic/utils/logger'
+ * import { logger } from '@northstar/logic/utils/logger'
  *
  * // Use the default logger
  * logger.info('Application started')

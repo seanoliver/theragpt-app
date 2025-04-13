@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, VStack, HStack } from '@gluestack-ui/themed'
-import { Thought } from '@theragpt/logic/src/thought/types'
+import { Thought } from '@northstar/logic/src/thought/types'
 import {
   Card,
   Text,
