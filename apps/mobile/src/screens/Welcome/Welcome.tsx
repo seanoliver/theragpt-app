@@ -58,6 +58,9 @@ export function WelcomeScreen() {
               affirmation={affirmation}
               index={index}
               onPress={handleAffirmationPress}
+              showEdit={false}
+              showFavorite={false}
+              showProgress={false}
             />
           ))}
         </ScrollView>
