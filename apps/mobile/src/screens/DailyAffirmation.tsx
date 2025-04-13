@@ -115,13 +115,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   affirmationText: {
-    fontSize: 36,
+    fontSize: 28,
     color: colors.text.primary,
-    textAlign: 'center',
+    textAlign: 'left',
     fontWeight: '300',
     marginBottom: 20,
     letterSpacing: 0.5,
-    lineHeight: 48,
+    lineHeight: 40,
     fontFamily: 'System',
   },
   cardFooter: {
