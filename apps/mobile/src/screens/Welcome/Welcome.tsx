@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Affirmation } from '@still/logic/src/affirmation/types';
 import { affirmationService } from '@still/logic/src/affirmation/service';
 import { Ionicons } from '@expo/vector-icons';
+import { StillCard } from '../../shared/StillCard';
 
 export function WelcomeScreen() {
   const [affirmations, setAffirmations] = useState<Affirmation[]>([]);
@@ -52,17 +53,15 @@ export function WelcomeScreen() {
         <Text style={styles.subtitle}>Your Manifesto</Text>
         <ScrollView style={styles.affirmationsList}>
           {affirmations.map((affirmation, index) => (
-            <TouchableOpacity
+            <StillCard
               key={affirmation.id}
-              style={styles.affirmationCard}
-              onPress={() => handleAffirmationPress(affirmation)}
-            >
-              <Text style={styles.affirmationNumber}>{index + 1}.</Text>
-              <Text style={styles.affirmationText}>{affirmation.text}</Text>
-            </TouchableOpacity>
+              affirmation={affirmation}
+              index={index}
+              onPress={handleAffirmationPress}
+            />
           ))}
         </ScrollView>
-        <BeginButton />
+        {/* <BeginButton /> */}
       </View>
     </View>
   );
@@ -85,35 +84,18 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    gap: 20,
+    gap: 24,
+    marginTop: 8,
   },
   subtitle: {
-    fontSize: 24,
+    fontSize: 28,
     color: colors.text.primary,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: -0.5,
   },
   affirmationsList: {
     flex: 1,
-  },
-  affirmationCard: {
-    backgroundColor: colors.charcoal[200],
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 15,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  affirmationNumber: {
-    color: colors.text.primary,
-    fontSize: 16,
-    fontWeight: '600',
-    marginRight: 10,
-    minWidth: 25,
-  },
-  affirmationText: {
-    color: colors.text.primary,
-    fontSize: 16,
-    flex: 1,
+    paddingRight: 4,
   },
   helpContainer: {
     backgroundColor: colors.charcoal[200],
