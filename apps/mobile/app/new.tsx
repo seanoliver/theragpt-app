@@ -1,5 +1,5 @@
-import { NewAffirmationScreen } from '../src/screens/NewAffirmation';
+import { NewStatementScreen } from '../src/screens/New';
 
 export default function Page() {
-  return <NewAffirmationScreen />;
+  return <NewStatementScreen />;
 }

@@ -52,8 +52,11 @@ export const tokens = {
     xxxl: 32,
   },
   fontFamilies: {
-    sans: 'System',
-    serif: 'Georgia',
+    headerSerif: 'PlayfairDisplay_700Bold',
+    bodySans: 'Inter_400Regular',
+    bodySansBold: 'Inter_700Bold',
+    // fallback
     serifAlt: 'Times New Roman',
+    sansAlt: 'System',
   }
 }

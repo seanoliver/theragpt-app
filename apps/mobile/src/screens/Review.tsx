@@ -20,23 +20,23 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25
 
 export function ReviewScreen() {
-  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
+  const [statements, setStatements] = useState<Affirmation[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
 
   useEffect(() => {
-    loadAffirmations()
+    loadStatements()
   }, [])
 
-  const loadAffirmations = async () => {
-    const allAffirmations = await affirmationService.getAllAffirmations()
-    setAffirmations(allAffirmations)
+  const loadStatements = async () => {
+    const allStatements = await affirmationService.getAllAffirmations()
+    setStatements(allStatements)
   }
 
   const handleSwipe = (direction: number) => {
     const newIndex = currentIndex + direction
-    if (newIndex >= 0 && newIndex < affirmations.length) {
+    if (newIndex >= 0 && newIndex < statements.length) {
       setCurrentIndex(newIndex)
     }
   }
@@ -64,7 +64,7 @@ export function ReviewScreen() {
     }
   })
 
-  if (affirmations.length === 0) {
+  if (statements.length === 0) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
@@ -74,10 +74,10 @@ export function ReviewScreen() {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <View style={styles.affirmationContainer}>
+      <View style={styles.statementContainer}>
         <GestureDetector gesture={panGesture}>
           <StillCard
-            affirmation={affirmations[currentIndex]}
+            statement={statements[currentIndex]}
             size="lg"
             showEdit={true}
             showFavorite={true}
@@ -91,13 +91,13 @@ export function ReviewScreen() {
               style={[
                 styles.progressFill,
                 {
-                  width: `${((currentIndex + 1) / affirmations.length) * 100}%`,
+                  width: `${((currentIndex + 1) / statements.length) * 100}%`,
                 },
               ]}
             />
           </View>
           <Text style={styles.progressText}>
-            {currentIndex + 1} / {affirmations.length}
+            {currentIndex + 1} / {statements.length}
           </Text>
         </View>
       </View>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.charcoal[100],
     padding: 20,
   },
-  affirmationContainer: {
+  statementContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

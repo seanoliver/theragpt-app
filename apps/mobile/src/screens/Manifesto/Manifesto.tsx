@@ -3,38 +3,36 @@ import { Affirmation } from '@still/logic/src/affirmation/types'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { colors } from '../../../lib/theme'
+import { colors, tokens } from '../../../lib/theme'
 import { StillCard } from '../../shared/StillCard'
-import { HelpCallout } from './HelpCallout'
 import { SafeAreaView } from 'react-native-safe-area-context'
-export function WelcomeScreen() {
-  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
-  const [showHelp, setShowHelp] = useState(true)
+
+export function ManifestoScreen() {
+  const [statements, setStatements] = useState<Affirmation[]>([])
 
   useEffect(() => {
-    loadAffirmations()
+    loadStatements()
   }, [])
 
-  const loadAffirmations = async () => {
-    const activeAffirmations = await affirmationService.getActiveAffirmations()
-    setAffirmations(activeAffirmations)
+  const loadStatements = async () => {
+    const activeStatements = await affirmationService.getActiveAffirmations()
+    setStatements(activeStatements)
   }
 
-  const handleAffirmationPress = (affirmation: Affirmation) => {
-    router.push(`/daily?affirmationId=${affirmation.id}`)
+  const handleStatementPress = (statement: Affirmation) => {
+    router.push(`/daily?statementId=${statement.id}`)
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      {showHelp && <HelpCallout onClose={() => setShowHelp(false)} />}
 
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
-        <ScrollView style={styles.affirmationsList}>
-          {affirmations.map((affirmation, index) => (
+        <ScrollView style={styles.statementsList}>
+          {statements.map((statement, index) => (
             <StillCard
-              key={affirmation.id}
-              affirmation={affirmation}
+              key={statement.id}
+              statement={statement}
               index={index}
               showEdit={false}
               showFavorite={false}
@@ -60,6 +58,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: colors.text.primary,
     fontWeight: 'bold',
+    fontFamily: tokens.fontFamilies.headerSerif,
   },
   content: {
     flex: 1,
@@ -71,8 +70,9 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontWeight: '700',
     letterSpacing: -0.5,
+    fontFamily: tokens.fontFamilies.headerSerif,
   },
-  affirmationsList: {
+  statementsList: {
     flex: 1,
     paddingRight: 4,
   },

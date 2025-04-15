@@ -51,9 +51,18 @@ importers:
       '@babel/runtime':
         specifier: ^7.23.9
         version: 7.27.0
+      '@expo-google-fonts/inter':
+        specifier: ^0.3.0
+        version: 0.3.0
+      '@expo-google-fonts/playfair-display':
+        specifier: ^0.3.0
+        version: 0.3.0
       '@expo/vector-icons':
         specifier: ^14.0.0
         version: 14.1.0(expo-font@13.0.4(expo@52.0.44(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)))(graphql@15.8.0)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
+      '@react-native-async-storage/async-storage':
+        specifier: ^1.19.3
+        version: 1.24.0(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))
       '@still/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -66,6 +75,9 @@ importers:
       expo-constants:
         specifier: ^17.0.8
         version: 17.0.8(expo@52.0.44(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)))(graphql@15.8.0)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))
+      expo-font:
+        specifier: ^13.0.4
+        version: 13.0.4(expo@52.0.44(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)))(graphql@15.8.0)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react@18.3.1)
       expo-linking:
         specifier: ^7.0.5
         version: 7.0.5(expo@52.0.44(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)))(graphql@15.8.0)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
@@ -90,6 +102,9 @@ importers:
       react-native-reanimated:
         specifier: ~3.16.1
         version: 3.16.7(@babel/core@7.26.10)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
+      react-native-reanimated-carousel:
+        specifier: ^4.0.2
+        version: 4.0.2(react-native-gesture-handler@2.20.2(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
       react-native-safe-area-context:
         specifier: 4.12.0
         version: 4.12.0(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
@@ -908,6 +923,12 @@ packages:
   '@eslint/js@8.57.1':
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@expo-google-fonts/inter@0.3.0':
+    resolution: {integrity: sha512-x77HsdpizmZFNZ8nMd7hsNah/MyxhLmihZQEyIkB473jskBcXIpsyf+tVVLXvXEhtnpGx8zZ2XAe9u+i0qvIEw==}
+
+  '@expo-google-fonts/playfair-display@0.3.0':
+    resolution: {integrity: sha512-vEea5RZdLoXMTwjowikk7MQzzuMg8fGTlDNj3IEzOfH1B3Rxp4YixfQrgQRY+9IsODLF2kwghdo4nre0WcfUWw==}
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
@@ -4233,6 +4254,14 @@ packages:
       react: '*'
       react-native: '*'
 
+  react-native-reanimated-carousel@4.0.2:
+    resolution: {integrity: sha512-vNpCfPlFoOVKHd+oB7B0luoJswp+nyz0NdJD8+LCrf25JiNQXfM22RSJhLaksBHqk3fm8R4fKWPNcfy5w7wL1Q==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-native: '>=0.70.3'
+      react-native-gesture-handler: '>=2.9.0'
+      react-native-reanimated: '>=3.0.0'
+
   react-native-reanimated@3.16.7:
     resolution: {integrity: sha512-qoUUQOwE1pHlmQ9cXTJ2MX9FQ9eHllopCLiWOkDkp6CER95ZWeXhJCP4cSm6AD4jigL5jHcZf/SkWrg8ttZUsw==}
     peerDependencies:
@@ -6159,6 +6188,10 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
+  '@expo-google-fonts/inter@0.3.0': {}
+
+  '@expo-google-fonts/playfair-display@0.3.0': {}
+
   '@expo/bunyan@4.0.1':
     dependencies:
       uuid: 8.3.2
@@ -6721,6 +6754,11 @@ snapshots:
       '@babel/runtime': 7.27.0
       '@radix-ui/react-compose-refs': 1.0.0(react@18.3.1)
       react: 18.3.1
+
+  '@react-native-async-storage/async-storage@1.24.0(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))':
+    dependencies:
+      merge-options: 3.0.4
+      react-native: 0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)
 
   '@react-native-async-storage/async-storage@1.24.0(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.2.79)(react@18.3.1))':
     dependencies:
@@ -10343,6 +10381,13 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-native: 0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)
+
+  react-native-reanimated-carousel@4.0.2(react-native-gesture-handler@2.20.2(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-native: 0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1)
+      react-native-gesture-handler: 2.20.2(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
+      react-native-reanimated: 3.16.7(@babel/core@7.26.10)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
 
   react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1):
     dependencies:
