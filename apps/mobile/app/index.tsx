@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ManifestoScreen } from '../src/screens/Manifesto/Manifesto'
+import { ManifestoScreen } from '../src/screens/Manifesto'
 import { router } from 'expo-router'
 import { ONBOARDING_KEY } from '../src/screens/Onboarding/constants'
 

@@ -9,18 +9,18 @@ import { Link } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from '../../lib/theme'
 import { useEffect, useState } from 'react'
-import { statementService } from '@still/logic/src/affirmation/service'
-import { Statement } from '@still/logic/src/affirmation/types'
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Affirmation } from '@still/logic/src/affirmation/types'
 
 export function LibraryScreen() {
-  const [statements, setStatements] = useState<Statement[]>([])
+  const [statements, setStatements] = useState<Affirmation[]>([])
 
   useEffect(() => {
     loadStatements()
   }, [])
 
   const loadStatements = async () => {
-    const allStatements = await statementService.getAllAffirmations()
+    const allStatements = await affirmationService.getAllAffirmations()
     setStatements(allStatements)
   }
 

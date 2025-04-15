@@ -1,5 +1,5 @@
-import StillScreen from '../src/screens/StillScreen';
+import StatementView from '../src/screens/StatementView';
 
 export default function Page() {
-  return <StillScreen />;
+  return <StatementView />;
 }

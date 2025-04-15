@@ -3,8 +3,8 @@ import { Affirmation } from '@still/logic/src/affirmation/types'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { colors, tokens } from '../../../lib/theme'
-import { StillCard } from '../../shared/StillCard'
+import { colors, tokens } from '../../lib/theme'
+import { RenderedStatement } from '../shared/RenderedStatement'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export function ManifestoScreen() {
@@ -25,18 +25,23 @@ export function ManifestoScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
         <ScrollView style={styles.statementsList}>
           {statements.map((statement, index) => (
-            <StillCard
-              key={statement.id}
-              statement={statement}
-              index={index}
-              showEdit={false}
-              showFavorite={false}
-            />
+            <>
+              <RenderedStatement key={statement.id} statement={statement} />
+              {index < statements.length - 1 && (
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.charcoal[300],
+                    width: '100%',
+                    marginVertical: 8,
+                  }}
+                />
+              )}
+            </>
           ))}
         </ScrollView>
       </View>
