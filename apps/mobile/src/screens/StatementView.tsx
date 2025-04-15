@@ -5,10 +5,10 @@ import { colors } from '../../lib/theme'
 import { Affirmation } from '@still/logic/src/affirmation/types'
 import { affirmationService } from '@still/logic/src/affirmation/service'
 import { useEffect, useState } from 'react'
-import { StillCard } from '../shared/StillCard'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { RenderedStatement } from '../shared/RenderedStatement'
 
-export default function StillScreen() {
+export default function StatementView() {
   const router = useRouter()
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
   const [statement, setStatement] = useState<Affirmation | null>(null)
@@ -88,13 +88,9 @@ export default function StillScreen() {
       </View>
 
       <View style={styles.content}>
-        <StillCard
-          statement={statement}
-          size="lg"
-          showEdit={false}
-          showFavorite={false}
-          style={styles.card}
-        />
+        <View style={[styles.stillCardContainer, styles.card]}>
+          <RenderedStatement statement={statement} size="lg" />
+        </View>
 
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
@@ -199,5 +195,17 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     textAlign: 'center',
     marginTop: 32,
+  },
+  stillCardContainer: {
+    backgroundColor: 'transparent',
+    paddingVertical: 12,
+    paddingHorizontal: 0,
+    borderRadius: 0,
+    marginBottom: 0,
+    shadowColor: 'transparent',
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.charcoal[300],
+    width: '100%',
   },
 })
