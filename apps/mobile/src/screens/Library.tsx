@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     marginTop: 60,
     marginBottom: 20,
+    fontFamily: require('../../lib/theme').tokens.fontFamilies.headerSerif,
   },
   scrollView: {
     flex: 1,
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontSize: 16,
     marginBottom: 10,
+    fontFamily: require('../../lib/theme').tokens.fontFamilies.bodySans,
   },
   affirmationFooter: {
     flexDirection: 'row',

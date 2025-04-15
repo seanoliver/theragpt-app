@@ -10,53 +10,16 @@ import {
 import Carousel from 'react-native-reanimated-carousel'
 import { colors } from '../../../lib/theme'
 import { useRouter } from 'expo-router'
+import { tokens } from '../../../lib/theme'
+import { ONBOARDING_CARDS } from './constants'
 
 const { width } = Dimensions.get('window')
-
-const ONBOARDING_CARDS = [
-  {
-    title: '👋 Welcome to Still',
-    text: 'This is your space to reconnect with who you are, one thought at a time.',
-    image: null,
-  },
-  {
-    title: 'What This Is',
-    text: "Still is not just another affirmation app. It's a ritual—grounded in your values, intentions, and personal truth.",
-    image: null,
-  },
-  {
-    title: 'The Difference',
-    text: 'Unlike short, generic mantras, the affirmations here are thoughtful, specific, and deeply personal—like a living personal manifesto.',
-    image: null,
-  },
-  {
-    title: 'Why It Matters',
-    text: 'The words you repeat shape your focus. The more clearly they reflect you, the more powerfully they guide your day.',
-    image: null,
-  },
-  {
-    title: "What You'll Do",
-    text: 'Write or refine affirmations over time\n\nSwipe through them each morning\n\nMark the ones that resonate most today',
-    image: null,
-  },
-  {
-    title: 'Need Help Writing?',
-    text: 'You can start from scratch or use AI to help wordsmith your ideas into affirmations that feel real.',
-    image: null,
-  },
-  {
-    title: '✨ Ready?',
-    text: "Let's build your personal manifesto. Start with a few affirmations that reflect what matters to you right now.",
-    image: null,
-    isFinal: true,
-  },
-]
 
 export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const router = useRouter()
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     if (onCancel) onCancel()
     else router.replace('/')
   }
@@ -110,7 +73,7 @@ export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
         ))}
       </View>
       <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-        <Text style={styles.skipButtonText}>Cancel</Text>
+        <Text style={styles.skipButtonText}>Skip</Text>
       </TouchableOpacity>
     </View>
   )
@@ -126,18 +89,13 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   card: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 28,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     minHeight: 340,
     width: '100%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
   },
   image: {
     width: 120,
@@ -149,15 +107,17 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.text.primary,
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: 'left',
+    fontFamily: tokens.fontFamilies.headerSerif,
   },
   text: {
     fontSize: 16,
     color: colors.text.primary,
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 16,
     fontWeight: '400',
     lineHeight: 24,
+    fontFamily: tokens.fontFamilies.bodySans,
   },
   dotsContainer: {
     flexDirection: 'row',

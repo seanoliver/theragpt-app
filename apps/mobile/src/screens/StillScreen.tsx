@@ -1,43 +1,44 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../lib/theme';
-import { Affirmation } from '@still/logic/src/affirmation/types';
-import { affirmationService } from '@still/logic/src/affirmation/service';
-import { useEffect, useState } from 'react';
-import { StillCard } from '../shared/StillCard';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { colors } from '../../lib/theme'
+import { Affirmation } from '@still/logic/src/affirmation/types'
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { useEffect, useState } from 'react'
+import { StillCard } from '../shared/StillCard'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function StillScreen() {
-  const router = useRouter();
-  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>();
-  const [affirmation, setAffirmation] = useState<Affirmation | null>(null);
-  const [favoriteCount, setFavoriteCount] = useState(0);
+  const router = useRouter()
+  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>()
+  const [affirmation, setAffirmation] = useState<Affirmation | null>(null)
+  const [favoriteCount, setFavoriteCount] = useState(0)
 
   useEffect(() => {
-    loadAffirmation();
-  }, [affirmationId]);
+    loadAffirmation()
+  }, [affirmationId])
 
   const loadAffirmation = async () => {
-    if (!affirmationId) return;
+    if (!affirmationId) return
 
     try {
-      const affirmations = await affirmationService.getAllAffirmations();
-      const foundAffirmation = affirmations.find(a => a.id === affirmationId);
+      const affirmations = await affirmationService.getAllAffirmations()
+      const foundAffirmation = affirmations.find(a => a.id === affirmationId)
       if (foundAffirmation) {
-        setAffirmation(foundAffirmation);
+        setAffirmation(foundAffirmation)
         // Count how many times this affirmation has been favorited
-        const favorites = affirmations.filter(a =>
-          a.text === foundAffirmation.text && a.isFavorite
-        );
-        setFavoriteCount(favorites.length);
+        const favorites = affirmations.filter(
+          a => a.text === foundAffirmation.text && a.isFavorite,
+        )
+        setFavoriteCount(favorites.length)
       }
     } catch (error) {
-      console.error('Error loading affirmation:', error);
+      console.error('Error loading affirmation:', error)
     }
-  };
+  }
 
   const handleDelete = async () => {
-    if (!affirmation) return;
+    if (!affirmation) return
 
     Alert.alert(
       'Delete Affirmation',
@@ -55,28 +56,28 @@ export default function StillScreen() {
               await affirmationService.updateAffirmation({
                 id: affirmation.id,
                 isActive: false,
-              });
-              router.back();
+              })
+              router.back()
             } catch (error) {
-              console.error('Error deleting affirmation:', error);
-              Alert.alert('Error', 'Failed to delete affirmation');
+              console.error('Error deleting affirmation:', error)
+              Alert.alert('Error', 'Failed to delete affirmation')
             }
           },
         },
-      ]
-    );
-  };
+      ],
+    )
+  }
 
   if (!affirmation) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
-    );
+    )
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -115,7 +116,11 @@ export default function StillScreen() {
             style={styles.actionButton}
             onPress={() => router.push(`/edit?affirmationId=${affirmation.id}`)}
           >
-            <Ionicons name="create-outline" size={24} color={colors.text.primary} />
+            <Ionicons
+              name="create-outline"
+              size={24}
+              color={colors.text.primary}
+            />
             <Text style={styles.actionText}>Edit</Text>
           </TouchableOpacity>
 
@@ -123,13 +128,17 @@ export default function StillScreen() {
             style={[styles.actionButton, styles.deleteButton]}
             onPress={handleDelete}
           >
-            <Ionicons name="trash-outline" size={24} color={colors.text.primary} />
+            <Ionicons
+              name="trash-outline"
+              size={24}
+              color={colors.text.primary}
+            />
             <Text style={styles.actionText}>Delete</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
-  );
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -191,4 +200,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 32,
   },
-});
+})

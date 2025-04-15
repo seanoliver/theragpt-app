@@ -3,10 +3,11 @@ import { Affirmation } from '@still/logic/src/affirmation/types'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { colors } from '../../../lib/theme'
+import { colors, tokens } from '../../../lib/theme'
 import { StillCard } from '../../shared/StillCard'
 import { HelpCallout } from './HelpCallout'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
 export function WelcomeScreen() {
   const [affirmations, setAffirmations] = useState<Affirmation[]>([])
   const [showHelp, setShowHelp] = useState(true)
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: colors.text.primary,
     fontWeight: 'bold',
+    fontFamily: tokens.fontFamilies.headerSerif,
   },
   content: {
     flex: 1,
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontWeight: '700',
     letterSpacing: -0.5,
+    fontFamily: tokens.fontFamilies.headerSerif,
   },
   affirmationsList: {
     flex: 1,

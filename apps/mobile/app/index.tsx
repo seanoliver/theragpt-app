@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { OnboardingCarousel } from '../src/screens/Welcome/OnboardingCarousel';
-import { WelcomeScreen } from '../src/screens/Welcome/Welcome';
-
-const ONBOARDING_KEY = 'onboarding_complete';
+import React, { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { WelcomeScreen } from '../src/screens/Welcome/Welcome'
+import { router } from 'expo-router'
+import { ONBOARDING_KEY } from '../src/screens/Onboarding/constants'
 
 export default function Page() {
-  const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(null);
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(null)
 
   useEffect(() => {
     AsyncStorage.getItem(ONBOARDING_KEY).then(value => {
-      setOnboardingComplete(value === 'true');
-    });
-  }, []);
+      if (value === 'true') setOnboardingComplete(true)
+      else router.replace('/onboarding')
+    })
+  }, [])
 
-  const handleOnboardingFinish = async () => {
-    await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
-    setOnboardingComplete(true);
-  };
-
-  if (onboardingComplete === null) {
-    // Optionally, show a splash/loading screen here
-    return null;
-  }
-
-  if (onboardingComplete) {
-    return <WelcomeScreen />;
-  }
-
-  return <OnboardingCarousel onCancel={handleOnboardingFinish} />;
+  return <WelcomeScreen />
 }

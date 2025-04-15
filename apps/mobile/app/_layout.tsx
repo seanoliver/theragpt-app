@@ -3,8 +3,23 @@ import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-get-random-values'
 import { colors } from '../lib/theme'
+import { useFonts as usePlayfairFonts, PlayfairDisplay_400Regular, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display'
+import { useFonts as useInterFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter'
+import { ActivityIndicator } from 'react-native'
 
 export default function RootLayout() {
+  const [playfairLoaded] = usePlayfairFonts({
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_700Bold,
+  })
+  const [interLoaded] = useInterFonts({
+    Inter_400Regular,
+    Inter_700Bold,
+  })
+  if (!playfairLoaded || !interLoaded) {
+    return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+  }
+
   return (
     <>
       <StatusBar style="auto" />
@@ -71,6 +86,12 @@ export default function RootLayout() {
         />
         <Tabs.Screen
           name="still"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="onboarding"
           options={{
             href: null,
           }}
