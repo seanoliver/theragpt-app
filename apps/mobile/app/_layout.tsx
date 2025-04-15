@@ -1,8 +1,8 @@
-import { FontAwesome } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-get-random-values';
-import { colors } from '../lib/theme';
+import { FontAwesome } from '@expo/vector-icons'
+import { Tabs } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import 'react-native-get-random-values'
+import { colors } from '../lib/theme'
 
 export default function RootLayout() {
   return (

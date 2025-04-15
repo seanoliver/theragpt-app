@@ -1,18 +1,12 @@
-import { Ionicons } from '@expo/vector-icons';
-import { affirmationService } from '@still/logic/src/affirmation/service';
-import { Affirmation } from '@still/logic/src/affirmation/types';
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { colors } from '../../../lib/theme';
-import { StillCard } from '../../shared/StillCard';
-
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Affirmation } from '@still/logic/src/affirmation/types'
+import { router } from 'expo-router'
+import { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { colors } from '../../../lib/theme'
+import { StillCard } from '../../shared/StillCard'
+import { HelpCallout } from './HelpCallout'
+import { SafeAreaView } from 'react-native-safe-area-context'
 export function WelcomeScreen() {
   const [affirmations, setAffirmations] = useState<Affirmation[]>([])
   const [showHelp, setShowHelp] = useState(true)
@@ -31,26 +25,8 @@ export function WelcomeScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.logo}>Still</Text>
-      </View>
-
-      {showHelp && (
-        <View style={styles.helpContainer}>
-          <View style={styles.helpHeader}>
-            <Text style={styles.helpTitle}>Welcome to Still</Text>
-            <TouchableOpacity onPress={() => setShowHelp(false)}>
-              <Ionicons name="close" size={24} color={colors.text.primary} />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.helpText}>
-            This is your personal manifesto - a collection of affirmations to
-            guide your daily practice. View active ones in Manifesto, review
-            them daily, and store others in Backlog.
-          </Text>
-        </View>
-      )}
+    <SafeAreaView style={styles.container}>
+      {showHelp && <HelpCallout onClose={() => setShowHelp(false)} />}
 
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
@@ -60,15 +36,13 @@ export function WelcomeScreen() {
               key={affirmation.id}
               affirmation={affirmation}
               index={index}
-              // onPress={handleAffirmationPress}
               showEdit={false}
               showFavorite={false}
             />
           ))}
         </ScrollView>
-        {/* <BeginButton /> */}
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -101,28 +75,5 @@ const styles = StyleSheet.create({
   affirmationsList: {
     flex: 1,
     paddingRight: 4,
-  },
-  helpContainer: {
-    backgroundColor: colors.charcoal[200],
-    padding: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  helpHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  helpTitle: {
-    color: colors.text.primary,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  helpText: {
-    color: colors.text.primary,
-    fontSize: 16,
-    lineHeight: 24,
   },
 })
