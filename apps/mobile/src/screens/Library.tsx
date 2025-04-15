@@ -1,29 +1,35 @@
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../lib/theme';
-import { useEffect, useState } from 'react';
-import { affirmationService } from '@still/logic/src/affirmation/service';
-import { Affirmation } from '@still/logic/src/affirmation/types';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from 'react-native'
+import { Link } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { colors } from '../../lib/theme'
+import { useEffect, useState } from 'react'
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Affirmation } from '@still/logic/src/affirmation/types'
 
 export function LibraryScreen() {
-  const [affirmations, setAffirmations] = useState<Affirmation[]>([]);
+  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
 
   useEffect(() => {
-    loadAffirmations();
-  }, []);
+    loadAffirmations()
+  }, [])
 
   const loadAffirmations = async () => {
-    const allAffirmations = await affirmationService.getAllAffirmations();
-    setAffirmations(allAffirmations);
-  };
+    const allAffirmations = await affirmationService.getAllAffirmations()
+    setAffirmations(allAffirmations)
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Library</Text>
 
       <ScrollView style={styles.scrollView}>
-        {affirmations.map((affirmation) => (
+        {affirmations.map(affirmation => (
           <View key={affirmation.id} style={styles.affirmationCard}>
             <Text style={styles.affirmationText}>{affirmation.text}</Text>
             <View style={styles.affirmationFooter}>
@@ -44,7 +50,7 @@ export function LibraryScreen() {
         </TouchableOpacity>
       </Link>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -94,4 +100,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})

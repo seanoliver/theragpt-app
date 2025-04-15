@@ -1,20 +1,26 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
-import { colors } from '../../lib/theme';
-import { affirmationService } from '@still/logic/src/affirmation/service';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
+import { Link, router } from 'expo-router'
+import { useState } from 'react'
+import { colors } from '../../lib/theme'
+import { affirmationService } from '@still/logic/src/affirmation/service'
 
 export function NewAffirmationScreen() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState('')
 
   const handleSave = async () => {
     if (text.trim()) {
       const affirmation = await affirmationService.createAffirmation({
         text: text.trim(),
-      });
-      router.push(`/daily?affirmationId=${affirmation.id}`);
+      })
+      router.push(`/daily?affirmationId=${affirmation.id}`)
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -50,7 +56,7 @@ export function NewAffirmationScreen() {
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -105,4 +111,4 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontSize: 16,
   },
-});
+})

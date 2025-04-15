@@ -1,46 +1,52 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link, router, useLocalSearchParams } from 'expo-router';
-import { useState, useEffect } from 'react';
-import { colors } from '../../lib/theme';
-import { affirmationService } from '@still/logic/src/affirmation/service';
-import { Affirmation } from '@still/logic/src/affirmation/types';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
+import { Link, router, useLocalSearchParams } from 'expo-router'
+import { useState, useEffect } from 'react'
+import { colors } from '../../lib/theme'
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Affirmation } from '@still/logic/src/affirmation/types'
 
 export function EditAffirmationScreen() {
-  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>();
-  const [affirmation, setAffirmation] = useState<Affirmation | null>(null);
-  const [text, setText] = useState('');
+  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>()
+  const [affirmation, setAffirmation] = useState<Affirmation | null>(null)
+  const [text, setText] = useState('')
 
   useEffect(() => {
-    loadAffirmation();
-  }, [affirmationId]);
+    loadAffirmation()
+  }, [affirmationId])
 
   const loadAffirmation = async () => {
     if (affirmationId) {
-      const affirmations = await affirmationService.getAllAffirmations();
-      const foundAffirmation = affirmations.find(a => a.id === affirmationId);
+      const affirmations = await affirmationService.getAllAffirmations()
+      const foundAffirmation = affirmations.find(a => a.id === affirmationId)
       if (foundAffirmation) {
-        setAffirmation(foundAffirmation);
-        setText(foundAffirmation.text);
+        setAffirmation(foundAffirmation)
+        setText(foundAffirmation.text)
       }
     }
-  };
+  }
 
   const handleSave = async () => {
     if (affirmation) {
       await affirmationService.updateAffirmation({
         id: affirmation.id,
         text,
-      });
-      router.push(`/daily?affirmationId=${affirmation.id}`);
+      })
+      router.push(`/daily?affirmationId=${affirmation.id}`)
     }
-  };
+  }
 
   if (!affirmation) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
-    );
+    )
   }
 
   return (
@@ -68,7 +74,7 @@ export function EditAffirmationScreen() {
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -115,4 +121,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 60,
   },
-});
+})

@@ -1,29 +1,34 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Link, router } from 'expo-router';
-import { BeginButton } from './BeginButton';
-import { colors } from '../../../lib/theme';
-import { useEffect, useState } from 'react';
-import { Affirmation } from '@still/logic/src/affirmation/types';
-import { affirmationService } from '@still/logic/src/affirmation/service';
 import { Ionicons } from '@expo/vector-icons';
+import { affirmationService } from '@still/logic/src/affirmation/service';
+import { Affirmation } from '@still/logic/src/affirmation/types';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { colors } from '../../../lib/theme';
 import { StillCard } from '../../shared/StillCard';
 
 export function WelcomeScreen() {
-  const [affirmations, setAffirmations] = useState<Affirmation[]>([]);
-  const [showHelp, setShowHelp] = useState(true);
+  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
+  const [showHelp, setShowHelp] = useState(true)
 
   useEffect(() => {
-    loadAffirmations();
-  }, []);
+    loadAffirmations()
+  }, [])
 
   const loadAffirmations = async () => {
-    const activeAffirmations = await affirmationService.getActiveAffirmations();
-    setAffirmations(activeAffirmations);
-  };
+    const activeAffirmations = await affirmationService.getActiveAffirmations()
+    setAffirmations(activeAffirmations)
+  }
 
   const handleAffirmationPress = (affirmation: Affirmation) => {
-    router.push(`/daily?affirmationId=${affirmation.id}`);
-  };
+    router.push(`/daily?affirmationId=${affirmation.id}`)
+  }
 
   return (
     <View style={styles.container}>
@@ -40,11 +45,9 @@ export function WelcomeScreen() {
             </TouchableOpacity>
           </View>
           <Text style={styles.helpText}>
-            This is your personal manifesto, a collection of affirmations that guide your daily practice.
-            {'\n\n'}
-            • The Manifesto page shows your active affirmations
-            • The Review page is where you go through them daily
-            • The Backlog page stores affirmations you're working on
+            This is your personal manifesto - a collection of affirmations to
+            guide your daily practice. View active ones in Manifesto, review
+            them daily, and store others in Backlog.
           </Text>
         </View>
       )}
@@ -57,17 +60,16 @@ export function WelcomeScreen() {
               key={affirmation.id}
               affirmation={affirmation}
               index={index}
-              onPress={handleAffirmationPress}
+              // onPress={handleAffirmationPress}
               showEdit={false}
               showFavorite={false}
-              showProgress={false}
             />
           ))}
         </ScrollView>
         {/* <BeginButton /> */}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -123,4 +125,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
-});
+})

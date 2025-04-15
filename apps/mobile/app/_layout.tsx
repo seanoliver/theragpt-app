@@ -40,7 +40,7 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
-          name="daily"
+          name="review"
           options={{
             title: 'Review',
             tabBarIcon: ({ color }) => (
@@ -65,6 +65,12 @@ export default function RootLayout() {
         />
         <Tabs.Screen
           name="new"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="still"
           options={{
             href: null,
           }}

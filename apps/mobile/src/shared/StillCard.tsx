@@ -2,17 +2,15 @@ import { View, Text, TouchableOpacity, StyleSheet, ViewStyle } from 'react-nativ
 import { colors } from '../../lib/theme';
 import { Affirmation } from '@still/logic/src/affirmation/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import Animated from 'react-native-reanimated';
 
 interface StillCardProps {
   affirmation: Affirmation;
   index?: number;
-  onPress?: (affirmation: Affirmation) => void;
   size?: 'sm' | 'lg';
   showEdit?: boolean;
   showFavorite?: boolean;
-  showProgress?: boolean;
   style?: ViewStyle;
   animatedStyle?: any;
   containerStyle?: ViewStyle;
@@ -21,15 +19,14 @@ interface StillCardProps {
 export function StillCard({
   affirmation,
   index,
-  onPress,
   size = 'sm',
   showEdit = true,
   showFavorite = true,
-  showProgress = true,
   style,
   animatedStyle,
   containerStyle
 }: StillCardProps) {
+  const router = useRouter();
   const textSize = size === 'lg' ? 28 : 16;
   const lineHeight = size === 'lg' ? 40 : 24;
 
@@ -39,7 +36,7 @@ export function StillCard({
     <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
       <TouchableOpacity
         style={[styles.card, style]}
-        onPress={() => onPress?.(affirmation)}
+        onPress={() => router.push(`/still?affirmationId=${affirmation.id}`)}
         activeOpacity={0.7}
       >
         <View style={styles.contentContainer}>
@@ -51,14 +48,8 @@ export function StillCard({
           </Text>
         </View>
 
-        {(showEdit || showFavorite || showProgress) && (
+        {(showEdit || showFavorite) && (
           <View style={styles.cardFooter}>
-            {showProgress && (
-              <View style={styles.progressContainer}>
-                <View style={[styles.progressDot, styles.activeDot]} />
-              </View>
-            )}
-
             <View style={styles.actions}>
               {showEdit && (
                 <Link href={`/edit?affirmationId=${affirmation.id}`} asChild>
@@ -118,22 +109,9 @@ const styles = StyleSheet.create({
   },
   cardFooter: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     marginTop: 20,
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  progressDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: colors.charcoal[300],
-  },
-  activeDot: {
-    backgroundColor: colors.text.primary,
   },
   actions: {
     flexDirection: 'row',
