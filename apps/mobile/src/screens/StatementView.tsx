@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
-import { colors, tokens } from '../../lib/theme'
+import { colors } from '../../lib/theme'
 import { Affirmation } from '@still/logic/src/affirmation/types'
 import { affirmationService } from '@still/logic/src/affirmation/service'
 import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { RenderedStatement } from '../shared/RenderedStatement'
 
 export default function StatementView() {
   const router = useRouter()
@@ -88,11 +89,7 @@ export default function StatementView() {
 
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <View style={stillCardStyles.contentContainer}>
-            <Text style={[stillCardStyles.text, { fontSize: 28, lineHeight: 40 }]}>
-              {statement.text}
-            </Text>
-          </View>
+          <RenderedStatement statement={statement} size="lg" />
         </View>
 
         <View style={styles.statsContainer}>
@@ -210,23 +207,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.charcoal[300],
     width: '100%',
-  },
-})
-
-const stillCardStyles = StyleSheet.create({
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingBottom: 8,
-  },
-  text: {
-    color: colors.text.primary,
-    flex: 1,
-    fontWeight: '400',
-    letterSpacing: 0.2,
-    fontSize: 28, // default for lg
-    lineHeight: 40, // default for lg
-    fontFamily: tokens.fontFamilies.bodySans,
-    textAlign: 'left',
   },
 })
