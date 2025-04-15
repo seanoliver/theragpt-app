@@ -1,7 +1,8 @@
+import { FontAwesome } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import 'react-native-get-random-values'
 import { colors } from '../lib/theme'
-import { FontAwesome } from '@expo/vector-icons'
 
 export default function RootLayout() {
   return (
@@ -33,21 +34,27 @@ export default function RootLayout() {
           name="index"
           options={{
             title: 'Manifesto',
-            tabBarIcon: ({ color }) => <FontAwesome name="book" size={22} color={color} />,
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="book" size={22} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
-          name="daily"
+          name="review"
           options={{
             title: 'Review',
-            tabBarIcon: ({ color }) => <FontAwesome name="history" size={28} color={color} />,
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="history" size={28} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
           name="library"
           options={{
             title: 'Backlog',
-            tabBarIcon: ({ color }) => <FontAwesome name="archive" size={22} color={color} />,
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="archive" size={22} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
@@ -58,6 +65,12 @@ export default function RootLayout() {
         />
         <Tabs.Screen
           name="new"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="still"
           options={{
             href: null,
           }}

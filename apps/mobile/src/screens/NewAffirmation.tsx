@@ -1,15 +1,26 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
-import { colors } from '../../lib/theme';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
+import { Link, router } from 'expo-router'
+import { useState } from 'react'
+import { colors } from '../../lib/theme'
+import { affirmationService } from '@still/logic/src/affirmation/service'
 
 export function NewAffirmationScreen() {
-  const [affirmation, setAffirmation] = useState('');
+  const [text, setText] = useState('')
 
-  const handleSave = () => {
-    // TODO: Save the affirmation
-    router.push('/library');
-  };
+  const handleSave = async () => {
+    if (text.trim()) {
+      const affirmation = await affirmationService.createAffirmation({
+        text: text.trim(),
+      })
+      router.push(`/daily?affirmationId=${affirmation.id}`)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -25,8 +36,8 @@ export function NewAffirmationScreen() {
       <View style={styles.content}>
         <TextInput
           style={styles.input}
-          value={affirmation}
-          onChangeText={setAffirmation}
+          value={text}
+          onChangeText={setText}
           placeholder="Enter your affirmation"
           placeholderTextColor="#666"
           multiline
@@ -37,11 +48,15 @@ export function NewAffirmationScreen() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+      <TouchableOpacity
+        style={[styles.saveButton, !text.trim() && styles.saveButtonDisabled]}
+        onPress={handleSave}
+        disabled={!text.trim()}
+      >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -89,8 +104,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+  saveButtonDisabled: {
+    opacity: 0.5,
+  },
   buttonText: {
     color: colors.text.primary,
     fontSize: 16,
   },
-});
+})

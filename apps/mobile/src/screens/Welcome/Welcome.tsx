@@ -1,24 +1,49 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
-import { BeginButton } from './BeginButton';
-import { colors } from '../../../lib/theme';
-
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Affirmation } from '@still/logic/src/affirmation/types'
+import { router } from 'expo-router'
+import { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { colors } from '../../../lib/theme'
+import { StillCard } from '../../shared/StillCard'
+import { HelpCallout } from './HelpCallout'
+import { SafeAreaView } from 'react-native-safe-area-context'
 export function WelcomeScreen() {
+  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
+  const [showHelp, setShowHelp] = useState(true)
+
+  useEffect(() => {
+    loadAffirmations()
+  }, [])
+
+  const loadAffirmations = async () => {
+    const activeAffirmations = await affirmationService.getActiveAffirmations()
+    setAffirmations(activeAffirmations)
+  }
+
+  const handleAffirmationPress = (affirmation: Affirmation) => {
+    router.push(`/daily?affirmationId=${affirmation.id}`)
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.logo}>Still</Text>
-      </View>
+    <SafeAreaView style={styles.container}>
+      {showHelp && <HelpCallout onClose={() => setShowHelp(false)} />}
+
       <View style={styles.content}>
-        <BeginButton />
-        {/* <Link href="/create" asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Write your own</Text>
-          </TouchableOpacity>
-        </Link> */}
+        <Text style={styles.subtitle}>Your Manifesto</Text>
+        <ScrollView style={styles.affirmationsList}>
+          {affirmations.map((affirmation, index) => (
+            <StillCard
+              key={affirmation.id}
+              affirmation={affirmation}
+              index={index}
+              showEdit={false}
+              showFavorite={false}
+            />
+          ))}
+        </ScrollView>
       </View>
-    </View>
-  );
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -38,27 +63,17 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 20,
+    gap: 24,
+    marginTop: 8,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 28,
     color: colors.text.primary,
-    textAlign: 'center',
-    marginBottom: 30,
+    fontWeight: '700',
+    letterSpacing: -0.5,
   },
-  button: {
-    backgroundColor: colors.charcoal[200],
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    width: '100%',
-    alignItems: 'center',
+  affirmationsList: {
+    flex: 1,
+    paddingRight: 4,
   },
-  buttonText: {
-    color: colors.text.primary,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
+})

@@ -1,25 +1,45 @@
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../lib/theme';
-
-export const SAMPLE_AFFIRMATIONS = [
-  'I am finding meaning and purpose in my work',
-  'Setbacks are a chance to learn and grow',
-  'I have the power to create change in my life',
-  'I am capable of achieving my goals',
-  'I accept myself unconditionally',
-];
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from 'react-native'
+import { Link } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { colors } from '../../lib/theme'
+import { useEffect, useState } from 'react'
+import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Affirmation } from '@still/logic/src/affirmation/types'
 
 export function LibraryScreen() {
+  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
+
+  useEffect(() => {
+    loadAffirmations()
+  }, [])
+
+  const loadAffirmations = async () => {
+    const allAffirmations = await affirmationService.getAllAffirmations()
+    setAffirmations(allAffirmations)
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Library</Text>
 
       <ScrollView style={styles.scrollView}>
-        {SAMPLE_AFFIRMATIONS.map((affirmation, index) => (
-          <View key={index} style={styles.affirmationCard}>
-            <Text style={styles.affirmationText}>{affirmation}</Text>
+        {affirmations.map(affirmation => (
+          <View key={affirmation.id} style={styles.affirmationCard}>
+            <Text style={styles.affirmationText}>{affirmation.text}</Text>
+            <View style={styles.affirmationFooter}>
+              <Text style={styles.affirmationStatus}>
+                {affirmation.isActive ? 'Active' : 'Inactive'}
+              </Text>
+              {affirmation.isFavorite && (
+                <Ionicons name="heart" size={16} color={colors.text.primary} />
+              )}
+            </View>
           </View>
         ))}
       </ScrollView>
@@ -30,7 +50,7 @@ export function LibraryScreen() {
         </TouchableOpacity>
       </Link>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -57,6 +77,17 @@ const styles = StyleSheet.create({
   affirmationText: {
     color: colors.text.primary,
     fontSize: 16,
+    marginBottom: 10,
+  },
+  affirmationFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  affirmationStatus: {
+    color: colors.text.primary,
+    fontSize: 14,
+    opacity: 0.7,
   },
   addButton: {
     position: 'absolute',
@@ -69,4 +100,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
