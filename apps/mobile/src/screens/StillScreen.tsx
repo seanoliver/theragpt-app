@@ -10,39 +10,39 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function StillScreen() {
   const router = useRouter()
-  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>()
-  const [affirmation, setAffirmation] = useState<Affirmation | null>(null)
+  const { statementId } = useLocalSearchParams<{ statementId: string }>()
+  const [statement, setStatement] = useState<Affirmation | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
 
   useEffect(() => {
-    loadAffirmation()
-  }, [affirmationId])
+    loadStatement()
+  }, [statementId])
 
-  const loadAffirmation = async () => {
-    if (!affirmationId) return
+  const loadStatement = async () => {
+    if (!statementId) return
 
     try {
       const affirmations = await affirmationService.getAllAffirmations()
-      const foundAffirmation = affirmations.find(a => a.id === affirmationId)
-      if (foundAffirmation) {
-        setAffirmation(foundAffirmation)
-        // Count how many times this affirmation has been favorited
+      const foundStatement = affirmations.find(a => a.id === statementId)
+      if (foundStatement) {
+        setStatement(foundStatement)
+        // Count how many times this statement has been favorited
         const favorites = affirmations.filter(
-          a => a.text === foundAffirmation.text && a.isFavorite,
+          a => a.text === foundStatement.text && a.isFavorite,
         )
         setFavoriteCount(favorites.length)
       }
     } catch (error) {
-      console.error('Error loading affirmation:', error)
+      console.error('Error loading statement:', error)
     }
   }
 
   const handleDelete = async () => {
-    if (!affirmation) return
+    if (!statement) return
 
     Alert.alert(
-      'Delete Affirmation',
-      'Are you sure you want to delete this affirmation?',
+      'Delete Statement',
+      'Are you sure you want to delete this statement?',
       [
         {
           text: 'Cancel',
@@ -54,13 +54,13 @@ export default function StillScreen() {
           onPress: async () => {
             try {
               await affirmationService.updateAffirmation({
-                id: affirmation.id,
+                id: statement.id,
                 isActive: false,
               })
               router.back()
             } catch (error) {
-              console.error('Error deleting affirmation:', error)
-              Alert.alert('Error', 'Failed to delete affirmation')
+              console.error('Error deleting statement:', error)
+              Alert.alert('Error', 'Failed to delete statement')
             }
           },
         },
@@ -68,7 +68,7 @@ export default function StillScreen() {
     )
   }
 
-  if (!affirmation) {
+  if (!statement) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
@@ -89,7 +89,7 @@ export default function StillScreen() {
 
       <View style={styles.content}>
         <StillCard
-          affirmation={affirmation}
+          statement={statement}
           size="lg"
           showEdit={false}
           showFavorite={false}
@@ -104,8 +104,8 @@ export default function StillScreen() {
           <View style={styles.statItem}>
             <Ionicons name="calendar" size={24} color={colors.text.primary} />
             <Text style={styles.statText}>
-              {affirmation.lastReviewed
-                ? new Date(affirmation.lastReviewed).toLocaleDateString()
+              {statement.lastReviewed
+                ? new Date(statement.lastReviewed).toLocaleDateString()
                 : 'Never reviewed'}
             </Text>
           </View>
@@ -114,7 +114,7 @@ export default function StillScreen() {
         <View style={styles.actions}>
           <TouchableOpacity
             style={styles.actionButton}
-            onPress={() => router.push(`/edit?affirmationId=${affirmation.id}`)}
+            onPress={() => router.push(`/edit?statementId=${statement.id}`)}
           >
             <Ionicons
               name="create-outline"

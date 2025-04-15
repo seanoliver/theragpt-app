@@ -9,19 +9,19 @@ import { Link } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from '../../lib/theme'
 import { useEffect, useState } from 'react'
-import { affirmationService } from '@still/logic/src/affirmation/service'
-import { Affirmation } from '@still/logic/src/affirmation/types'
+import { statementService } from '@still/logic/src/affirmation/service'
+import { Statement } from '@still/logic/src/affirmation/types'
 
 export function LibraryScreen() {
-  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
+  const [statements, setStatements] = useState<Statement[]>([])
 
   useEffect(() => {
-    loadAffirmations()
+    loadStatements()
   }, [])
 
-  const loadAffirmations = async () => {
-    const allAffirmations = await affirmationService.getAllAffirmations()
-    setAffirmations(allAffirmations)
+  const loadStatements = async () => {
+    const allStatements = await statementService.getAllAffirmations()
+    setStatements(allStatements)
   }
 
   return (
@@ -29,14 +29,14 @@ export function LibraryScreen() {
       <Text style={styles.header}>Library</Text>
 
       <ScrollView style={styles.scrollView}>
-        {affirmations.map(affirmation => (
-          <View key={affirmation.id} style={styles.affirmationCard}>
-            <Text style={styles.affirmationText}>{affirmation.text}</Text>
-            <View style={styles.affirmationFooter}>
-              <Text style={styles.affirmationStatus}>
-                {affirmation.isActive ? 'Active' : 'Inactive'}
+        {statements.map(statement => (
+          <View key={statement.id} style={styles.statementCard}>
+            <Text style={styles.statementText}>{statement.text}</Text>
+            <View style={styles.statementFooter}>
+              <Text style={styles.statementStatus}>
+                {statement.isActive ? 'Active' : 'Inactive'}
               </Text>
-              {affirmation.isFavorite && (
+              {statement.isFavorite && (
                 <Ionicons name="heart" size={16} color={colors.text.primary} />
               )}
             </View>
@@ -69,24 +69,24 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  affirmationCard: {
+  statementCard: {
     backgroundColor: colors.charcoal[200],
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
   },
-  affirmationText: {
+  statementText: {
     color: colors.text.primary,
     fontSize: 16,
     marginBottom: 10,
     fontFamily: require('../../lib/theme').tokens.fontFamilies.bodySans,
   },
-  affirmationFooter: {
+  statementFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  affirmationStatus: {
+  statementStatus: {
     color: colors.text.primary,
     fontSize: 14,
     opacity: 0.7,

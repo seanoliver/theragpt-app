@@ -11,37 +11,37 @@ import { colors } from '../../lib/theme'
 import { affirmationService } from '@still/logic/src/affirmation/service'
 import { Affirmation } from '@still/logic/src/affirmation/types'
 
-export function EditAffirmationScreen() {
-  const { affirmationId } = useLocalSearchParams<{ affirmationId: string }>()
-  const [affirmation, setAffirmation] = useState<Affirmation | null>(null)
+export function EditStatementScreen() {
+  const { statementId } = useLocalSearchParams<{ statementId: string }>()
+  const [statement, setStatement] = useState<Affirmation | null>(null)
   const [text, setText] = useState('')
 
   useEffect(() => {
-    loadAffirmation()
-  }, [affirmationId])
+    loadStatement()
+  }, [statementId])
 
-  const loadAffirmation = async () => {
-    if (affirmationId) {
-      const affirmations = await affirmationService.getAllAffirmations()
-      const foundAffirmation = affirmations.find(a => a.id === affirmationId)
-      if (foundAffirmation) {
-        setAffirmation(foundAffirmation)
-        setText(foundAffirmation.text)
+  const loadStatement = async () => {
+    if (statementId) {
+      const statements = await affirmationService.getAllAffirmations()
+      const foundStatement = statements.find(a => a.id === statementId)
+      if (foundStatement) {
+        setStatement(foundStatement)
+        setText(foundStatement.text)
       }
     }
   }
 
   const handleSave = async () => {
-    if (affirmation) {
+    if (statement) {
       await affirmationService.updateAffirmation({
-        id: affirmation.id,
+        id: statement.id,
         text,
       })
-      router.push(`/daily?affirmationId=${affirmation.id}`)
+      router.push(`/daily?statementId=${statement.id}`)
     }
   }
 
-  if (!affirmation) {
+  if (!statement) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
@@ -52,9 +52,9 @@ export function EditAffirmationScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Link href={`/daily?affirmationId=${affirmation.id}`} asChild>
+        <Link href={`/daily?statementId=${statement.id}`} asChild>
           <TouchableOpacity>
-            <Text style={styles.backButton}>← Back to Affirmation</Text>
+            <Text style={styles.backButton}>← Back to Statement</Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -65,7 +65,7 @@ export function EditAffirmationScreen() {
           value={text}
           onChangeText={setText}
           multiline
-          placeholder="Enter your affirmation"
+          placeholder="Enter your statement"
           placeholderTextColor="#666"
         />
       </View>

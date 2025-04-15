@@ -12,7 +12,7 @@ import { Link, useRouter } from 'expo-router'
 import Animated from 'react-native-reanimated'
 
 interface StillCardProps {
-  affirmation: Affirmation
+  statement: Affirmation
   index?: number
   size?: 'sm' | 'lg'
   showEdit?: boolean
@@ -23,7 +23,7 @@ interface StillCardProps {
 }
 
 export function StillCard({
-  affirmation,
+  statement,
   index,
   size = 'sm',
   showEdit = true,
@@ -42,7 +42,7 @@ export function StillCard({
     <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
       <TouchableOpacity
         style={[styles.card, style]}
-        onPress={() => router.push(`/still?affirmationId=${affirmation.id}`)}
+        onPress={() => router.push(`/still?statementId=${statement.id}`)}
         activeOpacity={0.7}
       >
         <View style={styles.contentContainer}>
@@ -50,7 +50,7 @@ export function StillCard({
             <Text style={styles.number}>{index + 1}.</Text>
           )}
           <Text style={[styles.text, { fontSize: textSize, lineHeight }]}>
-            {affirmation.text}
+            {statement.text}
           </Text>
         </View>
 
@@ -58,7 +58,7 @@ export function StillCard({
           <View style={styles.cardFooter}>
             <View>
               {showEdit && (
-                <Link href={`/edit?affirmationId=${affirmation.id}`} asChild>
+                <Link href={`/edit?statementId=${statement.id}`} asChild>
                   <Ionicons
                     name="create-outline"
                     size={20}

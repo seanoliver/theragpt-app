@@ -96,6 +96,15 @@ export default function RootLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="cog" size={22} color={color} />
+            ),
+          }}
+        />
       </Tabs>
     </>
   )

@@ -10,15 +10,15 @@ import { useState } from 'react'
 import { colors } from '../../lib/theme'
 import { affirmationService } from '@still/logic/src/affirmation/service'
 
-export function NewAffirmationScreen() {
+export function NewStatementScreen() {
   const [text, setText] = useState('')
 
   const handleSave = async () => {
     if (text.trim()) {
-      const affirmation = await affirmationService.createAffirmation({
+      const statement = await affirmationService.createAffirmation({
         text: text.trim(),
       })
-      router.push(`/daily?affirmationId=${affirmation.id}`)
+      router.push(`/daily?statementId=${statement.id}`)
     }
   }
 
@@ -30,7 +30,7 @@ export function NewAffirmationScreen() {
             <Text style={styles.backButton}>← Back to Library</Text>
           </TouchableOpacity>
         </Link>
-        <Text style={styles.title}>New Affirmation</Text>
+        <Text style={styles.title}>New Statement</Text>
       </View>
 
       <View style={styles.content}>
@@ -38,7 +38,7 @@ export function NewAffirmationScreen() {
           style={styles.input}
           value={text}
           onChangeText={setText}
-          placeholder="Enter your affirmation"
+          placeholder="Enter your statement"
           placeholderTextColor="#666"
           multiline
         />

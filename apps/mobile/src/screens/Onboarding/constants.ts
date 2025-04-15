@@ -8,7 +8,7 @@ export const ONBOARDING_CARDS = [
   },
   {
     title: 'What This Is',
-    text: "Still is not just another affirmation app. It's a ritual—grounded in your values, intentions, and personal truth.",
+    text: "Still is not just another statement app. It's a ritual—grounded in your values, intentions, and personal truth.",
     image: null,
   },
   {
@@ -23,17 +23,17 @@ export const ONBOARDING_CARDS = [
   },
   {
     title: "What You'll Do",
-    text: 'Write or refine affirmations over time\n\nSwipe through them each morning\n\nMark the ones that resonate most today',
+    text: 'Write or refine statements over time\n\nSwipe through them each morning\n\nMark the ones that resonate most today',
     image: null,
   },
   {
     title: 'Need Help Writing?',
-    text: 'You can start from scratch or use AI to help wordsmith your ideas into affirmations that feel real.',
+    text: 'You can start from scratch or use AI to help wordsmith your ideas into statements that feel real.',
     image: null,
   },
   {
     title: '✨ Ready?',
-    text: "Let's build your personal manifesto. Start with a few affirmations that reflect what matters to you right now.",
+    text: "Let's build your personal manifesto. Start with a few statements that reflect what matters to you right now.",
     image: null,
     isFinal: true,
   },

@@ -1,5 +1,5 @@
-import { EditAffirmationScreen } from '../src/screens/EditAffirmation';
+import { EditStatementScreen } from '../src/screens/Edit';
 
 export default function Page() {
-  return <EditAffirmationScreen />;
+  return <EditStatementScreen />;
 }
