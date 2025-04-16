@@ -1,17 +1,14 @@
-import { Affirmation } from '@still/logic/src/affirmation/types'
-import { useRouter } from 'expo-router'
-import { useRef, useState } from 'react'
+import { Affirmation } from '@still/logic/src/affirmation/types';
+import { useState } from 'react';
 import {
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   View,
-  ViewStyle,
-} from 'react-native'
-import Markdown from 'react-native-markdown-display'
-import Animated from 'react-native-reanimated'
-import { colors } from '../../lib/theme'
-import { EditableOnTap } from './EditableOnTap'
+  ViewStyle
+} from 'react-native';
+import Markdown from 'react-native-markdown-display';
+import Animated from 'react-native-reanimated';
+import { colors } from '../../lib/theme';
+import { EditableOnTap } from './EditableOnTap';
 
 interface RenderedStatementProps {
   statement: Affirmation
@@ -30,7 +27,6 @@ export function RenderedStatement({
   containerStyle,
   editable = true,
 }: RenderedStatementProps) {
-  const router = useRouter()
   const textSize = size === 'lg' ? 28 : 16
   const lineHeight = size === 'lg' ? 40 : 24
 
