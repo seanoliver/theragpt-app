@@ -1,26 +1,20 @@
-import { statementService } from '@still/logic/src/statement/statementService'
-import { Statement } from '@still/logic/src/statement/types'
-import { router } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { colors, tokens } from '../../lib/theme'
-import { RenderedStatement } from '../shared/RenderedStatement'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Statement } from '@still/logic/src/statement/types';
+import { router } from 'expo-router';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors, tokens } from '../../lib/theme';
+import { useStatementService } from '../hooks/useStatementService';
+import { RenderedStatement } from '../shared/RenderedStatement';
 
 export function ManifestoScreen() {
-  const [statements, setStatements] = useState<Statement[]>([])
+  const { service, statements } = useStatementService()
 
-  useEffect(() => {
-    loadStatements()
-  }, [])
-
-  const loadStatements = async () => {
-    const activeStatements = await statementService.getActiveStatements()
-    setStatements(activeStatements)
-  }
-
-  const handleStatementPress = (statement: Statement) => {
-    router.push(`/daily?statementId=${statement.id}`)
+  if (!service || !statements) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.subtitle}>Loading...</Text>
+      </View>
+    )
   }
 
   return (

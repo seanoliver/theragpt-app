@@ -1,27 +1,24 @@
+import { Ionicons } from '@expo/vector-icons'
+import { Link } from 'expo-router'
 import {
-  View,
-  Text,
-  TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native'
-import { Link } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
 import { colors } from '../../lib/theme'
-import { useEffect, useState } from 'react'
-import { statementService } from '@still/logic/src/statement/statementService'
-import { Statement } from '@still/logic/src/statement/types'
+import { useStatementService } from '../hooks/useStatementService'
 
 export function LibraryScreen() {
-  const [statements, setStatements] = useState<Statement[]>([])
+  const { service, statements } = useStatementService()
 
-  useEffect(() => {
-    loadStatements()
-  }, [])
-
-  const loadStatements = async () => {
-    const allStatements = await statementService.getAllStatements()
-    setStatements(allStatements)
+  if (!service || !statements) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>Loading...</Text>
+      </View>
+    )
   }
 
   return (

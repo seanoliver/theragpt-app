@@ -1,8 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
 import { StorageService, storageService } from '../sync/storage'
-import { logger } from '../utils/logger'
-import { Statement, CreateStatementParams, UpdateStatementParams } from './types'
 import { NotFoundError } from '../utils/error'
+import { logger } from '../utils/logger'
+import {
+  CreateStatementParams,
+  Statement,
+  UpdateStatementParams,
+} from './types'
 
 const DEFAULT_STATEMENTS = [
   `I know the key to success is always to take action, **even when I don't feel ready for it**.`,
@@ -14,25 +18,36 @@ const DEFAULT_STATEMENTS = [
   `I know that working on a problem reduces my resistance to it. It is harder to fear things when I am making progress on them—even if that progress is imperfect and slow. **Action relieves anxiety**.`,
   `I know that **when I embrace discomfort, I embrace progress**. It is only by challenging myself that I will continue to grow toward my dreams.`,
   `I strongly believe in the path I am on. I do not judge others, nor do I compare myself to others. **Everyone is on their own path, and I will focus on mine**.`,
-  `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and **my dreams will not work unless I do**.`
-];
+  `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and **my dreams will not work unless I do**.`,
+]
 
-/**
- * Service for managing statements
- */
+type StatementsListener = (statements: Statement[]) => void;
+
 export class StatementService {
   private storageService: StorageService
   private storageKey = 'still_statements'
+  private listeners: StatementsListener[] = []
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
-    this.initializeDefaultStatements()
+  }
+
+  subscribe(listener: StatementsListener) {
+    this.listeners.push(listener)
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== listener)
+    }
+  }
+
+  private notifyListeners(statements: Statement[]) {
+    this.listeners.forEach(listener => listener(statements))
   }
 
   /**
    * Initializes the service with default statements if none exist
+   * NOTE: Must be called before using the service
    */
-  private async initializeDefaultStatements(): Promise<void> {
+  public async init(): Promise<Statement[]> {
     try {
       const existingStatements = await this.getAllStatements()
       if (existingStatements.length === 0) {
@@ -46,9 +61,14 @@ export class StatementService {
           tags: [],
         }))
         await this.saveAllStatements(defaultStatements)
+        this.notifyListeners(defaultStatements)
+        return defaultStatements
       }
+      this.notifyListeners(existingStatements)
+      return existingStatements
     } catch (error) {
       logger.error('Error initializing default statements', error as Error)
+      return []
     }
   }
 
@@ -71,6 +91,7 @@ export class StatementService {
     const statements = await this.getAllStatements()
     statements.push(statement)
     await this.saveAllStatements(statements)
+    this.notifyListeners(statements)
 
     return statement
   }
@@ -98,6 +119,7 @@ export class StatementService {
     }
 
     await this.saveAllStatements(statements)
+    this.notifyListeners(statements)
     return statements[index]
   }
 
@@ -107,7 +129,9 @@ export class StatementService {
    */
   async getAllStatements(): Promise<Statement[]> {
     try {
-      const data = await this.storageService.getItem<Statement[]>(this.storageKey)
+      const data = await this.storageService.getItem<Statement[]>(
+        this.storageKey,
+      )
       return data || []
     } catch (error) {
       logger.error('Error getting statements from storage', error as Error)

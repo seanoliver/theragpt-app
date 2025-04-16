@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
-import { colors } from '../../lib/theme'
 import { Statement } from '@still/logic/src/statement/types'
-import { statementService } from '@still/logic/src/statement/statementService'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { colors } from '../../lib/theme'
+import { useStatementService } from '../hooks/useStatementService'
 import { RenderedStatement } from '../shared/RenderedStatement'
 
 export default function StatementView() {
@@ -13,32 +13,23 @@ export default function StatementView() {
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
   const [statement, setStatement] = useState<Statement | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
+  const { service, statements } = useStatementService()
 
   useEffect(() => {
-    loadStatement()
-  }, [statementId])
-
-  const loadStatement = async () => {
-    if (!statementId) return
-
-    try {
-      const statements = await statementService.getAllStatements()
-      const foundStatement = statements.find(a => a.id === statementId)
-      if (foundStatement) {
-        setStatement(foundStatement)
-        // Count how many times this statement has been favorited
-        const favorites = statements.filter(
-          a => a.text === foundStatement.text && a.isFavorite,
-        )
-        setFavoriteCount(favorites.length)
-      }
-    } catch (error) {
-      console.error('Error loading statement:', error)
+    if (!statementId || !statements) return
+    const foundStatement = statements.find(a => a.id === statementId)
+    if (foundStatement) {
+      setStatement(foundStatement)
+      // Count how many times this statement has been favorited
+      const favorites = statements.filter(
+        a => a.text === foundStatement.text && a.isFavorite,
+      )
+      setFavoriteCount(favorites.length)
     }
-  }
+  }, [statementId, statements])
 
   const handleDelete = async () => {
-    if (!statement) return
+    if (!statement || !service) return
 
     Alert.alert(
       'Delete Statement',
@@ -53,7 +44,7 @@ export default function StatementView() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await statementService.updateStatement({
+              await service.updateStatement({
                 id: statement.id,
                 isActive: false,
               })
@@ -68,6 +59,19 @@ export default function StatementView() {
     )
   }
 
+  const handleSaveStatement = async (newText: string) => {
+    if (service && statement && newText !== statement.text) {
+      await service.updateStatement({ id: statement.id, text: newText })
+    }
+  }
+
+  if (!service || !statements) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    )
+  }
   if (!statement) {
     return (
       <View style={styles.container}>
@@ -89,7 +93,11 @@ export default function StatementView() {
 
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <RenderedStatement statement={statement} size="lg" />
+          <RenderedStatement
+            statement={statement}
+            size="lg"
+            onSave={handleSaveStatement}
+          />
         </View>
 
         <View style={styles.statsContainer}>

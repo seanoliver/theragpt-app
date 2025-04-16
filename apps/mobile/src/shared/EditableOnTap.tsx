@@ -11,6 +11,7 @@ interface EditableOnTapProps {
   autoFocus?: boolean
   multiline?: boolean
   markdownPreview?: React.ReactNode // Optional: live preview below input
+  onSave?: (newText: string) => void
 }
 
 export function EditableOnTap({
@@ -23,6 +24,7 @@ export function EditableOnTap({
   autoFocus = true,
   multiline = true,
   markdownPreview,
+  onSave,
 }: EditableOnTapProps) {
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<TextInput>(null)
@@ -36,6 +38,12 @@ export function EditableOnTap({
 
   const handleBlur = () => {
     setIsEditing(false)
+    if (onSave) onSave(value)
+  }
+
+  const handleSubmitEditing = () => {
+    setIsEditing(false)
+    if (onSave) onSave(value)
   }
 
   return (
@@ -51,6 +59,7 @@ export function EditableOnTap({
             onBlur={handleBlur}
             blurOnSubmit
             multiline={multiline}
+            onSubmitEditing={handleSubmitEditing}
             {...inputProps}
           />
           {markdownPreview && (
