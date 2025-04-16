@@ -1,18 +1,16 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ViewStyle,
-  TextInput,
-} from 'react-native'
-import { colors, tokens } from '../../lib/theme'
 import { Affirmation } from '@still/logic/src/affirmation/types'
-import { Ionicons } from '@expo/vector-icons'
-import { Link, useRouter } from 'expo-router'
-import Animated from 'react-native-reanimated'
+import { useRouter } from 'expo-router'
+import { useRef, useState } from 'react'
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 import Markdown from 'react-native-markdown-display'
-import { useState, useRef } from 'react'
+import Animated from 'react-native-reanimated'
+import { colors } from '../../lib/theme'
 
 interface RenderedStatementProps {
   statement: Affirmation
