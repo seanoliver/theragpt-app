@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This is a monorepo environment, so make sure you're specific about which package you are in when adding, deleting, updating packages.
