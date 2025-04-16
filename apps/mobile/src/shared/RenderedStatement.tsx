@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ViewStyle,
+  TextInput,
 } from 'react-native'
 import { colors, tokens } from '../../lib/theme'
 import { Affirmation } from '@still/logic/src/affirmation/types'
@@ -11,11 +12,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { Link, useRouter } from 'expo-router'
 import Animated from 'react-native-reanimated'
 import Markdown from 'react-native-markdown-display'
-import {
-  MarkdownTextInput,
-  parseExpensiMark,
-} from '@expensify/react-native-live-markdown'
-import { useState, useRef, RefObject } from 'react'
+import { useState, useRef } from 'react'
 
 interface RenderedStatementProps {
   statement: Affirmation
@@ -68,28 +65,60 @@ export function RenderedStatement({
       >
         <View style={styles.contentContainer}>
           {isEditing ? (
-            <MarkdownTextInput
-              ref={inputRef}
-              value={text}
-              onChangeText={setText}
-              parser={parseExpensiMark}
-              multiline
-              style={{
-                ...styles.text,
-                fontSize: textSize,
-                lineHeight,
-                backgroundColor: 'transparent',
-                borderWidth: 0,
-                padding: 0,
-                margin: 0,
-                minHeight: lineHeight + 8,
-              }}
-              selectionColor={colors.text.primary}
-              autoFocus
-              onBlur={handleBlur}
-              blurOnSubmit
-              returnKeyType="done"
-            />
+            <View style={{ flex: 1 }}>
+              <TextInput
+                ref={inputRef}
+                value={text}
+                onChangeText={setText}
+                multiline
+                style={{
+                  ...styles.text,
+                  fontSize: textSize,
+                  lineHeight,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                  padding: 0,
+                  margin: 0,
+                  minHeight: lineHeight + 8,
+                }}
+                selectionColor={colors.text.primary}
+                autoFocus
+                onBlur={handleBlur}
+                blurOnSubmit
+                returnKeyType="done"
+                placeholder="Edit statement..."
+                placeholderTextColor="#888"
+              />
+              {/* Live markdown preview below the input */}
+              <Markdown
+                style={{
+                  text: {
+                    ...styles.text,
+                    fontSize: textSize,
+                    lineHeight,
+                    opacity: 0.7,
+                  },
+                  bullet_list: { marginLeft: 0 },
+                  bullet_list_icon: {
+                    marginLeft: 0,
+                    marginRight: 8,
+                    width: 4,
+                    height: 4,
+                    borderRadius: 2,
+                    backgroundColor: colors.text.primary,
+                    marginTop: 10,
+                  },
+                  ordered_list: { marginLeft: 0 },
+                  list_item: {
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    marginBottom: 10,
+                  },
+                }}
+              >
+                {text}
+              </Markdown>
+            </View>
           ) : (
             <Markdown
               key={statement.id}
