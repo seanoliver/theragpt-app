@@ -1,4 +1,4 @@
-import { Affirmation } from '@still/logic/src/affirmation/types';
+import { Statement } from '@still/logic/src/statement/types';
 import { useState } from 'react';
 import {
   StyleSheet,
@@ -11,7 +11,7 @@ import { colors } from '../../lib/theme';
 import { EditableOnTap } from './EditableOnTap';
 
 interface RenderedStatementProps {
-  statement: Affirmation
+  statement: Statement
   size?: 'sm' | 'lg'
   style?: ViewStyle
   animatedStyle?: any

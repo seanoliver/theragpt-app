@@ -1,5 +1,5 @@
-import { affirmationService } from '@still/logic/src/affirmation/service'
-import { Affirmation } from '@still/logic/src/affirmation/types'
+import { statementService } from '@still/logic/src/statement/statementService'
+import { Statement } from '@still/logic/src/statement/types'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -8,18 +8,18 @@ import { RenderedStatement } from '../shared/RenderedStatement'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export function ManifestoScreen() {
-  const [statements, setStatements] = useState<Affirmation[]>([])
+  const [statements, setStatements] = useState<Statement[]>([])
 
   useEffect(() => {
     loadStatements()
   }, [])
 
   const loadStatements = async () => {
-    const activeStatements = await affirmationService.getActiveAffirmations()
+    const activeStatements = await statementService.getActiveStatements()
     setStatements(activeStatements)
   }
 
-  const handleStatementPress = (statement: Affirmation) => {
+  const handleStatementPress = (statement: Statement) => {
     router.push(`/daily?statementId=${statement.id}`)
   }
 

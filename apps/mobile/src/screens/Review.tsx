@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { colors } from '../../lib/theme'
 import { useState, useEffect } from 'react'
-import { affirmationService } from '@still/logic/src/affirmation/service'
-import { Affirmation } from '@still/logic/src/affirmation/types'
+import { statementService } from '@still/logic/src/statement/statementService'
+import { Statement } from '@still/logic/src/statement/types'
 import Carousel from 'react-native-reanimated-carousel'
 import { RenderedStatement } from '../shared/RenderedStatement'
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
 
 export function ReviewScreen() {
-  const [statements, setStatements] = useState<Affirmation[]>([])
+  const [statements, setStatements] = useState<Statement[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export function ReviewScreen() {
   }, [])
 
   const loadStatements = async () => {
-    const allStatements = await affirmationService.getAllAffirmations()
+    const allStatements = await statementService.getAllStatements()
     setStatements(allStatements)
   }
 

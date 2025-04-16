@@ -8,14 +8,14 @@ import {
 import { Link, router } from 'expo-router'
 import { useState } from 'react'
 import { colors } from '../../lib/theme'
-import { affirmationService } from '@still/logic/src/affirmation/service'
+import { statementService } from '@still/logic/src/statement/statementService'
 
 export function NewStatementScreen() {
   const [text, setText] = useState('')
 
   const handleSave = async () => {
     if (text.trim()) {
-      const statement = await affirmationService.createAffirmation({
+      const statement = await statementService.createStatement({
         text: text.trim(),
       })
       router.push(`/daily?statementId=${statement.id}`)

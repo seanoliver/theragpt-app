@@ -1,7 +1,7 @@
 /**
- * Represents an affirmation
+ * Represents a statement
  */
-export interface Affirmation {
+export interface Statement {
   id: string
   text: string
   createdAt: number
@@ -12,17 +12,17 @@ export interface Affirmation {
 }
 
 /**
- * Affirmation creation parameters
+ * Statement creation parameters
  */
-export interface CreateAffirmationParams {
+export interface CreateStatementParams {
   text: string
   tags?: string[]
 }
 
 /**
- * Affirmation update parameters
+ * Statement update parameters
  */
-export interface UpdateAffirmationParams {
+export interface UpdateStatementParams {
   id: string
   text?: string
   isActive?: boolean

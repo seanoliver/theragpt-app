@@ -8,12 +8,12 @@ import {
 import { Link, router, useLocalSearchParams } from 'expo-router'
 import { useState, useEffect } from 'react'
 import { colors } from '../../lib/theme'
-import { affirmationService } from '@still/logic/src/affirmation/service'
-import { Affirmation } from '@still/logic/src/affirmation/types'
+import { statementService } from '@still/logic/src/statement/statementService'
+import { Statement } from '@still/logic/src/statement/types'
 
 export function EditStatementScreen() {
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
-  const [statement, setStatement] = useState<Affirmation | null>(null)
+  const [statement, setStatement] = useState<Statement | null>(null)
   const [text, setText] = useState('')
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function EditStatementScreen() {
 
   const loadStatement = async () => {
     if (statementId) {
-      const statements = await affirmationService.getAllAffirmations()
+      const statements = await statementService.getAllStatements()
       const foundStatement = statements.find(a => a.id === statementId)
       if (foundStatement) {
         setStatement(foundStatement)
@@ -33,7 +33,7 @@ export function EditStatementScreen() {
 
   const handleSave = async () => {
     if (statement) {
-      await affirmationService.updateAffirmation({
+      await statementService.updateStatement({
         id: statement.id,
         text,
       })
