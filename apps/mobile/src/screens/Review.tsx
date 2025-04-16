@@ -44,6 +44,7 @@ export function ReviewScreen() {
               statement={item}
               size="lg"
               containerStyle={styles.cardContainer}
+              editable={false}
             />
           )}
         />

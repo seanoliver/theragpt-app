@@ -11,6 +11,7 @@ import {
 import Markdown from 'react-native-markdown-display'
 import Animated from 'react-native-reanimated'
 import { colors } from '../../lib/theme'
+import { EditableOnTap } from './EditableOnTap'
 
 interface RenderedStatementProps {
   statement: Affirmation
@@ -18,6 +19,7 @@ interface RenderedStatementProps {
   style?: ViewStyle
   animatedStyle?: any
   containerStyle?: ViewStyle
+  editable?: boolean
 }
 
 export function RenderedStatement({
@@ -26,6 +28,7 @@ export function RenderedStatement({
   style,
   animatedStyle,
   containerStyle,
+  editable = true,
 }: RenderedStatementProps) {
   const router = useRouter()
   const textSize = size === 'lg' ? 28 : 16
@@ -33,91 +36,13 @@ export function RenderedStatement({
 
   const CardWrapper = animatedStyle ? Animated.View : View
 
-  // Editable state
-  const [isEditing, setIsEditing] = useState(false)
   const [text, setText] = useState(statement.text)
-  const inputRef = useRef<any>(null)
 
-  // Focus input when entering edit mode
-  const handleTextPress = () => {
-    setIsEditing(true)
-    setTimeout(() => {
-      inputRef.current?.focus?.()
-    }, 100)
-  }
-
-  const handleBlur = () => {
-    setIsEditing(false)
-    // Optionally: trigger save here
-  }
-
-  return (
-    <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
-      <TouchableOpacity
-        style={[styles.card, style]}
-        onPress={() => {
-          if (!isEditing) handleTextPress()
-        }}
-        activeOpacity={0.7}
-        disabled={isEditing}
-      >
-        <View style={styles.contentContainer}>
-          {isEditing ? (
-            <View style={{ flex: 1 }}>
-              <TextInput
-                ref={inputRef}
-                value={text}
-                onChangeText={setText}
-                multiline
-                style={{
-                  ...styles.text,
-                  fontSize: textSize,
-                  lineHeight,
-                  backgroundColor: 'transparent',
-                  borderWidth: 0,
-                  padding: 0,
-                  margin: 0,
-                  minHeight: lineHeight + 8,
-                }}
-                selectionColor={colors.text.primary}
-                autoFocus
-                onBlur={handleBlur}
-                blurOnSubmit
-                returnKeyType="done"
-                placeholder="Edit statement..."
-                placeholderTextColor="#888"
-              />
-              {/* Live markdown preview below the input */}
-              <Markdown
-                style={{
-                  text: {
-                    ...styles.text,
-                    fontSize: textSize,
-                    lineHeight,
-                    opacity: 0.7,
-                  },
-                  bullet_list: { marginLeft: 0 },
-                  bullet_list_icon: {
-                    marginLeft: 0,
-                    marginRight: 8,
-                    width: 4,
-                    height: 4,
-                    borderRadius: 2,
-                    backgroundColor: colors.text.primary,
-                    marginTop: 10,
-                  },
-                  ordered_list: { marginLeft: 0 },
-                  list_item: {
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    marginBottom: 10,
-                  },
-                }}
-              >
-                {text}
-              </Markdown>
-            </View>
-          ) : (
+  if (!editable) {
+    return (
+      <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
+        <View style={[styles.card, style]}>
+          <View style={styles.contentContainer}>
             <Markdown
               key={statement.id}
               style={{
@@ -146,9 +71,98 @@ export function RenderedStatement({
             >
               {text}
             </Markdown>
-          )}
+          </View>
         </View>
-      </TouchableOpacity>
+      </CardWrapper>
+    )
+  }
+
+  return (
+    <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
+      <View style={[styles.card, style]}>
+        <View style={styles.contentContainer}>
+          <EditableOnTap
+            value={text}
+            onChange={setText}
+            inputStyle={{
+              ...styles.text,
+              fontSize: textSize,
+              lineHeight,
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              padding: 0,
+              margin: 0,
+              minHeight: lineHeight + 8,
+            }}
+            inputProps={{
+              selectionColor: colors.text.primary,
+              returnKeyType: 'done',
+              placeholder: 'Edit statement...',
+              placeholderTextColor: '#888',
+            }}
+            containerStyle={{ flex: 1 }}
+            markdownPreview={
+              <Markdown
+                style={{
+                  text: {
+                    ...styles.text,
+                    fontSize: textSize,
+                    lineHeight,
+                    opacity: 0.7,
+                  },
+                  bullet_list: { marginLeft: 0 },
+                  bullet_list_icon: {
+                    marginLeft: 0,
+                    marginRight: 8,
+                    width: 4,
+                    height: 4,
+                    borderRadius: 2,
+                    backgroundColor: colors.text.primary,
+                    marginTop: 10,
+                  },
+                  ordered_list: { marginLeft: 0 },
+                  list_item: {
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    marginBottom: 10,
+                  },
+                }}
+              >
+                {text}
+              </Markdown>
+            }
+          >
+            <Markdown
+              key={statement.id}
+              style={{
+                text: {
+                  ...styles.text,
+                  fontSize: textSize,
+                  lineHeight,
+                },
+                bullet_list: { marginLeft: 0 },
+                bullet_list_icon: {
+                  marginLeft: 0,
+                  marginRight: 8,
+                  width: 4,
+                  height: 4,
+                  borderRadius: 2,
+                  backgroundColor: colors.text.primary,
+                  marginTop: 10,
+                },
+                ordered_list: { marginLeft: 0 },
+                list_item: {
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  marginBottom: 10,
+                },
+              }}
+            >
+              {text}
+            </Markdown>
+          </EditableOnTap>
+        </View>
+      </View>
     </CardWrapper>
   )
 }
