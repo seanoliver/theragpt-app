@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from '../../lib/theme'
-import { Affirmation } from '@still/logic/src/affirmation/types'
-import { affirmationService } from '@still/logic/src/affirmation/service'
+import { Statement } from '@still/logic/src/statement/types'
+import { statementService } from '@still/logic/src/statement/statementService'
 import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RenderedStatement } from '../shared/RenderedStatement'
@@ -11,7 +11,7 @@ import { RenderedStatement } from '../shared/RenderedStatement'
 export default function StatementView() {
   const router = useRouter()
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
-  const [statement, setStatement] = useState<Affirmation | null>(null)
+  const [statement, setStatement] = useState<Statement | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
 
   useEffect(() => {
@@ -22,12 +22,12 @@ export default function StatementView() {
     if (!statementId) return
 
     try {
-      const affirmations = await affirmationService.getAllAffirmations()
-      const foundStatement = affirmations.find(a => a.id === statementId)
+      const statements = await statementService.getAllStatements()
+      const foundStatement = statements.find(a => a.id === statementId)
       if (foundStatement) {
         setStatement(foundStatement)
         // Count how many times this statement has been favorited
-        const favorites = affirmations.filter(
+        const favorites = statements.filter(
           a => a.text === foundStatement.text && a.isFavorite,
         )
         setFavoriteCount(favorites.length)
@@ -53,7 +53,7 @@ export default function StatementView() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await affirmationService.updateAffirmation({
+              await statementService.updateStatement({
                 id: statement.id,
                 isActive: false,
               })

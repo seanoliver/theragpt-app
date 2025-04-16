@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid'
 import { StorageService, storageService } from '../sync/storage'
 import { logger } from '../utils/logger'
-import { Affirmation, CreateAffirmationParams, UpdateAffirmationParams } from './types'
+import { Statement, CreateStatementParams, UpdateStatementParams } from './types'
 import { NotFoundError } from '../utils/error'
 
-const DEFAULT_AFFIRMATIONS = [
+const DEFAULT_STATEMENTS = [
   `I know the key to success is always to take action, **even when I don't feel ready for it**.`,
   `I know that **what I react to in others, I strengthen in myself**. I focus all of my energy on the current moment, so that I can consistently act with **calm, intention, and thoughtfulness**.`,
   `I know which actions bring me closer to my goals and which ones take me away from them. I focus on the former and work to eliminate the latter. Currently, these actions include:\n- spending **high quality time** with Tina, Mika, and Kai,\n- giving Tina's reactions and feedback the **sincere attention** they deserve,\n- **physical fitness**,\n- **mindful meditation**,\n- **conscious and purposeful eating**,\n- **curating exceptional notes**,\n- **writing**,\n- **building and learning,**\n- setting a **realistic and achievable daily intention**, and\n- reading this personal manifesto with the **knowing conviction** that its words are true.`,
@@ -18,25 +18,25 @@ const DEFAULT_AFFIRMATIONS = [
 ];
 
 /**
- * Service for managing affirmations
+ * Service for managing statements
  */
-export class AffirmationService {
+export class StatementService {
   private storageService: StorageService
-  private storageKey = 'still_affirmations'
+  private storageKey = 'still_statements'
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
-    this.initializeDefaultAffirmations()
+    this.initializeDefaultStatements()
   }
 
   /**
-   * Initializes the service with default affirmations if none exist
+   * Initializes the service with default statements if none exist
    */
-  private async initializeDefaultAffirmations(): Promise<void> {
+  private async initializeDefaultStatements(): Promise<void> {
     try {
-      const existingAffirmations = await this.getAllAffirmations()
-      if (existingAffirmations.length === 0) {
-        const defaultAffirmations = DEFAULT_AFFIRMATIONS.map(text => ({
+      const existingStatements = await this.getAllStatements()
+      if (existingStatements.length === 0) {
+        const defaultStatements = DEFAULT_STATEMENTS.map(text => ({
           id: uuidv4(),
           text,
           createdAt: Date.now(),
@@ -45,20 +45,20 @@ export class AffirmationService {
           isFavorite: false,
           tags: [],
         }))
-        await this.saveAllAffirmations(defaultAffirmations)
+        await this.saveAllStatements(defaultStatements)
       }
     } catch (error) {
-      logger.error('Error initializing default affirmations', error as Error)
+      logger.error('Error initializing default statements', error as Error)
     }
   }
 
   /**
-   * Creates a new affirmation
-   * @param params Affirmation creation parameters
-   * @returns The created affirmation
+   * Creates a new statement
+   * @param params Statement creation parameters
+   * @returns The created statement
    */
-  async createAffirmation(params: CreateAffirmationParams): Promise<Affirmation> {
-    const affirmation: Affirmation = {
+  async createStatement(params: CreateStatementParams): Promise<Statement> {
+    const statement: Statement = {
       id: uuidv4(),
       text: params.text,
       createdAt: Date.now(),
@@ -68,73 +68,73 @@ export class AffirmationService {
       tags: params.tags || [],
     }
 
-    const affirmations = await this.getAllAffirmations()
-    affirmations.push(affirmation)
-    await this.saveAllAffirmations(affirmations)
+    const statements = await this.getAllStatements()
+    statements.push(statement)
+    await this.saveAllStatements(statements)
 
-    return affirmation
+    return statement
   }
 
   /**
-   * Updates an existing affirmation
-   * @param params Affirmation update parameters
-   * @returns The updated affirmation
+   * Updates an existing statement
+   * @param params Statement update parameters
+   * @returns The updated statement
    */
-  async updateAffirmation(params: UpdateAffirmationParams): Promise<Affirmation> {
-    const affirmations = await this.getAllAffirmations()
-    const index = affirmations.findIndex(a => a.id === params.id)
+  async updateStatement(params: UpdateStatementParams): Promise<Statement> {
+    const statements = await this.getAllStatements()
+    const index = statements.findIndex(a => a.id === params.id)
 
     if (index === -1) {
-      throw new NotFoundError(`Affirmation with ID ${params.id} not found`)
+      throw new NotFoundError(`Statement with ID ${params.id} not found`)
     }
 
-    const affirmation = affirmations[index]
-    affirmations[index] = {
-      ...affirmation,
-      text: params.text ?? affirmation.text,
-      isActive: params.isActive ?? affirmation.isActive,
-      isFavorite: params.isFavorite ?? affirmation.isFavorite,
-      tags: params.tags ?? affirmation.tags,
+    const statement = statements[index]
+    statements[index] = {
+      ...statement,
+      text: params.text ?? statement.text,
+      isActive: params.isActive ?? statement.isActive,
+      isFavorite: params.isFavorite ?? statement.isFavorite,
+      tags: params.tags ?? statement.tags,
     }
 
-    await this.saveAllAffirmations(affirmations)
-    return affirmations[index]
+    await this.saveAllStatements(statements)
+    return statements[index]
   }
 
   /**
-   * Gets all affirmations
-   * @returns Array of affirmations
+   * Gets all statements
+   * @returns Array of statements
    */
-  async getAllAffirmations(): Promise<Affirmation[]> {
+  async getAllStatements(): Promise<Statement[]> {
     try {
-      const data = await this.storageService.getItem<Affirmation[]>(this.storageKey)
+      const data = await this.storageService.getItem<Statement[]>(this.storageKey)
       return data || []
     } catch (error) {
-      logger.error('Error getting affirmations from storage', error as Error)
+      logger.error('Error getting statements from storage', error as Error)
       return []
     }
   }
 
   /**
-   * Gets active affirmations
-   * @returns Array of active affirmations
+   * Gets active statements
+   * @returns Array of active statements
    */
-  async getActiveAffirmations(): Promise<Affirmation[]> {
-    const affirmations = await this.getAllAffirmations()
-    return affirmations.filter(a => a.isActive)
+  async getActiveStatements(): Promise<Statement[]> {
+    const statements = await this.getAllStatements()
+    return statements.filter(a => a.isActive)
   }
 
   /**
-   * Saves all affirmations to storage
-   * @param affirmations The affirmations to save
+   * Saves all statements to storage
+   * @param statements The statements to save
    */
-  private async saveAllAffirmations(affirmations: Affirmation[]): Promise<void> {
+  private async saveAllStatements(statements: Statement[]): Promise<void> {
     try {
-      await this.storageService.setItem(this.storageKey, affirmations)
+      await this.storageService.setItem(this.storageKey, statements)
     } catch (error) {
-      logger.error('Error saving affirmations to storage', error as Error)
+      logger.error('Error saving statements to storage', error as Error)
     }
   }
 }
 
-export const affirmationService = new AffirmationService(storageService)
+export const statementService = new StatementService(storageService)
