@@ -1,4 +1,4 @@
-import { statementService } from '@still/logic/src/statement/statementService'
+import { statementService } from '@still/logic/src/statement/StatementService'
 import { Statement } from '@still/logic/src/statement/types'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
@@ -6,21 +6,31 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { colors, tokens } from '../../lib/theme'
 import { RenderedStatement } from '../shared/RenderedStatement'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useStatementService } from '../hooks/useStatementService'
 
 export function ManifestoScreen() {
   const [statements, setStatements] = useState<Statement[]>([])
+  const service = useStatementService()
 
   useEffect(() => {
-    loadStatements()
-  }, [])
+    if (service) loadStatements()
+  }, [service])
 
   const loadStatements = async () => {
-    const activeStatements = await statementService.getActiveStatements()
-    setStatements(activeStatements)
+    const activeStatements = await service?.getActiveStatements()
+    setStatements(activeStatements || [])
   }
 
   const handleStatementPress = (statement: Statement) => {
     router.push(`/daily?statementId=${statement.id}`)
+  }
+
+  if (!service) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.subtitle}>Loading...</Text>
+      </View>
+    )
   }
 
   return (

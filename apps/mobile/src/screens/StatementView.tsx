@@ -3,26 +3,27 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from '../../lib/theme'
 import { Statement } from '@still/logic/src/statement/types'
-import { statementService } from '@still/logic/src/statement/statementService'
+import { statementService } from '@still/logic/src/statement/StatementService'
 import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RenderedStatement } from '../shared/RenderedStatement'
+import { useStatementService } from '../hooks/useStatementService'
 
 export default function StatementView() {
   const router = useRouter()
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
   const [statement, setStatement] = useState<Statement | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
+  const service = useStatementService()
 
   useEffect(() => {
-    loadStatement()
-  }, [statementId])
+    if (service) loadStatement()
+  }, [statementId, service])
 
   const loadStatement = async () => {
-    if (!statementId) return
-
+    if (!statementId || !service) return
     try {
-      const statements = await statementService.getAllStatements()
+      const statements = await service.getAllStatements()
       const foundStatement = statements.find(a => a.id === statementId)
       if (foundStatement) {
         setStatement(foundStatement)
@@ -38,7 +39,7 @@ export default function StatementView() {
   }
 
   const handleDelete = async () => {
-    if (!statement) return
+    if (!statement || !service) return
 
     Alert.alert(
       'Delete Statement',
@@ -53,7 +54,7 @@ export default function StatementView() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await statementService.updateStatement({
+              await service.updateStatement({
                 id: statement.id,
                 isActive: false,
               })
@@ -65,6 +66,14 @@ export default function StatementView() {
           },
         },
       ],
+    )
+  }
+
+  if (!service) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
     )
   }
 

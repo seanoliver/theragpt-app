@@ -8,21 +8,23 @@ import {
 import { Link, router, useLocalSearchParams } from 'expo-router'
 import { useState, useEffect } from 'react'
 import { colors } from '../../lib/theme'
-import { statementService } from '@still/logic/src/statement/statementService'
+import { statementService } from '@still/logic/src/statement/StatementService'
 import { Statement } from '@still/logic/src/statement/types'
+import { useStatementService } from '../hooks/useStatementService'
 
 export function EditStatementScreen() {
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
   const [statement, setStatement] = useState<Statement | null>(null)
   const [text, setText] = useState('')
+  const service = useStatementService()
 
   useEffect(() => {
-    loadStatement()
-  }, [statementId])
+    if (service) loadStatement()
+  }, [statementId, service])
 
   const loadStatement = async () => {
-    if (statementId) {
-      const statements = await statementService.getAllStatements()
+    if (statementId && service) {
+      const statements = await service.getAllStatements()
       const foundStatement = statements.find(a => a.id === statementId)
       if (foundStatement) {
         setStatement(foundStatement)
@@ -32,13 +34,21 @@ export function EditStatementScreen() {
   }
 
   const handleSave = async () => {
-    if (statement) {
-      await statementService.updateStatement({
+    if (statement && service) {
+      await service.updateStatement({
         id: statement.id,
         text,
       })
       router.push(`/daily?statementId=${statement.id}`)
     }
+  }
+
+  if (!service) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    )
   }
 
   if (!statement) {

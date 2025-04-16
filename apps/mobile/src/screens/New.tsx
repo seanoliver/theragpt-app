@@ -8,18 +8,28 @@ import {
 import { Link, router } from 'expo-router'
 import { useState } from 'react'
 import { colors } from '../../lib/theme'
-import { statementService } from '@still/logic/src/statement/statementService'
+import { statementService } from '@still/logic/src/statement/StatementService'
+import { useStatementService } from '../hooks/useStatementService'
 
 export function NewStatementScreen() {
   const [text, setText] = useState('')
+  const service = useStatementService()
 
   const handleSave = async () => {
-    if (text.trim()) {
-      const statement = await statementService.createStatement({
+    if (text.trim() && service) {
+      const statement = await service.createStatement({
         text: text.trim(),
       })
       router.push(`/daily?statementId=${statement.id}`)
     }
+  }
+
+  if (!service) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.buttonText}>Loading...</Text>
+      </View>
+    )
   }
 
   return (

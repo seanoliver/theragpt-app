@@ -1,7 +1,11 @@
 import { v4 as uuidv4 } from 'uuid'
 import { StorageService, storageService } from '../sync/storage'
 import { logger } from '../utils/logger'
-import { Statement, CreateStatementParams, UpdateStatementParams } from './types'
+import {
+  Statement,
+  CreateStatementParams,
+  UpdateStatementParams,
+} from './types'
 import { NotFoundError } from '../utils/error'
 
 const DEFAULT_STATEMENTS = [
@@ -14,25 +18,22 @@ const DEFAULT_STATEMENTS = [
   `I know that working on a problem reduces my resistance to it. It is harder to fear things when I am making progress on them—even if that progress is imperfect and slow. **Action relieves anxiety**.`,
   `I know that **when I embrace discomfort, I embrace progress**. It is only by challenging myself that I will continue to grow toward my dreams.`,
   `I strongly believe in the path I am on. I do not judge others, nor do I compare myself to others. **Everyone is on their own path, and I will focus on mine**.`,
-  `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and **my dreams will not work unless I do**.`
-];
+  `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and **my dreams will not work unless I do**.`,
+]
 
-/**
- * Service for managing statements
- */
 export class StatementService {
   private storageService: StorageService
   private storageKey = 'still_statements'
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
-    this.initializeDefaultStatements()
   }
 
   /**
    * Initializes the service with default statements if none exist
+   * NOTE: Must be called before using the service
    */
-  private async initializeDefaultStatements(): Promise<void> {
+  public async init(): Promise<void> {
     try {
       const existingStatements = await this.getAllStatements()
       if (existingStatements.length === 0) {
@@ -107,7 +108,9 @@ export class StatementService {
    */
   async getAllStatements(): Promise<Statement[]> {
     try {
-      const data = await this.storageService.getItem<Statement[]>(this.storageKey)
+      const data = await this.storageService.getItem<Statement[]>(
+        this.storageKey,
+      )
       return data || []
     } catch (error) {
       logger.error('Error getting statements from storage', error as Error)

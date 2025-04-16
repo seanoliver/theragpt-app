@@ -1,27 +1,29 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { colors } from '../../lib/theme'
 import { useState, useEffect } from 'react'
-import { statementService } from '@still/logic/src/statement/statementService'
+import { statementService } from '@still/logic/src/statement/StatementService'
 import { Statement } from '@still/logic/src/statement/types'
 import Carousel from 'react-native-reanimated-carousel'
 import { RenderedStatement } from '../shared/RenderedStatement'
+import { useStatementService } from '../hooks/useStatementService'
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
 
 export function ReviewScreen() {
   const [statements, setStatements] = useState<Statement[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const service = useStatementService()
 
   useEffect(() => {
-    loadStatements()
-  }, [])
+    if (service) loadStatements()
+  }, [service])
 
   const loadStatements = async () => {
-    const allStatements = await statementService.getAllStatements()
+    const allStatements = await service.getAllStatements()
     setStatements(allStatements)
   }
 
-  if (statements.length === 0) {
+  if (!service) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
