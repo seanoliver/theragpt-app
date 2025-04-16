@@ -17,6 +17,7 @@ interface RenderedStatementProps {
   animatedStyle?: any
   containerStyle?: ViewStyle
   editable?: boolean
+  onSave?: (newText: string) => void
 }
 
 export function RenderedStatement({
@@ -26,6 +27,7 @@ export function RenderedStatement({
   animatedStyle,
   containerStyle,
   editable = true,
+  onSave,
 }: RenderedStatementProps) {
   const textSize = size === 'lg' ? 28 : 16
   const lineHeight = size === 'lg' ? 40 : 24
@@ -33,6 +35,12 @@ export function RenderedStatement({
   const CardWrapper = animatedStyle ? Animated.View : View
 
   const [text, setText] = useState(statement.text)
+
+  const handleSave = (newText: string) => {
+    if (onSave && newText !== statement.text) {
+      onSave(newText)
+    }
+  }
 
   if (!editable) {
     return (
@@ -80,6 +88,7 @@ export function RenderedStatement({
           <EditableOnTap
             value={text}
             onChange={setText}
+            onSave={handleSave}
             inputStyle={{
               ...styles.text,
               fontSize: textSize,

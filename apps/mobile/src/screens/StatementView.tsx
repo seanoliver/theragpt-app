@@ -59,6 +59,12 @@ export default function StatementView() {
     )
   }
 
+  const handleSaveStatement = async (newText: string) => {
+    if (service && statement && newText !== statement.text) {
+      await service.updateStatement({ id: statement.id, text: newText })
+    }
+  }
+
   if (!service || !statements) {
     return (
       <View style={styles.container}>
@@ -87,7 +93,11 @@ export default function StatementView() {
 
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <RenderedStatement statement={statement} size="lg" />
+          <RenderedStatement
+            statement={statement}
+            size="lg"
+            onSave={handleSaveStatement}
+          />
         </View>
 
         <View style={styles.statsContainer}>
