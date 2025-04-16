@@ -1,19 +1,18 @@
+import { Link, router } from 'expo-router'
+import { useState } from 'react'
 import {
-  View,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  View,
 } from 'react-native'
-import { Link, router } from 'expo-router'
-import { useState } from 'react'
 import { colors } from '../../lib/theme'
-import { statementService } from '@still/logic/src/statement/StatementService'
 import { useStatementService } from '../hooks/useStatementService'
 
 export function NewStatementScreen() {
   const [text, setText] = useState('')
-  const service = useStatementService()
+  const { service, statements } = useStatementService()
 
   const handleSave = async () => {
     if (text.trim() && service) {
@@ -24,7 +23,7 @@ export function NewStatementScreen() {
     }
   }
 
-  if (!service) {
+  if (!service || !statements) {
     return (
       <View style={styles.container}>
         <Text style={styles.buttonText}>Loading...</Text>

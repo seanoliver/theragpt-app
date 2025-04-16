@@ -16,7 +16,9 @@ export function useStatementService() {
       setStatements(activeStatements)
     }
     initAndLoad()
-    return () => { mounted = false }
+    return () => {
+      mounted = false
+    }
   }, [])
 
   return { service: ready ? statementService : null, statements }

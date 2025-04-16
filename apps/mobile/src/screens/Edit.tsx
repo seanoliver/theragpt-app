@@ -1,37 +1,31 @@
+import { Statement } from '@still/logic/src/statement/types'
+import { Link, router, useLocalSearchParams } from 'expo-router'
+import { useEffect, useState } from 'react'
 import {
-  View,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  View,
 } from 'react-native'
-import { Link, router, useLocalSearchParams } from 'expo-router'
-import { useState, useEffect } from 'react'
 import { colors } from '../../lib/theme'
-import { statementService } from '@still/logic/src/statement/StatementService'
-import { Statement } from '@still/logic/src/statement/types'
 import { useStatementService } from '../hooks/useStatementService'
 
 export function EditStatementScreen() {
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
   const [statement, setStatement] = useState<Statement | null>(null)
   const [text, setText] = useState('')
-  const service = useStatementService()
+  const { service, statements } = useStatementService()
 
   useEffect(() => {
-    if (service) loadStatement()
-  }, [statementId, service])
-
-  const loadStatement = async () => {
-    if (statementId && service) {
-      const statements = await service.getAllStatements()
+    if (statements && statementId) {
       const foundStatement = statements.find(a => a.id === statementId)
       if (foundStatement) {
         setStatement(foundStatement)
         setText(foundStatement.text)
       }
     }
-  }
+  }, [statementId, statements])
 
   const handleSave = async () => {
     if (statement && service) {
@@ -43,14 +37,13 @@ export function EditStatementScreen() {
     }
   }
 
-  if (!service) {
+  if (!service || !statements) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
     )
   }
-
   if (!statement) {
     return (
       <View style={styles.container}>

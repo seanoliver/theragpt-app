@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
 import { StorageService, storageService } from '../sync/storage'
+import { NotFoundError } from '../utils/error'
 import { logger } from '../utils/logger'
 import {
-  Statement,
   CreateStatementParams,
+  Statement,
   UpdateStatementParams,
 } from './types'
-import { NotFoundError } from '../utils/error'
 
 const DEFAULT_STATEMENTS = [
   `I know the key to success is always to take action, **even when I don't feel ready for it**.`,

@@ -1,12 +1,10 @@
-import { statementService } from '@still/logic/src/statement/StatementService'
-import { Statement } from '@still/logic/src/statement/types'
-import { router } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { colors, tokens } from '../../lib/theme'
-import { RenderedStatement } from '../shared/RenderedStatement'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useStatementService } from '../hooks/useStatementService'
+import { Statement } from '@still/logic/src/statement/types';
+import { router } from 'expo-router';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors, tokens } from '../../lib/theme';
+import { useStatementService } from '../hooks/useStatementService';
+import { RenderedStatement } from '../shared/RenderedStatement';
 
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()

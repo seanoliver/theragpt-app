@@ -1,42 +1,32 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
-import { colors } from '../../lib/theme'
 import { Statement } from '@still/logic/src/statement/types'
-import { statementService } from '@still/logic/src/statement/StatementService'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { RenderedStatement } from '../shared/RenderedStatement'
+import { colors } from '../../lib/theme'
 import { useStatementService } from '../hooks/useStatementService'
+import { RenderedStatement } from '../shared/RenderedStatement'
 
 export default function StatementView() {
   const router = useRouter()
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
   const [statement, setStatement] = useState<Statement | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
-  const service = useStatementService()
+  const { service, statements } = useStatementService()
 
   useEffect(() => {
-    if (service) loadStatement()
-  }, [statementId, service])
-
-  const loadStatement = async () => {
-    if (!statementId || !service) return
-    try {
-      const statements = await service.getAllStatements()
-      const foundStatement = statements.find(a => a.id === statementId)
-      if (foundStatement) {
-        setStatement(foundStatement)
-        // Count how many times this statement has been favorited
-        const favorites = statements.filter(
-          a => a.text === foundStatement.text && a.isFavorite,
-        )
-        setFavoriteCount(favorites.length)
-      }
-    } catch (error) {
-      console.error('Error loading statement:', error)
+    if (!statementId || !statements) return
+    const foundStatement = statements.find(a => a.id === statementId)
+    if (foundStatement) {
+      setStatement(foundStatement)
+      // Count how many times this statement has been favorited
+      const favorites = statements.filter(
+        a => a.text === foundStatement.text && a.isFavorite,
+      )
+      setFavoriteCount(favorites.length)
     }
-  }
+  }, [statementId, statements])
 
   const handleDelete = async () => {
     if (!statement || !service) return
@@ -69,14 +59,13 @@ export default function StatementView() {
     )
   }
 
-  if (!service) {
+  if (!service || !statements) {
     return (
       <View style={styles.container}>
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
     )
   }
-
   if (!statement) {
     return (
       <View style={styles.container}>
