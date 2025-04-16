@@ -8,16 +8,22 @@ export function useStatementService() {
 
   useEffect(() => {
     let mounted = true
+    let unsubscribe: (() => void) | undefined
     async function initAndLoad() {
       const allStatements = await statementService.init()
       if (!mounted) return
       setReady(true)
       const activeStatements = allStatements.filter(s => s.isActive)
       setStatements(activeStatements)
+      // Subscribe to changes
+      unsubscribe = statementService.subscribe((stmts) => {
+        if (mounted) setStatements(stmts.filter(s => s.isActive))
+      })
     }
     initAndLoad()
     return () => {
       mounted = false
+      if (unsubscribe) unsubscribe()
     }
   }, [])
 

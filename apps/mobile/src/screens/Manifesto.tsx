@@ -9,10 +9,6 @@ import { RenderedStatement } from '../shared/RenderedStatement';
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()
 
-  const handleStatementPress = (statement: Statement) => {
-    router.push(`/daily?statementId=${statement.id}`)
-  }
-
   if (!service || !statements) {
     return (
       <View style={styles.container}>

@@ -21,12 +21,26 @@ const DEFAULT_STATEMENTS = [
   `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and **my dreams will not work unless I do**.`,
 ]
 
+type StatementsListener = (statements: Statement[]) => void;
+
 export class StatementService {
   private storageService: StorageService
   private storageKey = 'still_statements'
+  private listeners: StatementsListener[] = []
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
+  }
+
+  subscribe(listener: StatementsListener) {
+    this.listeners.push(listener)
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== listener)
+    }
+  }
+
+  private notifyListeners(statements: Statement[]) {
+    this.listeners.forEach(listener => listener(statements))
   }
 
   /**
@@ -47,8 +61,10 @@ export class StatementService {
           tags: [],
         }))
         await this.saveAllStatements(defaultStatements)
+        this.notifyListeners(defaultStatements)
         return defaultStatements
       }
+      this.notifyListeners(existingStatements)
       return existingStatements
     } catch (error) {
       logger.error('Error initializing default statements', error as Error)
@@ -75,6 +91,7 @@ export class StatementService {
     const statements = await this.getAllStatements()
     statements.push(statement)
     await this.saveAllStatements(statements)
+    this.notifyListeners(statements)
 
     return statement
   }
@@ -102,6 +119,7 @@ export class StatementService {
     }
 
     await this.saveAllStatements(statements)
+    this.notifyListeners(statements)
     return statements[index]
   }
 
