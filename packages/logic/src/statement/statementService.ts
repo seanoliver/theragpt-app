@@ -33,7 +33,7 @@ export class StatementService {
    * Initializes the service with default statements if none exist
    * NOTE: Must be called before using the service
    */
-  public async init(): Promise<void> {
+  public async init(): Promise<Statement[]> {
     try {
       const existingStatements = await this.getAllStatements()
       if (existingStatements.length === 0) {
@@ -47,9 +47,12 @@ export class StatementService {
           tags: [],
         }))
         await this.saveAllStatements(defaultStatements)
+        return defaultStatements
       }
+      return existingStatements
     } catch (error) {
       logger.error('Error initializing default statements', error as Error)
+      return []
     }
   }
 

@@ -9,23 +9,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useStatementService } from '../hooks/useStatementService'
 
 export function ManifestoScreen() {
-  const [statements, setStatements] = useState<Statement[]>([])
-  const service = useStatementService()
-
-  useEffect(() => {
-    if (service) loadStatements()
-  }, [service])
-
-  const loadStatements = async () => {
-    const activeStatements = await service?.getActiveStatements()
-    setStatements(activeStatements || [])
-  }
+  const { service, statements } = useStatementService()
 
   const handleStatementPress = (statement: Statement) => {
     router.push(`/daily?statementId=${statement.id}`)
   }
 
-  if (!service) {
+  if (!service || !statements) {
     return (
       <View style={styles.container}>
         <Text style={styles.subtitle}>Loading...</Text>
