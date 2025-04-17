@@ -17,6 +17,7 @@ interface ArchiveLineItemProps {
   onSave?: (newText: string) => void
   onArchive: () => void
   onDelete: (id: string) => void
+  autoFocus?: boolean
 }
 
 export const ArchiveLineItem = ({
@@ -28,6 +29,7 @@ export const ArchiveLineItem = ({
   onSave,
   onArchive,
   onDelete,
+  autoFocus,
 }: ArchiveLineItemProps) => {
   const textSize = size === 'lg' ? 28 : 16
   const lineHeight = size === 'lg' ? 40 : 24
@@ -89,6 +91,7 @@ export const ArchiveLineItem = ({
               onChange={setText}
               onSave={handleSave}
               markdownPreview={markdownPreview}
+              autoFocus={autoFocus}
             >
               {markdownPreview}
             </EditableOnTap>

@@ -7,9 +7,11 @@ import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
+import React, { useState } from 'react'
 
 export function ArchiveScreen() {
   const { service, statements } = useStatementService(true)
+  const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
   if (!service || !statements) {
     return (
@@ -20,6 +22,14 @@ export function ArchiveScreen() {
   }
 
   const isEmpty = statements.length === 0
+
+  const handleAddStatement = async () => {
+    if (!service) return
+    const newStatement = await service.create({ text: '' })
+    // Archive statements are isActive: false, so update after create
+    await service.update({ id: newStatement.id, isActive: false })
+    setNewlyCreatedId(newStatement.id)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,6 +51,10 @@ export function ArchiveScreen() {
                   service.update({ id: statement.id, isActive: true })
                 }
                 onDelete={() => service.deleteStatement(statement.id)}
+                autoFocus={statement.id === newlyCreatedId}
+                onSave={() => {
+                  if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
+                }}
               />
               {index < statements.length - 1 && (
                 <View
@@ -57,10 +71,8 @@ export function ArchiveScreen() {
         </ScrollView>
       )}
 
-      <FAB>
-        <Link href="/new" asChild>
-          <Ionicons name="add" size={32} color={colors.charcoal[100]} />
-        </Link>
+      <FAB onPress={handleAddStatement}>
+        <Ionicons name="add" size={32} color={colors.charcoal[100]} />
       </FAB>
     </SafeAreaView>
   )

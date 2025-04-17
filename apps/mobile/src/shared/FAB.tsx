@@ -1,25 +1,32 @@
 import React, { useEffect } from 'react'
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated'
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+} from 'react-native-reanimated'
 import { useSegments } from 'expo-router'
 import {
   StyleSheet,
   View,
   ViewStyle,
   StyleProp,
+  TouchableOpacity,
 } from 'react-native'
 import { colors } from '../../lib/theme'
+
+const MANIFESTO_TAB = 'index'
+const ARCHIVE_TAB = 'archive'
 
 interface FABProps {
   children: React.ReactNode
   style?: StyleProp<ViewStyle>
+  onPress?: () => void
 }
 
-export const FAB: React.FC<FABProps> = ({ children, style }) => {
+export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
   const segments = useSegments()
   const currentTab = segments[0]
   const prevTab = usePrevious(currentTab)
-  const MANIFESTO_TAB = 'index'
-  const ARCHIVE_TAB = 'archive'
   const visible = useSharedValue(1)
 
   useEffect(() => {
@@ -47,7 +54,12 @@ export const FAB: React.FC<FABProps> = ({ children, style }) => {
   return (
     <Animated.View style={[styles.fabContainer, animatedStyle, style]}>
       <View style={styles.fabButton}>
-        {children}
+        <TouchableOpacity
+          onPress={onPress}
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          {children}
+        </TouchableOpacity>
       </View>
     </Animated.View>
   )
