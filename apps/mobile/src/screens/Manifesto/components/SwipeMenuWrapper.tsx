@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import { colors } from '../../../../lib/theme'
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 export const SwipeMenu = ({
   onArchive,
@@ -41,16 +42,14 @@ const ArchiveDeleteActions = ({
             backgroundColor={colors.charcoal[300]}
             onPress={onArchive}
             textColor={colors.text.primary}
-          >
-            Archive
-          </ActionWrapper>
+            iconType="archive"
+          />
           <ActionWrapper
             backgroundColor="#E57373"
             onPress={onDelete}
             textColor="#fff"
-          >
-            Delete
-          </ActionWrapper>
+            iconType="delete"
+          />
         </View>
       </View>
     </View>
@@ -58,15 +57,15 @@ const ArchiveDeleteActions = ({
 }
 
 const ActionWrapper = ({
-  children,
   textColor,
   backgroundColor,
   onPress,
+  iconType,
 }: {
-  children: React.ReactNode
   textColor: string
   backgroundColor: string
   onPress: () => void
+  iconType: 'archive' | 'delete'
 }) => {
   return (
     <View
@@ -87,15 +86,11 @@ const ActionWrapper = ({
           width: 80,
         }}
       >
-        <Text
-          style={{
-            color: textColor,
-            fontWeight: 'bold',
-            fontSize: 16,
-          }}
-        >
-          {children}
-        </Text>
+        {iconType === 'archive' ? (
+          <FontAwesome name="archive" size={20} color={textColor} />
+        ) : (
+          <Ionicons name="trash" size={20} color={textColor} />
+        )}
       </TouchableOpacity>
     </View>
   )
