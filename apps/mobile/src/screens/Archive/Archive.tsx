@@ -11,6 +11,7 @@ import { colors, tokens } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
+import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 
 export function ArchiveScreen() {
   const { service, statements } = useStatementService(true)
@@ -20,6 +21,15 @@ export function ArchiveScreen() {
       <View style={styles.container}>
         <Text style={styles.header}>Loading...</Text>
       </View>
+    )
+  }
+
+  if (statements.length === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.subtitle}>Archive</Text>
+        <ArchiveEmptyState />
+      </SafeAreaView>
     )
   }
 

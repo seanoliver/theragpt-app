@@ -170,6 +170,24 @@ export class StatementService {
       logger.error('Error saving statements to storage', error as Error)
     }
   }
+
+  /**
+   * Filter statements to only include active ones.
+   * Unlike getActive(), this method works on an in-memory array without accessing storage,
+   * making it more efficient for subscription handlers that already have the data.
+   */
+  filterActive(statements: Statement[]): Statement[] {
+    return statements.filter(s => s.isActive)
+  }
+
+  /**
+   * Filter statements to only include archived ones.
+   * Unlike getArchived(), this method works on an in-memory array without accessing storage,
+   * making it more efficient for subscription handlers that already have the data.
+   */
+  filterArchived(statements: Statement[]): Statement[] {
+    return statements.filter(s => !s.isActive)
+  }
 }
 
 export const statementService = new StatementService(storageService)

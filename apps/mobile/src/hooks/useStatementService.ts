@@ -24,7 +24,12 @@ export function useStatementService(archived: boolean = false) {
       setStatements(await fetchedStatements.call(statementService))
 
       unsubscribe = statementService.subscribe(stmts => {
-        if (mounted) setStatements(stmts.filter(s => s.isActive))
+        if (mounted)
+          setStatements(
+            archived
+              ? statementService.filterArchived(stmts)
+              : statementService.filterActive(stmts),
+          )
       })
     }
 
