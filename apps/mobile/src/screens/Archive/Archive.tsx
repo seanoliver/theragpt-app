@@ -1,17 +1,12 @@
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'expo-router'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors, tokens } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { ArchiveLineItem } from './components/ArchiveLineItem'
+import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
+import { ArchiveLineItem } from './components/ArchiveLineItem'
 
 export function ArchiveScreen() {
   const { service, statements } = useStatementService(true)
@@ -24,52 +19,49 @@ export function ArchiveScreen() {
     )
   }
 
-  if (statements.length === 0) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.subtitle}>Archive</Text>
-        <ArchiveEmptyState />
-      </SafeAreaView>
-    )
-  }
+  const isEmpty = statements.length === 0
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.subtitle}>Archive</Text>
 
-      <ScrollView
-        style={styles.statementsList}
-        keyboardShouldPersistTaps="handled"
-      >
-        {statements.map((statement, index) => (
-          <>
-            <ArchiveLineItem
-              key={statement.id}
-              statement={statement}
-              onArchive={() =>
-                service.update({ id: statement.id, isActive: true })
-              }
-              onDelete={() => service.deleteStatement(statement.id)}
-            />
-            {index < statements.length - 1 && (
-              <View
-                style={{
-                  height: 1,
-                  backgroundColor: colors.charcoal[300],
-                  width: '100%',
-                  marginVertical: 8,
-                }}
+      {isEmpty ? (
+        <ArchiveEmptyState />
+      ) : (
+        <ScrollView
+          style={styles.statementsList}
+          keyboardShouldPersistTaps="handled"
+        >
+          {statements.map((statement, index) => (
+            <>
+              <ArchiveLineItem
+                key={statement.id}
+                statement={statement}
+                onArchive={() =>
+                  service.update({ id: statement.id, isActive: true })
+                }
+                onDelete={() => service.deleteStatement(statement.id)}
               />
-            )}
-          </>
-        ))}
-      </ScrollView>
+              {index < statements.length - 1 && (
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.charcoal[300],
+                    width: '100%',
+                    marginVertical: 8,
+                  }}
+                />
+              )}
+            </>
+          ))}
+        </ScrollView>
+      )}
 
-      <Link href="/new" asChild>
-        <TouchableOpacity>
-          <Ionicons name="add" size={24} color={colors.text.primary} />
-        </TouchableOpacity>
-      </Link>
+      <FAB>
+        <Link href="/new" asChild>
+          <Ionicons name="add" size={32} color={colors.charcoal[100]} />
+        </Link>
+      </FAB>
     </SafeAreaView>
   )
 }
@@ -105,5 +97,24 @@ const styles = StyleSheet.create({
   statementsList: {
     flex: 1,
     paddingRight: 4,
+  },
+  fabContainer: {
+    position: 'absolute',
+    right: 24,
+    bottom: 32,
+    zIndex: 10,
+  },
+  fabButton: {
+    backgroundColor: colors.text.primary,
+    width: 48,
+    height: 48,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 })
