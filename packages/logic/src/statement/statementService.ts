@@ -24,6 +24,7 @@ export interface UpdateStatementParams {
 export interface CreateStatementParams {
   text: string
   tags?: string[]
+  isActive?: boolean
 }
 
 const DEFAULT_STATEMENTS = [
@@ -96,7 +97,7 @@ export class StatementService {
       text: params.text,
       createdAt: Date.now(),
       lastReviewed: null,
-      isActive: true,
+      isActive: params.isActive ?? true,
       isFavorite: false,
       tags: params.tags || [],
     }

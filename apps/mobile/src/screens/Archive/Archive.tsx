@@ -25,9 +25,7 @@ export function ArchiveScreen() {
 
   const handleAddStatement = async () => {
     if (!service) return
-    const newStatement = await service.create({ text: '' })
-    // Archive statements are isActive: false, so update after create
-    await service.update({ id: newStatement.id, isActive: false })
+    const newStatement = await service.create({ text: '', isActive: false })
     setNewlyCreatedId(newStatement.id)
   }
 
