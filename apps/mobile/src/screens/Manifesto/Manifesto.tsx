@@ -16,8 +16,6 @@ export function ManifestoScreen() {
     )
   }
 
-  // TODO: Add archive and delete functionality
-
   const handleDelete = (statementId: string) => {
     service.deleteStatement(statementId)
   }
@@ -33,7 +31,7 @@ export function ManifestoScreen() {
                 key={statement.id}
                 statement={statement}
                 onArchive={() => {}}
-                onDelete={() => {}}
+                onDelete={() => handleDelete(statement.id)}
               />
               {index < statements.length - 1 && (
                 <View

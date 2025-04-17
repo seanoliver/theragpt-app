@@ -451,7 +451,7 @@
 					"$(inherited)",
 					" ",
 				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/.pnpm/react-native@0.76.0_@babel+core@7.26.10_@babel+preset-env@7.26.9_@babel+core@7.26.10__@_d0b888f6ef9b53fd459f7ae0cfce9e6f/node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/.pnpm/react-native@0.77.0_@babel+core@7.26.10_@babel+preset-env@7.26.9_@babel+core@7.26.10__@_4a4c3056cf051eaf6bda4486e93ef424/node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
@@ -506,7 +506,7 @@
 					"$(inherited)",
 					" ",
 				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/.pnpm/react-native@0.76.0_@babel+core@7.26.10_@babel+preset-env@7.26.9_@babel+core@7.26.10__@_d0b888f6ef9b53fd459f7ae0cfce9e6f/node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/.pnpm/react-native@0.77.0_@babel+core@7.26.10_@babel+preset-env@7.26.9_@babel+core@7.26.10__@_4a4c3056cf051eaf6bda4486e93ef424/node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;

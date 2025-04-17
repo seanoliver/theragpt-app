@@ -16,7 +16,7 @@ interface StatementLineItemProps {
   editable?: boolean
   onSave?: (newText: string) => void
   onArchive: () => void
-  onDelete: () => void
+  onDelete: (id: string) => void
 }
 
 export const StatementLineItem = ({
