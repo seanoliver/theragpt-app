@@ -9,7 +9,8 @@ export function useStatementService() {
   useEffect(() => {
     let mounted = true
     let unsubscribe: (() => void) | undefined
-    async function initAndLoad() {
+
+    const initAndLoad = async () => {
       const allStatements = await statementService.init()
 
       if (!mounted) return
@@ -19,12 +20,13 @@ export function useStatementService() {
       const activeStatements = allStatements.filter(s => s.isActive)
       setStatements(activeStatements)
 
-      unsubscribe = statementService.subscribe((stmts) => {
+      unsubscribe = statementService.subscribe(stmts => {
         if (mounted) setStatements(stmts.filter(s => s.isActive))
       })
-
     }
+
     initAndLoad()
+
     return () => {
       mounted = false
       if (unsubscribe) unsubscribe()

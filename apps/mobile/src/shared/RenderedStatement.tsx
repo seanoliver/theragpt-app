@@ -1,16 +1,11 @@
-import { Statement } from '@still/logic/src/statement/types';
-import { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  ViewStyle,
-  Text
-} from 'react-native';
-import Markdown from 'react-native-markdown-display';
-import Animated from 'react-native-reanimated';
-import { colors } from '../../lib/theme';
-import { EditableOnTap } from './EditableOnTap';
-import { Swipeable } from 'react-native-gesture-handler';
+import { Statement } from '@still/logic/src/statement/types'
+import { useState } from 'react'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
+import Markdown from 'react-native-markdown-display'
+import Animated from 'react-native-reanimated'
+import { colors } from '../../lib/theme'
+import { EditableOnTap } from './EditableOnTap'
 
 interface RenderedStatementProps {
   statement: Statement
@@ -52,18 +47,50 @@ export function RenderedStatement({
     <View style={{ flexDirection: 'row', height: '100%' }}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', height: '100%' }}>
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <View style={{ backgroundColor: colors.charcoal[300], height: '100%', justifyContent: 'center', alignItems: 'center', width: 80 }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: colors.charcoal[300],
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 80,
+              }}
+            >
               <Text
-                style={{ color: colors.text.primary, fontWeight: 'bold', fontSize: 16 }}
+                style={{
+                  color: colors.text.primary,
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                }}
                 onPress={onArchive}
               >
                 Archive
               </Text>
             </View>
           </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <View style={{ backgroundColor: '#E57373', height: '100%', justifyContent: 'center', alignItems: 'center', width: 80 }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#E57373',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 80,
+              }}
+            >
               <Text
                 style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}
                 onPress={onDelete}
@@ -75,7 +102,7 @@ export function RenderedStatement({
         </View>
       </View>
     </View>
-  );
+  )
 
   if (!editable) {
     return (
