@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { statementService } from '@still/logic/src/statement/StatementService'
-import { Statement } from '@still/logic/src/statement/types'
+import { statementService } from '@still/logic/src/statement/statementService'
+import { Statement } from '@still/logic/src/statement/statementService'
 
 export function useStatementService() {
   const [ready, setReady] = useState(false)
@@ -9,18 +9,24 @@ export function useStatementService() {
   useEffect(() => {
     let mounted = true
     let unsubscribe: (() => void) | undefined
-    async function initAndLoad() {
+
+    const initAndLoad = async () => {
       const allStatements = await statementService.init()
+
       if (!mounted) return
+
       setReady(true)
+
       const activeStatements = allStatements.filter(s => s.isActive)
       setStatements(activeStatements)
-      // Subscribe to changes
-      unsubscribe = statementService.subscribe((stmts) => {
+
+      unsubscribe = statementService.subscribe(stmts => {
         if (mounted) setStatements(stmts.filter(s => s.isActive))
       })
     }
+
     initAndLoad()
+
     return () => {
       mounted = false
       if (unsubscribe) unsubscribe()

@@ -1,12 +1,12 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Statement } from '@still/logic/src/statement/types'
+import { Statement } from '@still/logic/src/statement/statementService'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '../../lib/theme'
-import { useStatementService } from '../hooks/useStatementService'
-import { RenderedStatement } from '../shared/RenderedStatement'
+import { colors } from '../../../lib/theme'
+import { useStatementService } from '../../hooks/useStatementService'
+import { StatementLineItem } from '../Manifesto/components/StatementLineItem'
 
 export default function StatementView() {
   const router = useRouter()
@@ -44,7 +44,7 @@ export default function StatementView() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await service.updateStatement({
+              await service.update({
                 id: statement.id,
                 isActive: false,
               })
@@ -61,7 +61,7 @@ export default function StatementView() {
 
   const handleSaveStatement = async (newText: string) => {
     if (service && statement && newText !== statement.text) {
-      await service.updateStatement({ id: statement.id, text: newText })
+      await service.update({ id: statement.id, text: newText })
     }
   }
 
@@ -93,10 +93,12 @@ export default function StatementView() {
 
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <RenderedStatement
+          <StatementLineItem
             statement={statement}
             size="lg"
             onSave={handleSaveStatement}
+            onArchive={() => {}}
+            onDelete={() => {}}
           />
         </View>
 

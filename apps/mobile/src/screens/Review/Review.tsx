@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
-import { colors } from '../../lib/theme'
-import { useStatementService } from '../hooks/useStatementService'
-import { RenderedStatement } from '../shared/RenderedStatement'
+import { colors } from '../../../lib/theme'
+import { useStatementService } from '../../hooks/useStatementService'
+import { ResponsiveLargeText } from './components/ResponsiveLargeText'
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
+export const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
+  Dimensions.get('window')
 
 export function ReviewScreen() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -22,22 +23,24 @@ export function ReviewScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.statementContainer}>
+        {/* Carousel */}
         <Carousel
-          width={SCREEN_WIDTH * 0.9}
-          height={SCREEN_HEIGHT * 0.5}
+          width={REVIEW_SCREEN_WIDTH * 0.9}
+          height={REVIEW_SCREEN_HEIGHT * 0.5}
           data={statements}
           scrollAnimationDuration={500}
           style={{ alignSelf: 'center' }}
           onSnapToItem={setCurrentIndex}
           renderItem={({ item }) => (
-            <RenderedStatement
-              statement={item}
-              size="lg"
-              containerStyle={styles.cardContainer}
-              editable={false}
+            <ResponsiveLargeText
+              text={item.text}
+              containerWidth={REVIEW_SCREEN_WIDTH * 0.9}
+              containerHeight={REVIEW_SCREEN_HEIGHT * 0.5}
             />
           )}
         />
+
+        {/* Progress Bar */}
         <View style={styles.progressContainer}>
           <View style={styles.progressBar}>
             <View

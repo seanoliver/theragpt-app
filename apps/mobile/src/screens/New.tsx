@@ -16,7 +16,7 @@ export function NewStatementScreen() {
 
   const handleSave = async () => {
     if (text.trim() && service) {
-      const statement = await service.createStatement({
+      const statement = await service.create({
         text: text.trim(),
       })
       router.push(`/daily?statementId=${statement.id}`)

@@ -1,4 +1,4 @@
-import StatementView from '../src/screens/StatementView';
+import StatementView from '../src/screens/StatementDetail/StatementView';
 
 export default function Page() {
   return <StatementView />;
