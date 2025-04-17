@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ManifestoScreen } from '../src/screens/Manifesto/Manifesto'
 import { router } from 'expo-router'
-import { ONBOARDING_KEY } from '../src/screens/Onboarding/constants'
+import React, { useEffect, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { ManifestoScreen } from '../src/screens/Manifesto/Manifesto'
+import { ONBOARDING_KEY } from '../src/screens/Onboarding/constants'
 
 export default function Page() {
   const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(

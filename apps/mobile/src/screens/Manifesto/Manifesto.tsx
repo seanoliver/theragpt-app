@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors, tokens } from '../../../lib/theme'
@@ -33,9 +33,8 @@ export function ManifestoScreen() {
           keyboardShouldPersistTaps="handled"
         >
           {statements.map((statement, index) => (
-            <>
+            <React.Fragment key={statement.id}>
               <StatementLineItem
-                key={statement.id}
                 statement={statement}
                 onArchive={() => handleArchive(statement.id)}
                 onDelete={() => handleDelete(statement.id)}
@@ -50,7 +49,7 @@ export function ManifestoScreen() {
                   }}
                 />
               )}
-            </>
+            </React.Fragment>
           ))}
         </ScrollView>
       </View>
