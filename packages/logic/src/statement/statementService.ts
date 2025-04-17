@@ -148,6 +148,11 @@ export class StatementService {
     return statements.filter(a => a.isActive)
   }
 
+  async getArchived(): Promise<Statement[]> {
+    const statements = await this.getAll()
+    return statements.filter(a => !a.isActive)
+  }
+
   async deleteStatement(id: string): Promise<void> {
     const statements = await this.getAll()
     const index = statements.findIndex(a => a.id === id)

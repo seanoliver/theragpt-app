@@ -1,9 +1,9 @@
-import { useRef } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, tokens } from '../../../lib/theme';
-import { useStatementService } from '../../hooks/useStatementService';
-import { StatementLineItem } from './components/StatementLineItem';
+import { useRef } from 'react'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { colors, tokens } from '../../../lib/theme'
+import { useStatementService } from '../../hooks/useStatementService'
+import { StatementLineItem } from './components/StatementLineItem'
 
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()
@@ -28,7 +28,10 @@ export function ManifestoScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
-        <ScrollView style={styles.statementsList} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          style={styles.statementsList}
+          keyboardShouldPersistTaps="handled"
+        >
           {statements.map((statement, index) => (
             <>
               <StatementLineItem

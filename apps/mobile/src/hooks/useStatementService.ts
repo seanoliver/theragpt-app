@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { statementService } from '@still/logic/src/statement/statementService'
 import { Statement } from '@still/logic/src/statement/statementService'
 
-export function useStatementService() {
+export function useStatementService(archived: boolean = false) {
   const [ready, setReady] = useState(false)
   const [statements, setStatements] = useState<Statement[] | null>(null)
 
@@ -11,14 +11,17 @@ export function useStatementService() {
     let unsubscribe: (() => void) | undefined
 
     const initAndLoad = async () => {
-      const allStatements = await statementService.init()
-
+      await statementService.init()
       if (!mounted) return
 
       setReady(true)
 
-      const activeStatements = allStatements.filter(s => s.isActive)
-      setStatements(activeStatements)
+      const fetchedStatements = archived
+        ? statementService.getArchived
+        : statementService.getActive
+
+      // Need to .call(service) to bind 'this' to the service instance
+      setStatements(await fetchedStatements.call(statementService))
 
       unsubscribe = statementService.subscribe(stmts => {
         if (mounted) setStatements(stmts.filter(s => s.isActive))
