@@ -5,17 +5,17 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  html-entities:
-    hash: 513c201dfce681599e916c6560b46ae401d72b7ad281b6062347f616bedb4565
-    path: patches/html-entities.patch
+  html-entities@2.5.3:
+    hash: dcc02fa5922b10e4d15d6c7dc84eb9b63ecdeb040aa7d08635a18fe80e75b79a
+    path: patches/html-entities@2.5.3.patch
 
 importers:
 
   .:
     dependencies:
       html-entities:
-        specifier: ^2.6.0
-        version: 2.6.0(patch_hash=513c201dfce681599e916c6560b46ae401d72b7ad281b6062347f616bedb4565)
+        specifier: ^2.5.3
+        version: 2.5.3(patch_hash=dcc02fa5922b10e4d15d6c7dc84eb9b63ecdeb040aa7d08635a18fe80e75b79a)
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -964,7 +964,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
 
   '@expo/cli@0.22.26':
     resolution: {integrity: sha512-I689wc8Fn/AX7aUGiwrh3HnssiORMJtR2fpksX+JIe8Cj/EDleblYMSwRPd0025wrwOV9UN1KM/RuEt/QjCS3Q==}
@@ -3116,6 +3116,9 @@ packages:
   hosted-git-info@7.0.2:
     resolution: {integrity: sha512-puUZAUKT5m8Zzvs72XWy3HtvVbTWljRE66cP60bxJzAqf2DgICo7lYTY2IHUmLnNpjYvw5bvmoHvPc0QO2a62w==}
     engines: {node: ^16.14.0 || >=18.0.0}
+
+  html-entities@2.5.3:
+    resolution: {integrity: sha512-D3AfvN7SjhTgBSA8L1BN4FpPzuEd06uy4lHwSoRWr0lndi9BKaNzPLKGOWZ2ocSGguozr08TTb2jhCLHaemruw==}
 
   html-entities@2.6.0:
     resolution: {integrity: sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==}
@@ -8751,7 +8754,7 @@ snapshots:
       awesome-phonenumber: 5.11.0
       classnames: 2.5.0
       clipboard: 2.0.11
-      html-entities: 2.6.0(patch_hash=513c201dfce681599e916c6560b46ae401d72b7ad281b6062347f616bedb4565)
+      html-entities: 2.6.0
       jquery: 3.6.0
       localforage: 1.10.0
       lodash: 4.17.21
@@ -9227,7 +9230,9 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
 
-  html-entities@2.6.0(patch_hash=513c201dfce681599e916c6560b46ae401d72b7ad281b6062347f616bedb4565): {}
+  html-entities@2.5.3(patch_hash=dcc02fa5922b10e4d15d6c7dc84eb9b63ecdeb040aa7d08635a18fe80e75b79a): {}
+
+  html-entities@2.6.0: {}
 
   http-errors@2.0.0:
     dependencies:
