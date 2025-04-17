@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useRef } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, tokens } from '../../../lib/theme';
 import { useStatementService } from '../../hooks/useStatementService';
@@ -17,11 +18,15 @@ export function ManifestoScreen() {
 
   // TODO: Add archive and delete functionality
 
+  const handleDelete = (statementId: string) => {
+    service.deleteStatement(statementId)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
-        <ScrollView style={styles.statementsList}>
+        <ScrollView style={styles.statementsList} keyboardShouldPersistTaps="handled">
           {statements.map((statement, index) => (
             <>
               <StatementLineItem

@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Statement } from '@still/logic/src/statement/types'
+import { Statement } from '@still/logic/src/statement/statementService'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -44,7 +44,7 @@ export default function StatementView() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await service.updateStatement({
+              await service.update({
                 id: statement.id,
                 isActive: false,
               })
@@ -61,7 +61,7 @@ export default function StatementView() {
 
   const handleSaveStatement = async (newText: string) => {
     if (service && statement && newText !== statement.text) {
-      await service.updateStatement({ id: statement.id, text: newText })
+      await service.update({ id: statement.id, text: newText })
     }
   }
 

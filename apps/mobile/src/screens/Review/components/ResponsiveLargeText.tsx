@@ -22,6 +22,7 @@ export const ResponsiveLargeText = ({
   const [lineHeight, setLineHeight] = useState(DEFAULT_LINE_HEIGHT)
   const [contentHeight, setContentHeight] = useState(0)
   const [didFit, setDidFit] = useState(false)
+
   const contentMeasured = useRef(false)
 
   const handleLayout = useCallback(
@@ -77,7 +78,6 @@ export const ResponsiveLargeText = ({
   )
 
   const shouldScroll = contentHeight > containerHeight
-  console.log('contentHeight', contentHeight, containerHeight)
 
   return (
     <View

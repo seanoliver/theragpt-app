@@ -1,9 +1,17 @@
 import { useRef, useState } from 'react'
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { colors } from '../../../../lib/theme'
+import { InputMenuBar } from '../../../shared/InputMenuBar'
 
 const TEXT_SIZE = 16
 const LINE_HEIGHT = 24
+
 interface EditableOnTapProps {
   value: string
   onChange: (text: string) => void
@@ -25,6 +33,7 @@ export function EditableOnTap({
 }: EditableOnTapProps) {
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<TextInput>(null)
+  const inputAccessoryViewID = 'uniqueID-TapEditorWrapper'
 
   const handleTextPress = () => {
     setIsEditing(true)
@@ -54,16 +63,25 @@ export function EditableOnTap({
             style={[styles.text]}
             autoFocus={autoFocus}
             onBlur={handleBlur}
-            blurOnSubmit
             multiline={multiline}
             onSubmitEditing={handleSubmitEditing}
             selectionColor={colors.text.primary}
-            returnKeyType="done"
+            returnKeyType="default"
             placeholder="Edit statement..."
             placeholderTextColor="#888"
+            keyboardAppearance="dark"
+            inputAccessoryViewID={
+              Platform.OS === 'ios' ? inputAccessoryViewID : undefined
+            }
           />
+          {Platform.OS === 'ios' && (
+            <InputMenuBar
+              inputRef={inputRef}
+              inputAccessoryViewID={inputAccessoryViewID}
+            />
+          )}
           {markdownPreview && (
-            <View style={{ opacity: 0.9, marginTop: 8 }}>
+            <View style={{ opacity: 0.6, marginTop: 8 }}>
               {markdownPreview}
             </View>
           )}

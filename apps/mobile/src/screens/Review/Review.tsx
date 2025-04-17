@@ -31,7 +31,13 @@ export function ReviewScreen() {
           scrollAnimationDuration={500}
           style={{ alignSelf: 'center' }}
           onSnapToItem={setCurrentIndex}
-          renderItem={({ item }) => <ResponsiveLargeText text={item.text} containerWidth={REVIEW_SCREEN_WIDTH * 0.9} containerHeight={REVIEW_SCREEN_HEIGHT * 0.5} />}
+          renderItem={({ item }) => (
+            <ResponsiveLargeText
+              text={item.text}
+              containerWidth={REVIEW_SCREEN_WIDTH * 0.9}
+              containerHeight={REVIEW_SCREEN_HEIGHT * 0.5}
+            />
+          )}
         />
 
         {/* Progress Bar */}

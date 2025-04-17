@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { statementService } from '@still/logic/src/statement/statementService'
-import { Statement } from '@still/logic/src/statement/types'
+import { Statement } from '@still/logic/src/statement/statementService'
 
 export function useStatementService() {
   const [ready, setReady] = useState(false)

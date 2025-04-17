@@ -2,16 +2,34 @@ import { v4 as uuidv4 } from 'uuid'
 import { StorageService, storageService } from '../sync/storage'
 import { NotFoundError } from '../utils/error'
 import { logger } from '../utils/logger'
-import {
-  CreateStatementParams,
-  Statement,
-  UpdateStatementParams,
-} from './types'
+
+export interface Statement {
+  id: string
+  text: string
+  createdAt: number
+  lastReviewed: number | null
+  isActive: boolean
+  isFavorite: boolean
+  tags: string[]
+}
+
+export interface UpdateStatementParams {
+  id: string
+  text?: string
+  isActive?: boolean
+  isFavorite?: boolean
+  tags?: string[]
+}
+
+export interface CreateStatementParams {
+  text: string
+  tags?: string[]
+}
 
 const DEFAULT_STATEMENTS = [
   `I know the key to success is always to take action, **even when I don't feel ready for it**.`,
   `I know that **what I react to in others, I strengthen in myself**. I focus all of my energy on the current moment, so that I can consistently act with **calm, intention, and thoughtfulness**.`,
-  `I know which actions bring me closer to my goals and which ones take me away from them. I focus on the former and work to eliminate the latter. Currently, these actions include:\n- spending **high quality time** with Tina, Mika, and Kai,\n- giving Tina's reactions and feedback the **sincere attention** they deserve,\n- **physical fitness**,\n- **mindful meditation**,\n- **conscious and purposeful eating**,\n- **curating exceptional notes**,\n- **writing**,\n- **building and learning,**\n- setting a **realistic and achievable daily intention**, and\n- reading this personal manifesto with the **knowing conviction** that its words are true.`,
+  `I know which actions bring me closer to my goals and which ones take me away from them. I focus on the former and work to eliminate the latter. Currently, these actions include:\n- **excercise**,\n- **meditation**,\n- **conscious and purposeful** eating,\n- taking **exceptional** notes,\n- **writing**,**\n- setting a **realistic and achievable** daily to do list, and\n- reading this personal manifesto with the **knowing conviction** that its words are true.`,
   `I know that **alcohol and drugs take me away from my goals** by sapping my energy, my creativity, my compassion, and my capacity for mindfulness.`,
   `I create positive habits, and I know that **progress comes little by little**. By making a 1% improvement every day, I will change my life dramatically over time.`,
   `I do not get down about my mistakes as they are proof that I am trying. The more I practice trying, failing, and learning, the easier it will become. I know **the only thing that counts is what I do from now on**.`,
@@ -21,7 +39,7 @@ const DEFAULT_STATEMENTS = [
   `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and **my dreams will not work unless I do**.`,
 ]
 
-type StatementsListener = (statements: Statement[]) => void;
+type StatementsListener = (statements: Statement[]) => void
 
 export class StatementService {
   private storageService: StorageService
@@ -47,9 +65,9 @@ export class StatementService {
    * Initializes the service with default statements if none exist
    * NOTE: Must be called before using the service
    */
-  public async init(): Promise<Statement[]> {
+  async init(): Promise<Statement[]> {
     try {
-      const existingStatements = await this.getAllStatements()
+      const existingStatements = await this.getAll()
       if (existingStatements.length === 0) {
         const defaultStatements = DEFAULT_STATEMENTS.map(text => ({
           id: uuidv4(),
@@ -72,12 +90,7 @@ export class StatementService {
     }
   }
 
-  /**
-   * Creates a new statement
-   * @param params Statement creation parameters
-   * @returns The created statement
-   */
-  async createStatement(params: CreateStatementParams): Promise<Statement> {
+  async create(params: CreateStatementParams): Promise<Statement> {
     const statement: Statement = {
       id: uuidv4(),
       text: params.text,
@@ -88,7 +101,7 @@ export class StatementService {
       tags: params.tags || [],
     }
 
-    const statements = await this.getAllStatements()
+    const statements = await this.getAll()
     statements.push(statement)
     await this.saveAllStatements(statements)
     this.notifyListeners(statements)
@@ -96,13 +109,8 @@ export class StatementService {
     return statement
   }
 
-  /**
-   * Updates an existing statement
-   * @param params Statement update parameters
-   * @returns The updated statement
-   */
-  async updateStatement(params: UpdateStatementParams): Promise<Statement> {
-    const statements = await this.getAllStatements()
+  async update(params: UpdateStatementParams): Promise<Statement> {
+    const statements = await this.getAll()
     const index = statements.findIndex(a => a.id === params.id)
 
     if (index === -1) {
@@ -123,11 +131,7 @@ export class StatementService {
     return statements[index]
   }
 
-  /**
-   * Gets all statements
-   * @returns Array of statements
-   */
-  async getAllStatements(): Promise<Statement[]> {
+  async getAll(): Promise<Statement[]> {
     try {
       const data = await this.storageService.getItem<Statement[]>(
         this.storageKey,
@@ -139,19 +143,21 @@ export class StatementService {
     }
   }
 
-  /**
-   * Gets active statements
-   * @returns Array of active statements
-   */
-  async getActiveStatements(): Promise<Statement[]> {
-    const statements = await this.getAllStatements()
+  async getActive(): Promise<Statement[]> {
+    const statements = await this.getAll()
     return statements.filter(a => a.isActive)
   }
 
-  /**
-   * Saves all statements to storage
-   * @param statements The statements to save
-   */
+  async deleteStatement(id: string): Promise<void> {
+    const statements = await this.getAll()
+    const index = statements.findIndex(a => a.id === id)
+    if (index !== -1) {
+      statements.splice(index, 1)
+      await this.saveAllStatements(statements)
+      this.notifyListeners(statements)
+    }
+  }
+
   private async saveAllStatements(statements: Statement[]): Promise<void> {
     try {
       await this.storageService.setItem(this.storageKey, statements)

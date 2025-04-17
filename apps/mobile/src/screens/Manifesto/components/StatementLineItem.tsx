@@ -1,10 +1,10 @@
-import { Statement } from '@still/logic/src/statement/types';
-import { useMemo, useState } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
-import Markdown from 'react-native-markdown-display';
-import Animated from 'react-native-reanimated';
-import { colors } from '../../../../lib/theme';
-import { SwipeMenu } from './SwipeMenuWrapper';
+import { Statement } from '@still/logic/src/statement/statementService'
+import { useMemo, useState } from 'react'
+import { StyleSheet, View, ViewStyle } from 'react-native'
+import Markdown from 'react-native-markdown-display'
+import Animated from 'react-native-reanimated'
+import { colors } from '../../../../lib/theme'
+import { SwipeMenu } from './SwipeMenuWrapper'
 import { EditableOnTap } from './TapEditorWrapper';
 
 interface StatementLineItemProps {

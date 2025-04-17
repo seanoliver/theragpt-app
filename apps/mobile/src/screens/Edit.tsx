@@ -1,4 +1,4 @@
-import { Statement } from '@still/logic/src/statement/types'
+import { Statement } from '@still/logic/src/statement/statementService'
 import { Link, router, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import {
@@ -29,7 +29,7 @@ export function EditStatementScreen() {
 
   const handleSave = async () => {
     if (statement && service) {
-      await service.updateStatement({
+      await service.update({
         id: statement.id,
         text,
       })
