@@ -20,6 +20,10 @@ export function ManifestoScreen() {
     service.deleteStatement(statementId)
   }
 
+  const handleArchive = (statementId: string) => {
+    service.update({ id: statementId, isActive: false })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -30,7 +34,7 @@ export function ManifestoScreen() {
               <StatementLineItem
                 key={statement.id}
                 statement={statement}
-                onArchive={() => {}}
+                onArchive={() => handleArchive(statement.id)}
                 onDelete={() => handleDelete(statement.id)}
               />
               {index < statements.length - 1 && (
