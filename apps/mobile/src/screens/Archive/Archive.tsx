@@ -41,9 +41,8 @@ export function ArchiveScreen() {
           keyboardShouldPersistTaps="handled"
         >
           {statements.map((statement, index) => (
-            <>
+            <React.Fragment key={statement.id}>
               <ArchiveLineItem
-                key={statement.id}
                 statement={statement}
                 onArchive={() =>
                   service.update({ id: statement.id, isActive: true })
@@ -64,7 +63,7 @@ export function ArchiveScreen() {
                   }}
                 />
               )}
-            </>
+            </React.Fragment>
           ))}
         </ScrollView>
       )}
