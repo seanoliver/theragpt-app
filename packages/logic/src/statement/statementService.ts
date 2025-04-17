@@ -24,6 +24,7 @@ export interface UpdateStatementParams {
 export interface CreateStatementParams {
   text: string
   tags?: string[]
+  isActive?: boolean
 }
 
 const DEFAULT_STATEMENTS = [
@@ -96,7 +97,7 @@ export class StatementService {
       text: params.text,
       createdAt: Date.now(),
       lastReviewed: null,
-      isActive: true,
+      isActive: params.isActive ?? true,
       isFavorite: false,
       tags: params.tags || [],
     }
@@ -148,6 +149,11 @@ export class StatementService {
     return statements.filter(a => a.isActive)
   }
 
+  async getArchived(): Promise<Statement[]> {
+    const statements = await this.getAll()
+    return statements.filter(a => !a.isActive)
+  }
+
   async deleteStatement(id: string): Promise<void> {
     const statements = await this.getAll()
     const index = statements.findIndex(a => a.id === id)
@@ -164,6 +170,24 @@ export class StatementService {
     } catch (error) {
       logger.error('Error saving statements to storage', error as Error)
     }
+  }
+
+  /**
+   * Filter statements to only include active ones.
+   * Unlike getActive(), this method works on an in-memory array without accessing storage,
+   * making it more efficient for subscription handlers that already have the data.
+   */
+  filterActive(statements: Statement[]): Statement[] {
+    return statements.filter(s => s.isActive)
+  }
+
+  /**
+   * Filter statements to only include archived ones.
+   * Unlike getArchived(), this method works on an in-memory array without accessing storage,
+   * making it more efficient for subscription handlers that already have the data.
+   */
+  filterArchived(statements: Statement[]): Statement[] {
+    return statements.filter(s => !s.isActive)
   }
 }
 

@@ -23,6 +23,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.7.1",
   "dependencies": {
+    "html-entities": "2.5.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "uuid": "^11.1.0",

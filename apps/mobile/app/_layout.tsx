@@ -64,9 +64,9 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
-          name="library"
+          name="archive"
           options={{
-            title: 'Backlog',
+            title: 'Archive',
             tabBarIcon: ({ color }) => (
               <FontAwesome name="archive" size={22} color={color} />
             ),

@@ -4,10 +4,10 @@ import { StyleSheet, View, ViewStyle } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import Animated from 'react-native-reanimated'
 import { colors } from '../../../../lib/theme'
-import { SwipeMenu } from './SwipeMenuWrapper'
-import { EditableOnTap } from './TapEditorWrapper';
+import { SwipeMenu } from '../../Manifesto/components/SwipeMenuWrapper'
+import { EditableOnTap } from '../../Manifesto/components/TapEditorWrapper'
 
-interface StatementLineItemProps {
+interface ArchiveLineItemProps {
   statement: Statement
   size?: 'sm' | 'lg'
   style?: ViewStyle
@@ -16,11 +16,11 @@ interface StatementLineItemProps {
   editable?: boolean
   onSave?: (newText: string) => void
   onArchive: () => void
-  onDelete: (id: string) => void
+  onDelete: () => void
   autoFocus?: boolean
 }
 
-export const StatementLineItem = ({
+export const ArchiveLineItem = ({
   statement,
   size = 'sm',
   style,
@@ -30,7 +30,7 @@ export const StatementLineItem = ({
   onArchive,
   onDelete,
   autoFocus,
-}: StatementLineItemProps) => {
+}: ArchiveLineItemProps) => {
   const textSize = size === 'lg' ? 28 : 16
   const lineHeight = size === 'lg' ? 40 : 24
 
@@ -82,7 +82,7 @@ export const StatementLineItem = ({
   )
 
   return (
-    <SwipeMenu onArchive={onArchive} onDelete={() => onDelete(statement.id)}>
+    <SwipeMenu onArchive={onArchive} onDelete={onDelete}>
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>
@@ -105,7 +105,6 @@ export const StatementLineItem = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Remove card-like margin
     marginBottom: 0,
     backgroundColor: colors.charcoal[100],
   },

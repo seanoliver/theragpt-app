@@ -1,4 +1,6 @@
 packages:
-  - 'apps/*'
-  - 'packages/config'
-  - 'packages/logic'
+  - apps/*
+  - packages/config
+  - packages/logic
+patchedDependencies:
+  html-entities@2.5.3: patches/html-entities@2.5.3.patch

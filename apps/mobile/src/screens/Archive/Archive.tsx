@@ -1,53 +1,53 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { Link } from 'expo-router'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors, tokens } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
-import { StatementLineItem } from './components/StatementLineItem'
 import { FAB } from '../../shared/FAB'
-import { Ionicons } from '@expo/vector-icons'
+import { ArchiveEmptyState } from './components/ArchiveEmptyState'
+import { ArchiveLineItem } from './components/ArchiveLineItem'
+import React, { useState } from 'react'
 
-export function ManifestoScreen() {
-  const { service, statements } = useStatementService()
+export function ArchiveScreen() {
+  const { service, statements } = useStatementService(true)
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
   if (!service || !statements) {
     return (
       <View style={styles.container}>
-        <Text style={styles.subtitle}>Loading...</Text>
+        <Text style={styles.header}>Loading...</Text>
       </View>
     )
   }
 
-  const handleDelete = (statementId: string) => {
-    service.deleteStatement(statementId)
-  }
-
-  const handleArchive = (statementId: string) => {
-    service.update({ id: statementId, isActive: false })
-  }
+  const isEmpty = statements.length === 0
 
   const handleAddStatement = async () => {
     if (!service) return
-    const newStatement = await service.create({ text: '', isActive: true })
+    const newStatement = await service.create({ text: '', isActive: false })
     setNewlyCreatedId(newStatement.id)
   }
 
-  console.log('ManifestoScreen rendered')
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.subtitle}>Your Manifesto</Text>
+      <Text style={styles.subtitle}>Archive</Text>
+
+      {isEmpty ? (
+        <ArchiveEmptyState />
+      ) : (
         <ScrollView
           style={styles.statementsList}
           keyboardShouldPersistTaps="handled"
         >
           {statements.map((statement, index) => (
             <React.Fragment key={statement.id}>
-              <StatementLineItem
+              <ArchiveLineItem
                 statement={statement}
-                onArchive={() => handleArchive(statement.id)}
-                onDelete={() => handleDelete(statement.id)}
+                onArchive={() =>
+                  service.update({ id: statement.id, isActive: true })
+                }
+                onDelete={() => service.deleteStatement(statement.id)}
                 autoFocus={statement.id === newlyCreatedId}
                 onSave={() => {
                   if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
@@ -66,7 +66,8 @@ export function ManifestoScreen() {
             </React.Fragment>
           ))}
         </ScrollView>
-      </View>
+      )}
+
       <FAB onPress={handleAddStatement}>
         <Ionicons name="add" size={32} color={colors.charcoal[100]} />
       </FAB>
@@ -105,5 +106,24 @@ const styles = StyleSheet.create({
   statementsList: {
     flex: 1,
     paddingRight: 4,
+  },
+  fabContainer: {
+    position: 'absolute',
+    right: 24,
+    bottom: 32,
+    zIndex: 10,
+  },
+  fabButton: {
+    backgroundColor: colors.text.primary,
+    width: 48,
+    height: 48,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 })

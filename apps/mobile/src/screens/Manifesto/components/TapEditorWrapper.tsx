@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import {
   Platform,
   StyleSheet,
@@ -34,6 +34,15 @@ export function EditableOnTap({
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<TextInput>(null)
   const inputAccessoryViewID = 'uniqueID-TapEditorWrapper'
+
+  useEffect(() => {
+    if (autoFocus) {
+      setIsEditing(true)
+      setTimeout(() => {
+        inputRef.current?.focus?.()
+      }, 100)
+    }
+  }, [autoFocus])
 
   const handleTextPress = () => {
     setIsEditing(true)
