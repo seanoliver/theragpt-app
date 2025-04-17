@@ -4,9 +4,9 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '../../lib/theme'
-import { useStatementService } from '../hooks/useStatementService'
-import { RenderedStatement } from '../shared/RenderedStatement'
+import { colors } from '../../../lib/theme'
+import { useStatementService } from '../../hooks/useStatementService'
+import { StatementLineItem } from '../Manifesto/components/StatementLineItem'
 
 export default function StatementView() {
   const router = useRouter()
@@ -93,10 +93,12 @@ export default function StatementView() {
 
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <RenderedStatement
+          <StatementLineItem
             statement={statement}
             size="lg"
             onSave={handleSaveStatement}
+            onArchive={() => {}}
+            onDelete={() => {}}
           />
         </View>
 

@@ -1,10 +1,8 @@
-import { Statement } from '@still/logic/src/statement/types';
-import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, tokens } from '../../lib/theme';
-import { useStatementService } from '../hooks/useStatementService';
-import { RenderedStatement } from '../shared/RenderedStatement';
+import { colors, tokens } from '../../../lib/theme';
+import { useStatementService } from '../../hooks/useStatementService';
+import { StatementLineItem } from './components/StatementLineItem';
 
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()
@@ -17,6 +15,8 @@ export function ManifestoScreen() {
     )
   }
 
+  // TODO: Add archive and delete functionality
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -24,7 +24,12 @@ export function ManifestoScreen() {
         <ScrollView style={styles.statementsList}>
           {statements.map((statement, index) => (
             <>
-              <RenderedStatement key={statement.id} statement={statement} />
+              <StatementLineItem
+                key={statement.id}
+                statement={statement}
+                onArchive={() => {}}
+                onDelete={() => {}}
+              />
               {index < statements.length - 1 && (
                 <View
                   style={{
