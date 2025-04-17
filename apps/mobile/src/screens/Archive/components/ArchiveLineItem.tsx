@@ -16,7 +16,7 @@ interface ArchiveLineItemProps {
   editable?: boolean
   onSave?: (newText: string) => void
   onArchive: () => void
-  onDelete: (id: string) => void
+  onDelete: () => void
   autoFocus?: boolean
 }
 
@@ -82,7 +82,7 @@ export const ArchiveLineItem = ({
   )
 
   return (
-    <SwipeMenu onArchive={onArchive} onDelete={() => onDelete(statement.id)}>
+    <SwipeMenu onArchive={onArchive} onDelete={onDelete}>
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>
@@ -105,7 +105,6 @@ export const ArchiveLineItem = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Remove card-like margin
     marginBottom: 0,
     backgroundColor: colors.charcoal[100],
   },
