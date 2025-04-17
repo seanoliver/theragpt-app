@@ -25,7 +25,6 @@ export const StatementLineItem = ({
   style,
   animatedStyle,
   containerStyle,
-  editable = true,
   onSave,
   onArchive,
   onDelete,
@@ -81,7 +80,7 @@ export const StatementLineItem = ({
   )
 
   return (
-    <SwipeMenu onArchive={onArchive} onDelete={onDelete}>
+    <SwipeMenu onArchive={onArchive} onDelete={() => onDelete(statement.id)}>
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>

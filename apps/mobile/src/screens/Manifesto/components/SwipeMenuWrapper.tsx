@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { colors } from '../../../../lib/theme'
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
 
@@ -76,7 +76,9 @@ const ActionWrapper = ({
         height: '100%',
       }}
     >
-      <View
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={onPress}
         style={{
           backgroundColor,
           height: '100%',
@@ -91,11 +93,10 @@ const ActionWrapper = ({
             fontWeight: 'bold',
             fontSize: 16,
           }}
-          onPress={onPress}
         >
           {children}
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }
