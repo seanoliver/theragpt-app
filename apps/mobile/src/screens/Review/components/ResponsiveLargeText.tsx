@@ -1,7 +1,7 @@
 import { colors } from '@/apps/mobile/lib/theme'
 import Markdown from 'react-native-markdown-display'
 import React, { useState, useCallback, useRef } from 'react'
-import { View, LayoutChangeEvent, ScrollView } from 'react-native'
+import { View, LayoutChangeEvent, ScrollView, StyleSheet } from 'react-native'
 
 interface ResponsiveLargeTextProps {
   text: string
@@ -42,7 +42,7 @@ export const ResponsiveLargeText = ({
   )
 
   const content = (
-    <View onLayout={handleLayout} key={fontSize}>
+    <View onLayout={handleLayout} key={fontSize} style={styles.container}>
       <Markdown
         style={{
           text: {
@@ -77,6 +77,7 @@ export const ResponsiveLargeText = ({
   )
 
   const shouldScroll = contentHeight > containerHeight
+  console.log('contentHeight', contentHeight, containerHeight)
 
   return (
     <View
@@ -101,3 +102,9 @@ export const ResponsiveLargeText = ({
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+})

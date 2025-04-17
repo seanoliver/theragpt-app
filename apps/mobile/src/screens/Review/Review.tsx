@@ -25,7 +25,7 @@ export function ReviewScreen() {
       <View style={styles.statementContainer}>
         {/* Carousel */}
         <Carousel
-          width={REVIEW_SCREEN_WIDTH * 0.7}
+          width={REVIEW_SCREEN_WIDTH * 0.9}
           height={REVIEW_SCREEN_HEIGHT * 0.5}
           data={statements}
           scrollAnimationDuration={500}
