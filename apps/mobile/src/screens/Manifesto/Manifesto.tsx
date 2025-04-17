@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors, tokens } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { StatementLineItem } from './components/StatementLineItem'
+import { FAB } from '../../shared/FAB'
+import { Ionicons } from '@expo/vector-icons'
 
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()
+  const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
   if (!service || !statements) {
     return (
@@ -24,6 +27,13 @@ export function ManifestoScreen() {
     service.update({ id: statementId, isActive: false })
   }
 
+  const handleAddStatement = async () => {
+    if (!service) return
+    const newStatement = await service.create({ text: '', isActive: true })
+    setNewlyCreatedId(newStatement.id)
+  }
+
+  console.log('ManifestoScreen rendered')
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -38,6 +48,10 @@ export function ManifestoScreen() {
                 statement={statement}
                 onArchive={() => handleArchive(statement.id)}
                 onDelete={() => handleDelete(statement.id)}
+                autoFocus={statement.id === newlyCreatedId}
+                onSave={() => {
+                  if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
+                }}
               />
               {index < statements.length - 1 && (
                 <View
@@ -53,6 +67,9 @@ export function ManifestoScreen() {
           ))}
         </ScrollView>
       </View>
+      <FAB onPress={handleAddStatement}>
+        <Ionicons name="add" size={32} color={colors.charcoal[100]} />
+      </FAB>
     </SafeAreaView>
   )
 }

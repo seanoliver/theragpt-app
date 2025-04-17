@@ -17,6 +17,7 @@ interface StatementLineItemProps {
   onSave?: (newText: string) => void
   onArchive: () => void
   onDelete: (id: string) => void
+  autoFocus?: boolean
 }
 
 export const StatementLineItem = ({
@@ -28,6 +29,7 @@ export const StatementLineItem = ({
   onSave,
   onArchive,
   onDelete,
+  autoFocus,
 }: StatementLineItemProps) => {
   const textSize = size === 'lg' ? 28 : 16
   const lineHeight = size === 'lg' ? 40 : 24
@@ -89,6 +91,7 @@ export const StatementLineItem = ({
               onChange={setText}
               onSave={handleSave}
               markdownPreview={markdownPreview}
+              autoFocus={autoFocus}
             >
               {markdownPreview}
             </EditableOnTap>

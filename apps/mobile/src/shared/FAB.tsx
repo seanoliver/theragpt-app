@@ -24,32 +24,38 @@ interface FABProps {
 }
 
 export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
-  const segments = useSegments()
-  const currentTab = segments[0]
+  const segments = useSegments() as any[] // To fix annoying type error
+
+  const currentTab: string =
+    segments.length === 0 ? 'index' : String(segments[0])
   const prevTab = usePrevious(currentTab)
   const visible = useSharedValue(1)
+
+  console.log('FAB segments:', segments, 'currentTab:', currentTab)
+
+  const isManifestoOrArchive =
+    currentTab === MANIFESTO_TAB || currentTab === ARCHIVE_TAB
 
   useEffect(() => {
     if (
       (prevTab === MANIFESTO_TAB || prevTab === ARCHIVE_TAB) &&
-      (currentTab === MANIFESTO_TAB || currentTab === ARCHIVE_TAB)
+      isManifestoOrArchive
     ) {
       visible.value = withTiming(1)
-    } else if (currentTab === MANIFESTO_TAB || currentTab === ARCHIVE_TAB) {
+    } else if (isManifestoOrArchive) {
       visible.value = withTiming(1)
     } else {
       visible.value = withTiming(0)
     }
   }, [currentTab, prevTab])
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: visible.value,
-    transform: [
-      {
-        translateY: visible.value ? withTiming(0) : withTiming(40),
-      },
-    ],
-  }))
+  const animatedStyle = useAnimatedStyle(() => {
+    const translateY = visible.value === 1 ? 0 : 40
+    return {
+      opacity: visible.value,
+      transform: [{ translateY }],
+    }
+  })
 
   return (
     <Animated.View style={[styles.fabContainer, animatedStyle, style]}>
