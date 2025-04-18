@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { Swipeable } from 'react-native-gesture-handler';
 
 export interface SwipeAction {
   label: string
