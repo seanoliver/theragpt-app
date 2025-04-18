@@ -1,0 +1,80 @@
+---
+description: Creating or refactoring any moibile app frontend code (components, hooks, types, etc.)
+globs:
+alwaysApply: false
+---
+# Component Architecture for Expo App (`/apps/mobile`)
+
+This rule describes the preferred structure and practices for building components, screens, and related logic in the mobile app.
+
+## General Principles
+- **Single Responsibility:** Keep components focused on a single concern. Break down complex UI and logic into smaller, reusable pieces.
+- **DRY (Don't Repeat Yourself):** Reuse existing components, hooks, and utilities. Always check `/src/shared`, `/src/hooks`, and other screens' components before creating new ones.
+- **Hooks for Logic:** Abstract business and UI logic into hooks (see `/src/hooks`). Components should focus on rendering and layout.
+- **File Size:** Aim for no more than 500 lines per file. If a file grows too large, break it down further (not a strict limit, but a guideline).
+
+## Directory Structure
+- **Screens:**
+  - Each screen lives in `/src/screens/<ScreenName>/`.
+  - Complex screens have a `components/` subfolder for their internal components (e.g., `/src/screens/Manifesto/components/`).
+  - Screen files (e.g., `Manifesto.tsx`) should focus on layout and orchestration, delegating logic and UI to subcomponents and hooks.
+  - Place types, constants, and hooks used only by a screen/component in the same folder, but consider extracting to `/src/types`, `/src/hooks`, or `/src/shared` if reused elsewhere.
+- **Shared Components:**
+  - Components used in multiple places belong in `/src/shared/` (e.g., `FAB.tsx`, `SwipeMenu.tsx`).
+- **Hooks:**
+  - Place reusable hooks in `/src/hooks/` (e.g., `useStatementService.ts`).
+- **Types:**
+  - Place global/shared types in `/src/types/`.
+- **Theming:**
+  - Use tokens and colors from `/lib/theme.ts` for consistent styling.
+- **Constants:**
+  - Place screen-specific constants in the screen folder (e.g., `/src/screens/Onboarding/constants.ts`).
+  - Shared constants should go in a shared location if reused.
+
+## Routing
+- **Routes live in `/app/`** and are stubs: they should only handle routing and basic data fetching, then render the appropriate screen component from `/src/screens`.
+
+## Component File Structure
+- Each component file should:
+  - Export a single component (default or named export)
+  - Define its own props/types at the top
+  - Contain only the logic and styles relevant to that component
+  - Import hooks for logic abstraction
+  - Use stylesheets for styling (see usage of `StyleSheet.create`)
+  - Export any types/constants/hooks that are likely to be reused
+
+## Best Practices
+- **Favor composition over inheritance.**
+- **Bundle related files:** Keep related components, types, and constants together, but extract to shared locations if reused.
+- **Screen files should be layout-focused:** Move logic and UI details into subcomponents and hooks.
+- **Use SafeAreaView and theming tokens for consistent look and feel.**
+- **Prefer functional components and hooks.**
+- **Use TypeScript for all files.**
+
+## Example Structure
+```
+/src/screens/Manifesto/
+  Manifesto.tsx                # Main screen file (layout, orchestration)
+  components/
+    StatementLineItem.tsx      # Internal component (with its own types/logic)
+    TapEditorWrapper.tsx       # Another internal component
+/src/shared/
+  FAB.tsx                      # Floating action button, used in multiple screens
+  SwipeMenu.tsx                # Shared swipeable menu
+/src/hooks/
+  useStatementService.ts       # Logic abstraction for statements
+/src/types/
+  images.d.ts                  # Shared types
+/lib/theme.ts                  # Theming and tokens
+```
+
+## When to Create a New Component/Hook
+- Only after checking for existing solutions in `/src/shared`, `/src/hooks`, or other screens.
+- If a component or hook is reused in more than one place, move it to a shared location.
+
+## Additional Guidance
+- **Animation/UX:** Use libraries like `react-native-reanimated` for animations, but keep animation logic in hooks or small helpers.
+- **Testing:** (If tests are present) Place tests alongside components or in a `__tests__` subfolder.
+- **Assets:** Place images and static assets in `/assets/`.
+
+For more, see the [README.md](mdc:../../../../README.md) and [theme.ts](mdc:../../lib/theme.ts).
