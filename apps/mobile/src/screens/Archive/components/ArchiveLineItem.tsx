@@ -108,7 +108,6 @@ export const ArchiveLineItem = ({
               value={text}
               onChange={setText}
               onSave={handleSave}
-              markdownPreview={markdownPreview}
               autoFocus={autoFocus}
             >
               {markdownPreview}
