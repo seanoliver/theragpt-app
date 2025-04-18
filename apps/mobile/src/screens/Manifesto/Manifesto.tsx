@@ -1,29 +1,38 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import React, { useEffect, useRef, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors, tokens } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
-import { StatementLineItem } from './components/StatementLineItem'
 import { FAB } from '../../shared/FAB'
-import { Ionicons } from '@expo/vector-icons'
+import { StatementLineItem } from './components/StatementLineItem'
 
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
+  const scrollViewRef = useRef<ScrollView>(null)
 
-  if (!service || !statements) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.subtitle}>Loading...</Text>
-      </View>
-    )
-  }
+  useEffect(() => {
+    if (
+      newlyCreatedId &&
+      statements &&
+      statements.some(s => s.id === newlyCreatedId)
+    ) {
+      // Scroll to bottom after new statement is added and rendered
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true })
+      }, 100)
+    }
+  }, [newlyCreatedId, statements?.length])
 
   const handleDelete = (statementId: string) => {
+    if (!service) return
     service.deleteStatement(statementId)
   }
 
   const handleArchive = (statementId: string) => {
+    if (!service) return
     service.update({ id: statementId, isActive: false })
   }
 
@@ -33,14 +42,28 @@ export function ManifestoScreen() {
     setNewlyCreatedId(newStatement.id)
   }
 
-  console.log('ManifestoScreen rendered')
+  if (!service || !statements) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.subtitle}>Loading...</Text>
+      </View>
+    )
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.charcoal[100] }]}
+    >
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
-        <ScrollView
-          style={styles.statementsList}
+        <KeyboardAwareScrollView
+          ref={scrollViewRef}
+          style={[
+            styles.statementsList,
+            { backgroundColor: colors.charcoal[100] },
+          ]}
           keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ flexGrow: 1 }}
         >
           {statements.map((statement, index) => (
             <React.Fragment key={statement.id}>
@@ -65,7 +88,7 @@ export function ManifestoScreen() {
               )}
             </React.Fragment>
           ))}
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
       <FAB onPress={handleAddStatement}>
         <Ionicons name="add" size={32} color={colors.charcoal[100]} />

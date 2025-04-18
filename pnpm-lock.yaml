@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   html-entities:
-    hash: b6ee8e4729469c423c8306dff34f748cb8dd16f28b9063f1369912c4c08bae4f
+    hash: 13adb9cef39ba8cfab8dd720b18b2021111282b85ef4467652e7e834e9033b90
     path: patches/html-entities.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       html-entities:
         specifier: 2.5.3
-        version: 2.5.3(patch_hash=b6ee8e4729469c423c8306dff34f748cb8dd16f28b9063f1369912c4c08bae4f)
+        version: 2.5.3(patch_hash=13adb9cef39ba8cfab8dd720b18b2021111282b85ef4467652e7e834e9033b90)
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -119,6 +119,9 @@ importers:
       react-native-keyboard-aware-scroll-view:
         specifier: ^0.9.5
         version: 0.9.5(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
+      react-native-keyboard-controller:
+        specifier: ^1.17.0
+        version: 1.17.0(react-native-reanimated@3.17.4(@babel/core@7.26.10)(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-markdown-display:
         specifier: ^7.0.2
         version: 7.0.2(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -4340,6 +4343,13 @@ packages:
     resolution: {integrity: sha512-XwfRn+T/qBH9WjTWIBiJD2hPWg0yJvtaEw6RtPCa5/PYHabzBaWxYBOl0usXN/368BL1XktnZPh8C2lmTpOREA==}
     peerDependencies:
       react-native: '>=0.48.4'
+
+  react-native-keyboard-controller@1.17.0:
+    resolution: {integrity: sha512-JbpKNKStiA6Ud04dMSwObp8cCqNVk8CCb3c6TDFJVbirz+ALVulD6i8l3P6YhQGhA42Vpc3QHhuFlRtBrbQkcA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-reanimated: '>=3.0.0'
 
   react-native-markdown-display@7.0.2:
     resolution: {integrity: sha512-Mn4wotMvMfLAwbX/huMLt202W5DsdpMO/kblk+6eUs55S57VVNni1gzZCh5qpznYLjIQELNh50VIozEfY6fvaQ==}
@@ -8758,7 +8768,7 @@ snapshots:
       awesome-phonenumber: 5.11.0
       classnames: 2.5.0
       clipboard: 2.0.11
-      html-entities: 2.5.3(patch_hash=b6ee8e4729469c423c8306dff34f748cb8dd16f28b9063f1369912c4c08bae4f)
+      html-entities: 2.5.3(patch_hash=13adb9cef39ba8cfab8dd720b18b2021111282b85ef4467652e7e834e9033b90)
       jquery: 3.6.0
       localforage: 1.10.0
       lodash: 4.17.21
@@ -9232,7 +9242,7 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
 
-  html-entities@2.5.3(patch_hash=b6ee8e4729469c423c8306dff34f748cb8dd16f28b9063f1369912c4c08bae4f): {}
+  html-entities@2.5.3(patch_hash=13adb9cef39ba8cfab8dd720b18b2021111282b85ef4467652e7e834e9033b90): {}
 
   http-errors@2.0.0:
     dependencies:
@@ -10578,6 +10588,13 @@ snapshots:
       prop-types: 15.8.1
       react-native: 0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)
       react-native-iphone-x-helper: 1.3.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
+
+  react-native-keyboard-controller@1.17.0(react-native-reanimated@3.17.4(@babel/core@7.26.10)(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-native: 0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)
+      react-native-is-edge-to-edge: 1.1.7(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+      react-native-reanimated: 3.17.4(@babel/core@7.26.10)(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
 
   react-native-markdown-display@7.0.2(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
     dependencies:
