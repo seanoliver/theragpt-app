@@ -3,9 +3,18 @@ import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-get-random-values'
 import { colors } from '../lib/theme'
-import { useFonts as usePlayfairFonts, PlayfairDisplay_400Regular, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display'
-import { useFonts as useInterFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter'
+import {
+  useFonts as usePlayfairFonts,
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_700Bold,
+} from '@expo-google-fonts/playfair-display'
+import {
+  useFonts as useInterFonts,
+  Inter_400Regular,
+  Inter_700Bold,
+} from '@expo-google-fonts/inter'
 import { ActivityIndicator } from 'react-native'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 
 export default function RootLayout() {
   const [playfairLoaded] = usePlayfairFonts({
@@ -17,11 +26,16 @@ export default function RootLayout() {
     Inter_700Bold,
   })
   if (!playfairLoaded || !interLoaded) {
-    return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+    return (
+      <ActivityIndicator
+        size="large"
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      />
+    )
   }
 
   return (
-    <>
+    <KeyboardProvider>
       <StatusBar style="auto" />
       <Tabs
         screenOptions={{
@@ -106,6 +120,6 @@ export default function RootLayout() {
           }}
         />
       </Tabs>
-    </>
+    </KeyboardProvider>
   )
 }
