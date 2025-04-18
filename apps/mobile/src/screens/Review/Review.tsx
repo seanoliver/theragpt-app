@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import Carousel from 'react-native-reanimated-carousel'
+import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
 import { colors } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { ResponsiveLargeText } from './components/ResponsiveLargeText'
@@ -23,22 +23,21 @@ export function ReviewScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.statementContainer}>
-        {/* Carousel */}
-        <Carousel
-          width={REVIEW_SCREEN_WIDTH * 0.9}
-          height={REVIEW_SCREEN_HEIGHT * 0.5}
-          data={statements}
-          scrollAnimationDuration={500}
-          style={{ alignSelf: 'center' }}
-          onSnapToItem={setCurrentIndex}
-          renderItem={({ item }) => (
-            <ResponsiveLargeText
-              text={item.text}
-              containerWidth={REVIEW_SCREEN_WIDTH * 0.9}
-              containerHeight={REVIEW_SCREEN_HEIGHT * 0.5}
-            />
-          )}
-        />
+        <PagerView
+          style={{ width: REVIEW_SCREEN_WIDTH * 0.9, height: REVIEW_SCREEN_HEIGHT * 0.5, alignSelf: 'center' }}
+          initialPage={0}
+          onPageSelected={(e: PagerViewOnPageSelectedEvent) => setCurrentIndex(e.nativeEvent.position)}
+        >
+          {statements.map((item, idx) => (
+            <View key={item.id || idx} style={{ flex: 1 }}>
+              <ResponsiveLargeText
+                text={item.text}
+                containerWidth={REVIEW_SCREEN_WIDTH * 0.9}
+                containerHeight={REVIEW_SCREEN_HEIGHT * 0.5}
+              />
+            </View>
+          ))}
+        </PagerView>
 
         {/* Progress Bar */}
         <View style={styles.progressContainer}>

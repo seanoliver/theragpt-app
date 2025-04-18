@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native'
-import Carousel from 'react-native-reanimated-carousel'
+import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
 import { colors } from '../../../lib/theme'
 import { useRouter } from 'expo-router'
 import { tokens } from '../../../lib/theme'
@@ -30,15 +30,13 @@ export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
 
   return (
     <View style={styles.container}>
-      <Carousel
-        width={width * 0.9}
-        height={400}
-        data={ONBOARDING_CARDS}
-        scrollAnimationDuration={500}
-        onSnapToItem={setCurrentIndex}
-        style={{ alignSelf: 'center' }}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
+      <PagerView
+        style={{ width: width * 0.9, height: 400, alignSelf: 'center' }}
+        initialPage={0}
+        onPageSelected={(e: PagerViewOnPageSelectedEvent) => setCurrentIndex(e.nativeEvent.position)}
+      >
+        {ONBOARDING_CARDS.map((item, idx) => (
+          <View key={idx} style={styles.card}>
             {item.image && (
               <Image
                 source={item.image}
@@ -59,8 +57,8 @@ export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
               </TouchableOpacity>
             )}
           </View>
-        )}
-      />
+        ))}
+      </PagerView>
       <View style={styles.dotsContainer}>
         {ONBOARDING_CARDS.map((_, i) => (
           <View

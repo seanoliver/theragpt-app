@@ -39,5 +39,13 @@
     "prettier": "^3.5.3",
     "turbo": "^1.13.4",
     "typescript": "^5.8.3"
+  },
+  "patches": {
+    "html-entities": {
+      "2.5.3": "patches/html-entities@2.5.3.patch"
+    },
+    "@expensify/react-native-live-markdown": {
+      "0.1.267": "patches/@expensify__react-native-live-markdown.patch"
+    }
   }
 }
