@@ -4,8 +4,9 @@ import { StyleSheet, View, ViewStyle } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import Animated from 'react-native-reanimated'
 import { colors } from '../../../../lib/theme'
-import { SwipeMenu } from '../../Manifesto/components/SwipeMenuWrapper'
+import { SwipeMenu } from '../../../shared/SwipeMenu'
 import { EditableOnTap } from '../../Manifesto/components/TapEditorWrapper'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 interface ArchiveLineItemProps {
   statement: Statement
@@ -82,7 +83,24 @@ export const ArchiveLineItem = ({
   )
 
   return (
-    <SwipeMenu onArchive={onArchive} onDelete={onDelete}>
+    <SwipeMenu
+      actions={[
+        {
+          label: 'Publish',
+          icon: <FontAwesome name="arrow-up" size={20} color={colors.text.primary} />,
+          backgroundColor: colors.green[300],
+          textColor: colors.text.primary,
+          onPress: onArchive,
+        },
+        {
+          label: 'Delete',
+          icon: <Ionicons name="trash" size={20} color="#fff" />,
+          backgroundColor: '#E57373',
+          textColor: '#fff',
+          onPress: onDelete,
+        },
+      ]}
+    >
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>
