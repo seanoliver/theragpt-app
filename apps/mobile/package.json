@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.23.9",
-    "@expensify/react-native-live-markdown": "^0.1.267",
+    "@expensify/react-native-live-markdown": "0.1.267",
     "@expo-google-fonts/inter": "^0.3.0",
     "@expo-google-fonts/playfair-display": "^0.3.0",
     "@expo/vector-icons": "^14.1.0",

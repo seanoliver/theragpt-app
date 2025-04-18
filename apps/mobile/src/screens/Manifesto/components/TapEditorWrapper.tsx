@@ -1,13 +1,12 @@
 import { useRef, useState, useEffect } from 'react'
-import {
-  Platform,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors } from '../../../../lib/theme'
 import { InputMenuBar } from '../../../shared/InputMenuBar'
+import {
+  MarkdownTextInput,
+  parseExpensiMark,
+} from '@expensify/react-native-live-markdown'
+import { markdownStyle } from '@/apps/mobile/lib/markdownStyle';
 
 const TEXT_SIZE = 16
 const LINE_HEIGHT = 24
@@ -18,7 +17,6 @@ interface EditableOnTapProps {
   children: React.ReactNode
   autoFocus?: boolean
   multiline?: boolean
-  markdownPreview?: React.ReactNode
   onSave?: (newText: string) => void
 }
 
@@ -28,11 +26,10 @@ export function EditableOnTap({
   children,
   autoFocus = true,
   multiline = true,
-  markdownPreview,
   onSave,
 }: EditableOnTapProps) {
   const [isEditing, setIsEditing] = useState(false)
-  const inputRef = useRef<TextInput>(null)
+  const inputRef = useRef<any>(null)
   const inputAccessoryViewID = 'uniqueID-TapEditorWrapper'
 
   useEffect(() => {
@@ -65,11 +62,12 @@ export function EditableOnTap({
     <View style={[styles.container]}>
       {isEditing ? (
         <View style={{ flex: 1 }}>
-          <TextInput
+          <MarkdownTextInput
             ref={inputRef}
             value={value}
             onChangeText={onChange}
             style={[styles.text]}
+            markdownStyle={markdownStyle}
             autoFocus={autoFocus}
             onBlur={handleBlur}
             multiline={multiline}
@@ -82,17 +80,13 @@ export function EditableOnTap({
             inputAccessoryViewID={
               Platform.OS === 'ios' ? inputAccessoryViewID : undefined
             }
+            parser={parseExpensiMark}
           />
           {Platform.OS === 'ios' && (
             <InputMenuBar
               inputRef={inputRef}
               inputAccessoryViewID={inputAccessoryViewID}
             />
-          )}
-          {markdownPreview && (
-            <View style={{ opacity: 0.6, marginTop: 8 }}>
-              {markdownPreview}
-            </View>
           )}
         </View>
       ) : (

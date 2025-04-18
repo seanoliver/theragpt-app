@@ -4,18 +4,13 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  html-entities@2.5.3:
-    hash: a7691cdf3bf0ba8cff978daa7d0a794ec33e13339bbf2d3ba2a69589d7bed522
-    path: patches/html-entities@2.5.3.patch
-
 importers:
 
   .:
     dependencies:
       html-entities:
         specifier: 2.5.3
-        version: 2.5.3(patch_hash=a7691cdf3bf0ba8cff978daa7d0a794ec33e13339bbf2d3ba2a69589d7bed522)
+        version: 2.5.3
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -63,7 +58,7 @@ importers:
         specifier: ^7.23.9
         version: 7.27.0
       '@expensify/react-native-live-markdown':
-        specifier: ^0.1.267
+        specifier: 0.1.267
         version: 0.1.267(expensify-common@2.0.129)(react-native-reanimated@3.17.4(@babel/core@7.26.10)(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1))(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.2.79)(react@18.3.1))(react@18.3.1)
       '@expo-google-fonts/inter':
         specifier: ^0.3.0
@@ -8749,7 +8744,7 @@ snapshots:
       awesome-phonenumber: 5.11.0
       classnames: 2.5.0
       clipboard: 2.0.11
-      html-entities: 2.5.3(patch_hash=a7691cdf3bf0ba8cff978daa7d0a794ec33e13339bbf2d3ba2a69589d7bed522)
+      html-entities: 2.5.3
       jquery: 3.6.0
       localforage: 1.10.0
       lodash: 4.17.21
@@ -9225,7 +9220,7 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
 
-  html-entities@2.5.3(patch_hash=a7691cdf3bf0ba8cff978daa7d0a794ec33e13339bbf2d3ba2a69589d7bed522): {}
+  html-entities@2.5.3: {}
 
   http-errors@2.0.0:
     dependencies:
