@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ManifestoScreen } from '../src/screens/Manifesto/Manifesto'
 import { ONBOARDING_KEY } from '../src/screens/Onboarding/constants'
+import { MarkdownSandbox } from '../src/screens/MarkdownSandbox'
 
 export default function Page() {
   const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(
@@ -19,7 +20,7 @@ export default function Page() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ManifestoScreen />
+      <MarkdownSandbox />
     </GestureHandlerRootView>
   )
 }
