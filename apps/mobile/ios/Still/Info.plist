@@ -27,6 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
+          <string>still</string>
           <string>com.helloseanoliver.still</string>
         </array>
       </dict>

@@ -4,8 +4,9 @@ import { StyleSheet, View, ViewStyle } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import Animated from 'react-native-reanimated'
 import { colors } from '../../../../lib/theme'
-import { SwipeMenu } from './SwipeMenuWrapper'
+import { SwipeMenu } from '../../../shared/SwipeMenu'
 import { EditableOnTap } from './TapEditorWrapper';
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 interface StatementLineItemProps {
   statement: Statement
@@ -82,7 +83,24 @@ export const StatementLineItem = ({
   )
 
   return (
-    <SwipeMenu onArchive={onArchive} onDelete={() => onDelete(statement.id)}>
+    <SwipeMenu
+      actions={[
+        {
+          label: 'Archive',
+          icon: <FontAwesome name="archive" size={20} color={colors.text.primary} />,
+          backgroundColor: colors.charcoal[300],
+          textColor: colors.text.primary,
+          onPress: onArchive,
+        },
+        {
+          label: 'Delete',
+          icon: <Ionicons name="trash" size={20} color="#fff" />,
+          backgroundColor: '#E57373',
+          textColor: '#fff',
+          onPress: () => onDelete(statement.id),
+        },
+      ]}
+    >
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>
