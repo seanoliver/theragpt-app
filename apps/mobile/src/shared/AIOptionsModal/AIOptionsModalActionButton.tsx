@@ -3,16 +3,25 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { colors } from '@/apps/mobile/lib/theme'
 
-interface ActionButtonProps {
+interface AIOptionsModalActionButtonProps {
   onPress: () => void
   icon: keyof typeof MaterialIcons.glyphMap
   label: string
 }
 
-const ActionButton: React.FC<ActionButtonProps> = ({ onPress, icon, label }) => (
+const AIOptionsModalActionButton: React.FC<AIOptionsModalActionButtonProps> = ({
+  onPress,
+  icon,
+  label,
+}) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <View style={styles.content}>
-      <MaterialIcons name={icon} size={18} color={colors.text.primary} style={{ marginRight: 6 }} />
+      <MaterialIcons
+        name={icon}
+        size={18}
+        color={colors.text.primary}
+        style={{ marginRight: 6 }}
+      />
       <Text style={styles.text}>{label}</Text>
     </View>
   </TouchableOpacity>
@@ -40,4 +49,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ActionButton
+export default AIOptionsModalActionButton

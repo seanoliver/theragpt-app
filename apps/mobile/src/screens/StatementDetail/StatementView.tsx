@@ -6,7 +6,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
-import { StatementLineItem } from '../Manifesto/components/StatementLineItem'
+import { ManifestoItem } from '../Manifesto/ManifestoItem'
 
 export default function StatementView() {
   const router = useRouter()
@@ -93,7 +93,7 @@ export default function StatementView() {
 
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <StatementLineItem
+          <ManifestoItem
             statement={statement}
             size="lg"
             onSave={handleSaveStatement}

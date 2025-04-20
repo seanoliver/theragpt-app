@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateAlternatives } from '@still/logic/src/api'
+import { apiService } from '@still/logic/src/api'
 import { getEnvironment } from '@still/config'
 
 /**
@@ -14,13 +14,20 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
 
     if (typeof statement !== 'string' || !Array.isArray(tones)) {
       return NextResponse.json(
-        { success: false, error: 'Invalid request: statement (string) and tones (string[]) are required.' },
-        { status: 400 }
+        {
+          success: false,
+          error:
+            'Invalid request: statement (string) and tones (string[]) are required.',
+        },
+        { status: 400 },
       )
     }
 
     // Get the OpenAI request configuration
-    const openAIRequest = await generateAlternatives(statement, tones)
+    const openAIRequest = await apiService.generateAlternatives(
+      statement,
+      tones,
+    )
 
     // Get environment with server-side flag to access API key
     const env = getEnvironment(true)
@@ -30,13 +37,15 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify(openAIRequest),
     })
 
     if (!response.ok) {
-      throw new Error(`OpenAI API request failed with status ${response.status}`)
+      throw new Error(
+        `OpenAI API request failed with status ${response.status}`,
+      )
     }
 
     const data = await response.json()
@@ -52,18 +61,24 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
       throw new Error('No alternatives found in LLM response')
     }
 
-    return NextResponse.json({
-      success: true,
-      alternatives,
-    }, { status: 200 })
+    return NextResponse.json(
+      {
+        success: true,
+        alternatives,
+      },
+      { status: 200 },
+    )
   } catch (error) {
     console.error('Error generating alternatives:', error)
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error generating alternatives',
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Unknown error generating alternatives',
       },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }

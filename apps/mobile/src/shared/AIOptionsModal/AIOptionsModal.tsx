@@ -11,8 +11,8 @@ import {
 } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import Modal from 'react-native-modal'
-import { colors } from '../../../../lib/theme'
-import AlternativeItem from './AlternativeItem'
+import { colors } from '../../../lib/theme'
+import AIOptionsModalItem from './AIOptionsModalItem'
 
 interface Alternative {
   tone: string
@@ -28,7 +28,7 @@ interface AIModalProps {
   onClose: () => void
   onReplace: (text: string) => void
   onAppend: (text: string) => void
-  onRetry: (text: string) => void
+  onRetry: (text: string, tone: string) => void
 }
 
 const markdownStyle: Record<string, TextStyle | ViewStyle> = {
@@ -42,7 +42,7 @@ const markdownStyle: Record<string, TextStyle | ViewStyle> = {
   },
 }
 
-const AIModal: React.FC<AIModalProps> = ({
+const AIOptionsModal: React.FC<AIModalProps> = ({
   visible,
   value,
   alternatives,
@@ -78,12 +78,12 @@ const AIModal: React.FC<AIModalProps> = ({
         {!loading &&
           !error &&
           alternatives.map(variation => (
-            <AlternativeItem
+            <AIOptionsModalItem
               key={variation.tone}
               variation={variation}
               onReplace={() => onReplace(variation.text)}
               onAppend={() => onAppend(variation.text)}
-              onRetry={() => onRetry(variation.text)}
+              onRetry={() => onRetry(variation.text, variation.tone)}
             />
           ))}
       </ScrollView>
@@ -166,4 +166,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AIModal
+export default AIOptionsModal

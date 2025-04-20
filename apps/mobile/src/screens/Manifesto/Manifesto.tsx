@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors, tokens } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
-import { StatementLineItem } from './components/StatementLineItem'
+import { ManifestoItem } from './ManifestoItem'
 
 export function ManifestoScreen() {
   const { service, statements } = useStatementService()
@@ -67,7 +67,7 @@ export function ManifestoScreen() {
         >
           {statements.map((statement, index) => (
             <React.Fragment key={statement.id}>
-              <StatementLineItem
+              <ManifestoItem
                 statement={statement}
                 onArchive={() => handleArchive(statement.id)}
                 onDelete={() => handleDelete(statement.id)}

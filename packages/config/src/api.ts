@@ -35,8 +35,3 @@ export const getApiHeaders = (serverSide = false) => {
     },
   }
 }
-
-export const getStillApiBaseUrl = (serverSide = false) => {
-  const env = getEnvironment(serverSide)
-  return env.STILL_API_BASE_URL
-}

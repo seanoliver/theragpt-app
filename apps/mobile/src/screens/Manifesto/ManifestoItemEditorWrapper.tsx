@@ -1,25 +1,21 @@
-import { markdownStyle } from '@/apps/mobile/lib/markdownStyle';
-import { colors } from '@/apps/mobile/lib/theme';
-import { InputMenuBar } from '@/apps/mobile/src/shared/InputMenuBar';
+import { markdownStyle } from '@/apps/mobile/lib/markdownStyle'
+import { colors } from '@/apps/mobile/lib/theme'
+import { InputMenuBar } from '@/apps/mobile/src/shared/InputMenuBar'
 import {
   MarkdownTextInput,
   parseExpensiMark,
-} from '@expensify/react-native-live-markdown';
-import { getStillApiBaseUrl } from '@still/config/src/api';
-import { apiService } from '@still/logic/src/api/service';
-import { useEffect, useRef, useState } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native';
-import AIModal from './AIModal';
+} from '@expensify/react-native-live-markdown'
+import { getEnvironment } from '@still/config'
+import { apiService } from '@still/logic/src/api/service'
+import { useEffect, useRef, useState } from 'react'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import AIOptionsModal from '../../shared/AIOptionsModal/AIOptionsModal'
+import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
 
 const TEXT_SIZE = 16
 const LINE_HEIGHT = 24
 
-interface EditableOnTapProps {
+interface ManifestoItemEditorWrapperProps {
   value: string
   onChange: (text: string) => void
   children: React.ReactNode
@@ -28,21 +24,28 @@ interface EditableOnTapProps {
   onSave?: (newText: string) => void
 }
 
-export function EditableOnTap({
+export function ManifestoItemEditorWrapper({
   value,
   onChange,
   children,
   autoFocus = true,
   multiline = true,
   onSave,
-}: EditableOnTapProps) {
+}: ManifestoItemEditorWrapperProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [showAIModal, setShowAIModal] = useState(false)
-  const [alternatives, setAlternatives] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const {
+    alternatives,
+    loading,
+    error,
+    fetchAlternatives,
+    setError,
+    setAlternatives,
+  } = useFetchAlternatives()
   const inputRef = useRef<any>(null)
   const inputAccessoryViewID = 'uniqueID-TapEditorWrapper'
+
+  const env = getEnvironment(true)
 
   useEffect(() => {
     if (autoFocus) {
@@ -73,39 +76,7 @@ export function EditableOnTap({
   // Fetch alternatives from the API when the modal opens
   useEffect(() => {
     if (showAIModal) {
-      setLoading(true)
-      setError(null)
-      setAlternatives([])
-      apiService
-        .generateAlternatives(value, [
-          'Empowering',
-          'Gentle',
-          'Playful',
-          'Pragmatic',
-          'Inspirational',
-          'Reassuring',
-          'Bold',
-          'Reflective',
-          'Grateful',
-          'Curious',
-        ])
-        .then(config =>
-          fetch(`${getStillApiBaseUrl()}/api/rephrase`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(config),
-          }),
-        )
-        .then(res => res.json())
-        .then(data => {
-          if (data.success && Array.isArray(data.alternatives)) {
-            setAlternatives(data.alternatives)
-          } else {
-            setError(data.error || 'Failed to fetch alternatives')
-          }
-        })
-        .catch(err => setError(err.message || 'Failed to fetch alternatives'))
-        .finally(() => setLoading(false))
+      fetchAlternatives(value)
     }
   }, [showAIModal, value])
 
@@ -119,9 +90,25 @@ export function EditableOnTap({
     setShowAIModal(false)
   }
 
-  const handleRetry = (text: string) => {
-    onChange(value + (value ? ' ' : '') + text)
-    setShowAIModal(false)
+  const handleRetry = async (text: string, tone: string) => {
+    setError(null)
+    try {
+      const config = await apiService.generateAlternative(value, tone)
+      const response = await fetch(`${env.STILL_API_BASE_URL}/api/rephrase`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config),
+      })
+      const data = await response.json()
+      if (data.success && data.tone && data.text) {
+        onChange(value + (value ? ' ' : '') + data.text)
+        setShowAIModal(false)
+      } else {
+        setError(data.error || 'Failed to fetch alternative')
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch alternative')
+    }
   }
 
   return (
@@ -155,7 +142,7 @@ export function EditableOnTap({
               onAIEnhance={() => setShowAIModal(true)}
             />
           )}
-          <AIModal
+          <AIOptionsModal
             visible={showAIModal}
             value={value}
             alternatives={alternatives}

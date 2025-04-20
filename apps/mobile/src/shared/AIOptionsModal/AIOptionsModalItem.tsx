@@ -1,21 +1,21 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { colors } from '@/apps/mobile/lib/theme'
-import ActionButton from './ActionButton'
+import AIOptionsModalActionButton from './AIOptionsModalActionButton'
 
 interface Alternative {
   tone: string
   text: string
 }
 
-interface AlternativeItemProps {
+interface AIOptionsModalItem {
   variation: Alternative
   onReplace: () => void
   onAppend: () => void
-  onRetry: () => void
+  onRetry: (text: string, tone: string) => void
 }
 
-const AlternativeItem: React.FC<AlternativeItemProps> = ({
+const AIOptionsModalItem: React.FC<AIOptionsModalItem> = ({
   variation,
   onReplace,
   onAppend,
@@ -52,23 +52,23 @@ const AlternativeItem: React.FC<AlternativeItemProps> = ({
       {variation.text}
     </Text>
     <View style={{ flexDirection: 'row', gap: 8 }}>
-      <ActionButton
+      <AIOptionsModalActionButton
         icon="swap-horiz"
         label="Replace"
         onPress={onReplace}
       />
-      <ActionButton
+      <AIOptionsModalActionButton
         icon="note-add"
         label="Append"
         onPress={onAppend}
       />
-      <ActionButton
+      <AIOptionsModalActionButton
         icon="refresh"
         label="Retry"
-        onPress={onRetry}
+        onPress={() => onRetry(variation.text, variation.tone)}
       />
     </View>
   </View>
 )
 
-export default AlternativeItem
+export default AIOptionsModalItem

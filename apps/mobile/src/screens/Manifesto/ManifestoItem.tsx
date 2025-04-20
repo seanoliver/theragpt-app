@@ -3,12 +3,12 @@ import { useMemo, useState } from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import Animated from 'react-native-reanimated'
-import { colors } from '../../../../lib/theme'
-import { SwipeMenu } from '../../../shared/SwipeMenu'
-import { EditableOnTap } from './TapEditorWrapper';
+import { colors } from '../../../lib/theme'
+import { SwipeMenu } from '../../shared/SwipeMenu'
+import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper';
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
-interface StatementLineItemProps {
+interface ManifestoItemProps {
   statement: Statement
   size?: 'sm' | 'lg'
   style?: ViewStyle
@@ -21,7 +21,7 @@ interface StatementLineItemProps {
   autoFocus?: boolean
 }
 
-export const StatementLineItem = ({
+export const ManifestoItem = ({
   statement,
   size = 'sm',
   style,
@@ -31,7 +31,7 @@ export const StatementLineItem = ({
   onArchive,
   onDelete,
   autoFocus,
-}: StatementLineItemProps) => {
+}: ManifestoItemProps) => {
   const textSize = size === 'lg' ? 28 : 16
   const lineHeight = size === 'lg' ? 40 : 24
 
@@ -104,14 +104,14 @@ export const StatementLineItem = ({
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>
-            <EditableOnTap
+            <ManifestoItemEditorWrapper
               value={text}
               onChange={setText}
               onSave={handleSave}
               autoFocus={autoFocus}
             >
               {markdownPreview}
-            </EditableOnTap>
+            </ManifestoItemEditorWrapper>
           </View>
         </View>
       </CardWrapper>

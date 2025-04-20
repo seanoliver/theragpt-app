@@ -5,7 +5,7 @@ import Markdown from 'react-native-markdown-display'
 import Animated from 'react-native-reanimated'
 import { colors } from '../../../../lib/theme'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
-import { EditableOnTap } from '../../Manifesto/components/TapEditorWrapper'
+import { ManifestoItemEditorWrapper } from '../../Manifesto/ManifestoItemEditorWrapper'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 interface ArchiveLineItemProps {
@@ -104,14 +104,14 @@ export const ArchiveLineItem = ({
       <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
           <View style={styles.contentContainer}>
-            <EditableOnTap
+            <ManifestoItemEditorWrapper
               value={text}
               onChange={setText}
               onSave={handleSave}
               autoFocus={autoFocus}
             >
               {markdownPreview}
-            </EditableOnTap>
+            </ManifestoItemEditorWrapper>
           </View>
         </View>
       </CardWrapper>
