@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { colors } from '../../../../lib/theme'
+import { colors } from '@/apps/mobile/lib/theme'
 
 interface Alternative {
   tone: string
@@ -15,7 +15,12 @@ interface AlternativeItemProps {
   onRetry: () => void
 }
 
-const AlternativeItem: React.FC<AlternativeItemProps> = ({ variation, onReplace, onAppend, onRetry }) => (
+const AlternativeItem: React.FC<AlternativeItemProps> = ({
+  variation,
+  onReplace,
+  onAppend,
+  onRetry,
+}) => (
   <View
     style={{
       backgroundColor: colors.charcoal[100],

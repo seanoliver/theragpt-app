@@ -1,26 +1,20 @@
-import { useRef, useState, useEffect } from 'react'
+import { markdownStyle } from '@/apps/mobile/lib/markdownStyle';
+import { colors } from '@/apps/mobile/lib/theme';
+import { InputMenuBar } from '@/apps/mobile/src/shared/InputMenuBar';
+import {
+  MarkdownTextInput,
+  parseExpensiMark,
+} from '@expensify/react-native-live-markdown';
+import { getStillApiBaseUrl } from '@still/config/src/api';
+import { apiService } from '@still/logic/src/api/service';
+import { useEffect, useRef, useState } from 'react';
 import {
   Platform,
   StyleSheet,
   TouchableOpacity,
-  View,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native'
-import { colors } from '../../../../lib/theme'
-import { InputMenuBar } from '../../../shared/InputMenuBar'
-import {
-  MarkdownTextInput,
-  parseExpensiMark,
-} from '@expensify/react-native-live-markdown'
-import { markdownStyle } from '@/apps/mobile/lib/markdownStyle'
-import Modal from 'react-native-modal'
-import Markdown from 'react-native-markdown-display'
-import { MaterialIcons } from '@expo/vector-icons'
-import { apiService } from '@still/logic/src/api/service'
-import { getStillApiBaseUrl } from '@still/config/src/api'
-import AIModal from './AIModal'
+  View
+} from 'react-native';
+import AIModal from './AIModal';
 
 const TEXT_SIZE = 16
 const LINE_HEIGHT = 24
