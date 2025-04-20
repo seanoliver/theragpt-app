@@ -76,7 +76,18 @@ export function EditableOnTap({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           statement: value,
-          tones: ['realistic', 'grounded', 'inspirational', 'motivational'],
+          tones: [
+            'Empowering',
+            'Gentle',
+            'Playful',
+            'Pragmatic',
+            'Inspirational',
+            'Reassuring',
+            'Bold',
+            'Reflective',
+            'Grateful',
+            'Curious',
+          ],
         }),
       })
         .then(res => res.json())

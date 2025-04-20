@@ -113,10 +113,10 @@ export const apiService = new APIService()
  */
 export async function generateAlternatives(statement: string, tones: string[]) {
   const systemPrompt =
-    'You are a helpful assistant that rewrites a given statement in different tones. '
-    + 'Given a statement and a list of tone keywords, return a JSON object with an array property called "alternatives". Each item in the array should have a "tone" and a rewritten "text".'
+    'You are a highly creative, empathetic assistant. Your task is to help users find the most personally resonant version of an affirmation by rewriting it in a variety of distinct tones. For each tone, deeply reinterpret the affirmation, using novel word choices, metaphors, or perspectives that fit the tone. Your goal is to provide a range of options so the user can discover the exact phrasing that feels most powerful and authentic to them. Each alternative should feel fresh, personal, and clearly reflect the specified tone.'
+
   const userPrompt =
-    `Statement: ${statement}\nTones: ${tones.join(', ')}\n\nRespond ONLY with a JSON object in this format: {"alternatives": [{"tone": "<tone>", "text": "<rewritten statement>"}, ...]}`;
+    `Here is an affirmation:\n"${statement}"\n\nPlease rewrite this affirmation in each of the following tones, making each version feel unique, personal, and creatively reworded. For each, provide a JSON object with \"tone\" and \"text\".\n\nTones: ${tones.join(', ')}\n\nRespond ONLY with a JSON object in this format: {"alternatives": [{"tone": "<tone>", "text": "<rewritten statement>"}, ...]}`
 
   return {
     model: 'gpt-4o',
