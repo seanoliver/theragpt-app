@@ -9,7 +9,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import Markdown from 'react-native-markdown-display'
 import Modal from 'react-native-modal'
 import { colors } from '../../../lib/theme'
 import AIOptionsModalItem from './AIOptionsModalItem'
@@ -29,17 +28,6 @@ interface AIModalProps {
   onReplace: (text: string) => void
   onAppend: (text: string) => void
   onRetry: (text: string, tone: string) => void
-}
-
-const markdownStyle: Record<string, TextStyle | ViewStyle> = {
-  text: {
-    color: colors.text.primary,
-    fontSize: 16,
-    textAlign: 'left',
-  },
-  body: {
-    backgroundColor: 'transparent',
-  },
 }
 
 const AIOptionsModal: React.FC<AIModalProps> = ({
@@ -62,7 +50,7 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerLabel}>Original Statement</Text>
-        <Markdown style={markdownStyle}>{value}</Markdown>
+        <Text style={{ color: colors.text.primary, fontSize: 16, textAlign: 'left' }}>{value}</Text>
       </View>
       <ScrollView
         style={styles.scrollView}

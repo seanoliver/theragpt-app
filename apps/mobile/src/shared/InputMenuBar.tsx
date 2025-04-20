@@ -8,8 +8,6 @@ import {
 } from 'react-native'
 import { colors } from '../../lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-import { FontAwesome } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 
 export const InputMenuBar = ({
@@ -21,21 +19,6 @@ export const InputMenuBar = ({
   inputAccessoryViewID: string
   onAIEnhance?: () => void
 }) => {
-  const handleFormat = (type: 'bold' | 'italic' | 'highlight') => {
-    const input = inputRef.current
-    if (!input) return
-    input.focus()
-    if (type === 'bold') {
-      input.setNativeProps({ text: (input.props.value || '') + '**bold**' })
-    } else if (type === 'italic') {
-      input.setNativeProps({ text: (input.props.value || '') + '*italic*' })
-    } else if (type === 'highlight') {
-      input.setNativeProps({
-        text: (input.props.value || '') + '==highlight==',
-      })
-    }
-  }
-
   const handleAIEnhance = () => {
     if (onAIEnhance) {
       onAIEnhance()
@@ -51,28 +34,6 @@ export const InputMenuBar = ({
     <InputAccessoryView nativeID={inputAccessoryViewID}>
       <View style={styles.accessoryContainer}>
         <View style={styles.leftButtonsContainer}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleFormat('bold')}
-          >
-            <FontAwesome name="bold" size={16} color={colors.text.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleFormat('italic')}
-          >
-            <FontAwesome name="italic" size={16} color={colors.text.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleFormat('highlight')}
-          >
-            <MaterialCommunityIcons
-              name="format-color-highlight"
-              size={16}
-              color={colors.text.primary}
-            />
-          </TouchableOpacity>
           <LinearGradient
             colors={['#4F5BD5', '#8f5cff']}
             start={{ x: 0, y: 0 }}
@@ -121,20 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  actionButton: {
-    backgroundColor: colors.charcoal[100],
-    width: 36,
-    height: 36,
-    borderRadius: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 4,
-  },
-  actionButtonText: {
-    color: colors.text.primary,
-    fontWeight: '700',
-    fontSize: 16,
   },
   doneButton: {
     backgroundColor: colors.charcoal[100],

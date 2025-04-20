@@ -1,7 +1,6 @@
 import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo, useState } from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
-import Markdown from 'react-native-markdown-display'
+import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { colors } from '../../../lib/theme'
 import { SwipeMenu } from '../../shared/SwipeMenu'
@@ -45,39 +44,18 @@ export const ManifestoItem = ({
     }
   }
 
-  const markdownPreview = useMemo(
+  const previewText = useMemo(
     () => (
-      <Markdown
+      <Text
         key={statement.id}
         style={{
-          text: {
-            ...styles.text,
-            fontSize: textSize,
-            lineHeight,
-          },
-          bullet_list: { marginLeft: 0 },
-          bullet_list_icon: {
-            marginLeft: 0,
-            marginRight: 8,
-            width: 4,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: colors.text.primary,
-            marginTop: 10,
-          },
-          ordered_list: { marginLeft: 0 },
-          list_item: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            marginBottom: 10,
-          },
-          body: {
-            backgroundColor: colors.charcoal[100],
-          },
+          ...styles.text,
+          fontSize: textSize,
+          lineHeight,
         }}
       >
         {text}
-      </Markdown>
+      </Text>
     ),
     [statement.id, text, textSize, lineHeight],
   )
@@ -110,7 +88,7 @@ export const ManifestoItem = ({
               onSave={handleSave}
               autoFocus={autoFocus}
             >
-              {markdownPreview}
+              {previewText}
             </ManifestoItemEditorWrapper>
           </View>
         </View>
