@@ -104,3 +104,26 @@ export class APIService {
 
 // Export a singleton instance for convenience
 export const apiService = new APIService()
+
+/**
+ * Prepares an OpenAI request config to generate alternative statements in different tones
+ * @param statement The original statement
+ * @param tones Array of tone keywords
+ * @returns OpenAI request config
+ */
+export async function generateAlternatives(statement: string, tones: string[]) {
+  const systemPrompt =
+    'You are a helpful assistant that rewrites a given statement in different tones. '
+    + 'Given a statement and a list of tone keywords, return a JSON object with an array property called "alternatives". Each item in the array should have a "tone" and a rewritten "text".'
+  const userPrompt =
+    `Statement: ${statement}\nTones: ${tones.join(', ')}\n\nRespond ONLY with a JSON object in this format: {"alternatives": [{"tone": "<tone>", "text": "<rewritten statement>"}, ...]}`;
+
+  return {
+    model: 'gpt-4o',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    response_format: { type: 'json_object' },
+  }
+}

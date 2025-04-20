@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View, Text, ScrollView } from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View, Text, ScrollView, ActivityIndicator } from 'react-native'
 import { colors } from '../../../../lib/theme'
 import { InputMenuBar } from '../../../shared/InputMenuBar'
 import {
@@ -33,6 +33,9 @@ export function EditableOnTap({
 }: EditableOnTapProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [showAIModal, setShowAIModal] = useState(false)
+  const [alternatives, setAlternatives] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<any>(null)
   const inputAccessoryViewID = 'uniqueID-TapEditorWrapper'
 
@@ -61,6 +64,33 @@ export function EditableOnTap({
     setIsEditing(false)
     if (onSave) onSave(value)
   }
+
+  // Fetch alternatives from the API when the modal opens
+  useEffect(() => {
+    if (showAIModal) {
+      setLoading(true)
+      setError(null)
+      setAlternatives([])
+      fetch('http://localhost:3000/api/rephrase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          statement: value,
+          tones: ['realistic', 'grounded', 'inspirational', 'motivational'],
+        }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.alternatives)) {
+            setAlternatives(data.alternatives)
+          } else {
+            setError(data.error || 'Failed to fetch alternatives')
+          }
+        })
+        .catch(err => setError(err.message || 'Failed to fetch alternatives'))
+        .finally(() => setLoading(false))
+    }
+  }, [showAIModal, value])
 
   return (
     <View style={[styles.container]}>
@@ -144,12 +174,16 @@ export function EditableOnTap({
                 </Markdown>
               </View>
               <ScrollView style={{ marginBottom: 12, paddingHorizontal: 20, paddingTop: 12 }} contentContainerStyle={{ paddingBottom: 24 }}>
-                {[
-                  { tone: 'Realistic', text: 'This is a realistic version of your statement.' },
-                  { tone: 'Grounded', text: 'This is a grounded version of your statement.' },
-                  { tone: 'Inspirational', text: 'This is an inspirational version of your statement.' },
-                  { tone: 'Motivational', text: 'This is a motivational version of your statement.' },
-                ].map((variation, idx) => (
+                {loading && (
+                  <View style={{ alignItems: 'center', marginTop: 24 }}>
+                    <ActivityIndicator size="large" color={colors.text.primary} />
+                    <Text style={{ color: colors.text.primary, marginTop: 12 }}>Generating alternatives...</Text>
+                  </View>
+                )}
+                {error && (
+                  <Text style={{ color: 'red', marginTop: 12, textAlign: 'center' }}>{error}</Text>
+                )}
+                {!loading && !error && alternatives.map((variation, idx) => (
                   <View
                     key={variation.tone}
                     style={{
@@ -167,7 +201,7 @@ export function EditableOnTap({
                       fontWeight: '600',
                       fontSize: 15,
                       marginBottom: 6,
-                    }}>{variation.tone}</Text>
+                    }}>{variation.tone.charAt(0).toUpperCase() + variation.tone.slice(1)}</Text>
                     <Text style={{
                       color: colors.text.primary,
                       fontSize: 15,
