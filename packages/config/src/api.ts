@@ -15,7 +15,7 @@ export const getApiConfig = (serverSide = false) => {
     openai: {
       baseUrl: env.OPENAI_API_URL,
       apiKey: serverSide ? env.OPENAI_API_KEY : undefined,
-      model: 'gpt-4',
+      model: 'gpt-4o',
       temperature: 0.7,
       maxTokens: 1000,
     },

@@ -1,7 +1,7 @@
 ---
-description: Creating or refactoring any moibile app frontend code (components, hooks, types, etc.)
+description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 # Component Architecture for Expo App (`/apps/mobile`)
 
@@ -50,6 +50,37 @@ This rule describes the preferred structure and practices for building component
 - **Use SafeAreaView and theming tokens for consistent look and feel.**
 - **Prefer functional components and hooks.**
 - **Use TypeScript for all files.**
+
+## Expo App Style & Component Conventions
+
+- **Styles:**
+  - Always use `StyleSheet.create` for defining styles in React Native components.
+  - Never use inline styles directly in JSX.
+  - Place all style objects outside the component function, using `StyleSheet.create`.
+
+- **Component Naming:**
+  - For related components, use naming conventions that demonstrate their relationship (e.g., `AIOptionsModal`, `AIOptionsModalActionButton`, `AIOptionsModalItem`).
+  - This helps with discoverability and code organization.
+
+- **Import Aliases:**
+  - Prefer import aliases (configured in your `tsconfig.json` or `babel.config.js`) to avoid long relative imports like `../../../../`.
+  - Use the alias whenever possible for cleaner and more maintainable imports.
+
+- **Component Export Syntax:**
+  - Always use the following arrow function export syntax for components:
+    ```tsx
+    export const Component = ({ props }: ComponentProps) => { /* ... */ }
+    ```
+  - **Do not use** the `React.FC` type for component exports:
+    ```tsx
+    // ❌ Do not do this
+    export const Component: React.FC<ComponentProps> = ({ props }) => { /* ... */ }
+    ```
+
+- **Exports:**
+  - **Do not use default exports** for components or any modules.
+  - Always use named exports for all components and utilities.
+  - If you encounter a default export in a file you are working on, refactor it to a named export.
 
 ## Example Structure
 ```
