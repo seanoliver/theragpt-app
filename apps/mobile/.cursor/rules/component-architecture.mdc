@@ -1,7 +1,7 @@
 ---
-description: Creating or refactoring any moibile app frontend code (components, hooks, types, etc.)
+description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 # Component Architecture for Expo App (`/apps/mobile`)
 
