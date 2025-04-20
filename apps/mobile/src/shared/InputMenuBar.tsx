@@ -15,9 +15,11 @@ import { LinearGradient } from 'expo-linear-gradient'
 export const InputMenuBar = ({
   inputRef,
   inputAccessoryViewID,
+  onAIEnhance,
 }: {
   inputRef: React.RefObject<TextInput>
   inputAccessoryViewID: string
+  onAIEnhance?: () => void
 }) => {
   function handleFormat(type: 'bold' | 'italic' | 'highlight') {
     const input = inputRef.current
@@ -35,6 +37,10 @@ export const InputMenuBar = ({
   }
 
   function handleAIEnhance() {
+    if (onAIEnhance) {
+      onAIEnhance()
+      return
+    }
     const input = inputRef.current
     if (!input) return
     input.focus()
