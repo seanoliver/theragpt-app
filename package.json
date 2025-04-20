@@ -6,6 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:ios": "./dev-ios.sh",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "test": "turbo run test",
@@ -35,6 +36,7 @@
     "@types/react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
+    "concurrently": "^9.1.2",
     "eslint": "^8.57.1",
     "prettier": "^3.5.3",
     "turbo": "^1.13.4",
