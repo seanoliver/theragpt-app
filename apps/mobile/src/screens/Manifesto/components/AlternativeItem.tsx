@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { MaterialIcons } from '@expo/vector-icons'
+import { View, Text } from 'react-native'
 import { colors } from '@/apps/mobile/lib/theme'
+import ActionButton from './ActionButton'
 
 interface Alternative {
   tone: string
@@ -52,95 +52,21 @@ const AlternativeItem: React.FC<AlternativeItemProps> = ({
       {variation.text}
     </Text>
     <View style={{ flexDirection: 'row', gap: 8 }}>
-      <TouchableOpacity
-        style={{
-          backgroundColor: colors.charcoal[300],
-          borderRadius: 6,
-          paddingVertical: 6,
-          paddingHorizontal: 0,
-          marginRight: 0,
-          flexDirection: 'row',
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'center',
-        }}
+      <ActionButton
+        icon="swap-horiz"
+        label="Replace"
         onPress={onReplace}
-      >
-        <MaterialIcons
-          name="swap-horiz"
-          size={18}
-          color={colors.text.primary}
-          style={{ marginRight: 6 }}
-        />
-        <Text
-          style={{
-            color: colors.text.primary,
-            fontWeight: '600',
-            fontSize: 14,
-          }}
-        >
-          Replace
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          backgroundColor: colors.charcoal[300],
-          borderRadius: 6,
-          paddingVertical: 6,
-          paddingHorizontal: 0,
-          marginRight: 0,
-          flexDirection: 'row',
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'center',
-        }}
+      />
+      <ActionButton
+        icon="note-add"
+        label="Append"
         onPress={onAppend}
-      >
-        <MaterialIcons
-          name="note-add"
-          size={18}
-          color={colors.text.primary}
-          style={{ marginRight: 6 }}
-        />
-        <Text
-          style={{
-            color: colors.text.primary,
-            fontWeight: '600',
-            fontSize: 14,
-          }}
-        >
-          Append
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          backgroundColor: colors.charcoal[300],
-          borderRadius: 6,
-          paddingVertical: 6,
-          paddingHorizontal: 0,
-          flexDirection: 'row',
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'center',
-        }}
+      />
+      <ActionButton
+        icon="refresh"
+        label="Retry"
         onPress={onRetry}
-      >
-        <MaterialIcons
-          name="refresh"
-          size={18}
-          color={colors.text.primary}
-          style={{ marginRight: 6 }}
-        />
-        <Text
-          style={{
-            color: colors.text.primary,
-            fontWeight: '600',
-            fontSize: 14,
-          }}
-        >
-          Retry
-        </Text>
-      </TouchableOpacity>
+      />
     </View>
   </View>
 )

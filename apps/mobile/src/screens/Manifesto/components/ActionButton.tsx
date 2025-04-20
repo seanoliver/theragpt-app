@@ -1,45 +1,42 @@
 import React from 'react'
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-} from 'react-native'
-import { colors } from '../../../../lib/theme'
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
+import { colors } from '@/apps/mobile/lib/theme'
 
 interface ActionButtonProps {
   onPress: () => void
-  children: React.ReactNode
-  style?: ViewStyle | ViewStyle[]
-  textStyle?: TextStyle | TextStyle[]
+  icon: keyof typeof MaterialIcons.glyphMap
+  label: string
 }
 
-const ActionButton: React.FC<ActionButtonProps> = ({
-  onPress,
-  children,
-  style,
-  textStyle,
-}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-    <Text style={[styles.text, textStyle]}>{children}</Text>
+const ActionButton: React.FC<ActionButtonProps> = ({ onPress, icon, label }) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <View style={styles.content}>
+      <MaterialIcons name={icon} size={18} color={colors.text.primary} style={{ marginRight: 6 }} />
+      <Text style={styles.text}>{label}</Text>
+    </View>
   </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
   button: {
-    alignSelf: 'center',
-    marginTop: 0,
-    marginBottom: 12,
-    paddingVertical: 8,
-    paddingHorizontal: 24,
     backgroundColor: colors.charcoal[300],
-    borderRadius: 8,
+    borderRadius: 6,
+    paddingVertical: 6,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 2,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     color: colors.text.primary,
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
   },
 })
 

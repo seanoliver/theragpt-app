@@ -2,17 +2,17 @@ import React from 'react'
 import {
   ActivityIndicator,
   ScrollView,
-  Text,
-  View,
   StyleSheet,
+  Text,
   TextStyle,
+  TouchableOpacity,
+  View,
   ViewStyle,
 } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import Modal from 'react-native-modal'
 import { colors } from '../../../../lib/theme'
 import AlternativeItem from './AlternativeItem'
-import ActionButton from './ActionButton'
 
 interface Alternative {
   tone: string
@@ -87,7 +87,28 @@ const AIModal: React.FC<AIModalProps> = ({
             />
           ))}
       </ScrollView>
-      <ActionButton onPress={onClose}>Close</ActionButton>
+      <TouchableOpacity
+        style={{
+          alignSelf: 'center',
+          marginTop: 0,
+          marginBottom: 12,
+          paddingVertical: 8,
+          paddingHorizontal: 24,
+          backgroundColor: colors.charcoal[300],
+          borderRadius: 8,
+        }}
+        onPress={onClose}
+      >
+        <Text
+          style={{
+            color: colors.text.primary,
+            fontWeight: '600',
+            fontSize: 16,
+          }}
+        >
+          Close
+        </Text>
+      </TouchableOpacity>
     </View>
   </Modal>
 )
