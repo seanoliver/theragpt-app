@@ -31,8 +31,6 @@ export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
   const prevTab = usePrevious(currentTab)
   const visible = useSharedValue(1)
 
-  console.log('FAB segments:', segments, 'currentTab:', currentTab)
-
   const isManifestoOrArchive =
     currentTab === MANIFESTO_TAB || currentTab === ARCHIVE_TAB
 

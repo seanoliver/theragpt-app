@@ -73,7 +73,6 @@ export const ManifestoItemEditorWrapper = ({
     if (onSave) onSave(value)
   }
 
-  // Fetch alternatives from the API when the modal opens
   useEffect(() => {
     if (showAIModal) {
       fetchAlternatives(value)

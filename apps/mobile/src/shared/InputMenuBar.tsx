@@ -21,7 +21,7 @@ export const InputMenuBar = ({
   inputAccessoryViewID: string
   onAIEnhance?: () => void
 }) => {
-  function handleFormat(type: 'bold' | 'italic' | 'highlight') {
+  const handleFormat = (type: 'bold' | 'italic' | 'highlight') => {
     const input = inputRef.current
     if (!input) return
     input.focus()
@@ -36,7 +36,7 @@ export const InputMenuBar = ({
     }
   }
 
-  function handleAIEnhance() {
+  const handleAIEnhance = () => {
     if (onAIEnhance) {
       onAIEnhance()
       return
