@@ -1,7 +1,6 @@
 import { colors } from '@/apps/mobile/lib/theme'
-import Markdown from 'react-native-markdown-display'
 import React, { useState, useCallback, useRef } from 'react'
-import { View, LayoutChangeEvent, ScrollView, StyleSheet } from 'react-native'
+import { View, LayoutChangeEvent, ScrollView, StyleSheet, Text } from 'react-native'
 
 interface ResponsiveLargeTextProps {
   text: string
@@ -44,36 +43,15 @@ export const ResponsiveLargeText = ({
 
   const content = (
     <View onLayout={handleLayout} key={fontSize} style={styles.container}>
-      <Markdown
+      <Text
         style={{
-          text: {
-            color: colors.text.primary,
-            fontSize,
-            lineHeight,
-          },
-          bullet_list: { marginLeft: 0 },
-          bullet_list_icon: {
-            marginLeft: 0,
-            marginRight: 8,
-            width: 4,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: colors.text.primary,
-            marginTop: 10,
-          },
-          ordered_list: { marginLeft: 0 },
-          list_item: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            marginBottom: 10,
-          },
-          body: {
-            backgroundColor: colors.charcoal[100],
-          },
+          color: colors.text.primary,
+          fontSize,
+          lineHeight,
         }}
       >
         {text}
-      </Markdown>
+      </Text>
     </View>
   )
 

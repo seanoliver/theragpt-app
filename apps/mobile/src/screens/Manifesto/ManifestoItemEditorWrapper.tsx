@@ -1,14 +1,9 @@
-import { markdownStyle } from '@/apps/mobile/lib/markdownStyle'
 import { colors } from '@/apps/mobile/lib/theme'
 import { InputMenuBar } from '@/apps/mobile/src/shared/InputMenuBar'
-import {
-  MarkdownTextInput,
-  parseExpensiMark,
-} from '@expensify/react-native-live-markdown'
 import { getEnvironment } from '@still/config'
 import { apiService } from '@still/logic/src/api/service'
 import { useEffect, useRef, useState } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
 import AIOptionsModal from '../../shared/AIOptionsModal/AIOptionsModal'
 import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
 
@@ -114,12 +109,11 @@ export const ManifestoItemEditorWrapper = ({
     <View style={[styles.container]}>
       {isEditing ? (
         <View style={{ flex: 1 }}>
-          <MarkdownTextInput
+          <TextInput
             ref={inputRef}
             value={value}
             onChangeText={onChange}
             style={[styles.text]}
-            markdownStyle={markdownStyle}
             autoFocus={autoFocus}
             onBlur={handleBlur}
             multiline={multiline}
@@ -132,7 +126,6 @@ export const ManifestoItemEditorWrapper = ({
             inputAccessoryViewID={
               Platform.OS === 'ios' ? inputAccessoryViewID : undefined
             }
-            parser={parseExpensiMark}
           />
           {Platform.OS === 'ios' && (
             <InputMenuBar
