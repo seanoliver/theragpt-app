@@ -24,14 +24,14 @@ interface ManifestoItemEditorWrapperProps {
   onSave?: (newText: string) => void
 }
 
-export function ManifestoItemEditorWrapper({
+export const ManifestoItemEditorWrapper = ({
   value,
   onChange,
   children,
   autoFocus = true,
   multiline = true,
   onSave,
-}: ManifestoItemEditorWrapperProps) {
+}: ManifestoItemEditorWrapperProps) => {
   const [isEditing, setIsEditing] = useState(false)
   const [showAIModal, setShowAIModal] = useState(false)
   const {
