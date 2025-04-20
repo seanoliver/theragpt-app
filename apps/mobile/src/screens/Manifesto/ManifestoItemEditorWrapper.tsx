@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     minHeight: LINE_HEIGHT + 8,
     color: colors.text.primary,
     flex: 1,
+    top: -2,
     textAlign: 'left',
   },
 })

@@ -54,6 +54,7 @@ export const InputMenuBar = ({
                   textShadowRadius: 4,
                 }}
               />
+              <Text style={styles.aiActionButtonText}>Enhance</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>
@@ -98,24 +99,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   aiButtonGradient: {
-    width: 38,
     height: 38,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 4,
-    shadowColor: '#8f5cff',
-    shadowOffset: { width: 0, height: 2 },
+    padding: 2,
     shadowOpacity: 0.4,
     shadowRadius: 6,
     elevation: 4,
   },
   aiActionButton: {
-    width: 34,
     height: 34,
+    paddingHorizontal: 16,
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(30,30,40,0.7)',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 4,
+  },
+  aiActionButtonText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.text.primary,
   },
 })
