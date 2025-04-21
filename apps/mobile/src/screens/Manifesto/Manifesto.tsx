@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import theme from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
@@ -12,6 +12,7 @@ export function ManifestoScreen() {
   const { service, statements } = useStatementService()
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
   const scrollViewRef = useRef<ScrollView>(null)
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     if (
@@ -54,8 +55,14 @@ export function ManifestoScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
+      <View style={[styles.headerSection, { paddingTop: insets.top + 24 }]}>
+        <View style={styles.headerRow}>
+          <Text style={styles.headerTitle}>Your Manifesto</Text>
+          <Ionicons name="sparkles-outline" size={28} color={theme.colors.primary} style={styles.headerIcon} />
+        </View>
+        <View style={styles.headerDivider} />
+      </View>
       <View style={styles.content}>
-        <Text style={styles.subtitle}>Your Manifesto</Text>
         <KeyboardAwareScrollView
           ref={scrollViewRef}
           style={[
@@ -69,6 +76,7 @@ export function ManifestoScreen() {
             <React.Fragment key={statement.id}>
               <ManifestoItem
                 statement={statement}
+                size="lg"
                 onArchive={() => handleArchive(statement.id)}
                 onDelete={() => handleDelete(statement.id)}
                 autoFocus={statement.id === newlyCreatedId}
@@ -91,33 +99,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    padding: 25,
-    paddingLeft: 10,
+    padding: 0,
   },
-  header: {
+  headerSection: {
+    paddingBottom: 12,
+    paddingHorizontal: 24,
+    backgroundColor: theme.colors.background,
+  },
+  headerRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 60,
+    justifyContent: 'space-between',
+    width: '100%',
   },
-  logo: {
-    fontSize: 32,
+  headerTitle: {
+    fontSize: 30,
     color: theme.colors.textOnBackground,
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontFamily: theme.fontFamilies.headerSerif,
+    letterSpacing: 1.2,
+    textAlign: 'left',
+    flex: 1,
+  },
+  headerIcon: {
+    marginLeft: 12,
+  },
+  headerDivider: {
+    marginTop: 10,
+    height: 1.5,
+    width: '100%',
+    backgroundColor: theme.colors.border,
+    borderRadius: 1,
+    alignSelf: 'center',
+    opacity: 0.18,
   },
   content: {
     flex: 1,
     gap: 24,
-    marginTop: 8,
-  },
-  subtitle: {
-    fontSize: 28,
-    color: theme.colors.textOnBackground,
-    fontWeight: '700',
-    letterSpacing: -0.5,
-    fontFamily: theme.fontFamilies.headerSerif,
+    marginTop: 0,
+    paddingHorizontal: 24,
   },
   statementsList: {
     flex: 1,
     paddingRight: 4,
+  },
+  subtitle: {
+    display: 'none',
   },
 })

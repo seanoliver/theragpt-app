@@ -16,6 +16,7 @@ import {
 } from '@expo-google-fonts/inter'
 import { ActivityIndicator } from 'react-native'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function RootLayout() {
   const [playfairLoaded] = usePlayfairFonts({
@@ -39,89 +40,91 @@ export default function RootLayout() {
       <ThemeProvider>
         <KeyboardProvider>
           <StatusBar style="auto" />
-          <Tabs
-            screenOptions={{
-              headerShown: false,
-              tabBarStyle: {
-                backgroundColor: theme.colors.background,
-                borderTopColor: theme.colors.border,
-              },
-              tabBarActiveTintColor: theme.colors.textOnBackground,
-              tabBarInactiveTintColor: theme.colors.textOnBackground,
-              headerStyle: {
-                backgroundColor: theme.colors.background,
-              },
-              headerTintColor: theme.colors.textOnBackground,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              tabBarLabelStyle: {
-                fontSize: 12,
-                paddingTop: 4,
-              },
-            }}
-          >
-            <Tabs.Screen
-              name="index"
-              options={{
-                title: 'Manifesto',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="book" size={22} color={color} />
-                ),
+          <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <Tabs
+              screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                  backgroundColor: theme.colors.background,
+                  borderTopColor: theme.colors.border,
+                },
+                tabBarActiveTintColor: theme.colors.textOnBackground,
+                tabBarInactiveTintColor: theme.colors.textOnBackground,
+                headerStyle: {
+                  backgroundColor: theme.colors.background,
+                },
+                headerTintColor: theme.colors.textOnBackground,
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+                tabBarLabelStyle: {
+                  fontSize: 12,
+                  paddingTop: 4,
+                },
               }}
-            />
-            <Tabs.Screen
-              name="review"
-              options={{
-                title: 'Review',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="history" size={28} color={color} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="archive"
-              options={{
-                title: 'Archive',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="archive" size={22} color={color} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="edit"
-              options={{
-                href: null,
-              }}
-            />
-            <Tabs.Screen
-              name="new"
-              options={{
-                href: null,
-              }}
-            />
-            <Tabs.Screen
-              name="still"
-              options={{
-                href: null,
-              }}
-            />
-            <Tabs.Screen
-              name="onboarding"
-              options={{
-                href: null,
-              }}
-            />
-            <Tabs.Screen
-              name="settings"
-              options={{
-                title: 'Settings',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="cog" size={22} color={color} />
-                ),
-              }}
-            />
-          </Tabs>
+            >
+              <Tabs.Screen
+                name="index"
+                options={{
+                  title: 'Manifesto',
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome name="book" size={22} color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="review"
+                options={{
+                  title: 'Review',
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome name="history" size={28} color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="archive"
+                options={{
+                  title: 'Archive',
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome name="archive" size={22} color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="edit"
+                options={{
+                  href: null,
+                }}
+              />
+              <Tabs.Screen
+                name="new"
+                options={{
+                  href: null,
+                }}
+              />
+              <Tabs.Screen
+                name="still"
+                options={{
+                  href: null,
+                }}
+              />
+              <Tabs.Screen
+                name="onboarding"
+                options={{
+                  href: null,
+                }}
+              />
+              <Tabs.Screen
+                name="settings"
+                options={{
+                  title: 'Settings',
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome name="cog" size={22} color={color} />
+                  ),
+                }}
+              />
+            </Tabs>
+          </SafeAreaView>
         </KeyboardProvider>
       </ThemeProvider>
     )

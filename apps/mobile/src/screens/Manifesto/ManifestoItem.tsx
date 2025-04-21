@@ -4,8 +4,10 @@ import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import Animated from 'react-native-reanimated'
 import theme from '../../../lib/theme'
 import { SwipeMenu } from '../../shared/SwipeMenu'
-import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper';
+import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { MANIFESTO_ITEM_TEXT_SIZE } from './constants'
+import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants'
 
 interface ManifestoItemProps {
   statement: Statement
@@ -31,9 +33,6 @@ export const ManifestoItem = ({
   onDelete,
   autoFocus,
 }: ManifestoItemProps) => {
-  const textSize = size === 'lg' ? 28 : 16
-  const lineHeight = size === 'lg' ? 40 : 24
-
   const CardWrapper = animatedStyle ? Animated.View : View
 
   const [text, setText] = useState(statement.text)
@@ -50,14 +49,12 @@ export const ManifestoItem = ({
         key={statement.id}
         style={{
           ...styles.text,
-          fontSize: textSize,
-          lineHeight,
         }}
       >
         {text}
       </Text>
     ),
-    [statement.id, text, textSize, lineHeight],
+    [statement.id, text],
   )
 
   return (
@@ -65,7 +62,13 @@ export const ManifestoItem = ({
       actions={[
         {
           label: 'Archive',
-          icon: <FontAwesome name="archive" size={20} color={theme.colors.textOnBackground} />,
+          icon: (
+            <FontAwesome
+              name="archive"
+              size={20}
+              color={theme.colors.textOnBackground}
+            />
+          ),
           backgroundColor: theme.colors.accent,
           textColor: theme.colors.textOnBackground,
           onPress: onArchive,
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     width: '100%',
     // Remove card-like margin
     marginBottom: 0,
-    backgroundColor: theme.colors.background,
+    backgroundColor: 'transparent',
   },
   card: {
     backgroundColor: 'transparent',
@@ -121,8 +124,8 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.textOnBackground,
     flex: 1,
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: MANIFESTO_ITEM_TEXT_SIZE,
+    lineHeight: MANIFESTO_ITEM_LINE_HEIGHT,
     textAlign: 'left',
   },
 })

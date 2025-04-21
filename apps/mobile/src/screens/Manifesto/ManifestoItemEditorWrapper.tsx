@@ -12,9 +12,11 @@ import {
 } from 'react-native'
 import AIOptionsModal from '../../shared/AIOptionsModal/AIOptionsModal'
 import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
+import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants';
+import { MANIFESTO_ITEM_TEXT_SIZE } from './constants';
 
-const TEXT_SIZE = 16
-const LINE_HEIGHT = 24
+const TEXT_SIZE = 18
+const LINE_HEIGHT = 32
 
 interface ManifestoItemEditorWrapperProps {
   value: string
@@ -166,16 +168,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: TEXT_SIZE,
-    lineHeight: LINE_HEIGHT,
+    fontSize: MANIFESTO_ITEM_TEXT_SIZE,
+    lineHeight: MANIFESTO_ITEM_LINE_HEIGHT,
     backgroundColor: 'transparent',
     borderWidth: 0,
     padding: 0,
     margin: 0,
-    minHeight: LINE_HEIGHT + 8,
+    minHeight: MANIFESTO_ITEM_LINE_HEIGHT + 8,
     color: theme.colors.textOnBackground,
     flex: 1,
-    top: -2,
+    top: -5,
     textAlign: 'left',
   },
 })
