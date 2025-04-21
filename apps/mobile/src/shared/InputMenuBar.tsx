@@ -6,9 +6,10 @@ import {
   Text,
   TextInput,
 } from 'react-native'
-import theme from '../../lib/theme'
+import theme, { getThemeByName } from '../../lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
+
+const sunsetTheme = getThemeByName('sunset')
 
 export const InputMenuBar = ({
   inputRef,
@@ -32,38 +33,26 @@ export const InputMenuBar = ({
 
   return (
     <InputAccessoryView nativeID={inputAccessoryViewID}>
-      <View style={styles.accessoryContainer}>
+      <View style={[styles.accessoryContainer, { backgroundColor: sunsetTheme.colors.hoverBackground, borderColor: sunsetTheme.colors.border }]}>
         <View style={styles.leftButtonsContainer}>
-          <LinearGradient
-            colors={['#4F5BD5', '#8f5cff']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.aiButtonGradient}
+          <TouchableOpacity
+            style={[styles.aiActionButton, { backgroundColor: sunsetTheme.colors.accent }]}
+            onPress={handleAIEnhance}
           >
-            <TouchableOpacity
-              style={styles.aiActionButton}
-              onPress={handleAIEnhance}
-            >
-              <Ionicons
-                name="sparkles-outline"
-                size={18}
-                color={theme.colors.textOnBackground}
-                style={{
-                  textShadowColor: '#8f5cff',
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 4,
-                }}
-              />
-              <Text style={styles.aiActionButtonText}>Enhance</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+            <Ionicons
+              name="sparkles-outline"
+              size={18}
+              color={sunsetTheme.colors.textOnPrimary}
+            />
+            <Text style={[styles.aiActionButtonText, { color: sunsetTheme.colors.textOnPrimary }]}>Enhance</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
-          style={styles.doneButton}
+          style={[styles.doneButton, { backgroundColor: sunsetTheme.colors.background }]}
           onPress={() => inputRef.current?.blur()}
         >
-          <Text style={styles.doneButtonText}>Done</Text>
+          <Text style={[styles.doneButtonText, { color: sunsetTheme.colors.textOnBackground }]}>Done</Text>
         </TouchableOpacity>
       </View>
     </InputAccessoryView>
@@ -98,24 +87,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
   },
-  aiButtonGradient: {
-    height: 38,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 4,
-    padding: 2,
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 4,
-  },
   aiActionButton: {
     height: 34,
     paddingHorizontal: 16,
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#232946B3', // theme.colors.background with 70% opacity
+    backgroundColor: theme.colors.accent,
     display: 'flex',
     flexDirection: 'row',
     gap: 4,
