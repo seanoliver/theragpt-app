@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
-import { colors } from '../../../lib/theme'
-import { useStatementService } from '../../hooks/useStatementService'
-import { ResponsiveLargeText } from './components/ResponsiveLargeText'
+import { useState } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
+import theme from '../../../lib/theme';
+import { useStatementService } from '../../hooks/useStatementService';
+import { ResponsiveLargeText } from './components/ResponsiveLargeText';
 
 export const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
   Dimensions.get('window')
@@ -63,7 +63,7 @@ export function ReviewScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     padding: 20,
   },
   statementContainer: {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   loadingText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 18,
     textAlign: 'center',
     marginTop: 60,
@@ -91,17 +91,17 @@ const styles = StyleSheet.create({
   progressBar: {
     width: '90%',
     height: 4,
-    backgroundColor: colors.charcoal[300],
+    backgroundColor: theme.colors.border,
     borderRadius: 2,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.accent,
     borderRadius: 2,
   },
   progressText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
     opacity: 0.7,
   },

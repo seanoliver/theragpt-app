@@ -2,7 +2,7 @@ import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo, useState } from 'react'
 import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import Animated from 'react-native-reanimated'
-import { colors } from '../../../lib/theme'
+import theme from '../../../lib/theme'
 import { SwipeMenu } from '../../shared/SwipeMenu'
 import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper';
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -65,9 +65,9 @@ export const ManifestoItem = ({
       actions={[
         {
           label: 'Archive',
-          icon: <FontAwesome name="archive" size={20} color={colors.text.primary} />,
-          backgroundColor: colors.charcoal[300],
-          textColor: colors.text.primary,
+          icon: <FontAwesome name="archive" size={20} color={theme.colors.textOnBackground} />,
+          backgroundColor: theme.colors.accent,
+          textColor: theme.colors.textOnBackground,
           onPress: onArchive,
         },
         {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     width: '100%',
     // Remove card-like margin
     marginBottom: 0,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
   },
   card: {
     backgroundColor: 'transparent',
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   text: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     flex: 1,
     fontSize: 18,
     lineHeight: 28,

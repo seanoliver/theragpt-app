@@ -2,7 +2,7 @@ import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo, useState } from 'react'
 import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import Animated from 'react-native-reanimated'
-import { colors } from '../../../../lib/theme'
+import theme from '../../../../lib/theme'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
 import { ManifestoItemEditorWrapper } from '../../Manifesto/ManifestoItemEditorWrapper'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -69,11 +69,11 @@ export const ArchiveLineItem = ({
             <FontAwesome
               name="arrow-up"
               size={20}
-              color={colors.text.primary}
+              color={theme.colors.textOnBackground}
             />
           ),
-          backgroundColor: colors.green[300],
-          textColor: colors.text.primary,
+          backgroundColor: theme.colors.accent,
+          textColor: theme.colors.textOnBackground,
           onPress: onArchive,
         },
         {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     marginBottom: 0,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
   },
   card: {
     backgroundColor: 'transparent',
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   text: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     flex: 1,
     fontSize: 18,
     lineHeight: 28,

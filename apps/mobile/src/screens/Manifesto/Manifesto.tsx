@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors, tokens } from '../../../lib/theme'
+import theme from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ManifestoItem } from './ManifestoItem'
@@ -52,7 +52,7 @@ export function ManifestoScreen() {
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.charcoal[100] }]}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <View style={styles.content}>
         <Text style={styles.subtitle}>Your Manifesto</Text>
@@ -60,7 +60,7 @@ export function ManifestoScreen() {
           ref={scrollViewRef}
           style={[
             styles.statementsList,
-            { backgroundColor: colors.charcoal[100] },
+            { backgroundColor: theme.colors.background },
           ]}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ flexGrow: 1 }}
@@ -81,7 +81,7 @@ export function ManifestoScreen() {
         </KeyboardAwareScrollView>
       </View>
       <FAB onPress={handleAddStatement}>
-        <Ionicons name="add" size={32} color={colors.charcoal[100]} />
+        <Ionicons name="add" size={32} color={theme.colors.background} />
       </FAB>
     </SafeAreaView>
   )
@@ -90,7 +90,7 @@ export function ManifestoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     padding: 25,
     paddingLeft: 10,
   },
@@ -100,9 +100,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontSize: 32,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: 'bold',
-    fontFamily: tokens.fontFamilies.headerSerif,
+    fontFamily: theme.fontFamilies.headerSerif,
   },
   content: {
     flex: 1,
@@ -111,10 +111,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 28,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: '700',
     letterSpacing: -0.5,
-    fontFamily: tokens.fontFamilies.headerSerif,
+    fontFamily: theme.fontFamilies.headerSerif,
   },
   statementsList: {
     flex: 1,

@@ -1,103 +1,44 @@
-// Define colors for the mobile app
-export const colors = {
-  charcoal: {
-    100: '#121212', // Main background - deep dark
-    200: '#1E1E1E', // Cards - slightly lighter
-    300: '#2D2D2D', // Hover states
-    400: '#3D3D3D', // Borders
-    500: '#4D4D4D',
-  },
-  green: {
-    100: '#2E7D32',
-    200: '#388E3C',
-    300: '#4CAF50',
-    400: '#81C784',
-    500: '#69F0AE',
-  },
-  red: {
-    100: '#B71C1C',
-    200: '#D32F2F',
-    300: '#E57373',
-    400: '#EF5350',
-    500: '#FF5252',
-  },
-  blue: {
-    100: '#0097A7',
-    200: '#00ACC1',
-    300: '#00BCD4',
-    400: '#03A9F4',
-    500: '#2196F3',
-  },
-  yellow: {
-    100: '#F57F17',
-    200: '#FFC107',
-    300: '#FFCA28',
-    400: '#FFD54F',
-    500: '#FFEB3B',
-  },
-  orange: {
-    100: '#E65100',
-    200: '#FF9800',
-    300: '#FFA726',
-    400: '#FFB74D',
-    500: '#FFC145',
-  },
-  purple: {
-    100: '#4A148C',
-    200: '#7B1FA2',
-    300: '#9C27B0',
-    400: '#AB47BC',
-    500: '#7B61FF',
-  },
-  pink: {
-    100: '#880E4F',
-    200: '#C2185B',
-    300: '#D81B60',
-    400: '#E91E63',
-    500: '#EC407A',
-  },
-  gray: {
-    100: '#212121',
-    200: '#666666',
-    300: '#B3B3B3',
-    400: '#E0E0E0',
-    500: '#FFFFFF',
-  },
-  indigo: {
-    100: '#1A237E',
-    200: '#303F9F',
-    300: '#3949AB',
-    400: '#3949AB',
-    500: '#303F9F',
-  },
-  text: {
-    primary: '#FFFFFF', // White for primary text
-    secondary: '#B3B3B3', // Light gray for secondary text
-    placeholder: '#666666', // Medium gray for placeholders
-  },
-  accent: {
-    primary: '#7B61FF', // Modern purple
-    secondary: '#6C757D', // Neutral gray
-  },
-  header: {
-    background: '#1E1E1E',
-    text: '#FFFFFF',
-  },
-  tabBar: {
-    active: '#7B61FF',
-    inactive: '#6C757D',
-    background: '#1E1E1E',
-    border: '#2D2D2D',
-  }
-}
+// Indigo palette and theme system for the mobile app
 
-// Define tokens for consistent styling
-export const tokens = {
+// Centralized indigo palette with variants
+export const indigoPalette = {
+  background: '#232946',
+  primary: '#3e4a89',
+  accent: '#5f6caf',
+  hover: {
+    background: '#2d3560',
+    primary: '#4957a6',
+    accent: '#6d7bbf',
+  },
+  disabled: {
+    background: '#23294680', // 50% opacity
+    primary: '#3e4a8980',
+    accent: '#5f6caf80',
+  },
+  white: '#FFFFFF',
+  black: '#000000',
+};
+
+// Theme tokens for consistent usage
+export const theme = {
   colors: {
-    primary500: '#7B61FF',
-    secondary500: '#6C757D',
-    gray300: '#2D2D2D',
-    gray600: '#6C757D',
+    background: indigoPalette.background,
+    primary: indigoPalette.primary,
+    accent: indigoPalette.accent,
+    hoverBackground: indigoPalette.hover.background,
+    hoverPrimary: indigoPalette.hover.primary,
+    hoverAccent: indigoPalette.hover.accent,
+    disabledBackground: indigoPalette.disabled.background,
+    disabledPrimary: indigoPalette.disabled.primary,
+    disabledAccent: indigoPalette.disabled.accent,
+    textOnBackground: indigoPalette.white,
+    textOnPrimary: indigoPalette.white,
+    textOnAccent: indigoPalette.white,
+    textDisabled: '#B3B3B3',
+    border: '#3e4a89',
+    // legacy support
+    white: indigoPalette.white,
+    black: indigoPalette.black,
   },
   space: {
     xs: 4,
@@ -119,8 +60,46 @@ export const tokens = {
     headerSerif: 'PlayfairDisplay_700Bold',
     bodySans: 'Inter_400Regular',
     bodySansBold: 'Inter_700Bold',
-    // fallback
     serifAlt: 'Times New Roman',
     sansAlt: 'System',
-  }
+  },
+};
+
+// Utility to get color by token name
+export function getColor(token: keyof typeof theme.colors): string {
+  return theme.colors[token];
 }
+
+// Accessibility/contrast helpers
+
+// Calculate luminance for a hex color
+function luminance(hex: string): number {
+  const c = hex.replace('#', '');
+  const rgb = [
+    parseInt(c.substring(0, 2), 16),
+    parseInt(c.substring(2, 4), 16),
+    parseInt(c.substring(4, 6), 16),
+  ].map((v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+// Calculate contrast ratio between two hex colors
+export function contrastRatio(hex1: string, hex2: string): number {
+  const lum1 = luminance(hex1);
+  const lum2 = luminance(hex2);
+  return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+}
+
+// Returns best text color (white or black) for given background
+export function getAccessibleTextColor(bg: string): string {
+  const whiteContrast = contrastRatio(bg, indigoPalette.white);
+  const blackContrast = contrastRatio(bg, indigoPalette.black);
+  // WCAG recommends at least 4.5:1 for normal text
+  return whiteContrast >= blackContrast ? indigoPalette.white : indigoPalette.black;
+}
+
+// Export all theme tokens for use in components
+export default theme;

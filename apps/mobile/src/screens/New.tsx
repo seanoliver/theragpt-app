@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { colors } from '../../lib/theme'
+import theme from '../../lib/theme'
 import { useStatementService } from '../hooks/useStatementService'
 
 export function NewStatementScreen() {
@@ -71,7 +71,7 @@ export function NewStatementScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     padding: 20,
   },
   header: {
@@ -79,35 +79,35 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backButton: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 18,
     marginBottom: 10,
   },
   title: {
     fontSize: 24,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
   },
   content: {
     flex: 1,
     gap: 20,
   },
   input: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 18,
     padding: 20,
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     borderRadius: 10,
     minHeight: 150,
     textAlignVertical: 'top',
   },
   aiButton: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
   },
   saveButton: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   buttonText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
   },
 })

@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-get-random-values'
-import { colors } from '../lib/theme'
+import theme from '../lib/theme'
 import {
   useFonts as usePlayfairFonts,
   PlayfairDisplay_400Regular,
@@ -41,15 +41,15 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: colors.charcoal[100],
-            borderTopColor: colors.charcoal[200],
+            backgroundColor: theme.colors.background,
+            borderTopColor: theme.colors.border,
           },
-          tabBarActiveTintColor: colors.text.primary,
-          tabBarInactiveTintColor: colors.text.secondary,
+          tabBarActiveTintColor: theme.colors.textOnBackground,
+          tabBarInactiveTintColor: theme.colors.textOnBackground,
           headerStyle: {
-            backgroundColor: colors.charcoal[100],
+            backgroundColor: theme.colors.background,
           },
-          headerTintColor: colors.text.primary,
+          headerTintColor: theme.colors.textOnBackground,
           headerTitleStyle: {
             fontWeight: 'bold',
           },

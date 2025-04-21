@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { colors } from '@/apps/mobile/lib/theme'
+import theme from '@/apps/mobile/lib/theme'
 
 interface AIOptionsModalActionButtonProps {
   onPress: () => void
@@ -19,7 +19,7 @@ const AIOptionsModalActionButton: React.FC<AIOptionsModalActionButtonProps> = ({
       <MaterialIcons
         name={icon}
         size={18}
-        color={colors.text.primary}
+        color={theme.colors.textOnBackground}
         style={{ marginRight: 6 }}
       />
       <Text style={styles.text}>{label}</Text>
@@ -29,7 +29,7 @@ const AIOptionsModalActionButton: React.FC<AIOptionsModalActionButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.charcoal[300],
+    backgroundColor: theme.colors.hoverBackground,
     borderRadius: 6,
     paddingVertical: 6,
     flex: 1,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: '600',
     fontSize: 14,
   },

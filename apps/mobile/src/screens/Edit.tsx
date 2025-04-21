@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { colors } from '../../lib/theme'
+import theme from '../../lib/theme'
 import { useStatementService } from '../hooks/useStatementService'
 
 export function EditStatementScreen() {
@@ -83,7 +83,7 @@ export function EditStatementScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     padding: 20,
   },
   header: {
@@ -91,35 +91,35 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backButton: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 18,
   },
   content: {
     flex: 1,
   },
   input: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 24,
     padding: 20,
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     borderRadius: 10,
     minHeight: 150,
     textAlignVertical: 'top',
   },
   saveButton: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
   },
   saveButtonText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
     fontWeight: '600',
   },
   loadingText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 18,
     textAlign: 'center',
     marginTop: 60,

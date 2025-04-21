@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated'
 import { Ionicons } from '@expo/vector-icons'
-import { colors, tokens } from '../../../../lib/theme'
+import theme from '../../../../lib/theme'
 import { useFocusEffect } from 'expo-router'
 
 function StepRow({
@@ -22,7 +22,7 @@ function StepRow({
       <Ionicons
         name={iconName}
         size={18}
-        color={colors.charcoal[400]}
+        color={theme.colors.textOnBackground}
         style={styles.stepIcon}
       />
       <Text style={styles.stepText}>{text}</Text>
@@ -32,7 +32,7 @@ function StepRow({
 
 export function ArchiveEmptyState() {
   const [animationKey, setAnimationKey] = useState(0)
-
+  
   useFocusEffect(
     useCallback(() => {
       setAnimationKey(prev => prev + 1)
@@ -45,7 +45,7 @@ export function ArchiveEmptyState() {
         <Ionicons
           name="bookmark-outline"
           size={48}
-          color={colors.charcoal[300]}
+          color={theme.colors.border}
           style={styles.icon}
         />
         <Text style={styles.title}>Nothing here... yet</Text>
@@ -98,15 +98,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: colors.text.primary,
-    fontFamily: tokens.fontFamilies.headerSerif,
+    color: theme.colors.textOnBackground,
+    fontFamily: theme.fontFamilies.headerSerif,
     marginBottom: 32,
   },
   subtitle: {
     fontSize: 16,
-    color: colors.text.secondary,
+    color: theme.colors.textOnBackground,
     textAlign: 'left',
-    fontFamily: tokens.fontFamilies.bodySans,
+    fontFamily: theme.fontFamilies.bodySans,
     marginBottom: 16,
   },
   stepRow: {
@@ -121,18 +121,18 @@ const styles = StyleSheet.create({
   stepText: {
     flex: 1,
     fontSize: 16,
-    color: colors.text.secondary,
+    color: theme.colors.textOnBackground,
     textAlign: 'left',
-    fontFamily: tokens.fontFamilies.bodySans,
+    fontFamily: theme.fontFamilies.bodySans,
   },
   cta: {
     fontSize: 15,
-    color: colors.text.primary,
-    fontFamily: tokens.fontFamilies.bodySans,
+    color: theme.colors.textOnBackground,
+    fontFamily: theme.fontFamilies.bodySans,
     textAlign: 'center',
   },
   ctaContainer: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 16,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   ctaPlus: {
     fontWeight: '700',
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 18,
   },
 })

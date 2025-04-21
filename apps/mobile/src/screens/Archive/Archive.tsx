@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'expo-router'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors, tokens } from '../../../lib/theme'
+import theme from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
@@ -57,7 +57,7 @@ export function ArchiveScreen() {
                 <View
                   style={{
                     height: 1,
-                    backgroundColor: colors.charcoal[300],
+                    backgroundColor: theme.colors.border,
                     width: '100%',
                     marginVertical: 8,
                   }}
@@ -69,7 +69,7 @@ export function ArchiveScreen() {
       )}
 
       <FAB onPress={handleAddStatement}>
-        <Ionicons name="add" size={32} color={colors.charcoal[100]} />
+        <Ionicons name="add" size={32} color={theme.colors.background} />
       </FAB>
     </SafeAreaView>
   )
@@ -78,7 +78,7 @@ export function ArchiveScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     padding: 20,
   },
   header: {
@@ -87,9 +87,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontSize: 32,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: 'bold',
-    fontFamily: tokens.fontFamilies.headerSerif,
+    fontFamily: theme.fontFamilies.headerSerif,
   },
   content: {
     flex: 1,
@@ -98,10 +98,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 28,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: '700',
     letterSpacing: -0.5,
-    fontFamily: tokens.fontFamilies.headerSerif,
+    fontFamily: theme.fontFamilies.headerSerif,
   },
   statementsList: {
     flex: 1,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   fabButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.accent,
     width: 48,
     height: 48,
     borderRadius: 32,

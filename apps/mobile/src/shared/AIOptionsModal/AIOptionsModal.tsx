@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import Modal from 'react-native-modal'
-import { colors } from '../../../lib/theme'
+import theme from '../../../lib/theme'
 import AIOptionsModalItem from './AIOptionsModalItem'
 
 interface Alternative {
@@ -50,7 +50,7 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerLabel}>Original Statement</Text>
-        <Text style={{ color: colors.text.primary, fontSize: 16, textAlign: 'left' }}>{value}</Text>
+        <Text style={{ color: theme.colors.textOnBackground, fontSize: 16, textAlign: 'left' }}>{value}</Text>
       </View>
       <ScrollView
         style={styles.scrollView}
@@ -58,7 +58,7 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
       >
         {loading && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.text.primary} />
+            <ActivityIndicator size="large" color={theme.colors.textOnBackground} />
             <Text style={styles.loadingText}>Generating alternatives...</Text>
           </View>
         )}
@@ -82,14 +82,14 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
           marginBottom: 12,
           paddingVertical: 8,
           paddingHorizontal: 24,
-          backgroundColor: colors.charcoal[300],
+          backgroundColor: theme.colors.border,
           borderRadius: 8,
         }}
         onPress={onClose}
       >
         <Text
           style={{
-            color: colors.text.primary,
+            color: theme.colors.textOnBackground,
             fontWeight: '600',
             fontSize: 16,
           }}
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   container: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
     padding: 0,
@@ -118,12 +118,12 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     borderBottomWidth: 1,
-    borderColor: colors.charcoal[300],
-    backgroundColor: colors.charcoal[200],
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.hoverBackground,
     zIndex: 2,
   },
   headerLabel: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 4,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   loadingText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     marginTop: 12,
   },
   errorText: {

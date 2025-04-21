@@ -1,9 +1,15 @@
-import { colors } from '@/apps/mobile/lib/theme'
+import theme from '@/apps/mobile/lib/theme'
 import { InputMenuBar } from '@/apps/mobile/src/shared/InputMenuBar'
 import { getEnvironment } from '@still/config'
 import { apiService } from '@still/logic/src/api/service'
 import { useEffect, useRef, useState } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  TextInput,
+} from 'react-native'
 import AIOptionsModal from '../../shared/AIOptionsModal/AIOptionsModal'
 import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
 
@@ -118,7 +124,7 @@ export const ManifestoItemEditorWrapper = ({
             onBlur={handleBlur}
             multiline={multiline}
             onSubmitEditing={handleSubmitEditing}
-            selectionColor={colors.text.primary}
+            selectionColor={theme.colors.textOnBackground}
             returnKeyType="default"
             placeholder="Edit statement..."
             placeholderTextColor="#888"
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     minHeight: LINE_HEIGHT + 8,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     flex: 1,
     top: -2,
     textAlign: 'left',

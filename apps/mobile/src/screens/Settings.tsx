@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native'
-import { colors } from '../../lib/theme'
+import theme from '../../lib/theme'
 
 export function SettingsScreen() {
   return (
@@ -38,7 +38,7 @@ export function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     padding: 20,
   },
   contentContainer: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 28,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: '700',
     marginBottom: 32,
   },
@@ -55,26 +55,26 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.charcoal[200],
+    borderBottomColor: theme.colors.border,
   },
   label: {
     fontSize: 18,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     marginBottom: 8,
   },
   value: {
     fontSize: 16,
-    color: colors.text.secondary,
+    color: theme.colors.textOnBackground,
   },
   logoutButton: {
     marginTop: 40,
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     padding: 16,
     borderRadius: 10,
     alignItems: 'center',
   },
   logoutText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
     fontWeight: '600',
   },

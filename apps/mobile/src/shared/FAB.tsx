@@ -12,7 +12,7 @@ import {
   StyleProp,
   TouchableOpacity,
 } from 'react-native'
-import { colors } from '../../lib/theme'
+import theme from '../../lib/theme'
 
 const MANIFESTO_TAB = 'index'
 const ARCHIVE_TAB = 'archive'
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   fabButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.accent,
     width: 48,
     height: 48,
     borderRadius: 32,

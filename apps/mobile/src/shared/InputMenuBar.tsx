@@ -6,7 +6,7 @@ import {
   Text,
   TextInput,
 } from 'react-native'
-import { colors } from '../../lib/theme'
+import theme from '../../lib/theme'
 import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -47,7 +47,7 @@ export const InputMenuBar = ({
               <Ionicons
                 name="sparkles-outline"
                 size={18}
-                color={colors.text.primary}
+                color={theme.colors.textOnBackground}
                 style={{
                   textShadowColor: '#8f5cff',
                   textShadowOffset: { width: 0, height: 1 },
@@ -72,10 +72,10 @@ export const InputMenuBar = ({
 
 const styles = StyleSheet.create({
   accessoryContainer: {
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     padding: 8,
     borderTopWidth: 1,
-    borderColor: colors.charcoal[300],
+    borderColor: theme.colors.border,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   doneButton: {
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 6,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   doneButtonText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontWeight: '600',
     fontSize: 16,
   },
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(30,30,40,0.7)',
+    backgroundColor: '#232946B3', // theme.colors.background with 70% opacity
     display: 'flex',
     flexDirection: 'row',
     gap: 4,
@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
   aiActionButtonText: {
     fontSize: 12,
     fontWeight: '600',
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
   },
 })
