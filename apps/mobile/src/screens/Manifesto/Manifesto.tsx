@@ -54,20 +54,33 @@ export function ManifestoScreen() {
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: sunsetTheme.colors.background }]}
+      style={[
+        styles.container,
+        { backgroundColor: sunsetTheme.colors.background },
+      ]}
     >
-      <View style={[styles.headerSection, { paddingTop: insets.top + 12, backgroundColor: sunsetTheme.colors.background }]}>
+      <View
+        style={[
+          styles.headerSection,
+          {
+            paddingTop: insets.top + 12,
+            backgroundColor: sunsetTheme.colors.background,
+          },
+        ]}
+      >
         <View style={styles.headerRow}>
-          <Text style={[
-            styles.headerTitle,
-            {
-              color: sunsetTheme.colors.textOnBackground,
-              fontFamily: sunsetTheme.fontFamilies.headerSerif,
-              fontWeight: '500',
-              fontSize: 26,
-              letterSpacing: 1.5,
-            },
-          ]}>
+          <Text
+            style={[
+              styles.headerTitle,
+              {
+                color: sunsetTheme.colors.textOnBackground,
+                fontFamily: sunsetTheme.fontFamilies.headerSerif,
+                fontWeight: '500',
+                fontSize: 26,
+                letterSpacing: 1.5,
+              },
+            ]}
+          >
             Your Manifesto
           </Text>
           <Ionicons
@@ -77,15 +90,17 @@ export function ManifestoScreen() {
             style={[styles.headerIcon, { opacity: 0.5 }]}
           />
         </View>
-        <View style={[
-          styles.headerDivider,
-          {
-            backgroundColor: sunsetTheme.colors.border,
-            height: 1,
-            opacity: 0.10,
-            marginTop: 8,
-          },
-        ]} />
+        <View
+          style={[
+            styles.headerDivider,
+            {
+              backgroundColor: sunsetTheme.colors.border,
+              height: 1,
+              opacity: 0.1,
+              marginTop: 8,
+            },
+          ]}
+        />
       </View>
       <View style={styles.content}>
         <KeyboardAwareScrollView
@@ -108,14 +123,25 @@ export function ManifestoScreen() {
                 onSave={() => {
                   if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
                 }}
-                style={index < statements.length - 1 ? { marginBottom: 20 } : undefined}
+                style={
+                  index < statements.length - 1
+                    ? { marginBottom: 20 }
+                    : { marginBottom: 0 }
+                }
               />
             </React.Fragment>
           ))}
         </KeyboardAwareScrollView>
       </View>
-      <FAB onPress={handleAddStatement} backgroundColor={sunsetTheme.colors.accent}>
-        <Ionicons name="add" size={32} color={sunsetTheme.colors.textOnAccent} />
+      <FAB
+        onPress={handleAddStatement}
+        backgroundColor={sunsetTheme.colors.accent}
+      >
+        <Ionicons
+          name="add"
+          size={32}
+          color={sunsetTheme.colors.textOnAccent}
+        />
       </FAB>
     </SafeAreaView>
   )

@@ -170,14 +170,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: MANIFESTO_ITEM_TEXT_SIZE,
     lineHeight: MANIFESTO_ITEM_LINE_HEIGHT,
-    backgroundColor: 'transparent',
-    borderWidth: 0,
-    padding: 0,
-    margin: 0,
-    minHeight: MANIFESTO_ITEM_LINE_HEIGHT + 8,
-    color: theme.colors.textOnBackground,
     flex: 1,
-    top: -5,
     textAlign: 'left',
   },
 })
