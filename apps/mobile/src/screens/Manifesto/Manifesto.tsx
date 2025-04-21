@@ -108,6 +108,7 @@ export function ManifestoScreen() {
                 onSave={() => {
                   if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
                 }}
+                style={index < statements.length - 1 ? { marginBottom: 20 } : undefined}
               />
             </React.Fragment>
           ))}
