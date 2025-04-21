@@ -76,16 +76,6 @@ export function ManifestoScreen() {
                   if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
                 }}
               />
-              {index < statements.length - 1 && (
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: colors.charcoal[300],
-                    width: '100%',
-                    marginVertical: 8,
-                  }}
-                />
-              )}
             </React.Fragment>
           ))}
         </KeyboardAwareScrollView>
