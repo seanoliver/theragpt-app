@@ -6,10 +6,22 @@ import {
   Switch,
   TouchableOpacity,
   ScrollView,
+  Pressable,
 } from 'react-native'
+import { useTheme } from '../../lib/theme.context'
+import { ThemeOption, getAvailableThemes } from '../../lib/theme.service'
 import theme from '../../lib/theme'
 
+const THEME_LABELS: Record<ThemeOption, string> = {
+  [ThemeOption.LIGHT]: 'Light',
+  [ThemeOption.DARK]: 'Dark',
+  [ThemeOption.SYSTEM]: 'System Default',
+}
+
 export function SettingsScreen() {
+  const { theme: selectedTheme, setTheme } = useTheme()
+  const themeOptions = getAvailableThemes()
+
   return (
     <ScrollView
       style={styles.container}
@@ -22,7 +34,29 @@ export function SettingsScreen() {
       </View>
       <View style={styles.section}>
         <Text style={styles.label}>Theme</Text>
-        <Text style={styles.value}>System Default</Text>
+        <View style={styles.themeSelector}>
+          {themeOptions.map(option => (
+            <Pressable
+              key={option}
+              style={[
+                styles.themeOption,
+                selectedTheme === option && styles.themeOptionSelected,
+              ]}
+              onPress={() => setTheme(option)}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: selectedTheme === option }}
+            >
+              <Text
+                style={[
+                  styles.themeOptionLabel,
+                  selectedTheme === option && styles.themeOptionLabelSelected,
+                ]}
+              >
+                {THEME_LABELS[option]}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
       </View>
       <View style={styles.section}>
         <Text style={styles.label}>About</Text>
@@ -65,6 +99,32 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     color: theme.colors.textOnBackground,
+  },
+  themeSelector: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 8,
+  },
+  themeOption: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.background,
+    marginRight: 8,
+  },
+  themeOptionSelected: {
+    backgroundColor: theme.colors.hoverBackground,
+    borderColor: theme.colors.primary,
+  },
+  themeOptionLabel: {
+    color: theme.colors.textOnBackground,
+    fontSize: 16,
+  },
+  themeOptionLabelSelected: {
+    color: theme.colors.primary,
+    fontWeight: '700',
   },
   logoutButton: {
     marginTop: 40,
