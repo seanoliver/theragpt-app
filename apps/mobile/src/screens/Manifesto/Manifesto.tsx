@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import theme from '../../../lib/theme'
+import theme, { getThemeByName } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ManifestoItem } from './ManifestoItem'
@@ -13,6 +13,7 @@ export function ManifestoScreen() {
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
   const scrollViewRef = useRef<ScrollView>(null)
   const insets = useSafeAreaInsets()
+  const sunsetTheme = getThemeByName('sunset')
 
   useEffect(() => {
     if (
@@ -53,21 +54,45 @@ export function ManifestoScreen() {
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
+      style={[styles.container, { backgroundColor: sunsetTheme.colors.background }]}
     >
-      <View style={[styles.headerSection, { paddingTop: insets.top + 24 }]}>
+      <View style={[styles.headerSection, { paddingTop: insets.top + 12, backgroundColor: sunsetTheme.colors.background }]}>
         <View style={styles.headerRow}>
-          <Text style={styles.headerTitle}>Your Manifesto</Text>
-          <Ionicons name="sparkles-outline" size={28} color={theme.colors.primary} style={styles.headerIcon} />
+          <Text style={[
+            styles.headerTitle,
+            {
+              color: sunsetTheme.colors.textOnBackground,
+              fontFamily: sunsetTheme.fontFamilies.headerSerif,
+              fontWeight: '500',
+              fontSize: 26,
+              letterSpacing: 1.5,
+            },
+          ]}>
+            Your Manifesto
+          </Text>
+          <Ionicons
+            name="sparkles-outline"
+            size={22}
+            color={sunsetTheme.colors.accent}
+            style={[styles.headerIcon, { opacity: 0.5 }]}
+          />
         </View>
-        <View style={styles.headerDivider} />
+        <View style={[
+          styles.headerDivider,
+          {
+            backgroundColor: sunsetTheme.colors.border,
+            height: 1,
+            opacity: 0.10,
+            marginTop: 8,
+          },
+        ]} />
       </View>
       <View style={styles.content}>
         <KeyboardAwareScrollView
           ref={scrollViewRef}
           style={[
             styles.statementsList,
-            { backgroundColor: theme.colors.background },
+            { backgroundColor: sunsetTheme.colors.background },
           ]}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ flexGrow: 1 }}
@@ -88,8 +113,8 @@ export function ManifestoScreen() {
           ))}
         </KeyboardAwareScrollView>
       </View>
-      <FAB onPress={handleAddStatement}>
-        <Ionicons name="add" size={32} color={theme.colors.background} />
+      <FAB onPress={handleAddStatement} backgroundColor={sunsetTheme.colors.accent}>
+        <Ionicons name="add" size={32} color={sunsetTheme.colors.textOnAccent} />
       </FAB>
     </SafeAreaView>
   )
@@ -98,13 +123,13 @@ export function ManifestoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: 'transparent',
     padding: 0,
   },
   headerSection: {
-    paddingBottom: 12,
+    paddingBottom: 20,
     paddingHorizontal: 24,
-    backgroundColor: theme.colors.background,
+    backgroundColor: 'transparent',
   },
   headerRow: {
     flexDirection: 'row',

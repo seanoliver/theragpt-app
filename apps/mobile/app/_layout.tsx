@@ -3,7 +3,7 @@ import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-get-random-values'
 import { ThemeProvider } from '../lib/theme.context';
-import theme from '../lib/theme'
+import theme, { getThemeByName } from '../lib/theme'
 import {
   useFonts as usePlayfairFonts,
   PlayfairDisplay_400Regular,
@@ -17,6 +17,7 @@ import {
 import { ActivityIndicator } from 'react-native'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSegments } from 'expo-router'
 
 export default function RootLayout() {
   const [playfairLoaded] = usePlayfairFonts({
@@ -27,6 +28,12 @@ export default function RootLayout() {
     Inter_400Regular,
     Inter_700Bold,
   })
+  const segments = useSegments() as string[]
+  const currentTab = segments[0] || 'index'
+  const sunsetTheme = getThemeByName('sunset')
+  const isManifesto = currentTab === 'index'
+  const tabTheme = isManifesto ? sunsetTheme : theme
+
   if (!playfairLoaded || !interLoaded) {
     return (
       <ActivityIndicator
@@ -45,15 +52,15 @@ export default function RootLayout() {
               screenOptions={{
                 headerShown: false,
                 tabBarStyle: {
-                  backgroundColor: theme.colors.background,
-                  borderTopColor: theme.colors.border,
+                  backgroundColor: tabTheme.colors.background,
+                  borderTopColor: tabTheme.colors.border,
                 },
-                tabBarActiveTintColor: theme.colors.textOnBackground,
-                tabBarInactiveTintColor: theme.colors.textOnBackground,
+                tabBarActiveTintColor: tabTheme.colors.textOnBackground,
+                tabBarInactiveTintColor: tabTheme.colors.textDisabled,
                 headerStyle: {
-                  backgroundColor: theme.colors.background,
+                  backgroundColor: tabTheme.colors.background,
                 },
-                headerTintColor: theme.colors.textOnBackground,
+                headerTintColor: tabTheme.colors.textOnBackground,
                 headerTitleStyle: {
                   fontWeight: 'bold',
                 },

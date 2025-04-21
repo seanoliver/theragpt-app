@@ -21,9 +21,10 @@ interface FABProps {
   children: React.ReactNode
   style?: StyleProp<ViewStyle>
   onPress?: () => void
+  backgroundColor?: string
 }
 
-export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
+export const FAB: React.FC<FABProps> = ({ children, style, onPress, backgroundColor }) => {
   const segments = useSegments() as any[] // To fix annoying type error
 
   const currentTab: string =
@@ -57,7 +58,7 @@ export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
 
   return (
     <Animated.View style={[styles.fabContainer, animatedStyle, style]}>
-      <View style={styles.fabButton}>
+      <View style={[styles.fabButton, backgroundColor ? { backgroundColor } : null]}>
         <TouchableOpacity
           onPress={onPress}
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}

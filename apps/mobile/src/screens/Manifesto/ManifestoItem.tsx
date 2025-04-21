@@ -2,7 +2,7 @@ import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo, useState } from 'react'
 import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import Animated from 'react-native-reanimated'
-import theme from '../../../lib/theme'
+import theme, { getThemeByName } from '../../../lib/theme'
 import { SwipeMenu } from '../../shared/SwipeMenu'
 import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -34,6 +34,7 @@ export const ManifestoItem = ({
   autoFocus,
 }: ManifestoItemProps) => {
   const CardWrapper = animatedStyle ? Animated.View : View
+  const sunsetTheme = getThemeByName('sunset')
 
   const [text, setText] = useState(statement.text)
 
@@ -49,6 +50,11 @@ export const ManifestoItem = ({
         key={statement.id}
         style={{
           ...styles.text,
+          color: sunsetTheme.colors.textOnBackground,
+          fontFamily: sunsetTheme.fontFamilies.bodySans,
+          fontWeight: '400',
+          letterSpacing: 0.1,
+          marginBottom: 16,
         }}
       >
         {text}
@@ -61,23 +67,23 @@ export const ManifestoItem = ({
     <SwipeMenu
       actions={[
         {
-          label: 'Archive',
+          label: '',
           icon: (
             <FontAwesome
               name="archive"
-              size={20}
-              color={theme.colors.textOnBackground}
+              size={18}
+              color={sunsetTheme.colors.accent}
             />
           ),
-          backgroundColor: theme.colors.accent,
-          textColor: theme.colors.textOnBackground,
+          backgroundColor: sunsetTheme.colors.accent + '22',
+          textColor: sunsetTheme.colors.accent,
           onPress: onArchive,
         },
         {
-          label: 'Delete',
-          icon: <Ionicons name="trash" size={20} color="#fff" />,
-          backgroundColor: '#E57373',
-          textColor: '#fff',
+          label: '',
+          icon: <Ionicons name="trash" size={18} color="#d32f2f" />,
+          backgroundColor: '#d32f2f22',
+          textColor: '#d32f2f',
           onPress: () => onDelete(statement.id),
         },
       ]}
@@ -122,10 +128,12 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   text: {
-    color: theme.colors.textOnBackground,
     flex: 1,
     fontSize: MANIFESTO_ITEM_TEXT_SIZE,
     lineHeight: MANIFESTO_ITEM_LINE_HEIGHT,
     textAlign: 'left',
+    fontWeight: '400',
+    letterSpacing: 0.1,
+    marginBottom: 16,
   },
 })

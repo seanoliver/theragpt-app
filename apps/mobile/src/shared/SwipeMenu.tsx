@@ -59,10 +59,12 @@ const ActionWrapper = ({
         onPress={onPress}
         style={{
           backgroundColor,
-          height: '100%',
+          width: 44,
+          height: 44,
+          borderRadius: 22,
           justifyContent: 'center',
           alignItems: 'center',
-          width: 80,
+          marginHorizontal: 6,
         }}
       >
         {icon}
