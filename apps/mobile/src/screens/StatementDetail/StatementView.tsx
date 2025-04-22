@@ -1,13 +1,12 @@
-import { Ionicons } from '@expo/vector-icons'
-import { Statement } from '@still/logic/src/statement/statementService'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import theme from '../../../lib/theme'
-import { useStatementService } from '../../hooks/useStatementService'
-import { ManifestoItem } from '../Manifesto/ManifestoItem'
-import { colors } from 'react-native-keyboard-controller/lib/typescript/components/KeyboardToolbar/colors';
+import { Ionicons } from '@expo/vector-icons';
+import { Statement } from '@still/logic/src/statement/statementService';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import theme from '../../../lib/theme';
+import { useStatementService } from '../../hooks/useStatementService';
+import { ManifestoItem } from '../Manifesto/ManifestoItem';
 
 export default function StatementView() {
   const router = useRouter()
@@ -73,10 +72,17 @@ export default function StatementView() {
       </View>
     )
   }
+  if (!statementId) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>No statement ID provided in the route.</Text>
+      </View>
+    )
+  }
   if (!statement) {
     return (
       <View style={styles.container}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>Statement not found.</Text>
       </View>
     )
   }
@@ -96,7 +102,6 @@ export default function StatementView() {
         <View style={[styles.stillCardContainer, styles.card]}>
           <ManifestoItem
             statement={statement}
-            size="lg"
             onSave={handleSaveStatement}
             onArchive={() => {}}
             onDelete={() => {}}

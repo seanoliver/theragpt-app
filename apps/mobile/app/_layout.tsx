@@ -110,12 +110,6 @@ export default function RootLayout() {
                 }}
               />
               <Tabs.Screen
-                name="still"
-                options={{
-                  href: null,
-                }}
-              />
-              <Tabs.Screen
                 name="onboarding"
                 options={{
                   href: null,
