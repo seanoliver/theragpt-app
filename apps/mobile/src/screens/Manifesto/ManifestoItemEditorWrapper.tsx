@@ -12,8 +12,8 @@ import {
 } from 'react-native'
 import AIOptionsModal from '../../shared/AIOptionsModal/AIOptionsModal'
 import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
-import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants';
-import { MANIFESTO_ITEM_TEXT_SIZE } from './constants';
+import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants'
+import { MANIFESTO_ITEM_TEXT_SIZE } from './constants'
 
 const TEXT_SIZE = 18
 const LINE_HEIGHT = 32
@@ -168,9 +168,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
+    flex: 1,
     fontSize: MANIFESTO_ITEM_TEXT_SIZE,
     lineHeight: MANIFESTO_ITEM_LINE_HEIGHT,
-    flex: 1,
     textAlign: 'left',
+    fontWeight: '400',
+    letterSpacing: 0.1,
   },
 })

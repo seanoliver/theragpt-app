@@ -1,20 +1,18 @@
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo, useState } from 'react'
-import { StyleSheet, View, ViewStyle, Text } from 'react-native'
-import Animated from 'react-native-reanimated'
-import theme, { getThemeByName } from '../../../lib/theme'
+import { StyleSheet, View } from 'react-native'
+import theme from '../../../lib/theme'
 import { SwipeMenu } from '../../shared/SwipeMenu'
-import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper'
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { MANIFESTO_ITEM_TEXT_SIZE } from './constants'
-import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants'
+import {
+  MANIFESTO_ITEM_LINE_HEIGHT,
+  MANIFESTO_ITEM_TEXT_SIZE,
+} from './constants'
+import { ManifestoItemDisplay } from './ManifestoItemDisplay'
+import { ManifestoItemEdit } from './ManifestoItemEdit'
 
 interface ManifestoItemProps {
   statement: Statement
-  size?: 'sm' | 'lg'
-  style?: ViewStyle
-  animatedStyle?: any
-  containerStyle?: ViewStyle
   editable?: boolean
   onSave?: (newText: string) => void
   onArchive: () => void
@@ -24,19 +22,13 @@ interface ManifestoItemProps {
 
 export const ManifestoItem = ({
   statement,
-  size = 'sm',
-  style,
-  animatedStyle,
-  containerStyle,
   onSave,
   onArchive,
   onDelete,
   autoFocus,
 }: ManifestoItemProps) => {
-  const CardWrapper = animatedStyle ? Animated.View : View
-  const sunsetTheme = getThemeByName('sunset')
-
-  const [text, setText] = useState(statement.text)
+  const [isEditing, setIsEditing] = useState(false)
+  const [currentStatement, setCurrentStatement] = useState(statement)
 
   const handleSave = (newText: string) => {
     if (onSave && newText !== statement.text) {
@@ -44,64 +36,46 @@ export const ManifestoItem = ({
     }
   }
 
-  const previewText = useMemo(
-    () => (
-      <Text
-        key={statement.id}
-        style={{
-          ...styles.text,
-          color: sunsetTheme.colors.textOnBackground,
-          fontFamily: sunsetTheme.fontFamilies.bodySans,
-          fontWeight: '400',
-          letterSpacing: 0.1,
-          marginBottom: 16,
-        }}
-      >
-        {text}
-      </Text>
-    ),
-    [statement.id, text],
+  const swipeActions = useMemo(
+    () => [
+      {
+        label: '',
+        icon: (
+          <FontAwesome name="archive" size={18} color={theme.colors.accent} />
+        ),
+        backgroundColor: theme.colors.accent + '22',
+        textColor: theme.colors.accent,
+        onPress: onArchive,
+      },
+      {
+        label: '',
+        icon: <Ionicons name="trash" size={18} color="#d32f2f" />,
+        backgroundColor: '#d32f2f22',
+        textColor: '#d32f2f',
+        onPress: () => onDelete(statement.id),
+      },
+    ],
+    [onArchive, onDelete, statement.id, theme],
   )
 
   return (
-    <SwipeMenu
-      actions={[
-        {
-          label: '',
-          icon: (
-            <FontAwesome
-              name="archive"
-              size={18}
-              color={sunsetTheme.colors.accent}
-            />
-          ),
-          backgroundColor: sunsetTheme.colors.accent + '22',
-          textColor: sunsetTheme.colors.accent,
-          onPress: onArchive,
-        },
-        {
-          label: '',
-          icon: <Ionicons name="trash" size={18} color="#d32f2f" />,
-          backgroundColor: '#d32f2f22',
-          textColor: '#d32f2f',
-          onPress: () => onDelete(statement.id),
-        },
-      ]}
-    >
-      <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
-        <View style={[styles.card, style]}>
-          <View style={styles.contentContainer}>
-            <ManifestoItemEditorWrapper
-              value={text}
-              onChange={setText}
-              onSave={handleSave}
-              autoFocus={autoFocus}
-            >
-              {previewText}
-            </ManifestoItemEditorWrapper>
-          </View>
-        </View>
-      </CardWrapper>
+    <SwipeMenu actions={swipeActions}>
+      <View style={[styles.card]}>
+        {isEditing ? (
+          <ManifestoItemEdit
+            currentStatement={currentStatement}
+            setCurrentStatement={setCurrentStatement}
+            setIsEditing={setIsEditing}
+            autoFocus={autoFocus}
+            onSave={handleSave}
+          />
+        ) : (
+          <ManifestoItemDisplay
+            statement={statement}
+            setIsEditing={setIsEditing}
+          />
+        )}
+      </View>
     </SwipeMenu>
   )
 }
@@ -124,12 +98,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 6,
     borderWidth: 1,
-    borderColor: getThemeByName('sunset').colors.border + '1A',
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingBottom: 8,
+    borderColor: theme.colors.border + '1A',
   },
   text: {
     flex: 1,
