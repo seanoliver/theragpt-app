@@ -32,7 +32,7 @@ export default function RootLayout() {
   const currentTab = segments[0] || 'index'
   const sunsetTheme = getThemeByName('sunset')
   const isManifesto = currentTab === 'index'
-  const tabTheme = isManifesto ? sunsetTheme : theme
+  const tabTheme = sunsetTheme
 
   if (!playfairLoaded || !interLoaded) {
     return (
