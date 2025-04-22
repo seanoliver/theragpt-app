@@ -20,9 +20,14 @@ export const ManifestoItemDisplay = ({
 
 const styles = StyleSheet.create({
   text: {
-    color: theme.colors.black,
+    color: theme.colors.text,
     fontFamily: theme.fontFamilies.bodySans,
-    fontWeight: '400',
-    letterSpacing: 0.1,
+    fontWeight: '500',
+    fontSize: 20,
+    letterSpacing: 0.15,
+    textShadowColor: 'rgba(44,44,44,0.10)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+    paddingVertical: 2,
   },
 })

@@ -15,9 +15,6 @@ import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
 import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants'
 import { MANIFESTO_ITEM_TEXT_SIZE } from './constants'
 
-const TEXT_SIZE = 18
-const LINE_HEIGHT = 32
-
 interface ManifestoItemEditorWrapperProps {
   value: string
   onChange: (text: string) => void

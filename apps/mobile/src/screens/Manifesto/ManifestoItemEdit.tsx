@@ -40,12 +40,6 @@ export const ManifestoItemEdit = ({
     }
   }, [autoFocus])
 
-  const handleTextPress = () => {
-    setIsEditing(true)
-    setTimeout(() => {
-      inputRef.current?.focus?.()
-    }, 100)
-  }
 
   const handleSubmit = () => {
     setIsEditing(false)
@@ -98,7 +92,15 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.black,
     fontFamily: theme.fontFamilies.bodySans,
-    fontWeight: '400',
-    letterSpacing: 0.1,
+    fontWeight: '500',
+    fontSize: 20,
+    letterSpacing: 0.15,
+    textShadowColor: 'rgba(44,44,44,0.10)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
   },
 })

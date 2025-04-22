@@ -226,11 +226,3 @@ export function getAccessibleTextColor(theme: Theme, bg: string): string {
 export const availablePalettes = Object.keys(palettes) as PaletteName[]
 
 export { palettes }
-
-// TDD Anchors (for tests):
-// - should return the correct palette for a valid name
-// - all palettes should have the same set of tokens
-// - should return the default palette if an unknown name is provided
-// - should fallback to default token value if a palette is missing a token
-
-// Module is <500 lines, modular, and ready for integration.
