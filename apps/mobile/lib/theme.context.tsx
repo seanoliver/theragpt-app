@@ -3,14 +3,17 @@
  * Provides theme selection and management throughout the app
  */
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Appearance, ColorSchemeName } from 'react-native';
+import { Appearance } from 'react-native';
 import { ThemeOption, getSystemTheme, loadThemeSelection, saveThemeSelection } from './theme.service';
+import { themes } from './theme/themes';
+import type { Theme } from './theme';
 
 // Theme context interface
 interface ThemeContextType {
   theme: ThemeOption;
   effectiveTheme: ThemeOption;
   setTheme: (theme: ThemeOption) => void;
+  themeObject: Theme;
 }
 
 // Create the context with default values
@@ -18,6 +21,7 @@ export const ThemeContext = createContext<ThemeContextType>({
   theme: ThemeOption.SYSTEM,
   effectiveTheme: ThemeOption.LIGHT,
   setTheme: () => {},
+  themeObject: themes.light,
 });
 
 // Theme provider props
@@ -88,6 +92,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     theme,
     effectiveTheme,
     setTheme,
+    themeObject: themes[effectiveTheme],
   };
 
   return (

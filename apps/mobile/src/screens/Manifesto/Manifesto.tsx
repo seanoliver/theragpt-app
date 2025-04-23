@@ -8,12 +8,12 @@ import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { TitleBar } from '../../shared/TitleBar'
 import { ManifestoItem } from './ManifestoItem'
-
-const sunsetTheme = getThemeByName('sunset')
+import { useTheme } from '@/apps/mobile/lib/theme.context';
 
 export function ManifestoScreen() {
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
   const scrollViewRef = useRef<ScrollView>(null)
+  const { themeObject } = useTheme()
 
   const { service, statements } = useStatementService()
 
@@ -62,8 +62,7 @@ export function ManifestoScreen() {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: sunsetTheme.colors.background }}>
-      <TitleBar />
+    <SafeAreaView style={{ backgroundColor: themeObject.colors.background }}>
       <ScrollView
         ref={scrollViewRef}
         keyboardShouldPersistTaps="handled"
@@ -86,11 +85,11 @@ export function ManifestoScreen() {
         ))}
       </ScrollView>
 
-      <FAB onPress={handleNew} backgroundColor={sunsetTheme.colors.accent}>
+      <FAB onPress={handleNew} backgroundColor={themeObject.colors.accent}>
         <Ionicons
           name="add"
           size={32}
-          color={sunsetTheme.colors.textOnAccent}
+          color={themeObject.colors.textOnAccent}
         />
       </FAB>
     </SafeAreaView>
