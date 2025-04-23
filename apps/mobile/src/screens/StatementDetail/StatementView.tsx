@@ -3,18 +3,16 @@ import { Statement } from '@still/logic/src/statement/statementService'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import {
+  ActivityIndicator,
   Alert,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme.context'
 import { useStatementService } from '../../hooks/useStatementService'
-import { StatementCard } from '../../shared/StatementCard'
-import theme from '@/apps/mobile/lib/theme'
 
 export default function StatementView() {
   const router = useRouter()
@@ -30,7 +28,6 @@ export default function StatementView() {
     const foundStatement = statements.find(a => a.id === statementId)
     if (foundStatement) {
       setStatement(foundStatement)
-
       const favorites = statements.filter(
         a => a.text === foundStatement.text && a.isFavorite,
       )
@@ -86,12 +83,7 @@ export default function StatementView() {
         }}
       >
         <ActivityIndicator size="large" color={theme.colors.accent} />
-        <Text
-          style={[
-            styles.loadingText,
-            { color: theme.colors.textOnBackground, marginTop: 16 },
-          ]}
-        >
+        <Text style={{ color: theme.colors.textOnBackground, marginTop: 16 }}>
           Loading...
         </Text>
       </View>
@@ -109,134 +101,381 @@ export default function StatementView() {
           backgroundColor: theme.colors.background,
         }}
       >
-        <Text style={[styles.loadingText, { color: 'red' }]}>
-          Statement not found.
-        </Text>
+        <Text style={{ color: 'red' }}>Statement not found.</Text>
       </View>
     )
   }
 
-  console.log('foundStatement', foundStatement)
+  // --- UI Layout ---
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <View style={[styles.content, { paddingTop: insets.top }]}>
-        <StatementCard statement={foundStatement} />
-
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Ionicons
-              name="heart"
-              size={24}
-              color={theme.colors.textOnBackground}
-            />
-            <Text style={styles.statText}>{favoriteCount} favorites</Text>
+      {/* Main Content (starts below the existing header) */}
+      <View style={styles.content}>
+        {/* Affirmation Card */}
+        <View
+          style={[
+            styles.affirmationCard,
+            {
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.border,
+            },
+          ]}
+        >
+          <Text
+            style={[
+              styles.affirmationText,
+              { color: theme.colors.textOnBackground },
+            ]}
+          >
+            {foundStatement.text}
+          </Text>
+          <View style={styles.affirmationActionsRow}>
+            <TouchableOpacity
+              style={[
+                styles.affirmationActionButton,
+                { backgroundColor: theme.colors.hoverBackground },
+              ]}
+            >
+              <Ionicons
+                name="volume-high-outline"
+                size={18}
+                color={theme.colors.textOnBackground}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={[
+                  styles.affirmationActionText,
+                  { color: theme.colors.textOnBackground },
+                ]}
+              >
+                Read Aloud
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.affirmationActionButton,
+                { backgroundColor: theme.colors.hoverBackground },
+              ]}
+            >
+              <Ionicons
+                name="bookmark-outline"
+                size={18}
+                color={theme.colors.textOnBackground}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={[
+                  styles.affirmationActionText,
+                  { color: theme.colors.textOnBackground },
+                ]}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.statItem}>
+        </View>
+
+        {/* Stats Row */}
+        <View style={styles.statsRow}>
+          {/* Last Reviewed */}
+          <View
+            style={[
+              styles.statCard,
+              {
+                backgroundColor: theme.colors.background,
+                borderColor: theme.colors.border,
+              },
+            ]}
+          >
             <Ionicons
               name="calendar"
-              size={24}
+              size={22}
               color={theme.colors.textOnBackground}
+              style={styles.statIcon}
             />
-            <Text style={styles.statText}>
+            <Text
+              style={[
+                styles.statValue,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
               {foundStatement.lastReviewed
                 ? new Date(foundStatement.lastReviewed).toLocaleDateString()
-                : 'Never reviewed'}
+                : 'Never'}
+            </Text>
+            <Text
+              style={[
+                styles.statLabel,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
+              Last Reviewed
+            </Text>
+          </View>
+          {/* Favorites */}
+          <View
+            style={[
+              styles.statCard,
+              {
+                backgroundColor: theme.colors.background,
+                borderColor: theme.colors.border,
+              },
+            ]}
+          >
+            <Ionicons
+              name="heart"
+              size={22}
+              color={theme.colors.textOnBackground}
+              style={styles.statIcon}
+            />
+            <Text
+              style={[
+                styles.statValue,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
+              {favoriteCount}
+            </Text>
+            <Text
+              style={[
+                styles.statLabel,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
+              Favorites
+            </Text>
+          </View>
+          {/* Reviews */}
+          <View
+            style={[
+              styles.statCard,
+              {
+                backgroundColor: theme.colors.background,
+                borderColor: theme.colors.border,
+              },
+            ]}
+          >
+            <Ionicons
+              name="time-outline"
+              size={22}
+              color={theme.colors.textOnBackground}
+              style={styles.statIcon}
+            />
+            <Text
+              style={[
+                styles.statValue,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
+              0
+            </Text>
+            <Text
+              style={[
+                styles.statLabel,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
+              Reviews
             </Text>
           </View>
         </View>
 
-        <View style={styles.actions}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() =>
-              router.push(`/edit?statementId=${foundStatement.id}`)
-            }
-          >
-            <Ionicons
-              name="create-outline"
-              size={24}
-              color={theme.colors.textOnBackground}
-            />
-            <Text style={styles.actionText}>Edit</Text>
-          </TouchableOpacity>
+        {/* AI Variations Section */}
+        <View
+          style={[
+            styles.variationSection,
+            {
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.border,
+            },
+          ]}
+        >
+          <View style={styles.variationHeaderRow}>
+            <Text
+              style={[
+                styles.variationTitle,
+                { color: theme.colors.textOnBackground },
+              ]}
+            >
+              AI Variations
+            </Text>
+            <TouchableOpacity
+              style={[
+                styles.generateButton,
+                { backgroundColor: theme.colors.hoverBackground },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.generateButtonText,
+                  { color: theme.colors.textOnBackground },
+                ]}
+              >
+                Generate
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.variationPlaceholder}>
+            <Text
+              style={[
+                styles.variationPlaceholderText,
+                { color: theme.colors.textOnBackground, opacity: 0.6 },
+              ]}
+            >
+              Generate AI variations of your affirmation to discover new
+              perspectives and wording.
+            </Text>
+          </View>
+        </View>
 
-          <TouchableOpacity
-            style={[styles.actionButton, styles.deleteButton]}
-            onPress={handleDelete}
+        {/* Footer Instructions */}
+        <View style={styles.footerInstructions}>
+          <Text
+            style={[
+              styles.footerText,
+              { color: theme.colors.textOnBackground, opacity: 0.7 },
+            ]}
           >
-            <Ionicons
-              name="trash-outline"
-              size={24}
-              color={theme.colors.textOnBackground}
-            />
-            <Text style={styles.actionText}>Delete</Text>
-          </TouchableOpacity>
+            Tap "Read Aloud" to hear your affirmation{'\n'}Use "Generate" to
+            create AI variations
+          </Text>
         </View>
       </View>
     </SafeAreaView>
   )
 }
 
+// --- Styles ---
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+  },
   backButton: {
     padding: 8,
+    width: 40,
+    alignItems: 'flex-start',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    textAlign: 'center',
+    flex: 1,
   },
   content: {
     flex: 1,
     padding: 16,
   },
-  card: {
+  affirmationCard: {
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 20,
+    marginBottom: 18,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+  },
+  affirmationText: {
+    fontSize: 17,
+    lineHeight: 26,
+    fontWeight: '500',
+    marginBottom: 18,
+    textAlign: 'left',
+  },
+  affirmationActionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+  },
+  affirmationActionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  affirmationActionText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 24,
+    gap: 10,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 32,
-  },
-  statItem: {
+  statCard: {
+    flex: 1,
     alignItems: 'center',
-    flexDirection: 'row',
-    gap: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    marginHorizontal: 2,
+    minWidth: 0,
   },
-  statText: {
-    color: theme.colors.textOnBackground,
+  statIcon: {
+    marginBottom: 4,
+  },
+  statValue: {
     fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 2,
+    textAlign: 'center',
   },
-  actions: {
+  statLabel: {
+    fontSize: 13,
+    fontWeight: '400',
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  variationSection: {
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 16,
+    marginBottom: 18,
+  },
+  variationHeaderRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 24,
-  },
-  actionButton: {
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  variationTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  generateButton: {
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 18,
+  },
+  generateButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  variationPlaceholder: {
     padding: 12,
     borderRadius: 8,
-    backgroundColor: theme.colors.hoverBackground,
-    minWidth: 100,
-  },
-  deleteButton: {
-    backgroundColor: theme.colors.accent,
-  },
-  actionText: {
-    color: theme.colors.textOnBackground,
-    marginTop: 4,
-    fontSize: 14,
-  },
-  loadingText: {
-    color: theme.colors.textOnBackground,
-    textAlign: 'center',
-    marginTop: 32,
-  },
-  stillCardContainer: {
     backgroundColor: 'transparent',
-    paddingVertical: 12,
-    paddingHorizontal: 0,
-    borderRadius: 0,
-    marginBottom: 0,
-    shadowColor: 'transparent',
     borderWidth: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-    width: '100%',
+  },
+  variationPlaceholderText: {
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  footerInstructions: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 13,
+    textAlign: 'center',
+    lineHeight: 18,
   },
 })
