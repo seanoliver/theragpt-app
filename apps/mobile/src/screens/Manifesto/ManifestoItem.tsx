@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 24,
     textAlign: 'left',
     fontWeight: '400',
