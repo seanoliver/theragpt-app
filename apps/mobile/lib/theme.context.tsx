@@ -2,18 +2,23 @@
  * Theme Context and Provider
  * Provides theme selection and management throughout the app
  */
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Appearance } from 'react-native';
-import { ThemeOption, getSystemTheme, loadThemeSelection, saveThemeSelection } from './theme.service';
-import { themes } from './theme/themes';
-import type { Theme } from './theme';
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { Appearance } from 'react-native'
+import {
+  ThemeOption,
+  getSystemTheme,
+  loadThemeSelection,
+  saveThemeSelection,
+} from './theme.service'
+import { themes } from './theme/themes'
+import type { Theme } from './theme'
 
 // Theme context interface
 interface ThemeContextType {
-  theme: ThemeOption;
-  effectiveTheme: ThemeOption;
-  setTheme: (theme: ThemeOption) => void;
-  themeObject: Theme;
+  theme: ThemeOption
+  effectiveTheme: ThemeOption
+  setTheme: (theme: ThemeOption) => void
+  themeObject: Theme
 }
 
 // Create the context with default values
@@ -22,11 +27,11 @@ export const ThemeContext = createContext<ThemeContextType>({
   effectiveTheme: ThemeOption.LIGHT,
   setTheme: () => {},
   themeObject: themes.light,
-});
+})
 
 // Theme provider props
 interface ThemeProviderProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 /**
@@ -35,57 +40,58 @@ interface ThemeProviderProps {
  */
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Current selected theme (LIGHT, DARK, or SYSTEM)
-  const [theme, setThemeState] = useState<ThemeOption>(ThemeOption.SYSTEM);
+  const [theme, setThemeState] = useState<ThemeOption>(ThemeOption.SYSTEM)
 
   // The actual theme to apply (always LIGHT or DARK, never SYSTEM)
-  const [effectiveTheme, setEffectiveTheme] = useState<ThemeOption>(getSystemTheme());
+  const [effectiveTheme, setEffectiveTheme] =
+    useState<ThemeOption>(getSystemTheme())
 
   // Load saved theme on mount
   useEffect(() => {
     const loadSavedTheme = async () => {
       try {
-        const savedTheme = await loadThemeSelection();
+        const savedTheme = await loadThemeSelection()
         if (savedTheme) {
-          setThemeState(savedTheme);
+          setThemeState(savedTheme)
         }
       } catch (error) {
-        console.error('Failed to load theme:', error);
+        console.error('Failed to load theme:', error)
       }
-    };
+    }
 
-    loadSavedTheme();
-  }, []);
+    loadSavedTheme()
+  }, [])
 
   // Update effective theme when theme changes or system theme changes
   useEffect(() => {
     const updateEffectiveTheme = () => {
       if (theme === ThemeOption.SYSTEM) {
-        setEffectiveTheme(getSystemTheme());
+        setEffectiveTheme(getSystemTheme())
       } else {
-        setEffectiveTheme(theme);
+        setEffectiveTheme(theme)
       }
-    };
+    }
 
-    updateEffectiveTheme();
+    updateEffectiveTheme()
 
     // Listen for system theme changes if using SYSTEM theme
     if (theme === ThemeOption.SYSTEM) {
       const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-        updateEffectiveTheme();
-      });
+        updateEffectiveTheme()
+      })
 
       return () => {
         // Clean up listener on unmount or when theme changes
-        subscription.remove();
-      };
+        subscription.remove()
+      }
     }
-  }, [theme]);
+  }, [theme])
 
   // Set theme and persist to storage
   const setTheme = async (newTheme: ThemeOption) => {
-    setThemeState(newTheme);
-    await saveThemeSelection(newTheme);
-  };
+    setThemeState(newTheme)
+    await saveThemeSelection(newTheme)
+  }
 
   // Context value
   const contextValue: ThemeContextType = {
@@ -93,24 +99,24 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     effectiveTheme,
     setTheme,
     themeObject: themes[effectiveTheme],
-  };
+  }
 
   return (
     <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
-  );
-};
+  )
+}
 
 /**
  * Hook to use theme context
  */
 export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext);
+  const context = useContext(ThemeContext)
 
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error('useTheme must be used within a ThemeProvider')
   }
 
-  return context;
-};
+  return context
+}
