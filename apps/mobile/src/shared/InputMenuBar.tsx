@@ -1,15 +1,13 @@
+import { Ionicons } from '@expo/vector-icons'
 import {
   InputAccessoryView,
   StyleSheet,
-  TouchableOpacity,
-  View,
   Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native'
-import theme, { getThemeByName } from '../../lib/theme'
-import { Ionicons } from '@expo/vector-icons'
-
-const sunsetTheme = getThemeByName('sunset')
+import { useTheme } from '../../lib/theme.context'
 
 export const InputMenuBar = ({
   inputRef,
@@ -20,6 +18,8 @@ export const InputMenuBar = ({
   inputAccessoryViewID: string
   onAIEnhance?: () => void
 }) => {
+  const { themeObject: theme } = useTheme()
+
   const handleAIEnhance = () => {
     if (onAIEnhance) {
       onAIEnhance()
@@ -33,26 +33,54 @@ export const InputMenuBar = ({
 
   return (
     <InputAccessoryView nativeID={inputAccessoryViewID}>
-      <View style={[styles.accessoryContainer, { backgroundColor: sunsetTheme.colors.hoverBackground, borderColor: sunsetTheme.colors.border }]}>
+      <View
+        style={[
+          styles.accessoryContainer,
+          {
+            backgroundColor: theme.colors.hoverBackground,
+            borderColor: theme.colors.border,
+          },
+        ]}
+      >
         <View style={styles.leftButtonsContainer}>
           <TouchableOpacity
-            style={[styles.aiActionButton, { backgroundColor: sunsetTheme.colors.accent }]}
+            style={[
+              styles.aiActionButton,
+              { backgroundColor: theme.colors.accent },
+            ]}
             onPress={handleAIEnhance}
           >
             <Ionicons
               name="sparkles-outline"
               size={18}
-              color={sunsetTheme.colors.textOnPrimary}
+              color={theme.colors.textOnPrimary}
             />
-            <Text style={[styles.aiActionButtonText, { color: sunsetTheme.colors.textOnPrimary }]}>Enhance</Text>
+            <Text
+              style={[
+                styles.aiActionButtonText,
+                { color: theme.colors.textOnPrimary },
+              ]}
+            >
+              Enhance
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
-          style={[styles.doneButton, { backgroundColor: sunsetTheme.colors.background }]}
+          style={[
+            styles.doneButton,
+            { backgroundColor: theme.colors.background },
+          ]}
           onPress={() => inputRef.current?.blur()}
         >
-          <Text style={[styles.doneButtonText, { color: sunsetTheme.colors.textOnBackground }]}>Done</Text>
+          <Text
+            style={[
+              styles.doneButtonText,
+              { color: theme.colors.textOnBackground },
+            ]}
+          >
+            Done
+          </Text>
         </TouchableOpacity>
       </View>
     </InputAccessoryView>
@@ -61,10 +89,10 @@ export const InputMenuBar = ({
 
 const styles = StyleSheet.create({
   accessoryContainer: {
-    backgroundColor: theme.colors.hoverBackground,
+    // backgroundColor: theme.colors.hoverBackground,
     padding: 8,
     borderTopWidth: 1,
-    borderColor: theme.colors.border,
+    // borderColor: theme.colors.border,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -74,7 +102,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   doneButton: {
-    backgroundColor: theme.colors.background,
+    // backgroundColor: theme.colors.background,
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 6,
@@ -83,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   doneButtonText: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     fontWeight: '600',
     fontSize: 16,
   },
@@ -93,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.accent,
+    // backgroundColor: theme.colors.accent,
     display: 'flex',
     flexDirection: 'row',
     gap: 4,
@@ -101,6 +129,6 @@ const styles = StyleSheet.create({
   aiActionButtonText: {
     fontSize: 12,
     fontWeight: '600',
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
   },
 })

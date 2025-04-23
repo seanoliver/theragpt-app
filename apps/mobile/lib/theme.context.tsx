@@ -51,6 +51,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const loadSavedTheme = async () => {
       try {
         const savedTheme = await loadThemeSelection()
+        console.log('savedTheme', savedTheme)
         if (savedTheme) {
           setThemeState(savedTheme)
         }
@@ -65,6 +66,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Update effective theme when theme changes or system theme changes
   useEffect(() => {
     const updateEffectiveTheme = () => {
+      console.log('updateEffectiveTheme', theme)
       if (theme === ThemeOption.SYSTEM) {
         setEffectiveTheme(getSystemTheme())
       } else {
