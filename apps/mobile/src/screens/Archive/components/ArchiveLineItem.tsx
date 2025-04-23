@@ -1,34 +1,27 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Statement } from '@still/logic/src/statement/statementService'
-import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import theme from '../../../../lib/theme'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
 
 interface ArchiveLineItemProps {
   statement: Statement
-  size?: 'sm' | 'lg'
   style?: ViewStyle
   animatedStyle?: any
   containerStyle?: ViewStyle
   editable?: boolean
-  onSave?: (newText: string) => void
   onPublish: () => void
   onDelete: () => void
-  autoFocus?: boolean
 }
 
 export const ArchiveLineItem = ({
   statement,
-  size = 'sm',
   style,
   animatedStyle,
   containerStyle,
-  onSave,
   onPublish,
   onDelete,
-  autoFocus,
 }: ArchiveLineItemProps) => {
   // const router = useRouter()
 
@@ -62,12 +55,11 @@ export const ArchiveLineItem = ({
     [theme, onPublish],
   )
 
-  console.log('statement', statement)
   return (
     <SwipeMenu actions={swipeActions}>
       <View style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
-          <View style={styles.text}>{statement.text}</View>
+          <Text style={styles.text}>{statement.text}</Text>
         </View>
       </View>
     </SwipeMenu>
@@ -78,6 +70,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     marginBottom: 0,
+    marginTop: 20,
     backgroundColor: 'transparent',
   },
   card: {
