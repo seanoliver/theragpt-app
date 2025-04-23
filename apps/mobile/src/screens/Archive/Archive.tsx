@@ -1,23 +1,30 @@
+import { useTheme } from '@/apps/mobile/lib/theme.context'
 import { Ionicons } from '@expo/vector-icons'
-import { Link } from 'expo-router'
+import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import theme from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
-import React, { useState } from 'react'
-import { TitleBar } from '../../shared/TitleBar';
 
 export function ArchiveScreen() {
   const { service, statements } = useStatementService(true)
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
+  const { themeObject: theme } = useTheme()
+
   if (!service || !statements) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>Loading...</Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.background,
+        }}
+      >
+        <Text>Loading...</Text>
       </View>
     )
   }
@@ -31,9 +38,7 @@ export function ArchiveScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TitleBar />
-
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       {isEmpty ? (
         <ArchiveEmptyState />
       ) : (
@@ -77,54 +82,8 @@ export function ArchiveScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-    padding: 0,
-  },
-  header: {
-    alignItems: 'center',
-    marginTop: 60,
-  },
-  logo: {
-    fontSize: 32,
-    color: theme.colors.textOnBackground,
-    fontWeight: 'bold',
-    fontFamily: theme.fontFamilies.headerSerif,
-  },
-  content: {
-    flex: 1,
-    gap: 24,
-    marginTop: 8,
-  },
-  subtitle: {
-    fontSize: 28,
-    color: theme.colors.textOnBackground,
-    fontWeight: '700',
-    letterSpacing: -0.5,
-    fontFamily: theme.fontFamilies.headerSerif,
-  },
   statementsList: {
     flex: 1,
     paddingRight: 4,
-  },
-  fabContainer: {
-    position: 'absolute',
-    right: 24,
-    bottom: 32,
-    zIndex: 10,
-  },
-  fabButton: {
-    backgroundColor: theme.colors.accent,
-    width: 48,
-    height: 48,
-    borderRadius: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 })

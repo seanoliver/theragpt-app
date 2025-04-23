@@ -1,14 +1,11 @@
+import { useTheme } from '@/apps/mobile/lib/theme.context'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useRef, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
+import { ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { getThemeByName } from '../../../lib/theme'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
-import { TitleBar } from '../../shared/TitleBar'
 import { ManifestoItem } from './ManifestoItem'
-import { useTheme } from '@/apps/mobile/lib/theme.context';
 
 export function ManifestoScreen() {
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
