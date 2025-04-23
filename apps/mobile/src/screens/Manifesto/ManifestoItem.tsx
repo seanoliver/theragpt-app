@@ -21,7 +21,7 @@ export const ManifestoItem = ({
   const router = useRouter()
 
   const handlePress = () => {
-    router.push(`/statement/${statement.id}`)
+    router.push(`/statements/${statement.id}`)
   }
 
   const swipeActions = useMemo(

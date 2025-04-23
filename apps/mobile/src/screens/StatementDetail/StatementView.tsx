@@ -4,9 +4,9 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import theme from '../../../lib/theme';
+import { useTheme } from '../../../lib/theme.context';
 import { useStatementService } from '../../hooks/useStatementService';
-import { ManifestoItem } from '../Manifesto/ManifestoItem';
+import { StatementCard } from '../../shared/StatementCard';
 
 export default function StatementView() {
   const router = useRouter()
@@ -14,13 +14,15 @@ export default function StatementView() {
   const [statement, setStatement] = useState<Statement | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
   const { service, statements } = useStatementService()
+  const { themeObject: theme } = useTheme()
 
   useEffect(() => {
     if (!statementId || !statements) return
-    const foundStatement = statements.find(a => a.id === statementId)
+    const foundStatement = statements.find(
+      a => a.id === statementId)
     if (foundStatement) {
       setStatement(foundStatement)
-      // Count how many times this statement has been favorited
+
       const favorites = statements.filter(
         a => a.text === foundStatement.text && a.isFavorite,
       )
@@ -33,7 +35,7 @@ export default function StatementView() {
 
     Alert.alert(
       'Delete Statement',
-      'Are you sure you want to delete this statement?',
+      'Are you sure you want to delete this statement? This action cannot be undone.',
       [
         {
           text: 'Cancel',
@@ -67,54 +69,57 @@ export default function StatementView() {
 
   if (!service || !statements) {
     return (
-      <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.background,
+        }}
+      >
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
     )
   }
-  if (!statementId) {
+  if (!statementId || !statement) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>No statement ID provided in the route.</Text>
-      </View>
-    )
-  }
-  if (!statement) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Statement not found.</Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.background,
+        }}
+      >
+        <Text style={styles.loadingText}>
+          No statement ID provided in the route.
+        </Text>
       </View>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.textOnBackground} />
-        </TouchableOpacity>
-      </View>
-
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <View style={styles.content}>
         <View style={[styles.stillCardContainer, styles.card]}>
-          <ManifestoItem
-            statement={statement}
-            onSave={handleSaveStatement}
-            onArchive={() => {}}
-            onDelete={() => {}}
-          />
+          <StatementCard statement={statement} />
         </View>
 
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Ionicons name="heart" size={24} color={theme.colors.textOnBackground} />
+            <Ionicons
+              name="heart"
+              size={24}
+              color={theme.colors.textOnBackground}
+            />
             <Text style={styles.statText}>{favoriteCount} favorites</Text>
           </View>
           <View style={styles.statItem}>
-            <Ionicons name="calendar" size={24} color={theme.colors.textOnBackground} />
+            <Ionicons
+              name="calendar"
+              size={24}
+              color={theme.colors.textOnBackground}
+            />
             <Text style={styles.statText}>
               {statement.lastReviewed
                 ? new Date(statement.lastReviewed).toLocaleDateString()
@@ -154,15 +159,6 @@ export default function StatementView() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  header: {
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   backButton: {
     padding: 8,
   },
@@ -184,7 +180,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   statText: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     fontSize: 16,
   },
   actions: {
@@ -196,19 +192,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 12,
     borderRadius: 8,
-    backgroundColor: theme.colors.hoverBackground,
+    // backgroundColor: theme.colors.hoverBackground,
     minWidth: 100,
   },
   deleteButton: {
-    backgroundColor: theme.colors.accent,
+    // backgroundColor: theme.colors.accent,
   },
   actionText: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     marginTop: 4,
     fontSize: 14,
   },
   loadingText: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     textAlign: 'center',
     marginTop: 32,
   },
@@ -221,7 +217,7 @@ const styles = StyleSheet.create({
     shadowColor: 'transparent',
     borderWidth: 0,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
+    // borderBottomColor: theme.colors.border,
     width: '100%',
   },
 })
