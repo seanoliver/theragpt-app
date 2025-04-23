@@ -2,8 +2,8 @@ import { FontAwesome } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-get-random-values'
-import { ThemeProvider } from '../lib/theme.context';
-import theme, { getThemeByName } from '../lib/theme'
+import { ThemeProvider } from '../../lib/theme.context';
+import theme, { getThemeByName } from '../../lib/theme'
 import {
   useFonts as usePlayfairFonts,
   PlayfairDisplay_400Regular,
@@ -95,24 +95,6 @@ export default function RootLayout() {
                   tabBarIcon: ({ color }) => (
                     <FontAwesome name="archive" size={22} color={color} />
                   ),
-                }}
-              />
-              <Tabs.Screen
-                name="edit"
-                options={{
-                  href: null,
-                }}
-              />
-              <Tabs.Screen
-                name="new"
-                options={{
-                  href: null,
-                }}
-              />
-              <Tabs.Screen
-                name="onboarding"
-                options={{
-                  href: null,
                 }}
               />
               <Tabs.Screen
