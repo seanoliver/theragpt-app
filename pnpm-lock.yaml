@@ -135,8 +135,8 @@ importers:
         specifier: 14.0.0-rc.1
         version: 14.0.0-rc.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-pager-view:
-        specifier: 6.2.3
-        version: 6.2.3(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+        specifier: 6.7.1
+        version: 6.7.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-reanimated:
         specifier: ~3.17.4
         version: 3.17.4(@babel/core@7.26.10)(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -4350,8 +4350,8 @@ packages:
       react: '*'
       react-native: '>=0.70.0'
 
-  react-native-pager-view@6.2.3:
-    resolution: {integrity: sha512-dqVpXWFtPNfD3D2QQQr8BP+ullS5MhjRJuF8Z/qml4QTILcrWaW8F5iAxKkQR3Jl0ikcEryG/+SQlNcwlo0Ggg==}
+  react-native-pager-view@6.7.1:
+    resolution: {integrity: sha512-cBSr6xw4g5N7Kd3VGWcf+kmaH7iBWb0DXAf2bVo3bXkzBcBbTOmYSvc0LVLHhUPW8nEq5WjT9LCIYAzgF++EXw==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -10586,7 +10586,7 @@ snapshots:
       react-native: 0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)
       react-native-animatable: 1.4.0
 
-  react-native-pager-view@6.2.3(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
+  react-native-pager-view@6.7.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
       react-native: 0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)
