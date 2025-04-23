@@ -1,12 +1,20 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Statement } from '@still/logic/src/statement/statementService';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../../../lib/theme.context';
-import { useStatementService } from '../../hooks/useStatementService';
-import { StatementCard } from '../../shared/StatementCard';
+import { Ionicons } from '@expo/vector-icons'
+import { Statement } from '@still/logic/src/statement/statementService'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useEffect, useState } from 'react'
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTheme } from '../../../lib/theme.context'
+import { useStatementService } from '../../hooks/useStatementService'
+import { StatementCard } from '../../shared/StatementCard'
+import theme from '@/apps/mobile/lib/theme'
 
 export default function StatementView() {
   const router = useRouter()
@@ -15,11 +23,11 @@ export default function StatementView() {
   const [favoriteCount, setFavoriteCount] = useState(0)
   const { service, statements } = useStatementService()
   const { themeObject: theme } = useTheme()
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     if (!statementId || !statements) return
-    const foundStatement = statements.find(
-      a => a.id === statementId)
+    const foundStatement = statements.find(a => a.id === statementId)
     if (foundStatement) {
       setStatement(foundStatement)
 
@@ -77,11 +85,21 @@ export default function StatementView() {
           backgroundColor: theme.colors.background,
         }}
       >
-        <Text style={styles.loadingText}>Loading...</Text>
+        <ActivityIndicator size="large" color={theme.colors.accent} />
+        <Text
+          style={[
+            styles.loadingText,
+            { color: theme.colors.textOnBackground, marginTop: 16 },
+          ]}
+        >
+          Loading...
+        </Text>
       </View>
     )
   }
-  if (!statementId || !statement) {
+
+  const foundStatement = statements.find(a => a.id === statementId)
+  if (!statementId || !foundStatement) {
     return (
       <View
         style={{
@@ -91,19 +109,18 @@ export default function StatementView() {
           backgroundColor: theme.colors.background,
         }}
       >
-        <Text style={styles.loadingText}>
-          No statement ID provided in the route.
+        <Text style={[styles.loadingText, { color: 'red' }]}>
+          Statement not found.
         </Text>
       </View>
     )
   }
 
+  console.log('foundStatement', foundStatement)
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <View style={styles.content}>
-        <View style={[styles.stillCardContainer, styles.card]}>
-          <StatementCard statement={statement} />
-        </View>
+      <View style={[styles.content, { paddingTop: insets.top }]}>
+        <StatementCard statement={foundStatement} />
 
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
@@ -121,8 +138,8 @@ export default function StatementView() {
               color={theme.colors.textOnBackground}
             />
             <Text style={styles.statText}>
-              {statement.lastReviewed
-                ? new Date(statement.lastReviewed).toLocaleDateString()
+              {foundStatement.lastReviewed
+                ? new Date(foundStatement.lastReviewed).toLocaleDateString()
                 : 'Never reviewed'}
             </Text>
           </View>
@@ -131,7 +148,9 @@ export default function StatementView() {
         <View style={styles.actions}>
           <TouchableOpacity
             style={styles.actionButton}
-            onPress={() => router.push(`/edit?statementId=${statement.id}`)}
+            onPress={() =>
+              router.push(`/edit?statementId=${foundStatement.id}`)
+            }
           >
             <Ionicons
               name="create-outline"
@@ -180,7 +199,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   statText: {
-    // color: theme.colors.textOnBackground,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
   },
   actions: {
@@ -192,19 +211,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 12,
     borderRadius: 8,
-    // backgroundColor: theme.colors.hoverBackground,
+    backgroundColor: theme.colors.hoverBackground,
     minWidth: 100,
   },
   deleteButton: {
-    // backgroundColor: theme.colors.accent,
+    backgroundColor: theme.colors.accent,
   },
   actionText: {
-    // color: theme.colors.textOnBackground,
+    color: theme.colors.textOnBackground,
     marginTop: 4,
     fontSize: 14,
   },
   loadingText: {
-    // color: theme.colors.textOnBackground,
+    color: theme.colors.textOnBackground,
     textAlign: 'center',
     marginTop: 32,
   },
@@ -217,7 +236,7 @@ const styles = StyleSheet.create({
     shadowColor: 'transparent',
     borderWidth: 0,
     borderBottomWidth: 1,
-    // borderBottomColor: theme.colors.border,
+    borderBottomColor: theme.colors.border,
     width: '100%',
   },
 })

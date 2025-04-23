@@ -11,10 +11,14 @@ export const StatementCard = ({
 }) => {
   const { themeObject: theme } = useTheme()
 
+  console.log('inside statement card: ', statement)
   return (
-    <View style={[styles.card, { borderColor: theme.colors.border + '22' }]}>
+    <View style={[styles.card]}>
       <TouchableOpacity onPress={handlePress}>
-        <Text key={statement.id} style={styles.text}>
+        <Text
+          key={statement.id}
+          style={[styles.text, { color: theme.colors.text }]}
+        >
           {statement.text}
         </Text>
       </TouchableOpacity>
@@ -26,7 +30,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     marginBottom: 0,
-    backgroundColor: 'transparent',
   },
   card: {
     backgroundColor: 'rgba(255,255,255,0.75)',
@@ -43,7 +46,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   text: {
-    flex: 1,
     fontSize: 15,
     lineHeight: 24,
     textAlign: 'left',

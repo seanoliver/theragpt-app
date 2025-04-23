@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { statementService } from '@still/logic/src/statement/statementService'
 import { Statement } from '@still/logic/src/statement/statementService'
 
-export function useStatementService(archived: boolean = false) {
+export const useStatementService = (archived: boolean = false) => {
   const [ready, setReady] = useState(false)
   const [statements, setStatements] = useState<Statement[] | null>(null)
 
