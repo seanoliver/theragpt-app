@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { colors } from '@/apps/mobile/lib/theme'
+import theme from '@/apps/mobile/lib/theme'
 import AIOptionsModalActionButton from './AIOptionsModalActionButton'
 
 interface Alternative {
@@ -23,7 +23,7 @@ const AIOptionsModalItem: React.FC<AIOptionsModalItem> = ({
 }) => (
   <View
     style={{
-      backgroundColor: colors.charcoal[100],
+      backgroundColor: theme.colors.background,
       borderRadius: 10,
       padding: 14,
       marginBottom: 12,
@@ -34,7 +34,7 @@ const AIOptionsModalItem: React.FC<AIOptionsModalItem> = ({
   >
     <Text
       style={{
-        color: colors.text.primary,
+        color: theme.colors.textOnBackground,
         fontWeight: '600',
         fontSize: 15,
         marginBottom: 6,
@@ -44,7 +44,7 @@ const AIOptionsModalItem: React.FC<AIOptionsModalItem> = ({
     </Text>
     <Text
       style={{
-        color: colors.text.primary,
+        color: theme.colors.textOnBackground,
         fontSize: 15,
         marginBottom: 10,
       }}

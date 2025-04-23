@@ -1,108 +1,91 @@
+import { useTheme } from '@/apps/mobile/lib/theme.context'
 import { useState } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
-import { colors } from '../../../lib/theme'
+import { Dimensions, Text, View } from 'react-native'
+import PagerView, {
+  PagerViewOnPageSelectedEvent,
+} from 'react-native-pager-view'
 import { useStatementService } from '../../hooks/useStatementService'
-import { ResponsiveLargeText } from './components/ResponsiveLargeText'
 
 export const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
   Dimensions.get('window')
 
-export function ReviewScreen() {
+export const ReviewScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const { service, statements } = useStatementService()
 
+  const { themeObject } = useTheme()
+
   if (!service || !statements) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Loading...</Text>
+      <View>
+        <Text>Loading...</Text>
       </View>
     )
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.statementContainer}>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'space-between',
+        backgroundColor: themeObject.colors.background,
+      }}
+    >
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <PagerView
-          style={{ width: REVIEW_SCREEN_WIDTH * 0.9, height: REVIEW_SCREEN_HEIGHT * 0.5, alignSelf: 'center' }}
+          style={{
+            width: REVIEW_SCREEN_WIDTH * 0.9,
+            height: REVIEW_SCREEN_HEIGHT * 0.6,
+          }}
           initialPage={0}
-          onPageSelected={(e: PagerViewOnPageSelectedEvent) => setCurrentIndex(e.nativeEvent.position)}
+          pageMargin={20}
+          orientation="horizontal"
+          overdrag={true}
+          onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
+            setCurrentIndex(e.nativeEvent.position)
+          }
         >
-          {statements.map((item, idx) => (
-            <View key={item.id || idx} style={{ flex: 1 }}>
-              <ResponsiveLargeText
-                text={item.text}
-                containerWidth={REVIEW_SCREEN_WIDTH * 0.9}
-                containerHeight={REVIEW_SCREEN_HEIGHT * 0.5}
-              />
-            </View>
-          ))}
+          {statements.map((statement, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  justifyContent: 'center',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: themeObject.fontSizes.xxl,
+                    color: themeObject.colors.text,
+                  }}
+                >
+                  {statement.text}
+                </Text>
+              </View>
+            )
+          })}
         </PagerView>
+      </View>
 
-        {/* Progress Bar */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                {
-                  width: `${((currentIndex + 1) / statements.length) * 100}%`,
-                },
-              ]}
-            />
-          </View>
-          <Text style={styles.progressText}>
-            {currentIndex + 1} / {statements.length}
-          </Text>
+      {/* Progress Bar */}
+      <View>
+        <View
+          style={{
+            height: 1,
+            backgroundColor: themeObject.colors.hoverBackground,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: themeObject.colors.hoverPrimary,
+              height: 1,
+              width: `${((currentIndex + 1) / statements.length) * 100}%`,
+            }}
+          />
         </View>
       </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.charcoal[100],
-    padding: 20,
-  },
-  statementContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  cardContainer: {
-    width: '90%',
-  },
-  loadingText: {
-    color: colors.text.primary,
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 60,
-  },
-  progressContainer: {
-    position: 'absolute',
-    bottom: 20,
-    width: '100%',
-    alignItems: 'center',
-    gap: 8,
-  },
-  progressBar: {
-    width: '90%',
-    height: 4,
-    backgroundColor: colors.charcoal[300],
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: colors.text.primary,
-    borderRadius: 2,
-  },
-  progressText: {
-    color: colors.text.primary,
-    fontSize: 16,
-    opacity: 0.7,
-  },
-})

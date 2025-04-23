@@ -1,98 +1,60 @@
-import { Statement } from '@still/logic/src/statement/statementService'
-import { useMemo, useState } from 'react'
-import { StyleSheet, View, ViewStyle, Text } from 'react-native'
-import Animated from 'react-native-reanimated'
-import { colors } from '../../../lib/theme'
-import { SwipeMenu } from '../../shared/SwipeMenu'
-import { ManifestoItemEditorWrapper } from './ManifestoItemEditorWrapper';
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { Statement } from '@still/logic/src/statement/statementService'
+import { useRouter } from 'expo-router'
+import { useMemo } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import theme from '../../../lib/theme'
+import { SwipeMenu } from '../../shared/SwipeMenu'
 
 interface ManifestoItemProps {
   statement: Statement
-  size?: 'sm' | 'lg'
-  style?: ViewStyle
-  animatedStyle?: any
-  containerStyle?: ViewStyle
   editable?: boolean
-  onSave?: (newText: string) => void
   onArchive: () => void
   onDelete: (id: string) => void
-  autoFocus?: boolean
 }
 
 export const ManifestoItem = ({
   statement,
-  size = 'sm',
-  style,
-  animatedStyle,
-  containerStyle,
-  onSave,
   onArchive,
   onDelete,
-  autoFocus,
 }: ManifestoItemProps) => {
-  const textSize = size === 'lg' ? 28 : 16
-  const lineHeight = size === 'lg' ? 40 : 24
+  const router = useRouter()
 
-  const CardWrapper = animatedStyle ? Animated.View : View
-
-  const [text, setText] = useState(statement.text)
-
-  const handleSave = (newText: string) => {
-    if (onSave && newText !== statement.text) {
-      onSave(newText)
-    }
+  const handlePress = () => {
+    router.push(`/statement/${statement.id}`)
   }
 
-  const previewText = useMemo(
-    () => (
-      <Text
-        key={statement.id}
-        style={{
-          ...styles.text,
-          fontSize: textSize,
-          lineHeight,
-        }}
-      >
-        {text}
-      </Text>
-    ),
-    [statement.id, text, textSize, lineHeight],
+  const swipeActions = useMemo(
+    () => [
+      {
+        label: '',
+        icon: (
+          <FontAwesome name="archive" size={18} color={theme.colors.accent} />
+        ),
+        backgroundColor: theme.colors.accent + '22',
+        textColor: theme.colors.accent,
+        onPress: onArchive,
+      },
+      {
+        label: '',
+        icon: <Ionicons name="trash" size={18} color="#d32f2f" />,
+        backgroundColor: '#d32f2f22',
+        textColor: '#d32f2f',
+        onPress: () => onDelete(statement.id),
+      },
+    ],
+    [onArchive, onDelete, statement.id, theme],
   )
 
   return (
-    <SwipeMenu
-      actions={[
-        {
-          label: 'Archive',
-          icon: <FontAwesome name="archive" size={20} color={colors.text.primary} />,
-          backgroundColor: colors.charcoal[300],
-          textColor: colors.text.primary,
-          onPress: onArchive,
-        },
-        {
-          label: 'Delete',
-          icon: <Ionicons name="trash" size={20} color="#fff" />,
-          backgroundColor: '#E57373',
-          textColor: '#fff',
-          onPress: () => onDelete(statement.id),
-        },
-      ]}
-    >
-      <CardWrapper style={[styles.container, containerStyle, animatedStyle]}>
-        <View style={[styles.card, style]}>
-          <View style={styles.contentContainer}>
-            <ManifestoItemEditorWrapper
-              value={text}
-              onChange={setText}
-              onSave={handleSave}
-              autoFocus={autoFocus}
-            >
-              {previewText}
-            </ManifestoItemEditorWrapper>
-          </View>
-        </View>
-      </CardWrapper>
+    <SwipeMenu actions={swipeActions}>
+      <View style={[styles.card]}>
+        <TouchableOpacity onPress={handlePress}>
+          <Text key={statement.id} style={styles.text}>
+            {statement.text}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SwipeMenu>
   )
 }
@@ -100,29 +62,30 @@ export const ManifestoItem = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Remove card-like margin
     marginBottom: 0,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: 'transparent',
   },
   card: {
-    backgroundColor: 'transparent',
-    paddingVertical: 12,
-    paddingHorizontal: 0,
-    borderRadius: 0,
-    marginBottom: 0,
-    shadowColor: 'transparent',
-    borderWidth: 0,
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingBottom: 8,
+    backgroundColor: 'rgba(255,255,255,0.75)',
+    paddingVertical: 22,
+    paddingHorizontal: 22,
+    borderRadius: 18,
+    marginHorizontal: 20,
+    marginBottom: 18,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 24,
+    borderWidth: 1.5,
+    borderColor: theme.colors.border + '22',
+    overflow: 'hidden',
   },
   text: {
-    color: colors.text.primary,
     flex: 1,
-    fontSize: 18,
-    lineHeight: 28,
+    fontSize: 15,
+    lineHeight: 24,
     textAlign: 'left',
+    fontWeight: '400',
+    letterSpacing: 0.1,
   },
 })

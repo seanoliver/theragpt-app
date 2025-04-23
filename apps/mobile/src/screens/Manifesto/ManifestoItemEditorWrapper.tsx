@@ -1,14 +1,19 @@
-import { colors } from '@/apps/mobile/lib/theme'
+import theme from '@/apps/mobile/lib/theme'
 import { InputMenuBar } from '@/apps/mobile/src/shared/InputMenuBar'
 import { getEnvironment } from '@still/config'
 import { apiService } from '@still/logic/src/api/service'
 import { useEffect, useRef, useState } from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  TextInput,
+} from 'react-native'
 import AIOptionsModal from '../../shared/AIOptionsModal/AIOptionsModal'
 import { useFetchAlternatives } from '../../shared/hooks/useFetchAlternatives'
-
-const TEXT_SIZE = 16
-const LINE_HEIGHT = 24
+import { MANIFESTO_ITEM_LINE_HEIGHT } from './constants'
+import { MANIFESTO_ITEM_TEXT_SIZE } from './constants'
 
 interface ManifestoItemEditorWrapperProps {
   value: string
@@ -118,7 +123,7 @@ export const ManifestoItemEditorWrapper = ({
             onBlur={handleBlur}
             multiline={multiline}
             onSubmitEditing={handleSubmitEditing}
-            selectionColor={colors.text.primary}
+            selectionColor={theme.colors.textOnBackground}
             returnKeyType="default"
             placeholder="Edit statement..."
             placeholderTextColor="#888"
@@ -160,16 +165,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: TEXT_SIZE,
-    lineHeight: LINE_HEIGHT,
-    backgroundColor: 'transparent',
-    borderWidth: 0,
-    padding: 0,
-    margin: 0,
-    minHeight: LINE_HEIGHT + 8,
-    color: colors.text.primary,
     flex: 1,
-    top: -2,
+    fontSize: MANIFESTO_ITEM_TEXT_SIZE,
+    lineHeight: MANIFESTO_ITEM_LINE_HEIGHT,
     textAlign: 'left',
+    fontWeight: '400',
+    letterSpacing: 0.1,
   },
 })

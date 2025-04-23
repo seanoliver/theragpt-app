@@ -1,6 +1,12 @@
-import { colors } from '@/apps/mobile/lib/theme'
+import theme from '@/apps/mobile/lib/theme'
 import React, { useState, useCallback, useRef } from 'react'
-import { View, LayoutChangeEvent, ScrollView, StyleSheet, Text } from 'react-native'
+import {
+  View,
+  LayoutChangeEvent,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from 'react-native'
 
 interface ResponsiveLargeTextProps {
   text: string
@@ -45,7 +51,7 @@ export const ResponsiveLargeText = ({
     <View onLayout={handleLayout} key={fontSize} style={styles.container}>
       <Text
         style={{
-          color: colors.text.primary,
+          color: theme.colors.textOnBackground,
           fontSize,
           lineHeight,
         }}

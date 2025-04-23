@@ -8,10 +8,10 @@ import {
   Dimensions,
 } from 'react-native'
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
-import { colors } from '../../../lib/theme'
+import theme from '../../../lib/theme'
 import { useRouter } from 'expo-router'
-import { tokens } from '../../../lib/theme'
 import { ONBOARDING_CARDS } from './constants'
+import { colors } from 'react-native-keyboard-controller/lib/typescript/components/KeyboardToolbar/colors';
 
 const { width } = Dimensions.get('window')
 
@@ -80,7 +80,7 @@ export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 40,
@@ -103,19 +103,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     marginBottom: 16,
     textAlign: 'left',
-    fontFamily: tokens.fontFamilies.headerSerif,
+    fontFamily: theme.fontFamilies.headerSerif,
   },
   text: {
     fontSize: 16,
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     textAlign: 'left',
     marginBottom: 16,
     fontWeight: '400',
     lineHeight: 24,
-    fontFamily: tokens.fontFamilies.bodySans,
+    fontFamily: theme.fontFamilies.bodySans,
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   dotActive: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.textOnBackground,
     opacity: 1,
   },
   dotInactive: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.textOnBackground,
     opacity: 0.2,
   },
   skipButton: {
@@ -146,19 +146,19 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   skipButtonText: {
-    color: colors.text.secondary,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
     opacity: 0.7,
   },
   startButton: {
     marginTop: 24,
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.accent,
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 24,
   },
   startButtonText: {
-    color: colors.charcoal[100],
+    color: theme.colors.textOnBackground,
     fontSize: 16,
     fontWeight: '700',
   },

@@ -1,14 +1,13 @@
+import { Ionicons } from '@expo/vector-icons'
 import {
   InputAccessoryView,
   StyleSheet,
-  TouchableOpacity,
-  View,
   Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native'
-import { colors } from '../../lib/theme'
-import { Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
+import { useTheme } from '../../lib/theme.context'
 
 export const InputMenuBar = ({
   inputRef,
@@ -19,6 +18,8 @@ export const InputMenuBar = ({
   inputAccessoryViewID: string
   onAIEnhance?: () => void
 }) => {
+  const { themeObject: theme } = useTheme()
+
   const handleAIEnhance = () => {
     if (onAIEnhance) {
       onAIEnhance()
@@ -32,38 +33,54 @@ export const InputMenuBar = ({
 
   return (
     <InputAccessoryView nativeID={inputAccessoryViewID}>
-      <View style={styles.accessoryContainer}>
+      <View
+        style={[
+          styles.accessoryContainer,
+          {
+            backgroundColor: theme.colors.hoverBackground,
+            borderColor: theme.colors.border,
+          },
+        ]}
+      >
         <View style={styles.leftButtonsContainer}>
-          <LinearGradient
-            colors={['#4F5BD5', '#8f5cff']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.aiButtonGradient}
+          <TouchableOpacity
+            style={[
+              styles.aiActionButton,
+              { backgroundColor: theme.colors.accent },
+            ]}
+            onPress={handleAIEnhance}
           >
-            <TouchableOpacity
-              style={styles.aiActionButton}
-              onPress={handleAIEnhance}
+            <Ionicons
+              name="sparkles-outline"
+              size={18}
+              color={theme.colors.textOnPrimary}
+            />
+            <Text
+              style={[
+                styles.aiActionButtonText,
+                { color: theme.colors.textOnPrimary },
+              ]}
             >
-              <Ionicons
-                name="sparkles-outline"
-                size={18}
-                color={colors.text.primary}
-                style={{
-                  textShadowColor: '#8f5cff',
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 4,
-                }}
-              />
-              <Text style={styles.aiActionButtonText}>Enhance</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+              Enhance
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
-          style={styles.doneButton}
+          style={[
+            styles.doneButton,
+            { backgroundColor: theme.colors.background },
+          ]}
           onPress={() => inputRef.current?.blur()}
         >
-          <Text style={styles.doneButtonText}>Done</Text>
+          <Text
+            style={[
+              styles.doneButtonText,
+              { color: theme.colors.textOnBackground },
+            ]}
+          >
+            Done
+          </Text>
         </TouchableOpacity>
       </View>
     </InputAccessoryView>
@@ -72,10 +89,10 @@ export const InputMenuBar = ({
 
 const styles = StyleSheet.create({
   accessoryContainer: {
-    backgroundColor: colors.charcoal[200],
+    // backgroundColor: theme.colors.hoverBackground,
     padding: 8,
     borderTopWidth: 1,
-    borderColor: colors.charcoal[300],
+    // borderColor: theme.colors.border,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -85,7 +102,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   doneButton: {
-    backgroundColor: colors.charcoal[100],
+    // backgroundColor: theme.colors.background,
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 6,
@@ -94,20 +111,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   doneButtonText: {
-    color: colors.text.primary,
+    // color: theme.colors.textOnBackground,
     fontWeight: '600',
     fontSize: 16,
-  },
-  aiButtonGradient: {
-    height: 38,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 4,
-    padding: 2,
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 4,
   },
   aiActionButton: {
     height: 34,
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(30,30,40,0.7)',
+    // backgroundColor: theme.colors.accent,
     display: 'flex',
     flexDirection: 'row',
     gap: 4,
@@ -123,6 +129,6 @@ const styles = StyleSheet.create({
   aiActionButtonText: {
     fontSize: 12,
     fontWeight: '600',
-    color: colors.text.primary,
+    // color: theme.colors.textOnBackground,
   },
 })

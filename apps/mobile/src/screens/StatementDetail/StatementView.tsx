@@ -1,12 +1,12 @@
-import { Ionicons } from '@expo/vector-icons'
-import { Statement } from '@still/logic/src/statement/statementService'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { colors } from '../../../lib/theme'
-import { useStatementService } from '../../hooks/useStatementService'
-import { ManifestoItem } from '../Manifesto/ManifestoItem'
+import { Ionicons } from '@expo/vector-icons';
+import { Statement } from '@still/logic/src/statement/statementService';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import theme from '../../../lib/theme';
+import { useStatementService } from '../../hooks/useStatementService';
+import { ManifestoItem } from '../Manifesto/ManifestoItem';
 
 export default function StatementView() {
   const router = useRouter()
@@ -72,10 +72,17 @@ export default function StatementView() {
       </View>
     )
   }
+  if (!statementId) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>No statement ID provided in the route.</Text>
+      </View>
+    )
+  }
   if (!statement) {
     return (
       <View style={styles.container}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>Statement not found.</Text>
       </View>
     )
   }
@@ -87,7 +94,7 @@ export default function StatementView() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
+          <Ionicons name="arrow-back" size={24} color={theme.colors.textOnBackground} />
         </TouchableOpacity>
       </View>
 
@@ -95,7 +102,6 @@ export default function StatementView() {
         <View style={[styles.stillCardContainer, styles.card]}>
           <ManifestoItem
             statement={statement}
-            size="lg"
             onSave={handleSaveStatement}
             onArchive={() => {}}
             onDelete={() => {}}
@@ -104,11 +110,11 @@ export default function StatementView() {
 
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Ionicons name="heart" size={24} color={colors.text.primary} />
+            <Ionicons name="heart" size={24} color={theme.colors.textOnBackground} />
             <Text style={styles.statText}>{favoriteCount} favorites</Text>
           </View>
           <View style={styles.statItem}>
-            <Ionicons name="calendar" size={24} color={colors.text.primary} />
+            <Ionicons name="calendar" size={24} color={theme.colors.textOnBackground} />
             <Text style={styles.statText}>
               {statement.lastReviewed
                 ? new Date(statement.lastReviewed).toLocaleDateString()
@@ -125,7 +131,7 @@ export default function StatementView() {
             <Ionicons
               name="create-outline"
               size={24}
-              color={colors.text.primary}
+              color={theme.colors.textOnBackground}
             />
             <Text style={styles.actionText}>Edit</Text>
           </TouchableOpacity>
@@ -137,7 +143,7 @@ export default function StatementView() {
             <Ionicons
               name="trash-outline"
               size={24}
-              color={colors.text.primary}
+              color={theme.colors.textOnBackground}
             />
             <Text style={styles.actionText}>Delete</Text>
           </TouchableOpacity>
@@ -150,7 +156,7 @@ export default function StatementView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.charcoal[100],
+    backgroundColor: theme.colors.background,
   },
   header: {
     padding: 16,
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   statText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     fontSize: 16,
   },
   actions: {
@@ -190,19 +196,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 12,
     borderRadius: 8,
-    backgroundColor: colors.charcoal[200],
+    backgroundColor: theme.colors.hoverBackground,
     minWidth: 100,
   },
   deleteButton: {
-    backgroundColor: colors.charcoal[300],
+    backgroundColor: theme.colors.accent,
   },
   actionText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     marginTop: 4,
     fontSize: 14,
   },
   loadingText: {
-    color: colors.text.primary,
+    color: theme.colors.textOnBackground,
     textAlign: 'center',
     marginTop: 32,
   },
@@ -215,7 +221,7 @@ const styles = StyleSheet.create({
     shadowColor: 'transparent',
     borderWidth: 0,
     borderBottomWidth: 1,
-    borderBottomColor: colors.charcoal[300],
+    borderBottomColor: theme.colors.border,
     width: '100%',
   },
 })

@@ -12,7 +12,7 @@ import {
   StyleProp,
   TouchableOpacity,
 } from 'react-native'
-import { colors } from '../../lib/theme'
+import theme from '../../lib/theme'
 
 const MANIFESTO_TAB = 'index'
 const ARCHIVE_TAB = 'archive'
@@ -21,9 +21,10 @@ interface FABProps {
   children: React.ReactNode
   style?: StyleProp<ViewStyle>
   onPress?: () => void
+  backgroundColor?: string
 }
 
-export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
+export const FAB: React.FC<FABProps> = ({ children, style, onPress, backgroundColor }) => {
   const segments = useSegments() as any[] // To fix annoying type error
 
   const currentTab: string =
@@ -57,7 +58,7 @@ export const FAB: React.FC<FABProps> = ({ children, style, onPress }) => {
 
   return (
     <Animated.View style={[styles.fabContainer, animatedStyle, style]}>
-      <View style={styles.fabButton}>
+      <View style={[styles.fabButton, backgroundColor ? { backgroundColor } : null]}>
         <TouchableOpacity
           onPress={onPress}
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   fabButton: {
-    backgroundColor: colors.text.primary,
+    backgroundColor: theme.colors.accent,
     width: 48,
     height: 48,
     borderRadius: 32,

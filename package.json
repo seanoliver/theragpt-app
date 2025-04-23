@@ -1,7 +1,7 @@
 {
   "name": "still-app",
   "version": "1.0.0",
-  "description": "A Cognitive Behavioral Therapy (CBT) application to help users identify cognitive distortions and reframe thoughts",
+  "description": "A simple, quiet tool to cultivate your own personal manifesto to drive mental clarity and success in life.",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -24,6 +24,8 @@
   "license": "MIT",
   "packageManager": "pnpm@10.7.1",
   "dependencies": {
+    "expo-blur": "^14.0.3",
+    "expo-linear-gradient": "^14.0.2",
     "html-entities": "2.5.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",

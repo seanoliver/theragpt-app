@@ -1,6 +1,6 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { Swipeable } from 'react-native-gesture-handler';
+import React from 'react'
+import { TouchableOpacity, View } from 'react-native'
+import { Swipeable } from 'react-native-gesture-handler'
 
 export interface SwipeAction {
   label: string
@@ -20,7 +20,9 @@ export const SwipeMenu = ({
   const renderRightActions = () => (
     <View style={{ flexDirection: 'row', height: '100%' }}>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', height: '100%' }}>
+        <View
+          style={{ flexDirection: 'row', height: '100%', paddingRight: 20 }}
+        >
           {actions.map((action, idx) => (
             <ActionWrapper key={idx} {...action} />
           ))}
@@ -59,10 +61,12 @@ const ActionWrapper = ({
         onPress={onPress}
         style={{
           backgroundColor,
-          height: '100%',
+          width: 44,
+          height: 44,
+          borderRadius: 22,
           justifyContent: 'center',
           alignItems: 'center',
-          width: 80,
+          marginHorizontal: 6,
         }}
       >
         {icon}
