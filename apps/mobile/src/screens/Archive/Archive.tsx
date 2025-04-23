@@ -8,7 +8,7 @@ import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
 
-export function ArchiveScreen() {
+export const ArchiveScreen = () => {
   const { service, statements } = useStatementService(true)
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
@@ -50,7 +50,7 @@ export function ArchiveScreen() {
             <React.Fragment key={statement.id}>
               <ArchiveLineItem
                 statement={statement}
-                onArchive={() =>
+                onPublish={() =>
                   service.update({ id: statement.id, isActive: true })
                 }
                 onDelete={() => service.deleteStatement(statement.id)}

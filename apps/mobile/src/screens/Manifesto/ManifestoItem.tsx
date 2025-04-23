@@ -9,26 +9,16 @@ import { SwipeMenu } from '../../shared/SwipeMenu'
 interface ManifestoItemProps {
   statement: Statement
   editable?: boolean
-  onSave?: (newText: string) => void
   onArchive: () => void
   onDelete: (id: string) => void
-  autoFocus?: boolean
 }
 
 export const ManifestoItem = ({
   statement,
-  onSave,
   onArchive,
   onDelete,
-  autoFocus,
 }: ManifestoItemProps) => {
   const router = useRouter()
-
-  const handleSave = (newText: string) => {
-    if (onSave && newText !== statement.text) {
-      onSave(newText)
-    }
-  }
 
   const handlePress = () => {
     router.push(`/statement/${statement.id}`)
@@ -72,7 +62,6 @@ export const ManifestoItem = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Remove card-like margin
     marginBottom: 0,
     backgroundColor: 'transparent',
   },

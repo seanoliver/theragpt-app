@@ -7,7 +7,7 @@ import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ManifestoItem } from './ManifestoItem'
 
-export function ManifestoScreen() {
+export const ManifestoScreen = () => {
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
   const scrollViewRef = useRef<ScrollView>(null)
   const { themeObject } = useTheme()
@@ -35,12 +35,6 @@ export function ManifestoScreen() {
   const handleArchive = (statementId: string) => {
     if (!service) return
     service.update({ id: statementId, isActive: false })
-  }
-
-  const handleSave = (statementId: string, text: string) => {
-    if (!service) return
-    service.update({ id: statementId, text })
-    if (statementId === newlyCreatedId) setNewlyCreatedId(null)
   }
 
   const handleNew = async () => {
@@ -75,8 +69,6 @@ export function ManifestoScreen() {
               statement={statement}
               onArchive={() => handleArchive(statement.id)}
               onDelete={() => handleDelete(statement.id)}
-              onSave={text => handleSave(statement.id, text)}
-              autoFocus={statement.id === newlyCreatedId}
             />
           </React.Fragment>
         ))}
