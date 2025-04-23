@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const sunsetTheme = getThemeByName('sunset')
 
-export const ManifestoHeader = () => {
+export const TitleBar = () => {
   const insets = useSafeAreaInsets()
 
   return (
@@ -18,42 +18,43 @@ export const ManifestoHeader = () => {
       ]}
     >
       <View style={styles.headerRow}>
-        <Text style={[styles.headerTitle]}>Your Manifesto</Text>
+        <Text style={[styles.headerTitle]}>Manifesto</Text>
         <Ionicons
-          name="sparkles-outline"
+          name="settings-outline"
           size={22}
           color={sunsetTheme.colors.accent}
           style={[styles.headerIcon]}
         />
       </View>
-      <View style={[styles.headerDivider]} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   headerSection: {
-    paddingBottom: 20,
-    paddingHorizontal: 24,
+    paddingBottom: 0,
     backgroundColor: sunsetTheme.colors.background,
   },
   headerRow: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '100%',
+    borderBottomWidth: 0.5,
+    borderColor: sunsetTheme.colors.border,
+    paddingBottom: 12,
   },
   headerTitle: {
-    textAlign: 'left',
+    textAlign: 'center',
     color: sunsetTheme.colors.textOnBackground,
-    fontFamily: sunsetTheme.fontFamilies.headerSerif,
-    fontWeight: '500',
-    fontSize: 26,
-    letterSpacing: 1.5,
+    fontWeight: 'bold',
+    fontSize: 16,
+
   },
   headerIcon: {
-    marginLeft: 12,
-    opacity: 0.5,
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
   },
   headerDivider: {
     width: '100%',

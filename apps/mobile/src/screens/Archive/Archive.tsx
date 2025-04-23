@@ -8,6 +8,7 @@ import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
 import React, { useState } from 'react'
+import { TitleBar } from '../../shared/TitleBar';
 
 export function ArchiveScreen() {
   const { service, statements } = useStatementService(true)
@@ -31,7 +32,7 @@ export function ArchiveScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.subtitle}>Archive</Text>
+      <TitleBar />
 
       {isEmpty ? (
         <ArchiveEmptyState />
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    padding: 20,
+    padding: 0,
   },
   header: {
     alignItems: 'center',

@@ -1,7 +1,6 @@
 /**
  * Multi-Palette Theme System for the Mobile App
  * Supports runtime selection of pre-defined color palettes.
- * Modular, type-safe, and <500 lines.
  */
 
 // 1. Types & Interfaces
@@ -12,9 +11,15 @@ export type ThemeTokenKey =
   | 'text'
   | 'accent'
   | 'border'
-  | 'error'
-  | 'success'
-  | 'warning'
+  | 'errorAccent'
+  | 'errorBackground'
+  | 'errorText'
+  | 'successAccent'
+  | 'successBackground'
+  | 'successText'
+  | 'warningAccent'
+  | 'warningBackground'
+  | 'warningText'
   | 'textOnBackground'
   | 'textOnPrimary'
   | 'textOnAccent'
@@ -41,9 +46,15 @@ const palettes: ThemePalettes = {
     text: '#FFFFFF',
     accent: '#5f6caf',
     border: '#3e4a89',
-    error: '#FF4C4C',
-    success: '#4CAF50',
-    warning: '#FFC107',
+    errorAccent: '#FF4C4C',
+    errorBackground: '#FF4C4C',
+    errorText: '#FFFFFF',
+    successAccent: '#4CAF50',
+    successBackground: '#4CAF50',
+    successText: '#FFFFFF',
+    warningAccent: '#FFC107',
+    warningBackground: '#FFC107',
+    warningText: '#FFFFFF',
     textOnBackground: '#FFFFFF',
     textOnPrimary: '#FFFFFF',
     textOnAccent: '#FFFFFF',
@@ -63,9 +74,15 @@ const palettes: ThemePalettes = {
     text: '#FFFFFF',
     accent: '#66bb6a',
     border: '#388e3c',
-    error: '#e57373',
-    success: '#81c784',
-    warning: '#ffd54f',
+    errorAccent: '#e57373',
+    errorBackground: '#e57373',
+    errorText: '#FFFFFF',
+    successAccent: '#81c784',
+    successBackground: '#81c784',
+    successText: '#FFFFFF',
+    warningAccent: '#ffd54f',
+    warningBackground: '#ffd54f',
+    warningText: '#FFFFFF',
     textOnBackground: '#FFFFFF',
     textOnPrimary: '#FFFFFF',
     textOnAccent: '#1b2e1b',
@@ -85,9 +102,15 @@ const palettes: ThemePalettes = {
     text: '#232946',
     accent: '#ffa726',
     border: '#ff7043',
-    error: '#d32f2f',
-    success: '#388e3c',
-    warning: '#fbc02d',
+    errorAccent: '#d32f2f',
+    errorBackground: '#d32f2f',
+    errorText: '#FFFFFF',
+    successAccent: '#388e3c',
+    successBackground: '#388e3c',
+    successText: '#FFFFFF',
+    warningAccent: '#fbc02d',
+    warningBackground: '#fbc02d',
+    warningText: '#FFFFFF',
     textOnBackground: '#232946',
     textOnPrimary: '#FFFFFF',
     textOnAccent: '#232946',

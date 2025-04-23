@@ -1,14 +1,10 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Statement } from '@still/logic/src/statement/statementService'
-import { useMemo, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
+import { useRouter } from 'expo-router'
+import { useMemo } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import theme from '../../../lib/theme'
 import { SwipeMenu } from '../../shared/SwipeMenu'
-import {
-  MANIFESTO_ITEM_LINE_HEIGHT,
-  MANIFESTO_ITEM_TEXT_SIZE,
-} from './constants'
-import { useRouter } from 'expo-router'
 
 interface ManifestoItemProps {
   statement: Statement
@@ -26,7 +22,6 @@ export const ManifestoItem = ({
   onDelete,
   autoFocus,
 }: ManifestoItemProps) => {
-
   const router = useRouter()
 
   const handleSave = (newText: string) => {
@@ -86,6 +81,7 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     paddingHorizontal: 22,
     borderRadius: 18,
+    marginHorizontal: 20,
     marginBottom: 18,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },

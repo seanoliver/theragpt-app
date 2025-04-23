@@ -1,13 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { getThemeByName } from '../../../lib/theme';
-import { useStatementService } from '../../hooks/useStatementService';
-import { FAB } from '../../shared/FAB';
-import { ManifestoHeader } from './ManifestoHeader';
-import { ManifestoItem } from './ManifestoItem';
+import { Ionicons } from '@expo/vector-icons'
+import React, { useEffect, useRef, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { getThemeByName } from '../../../lib/theme'
+import { useStatementService } from '../../hooks/useStatementService'
+import { FAB } from '../../shared/FAB'
+import { TitleBar } from '../../shared/TitleBar'
+import { ManifestoItem } from './ManifestoItem'
 
 const sunsetTheme = getThemeByName('sunset')
 
@@ -55,35 +55,36 @@ export function ManifestoScreen() {
   // TODO: Make this prettier
   if (!service || !statements) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.subtitle}>Loading...</Text>
+      <View>
+        <Text>Loading...</Text>
       </View>
     )
   }
 
   return (
-    <SafeAreaView style={[styles.container]}>
-      <ManifestoHeader />
-      <View style={styles.content}>
-        <KeyboardAwareScrollView
-          ref={scrollViewRef}
-          style={[styles.statementsList]}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flexGrow: 1 }}
-        >
-          {statements.map((statement, index) => (
-            <React.Fragment key={statement.id}>
-              <ManifestoItem
-                statement={statement}
-                onArchive={() => handleArchive(statement.id)}
-                onDelete={() => handleDelete(statement.id)}
-                onSave={text => handleSave(statement.id, text)}
-                autoFocus={statement.id === newlyCreatedId}
-              />
-            </React.Fragment>
-          ))}
-        </KeyboardAwareScrollView>
-      </View>
+    <SafeAreaView style={{ backgroundColor: sunsetTheme.colors.background }}>
+      <TitleBar />
+      <ScrollView
+        ref={scrollViewRef}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingTop: 20,
+          paddingBottom: 120,
+        }}
+      >
+        {statements.map(statement => (
+          <React.Fragment key={statement.id}>
+            <ManifestoItem
+              statement={statement}
+              onArchive={() => handleArchive(statement.id)}
+              onDelete={() => handleDelete(statement.id)}
+              onSave={text => handleSave(statement.id, text)}
+              autoFocus={statement.id === newlyCreatedId}
+            />
+          </React.Fragment>
+        ))}
+      </ScrollView>
 
       <FAB onPress={handleNew} backgroundColor={sunsetTheme.colors.accent}>
         <Ionicons
@@ -95,24 +96,3 @@ export function ManifestoScreen() {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 0,
-    backgroundColor: sunsetTheme.colors.background,
-  },
-  content: {
-    flex: 1,
-    gap: 24,
-    paddingHorizontal: 24,
-  },
-  statementsList: {
-    flex: 1,
-    paddingRight: 4,
-    backgroundColor: sunsetTheme.colors.background,
-  },
-  subtitle: {
-    display: 'none',
-  },
-})
