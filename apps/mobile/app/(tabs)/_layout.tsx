@@ -97,7 +97,7 @@ export default function RootLayout() {
                   ),
                 }}
               />
-              <Tabs.Screen
+              {/* <Tabs.Screen
                 name="settings"
                 options={{
                   title: 'Settings',
@@ -105,7 +105,7 @@ export default function RootLayout() {
                     <FontAwesome name="cog" size={22} color={color} />
                   ),
                 }}
-              />
+              /> */}
             </Tabs>
           </SafeAreaView>
         </KeyboardProvider>
