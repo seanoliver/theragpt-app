@@ -1,4 +1,4 @@
-import { SettingsScreen } from '../src/screens/Settings'
+import { SettingsScreen } from '../src/screens/SettingsScreen'
 
 export default function Page() {
   return <SettingsScreen />

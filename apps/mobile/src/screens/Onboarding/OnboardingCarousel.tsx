@@ -1,16 +1,17 @@
+import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
   Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native'
-import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
-import { useRouter } from 'expo-router'
+import PagerView, {
+  PagerViewOnPageSelectedEvent,
+} from 'react-native-pager-view'
 import { ONBOARDING_CARDS } from './constants'
-import { useTheme } from '../../../lib/theme/context'
 
 const { width } = Dimensions.get('window')
 
@@ -32,7 +33,9 @@ export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
       <PagerView
         style={{ width: width * 0.9, height: 400, alignSelf: 'center' }}
         initialPage={0}
-        onPageSelected={(e: PagerViewOnPageSelectedEvent) => setCurrentIndex(e.nativeEvent.position)}
+        onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
+          setCurrentIndex(e.nativeEvent.position)
+        }
       >
         {ONBOARDING_CARDS.map((item, idx) => (
           <View key={idx} style={styles.card}>

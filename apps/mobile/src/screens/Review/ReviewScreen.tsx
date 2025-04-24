@@ -4,18 +4,18 @@ import { Dimensions, Text, View } from 'react-native'
 import PagerView, {
   PagerViewOnPageSelectedEvent,
 } from 'react-native-pager-view'
-import { useStatementService } from '../../hooks/useStatementService'
+import { useCardService } from '../../hooks/useCardService'
 
 export const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
   Dimensions.get('window')
 
 export const ReviewScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const { service, statements } = useStatementService()
+  const { service, cards } = useCardService()
 
   const { themeObject } = useTheme()
 
-  if (!service || !statements) {
+  if (!service || !cards) {
     return (
       <View>
         <Text>Loading...</Text>
@@ -47,7 +47,7 @@ export const ReviewScreen = () => {
             setCurrentIndex(e.nativeEvent.position)
           }
         >
-          {statements.map((statement, index) => {
+          {cards.map((card, index) => {
             return (
               <View
                 key={index}
@@ -61,7 +61,7 @@ export const ReviewScreen = () => {
                     color: themeObject.colors.text,
                   }}
                 >
-                  {statement.text}
+                  {card.text}
                 </Text>
               </View>
             )
@@ -81,7 +81,7 @@ export const ReviewScreen = () => {
             style={{
               backgroundColor: themeObject.colors.hoverPrimary,
               height: 1,
-              width: `${((currentIndex + 1) / statements.length) * 100}%`,
+              width: `${((currentIndex + 1) / cards.length) * 100}%`,
             }}
           />
         </View>

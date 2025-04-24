@@ -17,7 +17,7 @@ export const useFetchAlternatives = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          statement: value,
+          card: value,
           tones: TONES,
         }),
       })

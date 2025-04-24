@@ -75,7 +75,7 @@ export const ArchiveEmptyState = () => {
       />
       <StepRow
         iconName="sunny-outline"
-        text="When an idea finds its form, move it into your manifesto and let it shine."
+        text="When an idea finds its form, move it into your active deck and let it shine."
         delay={700}
       />
 

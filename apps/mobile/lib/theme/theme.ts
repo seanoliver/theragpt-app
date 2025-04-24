@@ -1,4 +1,4 @@
-import { palettes, PaletteName, ThemePalette } from './palettes'
+import { PaletteName, palettes, ThemePalette } from './palettes'
 import { ThemeTokenKey } from './tokens'
 
 export interface Theme {

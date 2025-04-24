@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { useTheme } from '../../lib/theme/context'
 
-const MANIFESTO_TAB = 'index'
+const ACTIVE_TAB = 'index'
 const ARCHIVE_TAB = 'archive'
 
 interface FABProps {
@@ -33,16 +33,16 @@ export const FAB: React.FC<FABProps> = ({ children, style, onPress, backgroundCo
   const prevTab = usePrevious(currentTab)
   const visible = useSharedValue(1)
 
-  const isManifestoOrArchive =
-    currentTab === MANIFESTO_TAB || currentTab === ARCHIVE_TAB
+  const isActiveOrArchive =
+    currentTab === ACTIVE_TAB || currentTab === ARCHIVE_TAB
 
   useEffect(() => {
     if (
-      (prevTab === MANIFESTO_TAB || prevTab === ARCHIVE_TAB) &&
-      isManifestoOrArchive
+      (prevTab === ACTIVE_TAB || prevTab === ARCHIVE_TAB) &&
+      isActiveOrArchive
     ) {
       visible.value = withTiming(1)
-    } else if (isManifestoOrArchive) {
+    } else if (isActiveOrArchive) {
       visible.value = withTiming(1)
     } else {
       visible.value = withTiming(0)

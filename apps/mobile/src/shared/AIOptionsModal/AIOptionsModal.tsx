@@ -4,10 +4,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import { useTheme } from '../../../lib/theme/context'
@@ -46,59 +44,70 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
   return (
     <Modal
       isVisible={visible}
-    onBackdropPress={onClose}
-    onBackButtonPress={onClose}
-    style={styles.modal}
-  >
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerLabel}>Original Statement</Text>
-        <Text style={{ color: theme.colors.textOnBackground, fontSize: 16, textAlign: 'left' }}>{value}</Text>
-      </View>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
-      >
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={theme.colors.textOnBackground} />
-            <Text style={styles.loadingText}>Generating alternatives...</Text>
-          </View>
-        )}
-        {error && <Text style={styles.errorText}>{error}</Text>}
-        {!loading &&
-          !error &&
-          alternatives.map(variation => (
-            <AIOptionsModalItem
-              key={variation.tone}
-              variation={variation}
-              onReplace={() => onReplace(variation.text)}
-              onAppend={() => onAppend(variation.text)}
-              onRetry={() => onRetry(variation.text, variation.tone)}
-            />
-          ))}
-      </ScrollView>
-      <TouchableOpacity
-        style={{
-          alignSelf: 'center',
-          marginTop: 0,
-          marginBottom: 12,
-          paddingVertical: 8,
-          paddingHorizontal: 24,
-          backgroundColor: theme.colors.border,
-          borderRadius: 8,
-        }}
-        onPress={onClose}
-      >
-        <Text
-          style={{
-            color: theme.colors.textOnBackground,
-            fontWeight: '600',
-            fontSize: 16,
-          }}
+      onBackdropPress={onClose}
+      onBackButtonPress={onClose}
+      style={styles.modal}
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerLabel}>Original Card</Text>
+          <Text
+            style={{
+              color: theme.colors.textOnBackground,
+              fontSize: 16,
+              textAlign: 'left',
+            }}
+          >
+            {value}
+          </Text>
+        </View>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContent}
         >
-          Close
-        </Text>
+          {loading && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator
+                size="large"
+                color={theme.colors.textOnBackground}
+              />
+              <Text style={styles.loadingText}>Generating alternatives...</Text>
+            </View>
+          )}
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          {!loading &&
+            !error &&
+            alternatives.map(variation => (
+              <AIOptionsModalItem
+                key={variation.tone}
+                variation={variation}
+                onReplace={() => onReplace(variation.text)}
+                onAppend={() => onAppend(variation.text)}
+                onRetry={() => onRetry(variation.text, variation.tone)}
+              />
+            ))}
+        </ScrollView>
+        <TouchableOpacity
+          style={{
+            alignSelf: 'center',
+            marginTop: 0,
+            marginBottom: 12,
+            paddingVertical: 8,
+            paddingHorizontal: 24,
+            backgroundColor: theme.colors.border,
+            borderRadius: 8,
+          }}
+          onPress={onClose}
+        >
+          <Text
+            style={{
+              color: theme.colors.textOnBackground,
+              fontWeight: '600',
+              fontSize: 16,
+            }}
+          >
+            Close
+          </Text>
         </TouchableOpacity>
       </View>
     </Modal>

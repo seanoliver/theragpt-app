@@ -1,13 +1,14 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
+import { DisplayCard } from '../screens/Cards/useCardData';
 
 export interface SwipeAction {
   label: string
   icon: React.ReactNode
   backgroundColor: string
   textColor: string
-  onPress: () => void
+  onPress: (card: DisplayCard) => void
 }
 
 export const SwipeMenu = ({

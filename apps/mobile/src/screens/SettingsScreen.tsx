@@ -17,7 +17,7 @@ const THEME_LABELS: Record<ThemeOption, string> = {
   [ThemeOption.SYSTEM]: 'System Default',
 }
 
-export function SettingsScreen() {
+export const SettingsScreen = () => {
   const { theme: selectedTheme, setTheme } = useTheme()
   const themeOptions = getAvailableThemes()
 

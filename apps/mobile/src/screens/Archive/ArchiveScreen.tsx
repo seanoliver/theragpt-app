@@ -3,18 +3,18 @@ import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme/context'
-import { useStatementService } from '../../hooks/useStatementService'
+import { useCardService } from '../../hooks/useCardService'
 import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
 
 export const ArchiveScreen = () => {
-  const { service, statements } = useStatementService(true)
+  const { service, cards } = useCardService(true)
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
   const { themeObject: theme } = useTheme()
 
-  if (!service || !statements) {
+  if (!service || !cards) {
     return (
       <View
         style={{
@@ -29,12 +29,12 @@ export const ArchiveScreen = () => {
     )
   }
 
-  const isEmpty = statements.length === 0
+  const isEmpty = cards.length === 0
 
-  const handleAddStatement = async () => {
+  const handleAddCard = async () => {
     if (!service) return
-    const newStatement = await service.create({ text: '', isActive: false })
-    setNewlyCreatedId(newStatement.id)
+    const newCard = await service.create({ text: '', isActive: false })
+    setNewlyCreatedId(newCard.id)
   }
 
   return (
@@ -43,19 +43,18 @@ export const ArchiveScreen = () => {
         <ArchiveEmptyState />
       ) : (
         <ScrollView
-          style={styles.statementsList}
+          style={styles.cardsList}
           keyboardShouldPersistTaps="handled"
         >
-          {statements.map((statement, index) => (
-            <React.Fragment key={statement.id}>
+          {cards.map((card, index) => (
+            <React.Fragment key={card.id}>
               <ArchiveLineItem
-                statement={statement}
-                onPublish={() =>
-                  service.update({ id: statement.id, isActive: true })
-                }
-                onDelete={() => service.deleteStatement(statement.id)}
+                card={card}
+                onRestore={() => service.update({ id: card.id, isActive: true })}
+                onDelete={() => service.deleteCard(card.id)}
+                isNew={card.id === newlyCreatedId}
               />
-              {index < statements.length - 1 && (
+              {index < cards.length - 1 && (
                 <View
                   style={{
                     height: 1,
@@ -70,7 +69,7 @@ export const ArchiveScreen = () => {
         </ScrollView>
       )}
 
-      <FAB onPress={handleAddStatement}>
+      <FAB onPress={handleAddCard}>
         <Ionicons name="add" size={32} color={theme.colors.background} />
       </FAB>
     </SafeAreaView>
@@ -78,7 +77,7 @@ export const ArchiveScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  statementsList: {
+  cardsList: {
     flex: 1,
     paddingRight: 4,
   },
