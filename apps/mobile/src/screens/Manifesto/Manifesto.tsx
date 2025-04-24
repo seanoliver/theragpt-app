@@ -1,86 +1,85 @@
-import { Ionicons } from '@expo/vector-icons'
-import React, { useEffect, useRef, useState } from 'react'
-import { ScrollView, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React, { useMemo, useState } from 'react'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
-import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
-import { ManifestoItem } from './ManifestoItem'
+// Placeholder imports for new components to be implemented
+// import { SearchBar } from './SearchBar';
+// import { NewStatementButton } from './NewStatementButton';
+import { ManifestoList } from './ManifestoList'
+// import { EmptyState } from './EmptyState';
+import { filterManifestoData } from './filterManifestoData'
+import { useManifestoData } from './useManifestoData'
+import { Theme } from '@/apps/mobile/lib/theme'
 
 export const ManifestoScreen = () => {
-  const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
-  const scrollViewRef = useRef<ScrollView>(null)
-  const { themeObject } = useTheme()
+  const { themeObject: theme } = useTheme()
+  const styles = makeStyles(theme)
+  const [searchQuery, setSearchQuery] = useState('')
+  const {
+    data: statements,
+    loading,
+    error,
+    createStatement,
+  } = useManifestoData()
 
-  const { service, statements } = useStatementService()
+  // Filtered data based on search query
+  const filteredStatements = useMemo(
+    () => filterManifestoData(statements, searchQuery),
+    [statements, searchQuery],
+  )
 
-  // Scroll to bottom after new statement is added and rendered
-  useEffect(() => {
-    if (
-      newlyCreatedId &&
-      statements &&
-      statements.some(s => s.id === newlyCreatedId)
-    ) {
-      setTimeout(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true })
-      }, 100)
-    }
-  }, [newlyCreatedId, statements?.length])
-
-  const handleDelete = (statementId: string) => {
-    if (!service) return
-    service.deleteStatement(statementId)
-  }
-
-  const handleArchive = (statementId: string) => {
-    if (!service) return
-    service.update({ id: statementId, isActive: false })
-  }
-
+  // Handler for creating a new statement
   const handleNew = async () => {
-    if (!service) return
-    const newStatement = await service.create({ text: '', isActive: true })
-    setNewlyCreatedId(newStatement.id)
+    await createStatement()
+    // Optionally scroll to top or show feedback
   }
 
-  // TODO: Make this prettier
-  if (!service || !statements) {
+  // TODO: Render loading or error state
+  if (loading) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.centered}>
+          {/* Replace with a loading spinner if desired */}
+        </View>
+      </SafeAreaView>
+    )
+  }
+  if (error) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.centered}>{/* TODO: Replace with error UI */}</View>
+      </SafeAreaView>
     )
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: themeObject.colors.hoverBackground }}>
-      <ScrollView
-        ref={scrollViewRef}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingTop: 20,
-          paddingBottom: 120,
-        }}
-      >
-        {statements.map(statement => (
-          <React.Fragment key={statement.id}>
-            <ManifestoItem
-              statement={statement}
-              onArchive={() => handleArchive(statement.id)}
-              onDelete={() => handleDelete(statement.id)}
-            />
-          </React.Fragment>
-        ))}
-      </ScrollView>
-
-      <FAB onPress={handleNew} backgroundColor={themeObject.colors.accent}>
-        <Ionicons
-          name="add"
-          size={32}
-          color={themeObject.colors.textOnAccent}
-        />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inner}>
+        {/* TODO: <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
+        <ManifestoList statements={filteredStatements} />
+        {/* TODO: {filteredStatements.length === 0 && <EmptyState />} */}
+      </View>
+      <FAB onPress={handleNew} backgroundColor={theme.colors.accent}>
+        {/* TODO: Use Ionicons or similar for "+" icon */}
       </FAB>
     </SafeAreaView>
   )
 }
+
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    inner: {
+      flex: 1,
+      paddingTop: 16,
+      paddingHorizontal: 0,
+    },
+    centered: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  })

@@ -10,7 +10,10 @@ export interface Statement {
   lastReviewed: number | null
   isActive: boolean
   isFavorite: boolean
-  tags: string[]
+  tags?: string[]
+  upvotes?: number
+  downvotes?: number
+  reviews?: number
 }
 
 export interface UpdateStatementParams {
@@ -19,12 +22,17 @@ export interface UpdateStatementParams {
   isActive?: boolean
   isFavorite?: boolean
   tags?: string[]
+  category?: string
+  upvotes?: number
+  downvotes?: number
+  reviews?: number
 }
 
 export interface CreateStatementParams {
   text: string
   tags?: string[]
   isActive?: boolean
+  category?: string
 }
 
 const DEFAULT_STATEMENTS = [

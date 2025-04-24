@@ -1,4 +1,4 @@
-import { palettes, PaletteName, ThemePalette } from './palettes'
+import { PaletteName, palettes, ThemePalette } from './palettes'
 import { ThemeTokenKey } from './tokens'
 
 export interface Theme {
@@ -166,5 +166,5 @@ export const themes: Record<ThemeType, Theme> = {
   system: getThemeByName(DEFAULT_LIGHT_PALETTE),
 }
 
-export const DEFAULT_THEME_TYPE: ThemeType = 'dark'
+export const DEFAULT_THEME_TYPE: ThemeType = 'light'
 export const DEFAULT_THEME: Theme = themes[DEFAULT_THEME_TYPE]
