@@ -85,5 +85,6 @@ const makeStyles = (theme: Theme) =>
       textAlign: 'left',
       fontWeight: '400',
       letterSpacing: 0.1,
+      color: theme.colors.text,
     },
   })

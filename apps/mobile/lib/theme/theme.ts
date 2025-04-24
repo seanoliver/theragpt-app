@@ -52,7 +52,7 @@ export interface Theme {
 }
 
 export const DEFAULT_LIGHT_PALETTE: PaletteName = 'white'
-export const DEFAULT_DARK_PALETTE: PaletteName = 'indigo'
+export const DEFAULT_DARK_PALETTE: PaletteName = 'charcoal'
 
 function completePalette(
   palette: Partial<ThemePalette>,
@@ -166,5 +166,5 @@ export const themes: Record<ThemeType, Theme> = {
   system: getThemeByName(DEFAULT_LIGHT_PALETTE),
 }
 
-export const DEFAULT_THEME_TYPE: ThemeType = 'system'
+export const DEFAULT_THEME_TYPE: ThemeType = 'dark'
 export const DEFAULT_THEME: Theme = themes[DEFAULT_THEME_TYPE]

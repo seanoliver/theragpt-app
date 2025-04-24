@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Appearance, ColorSchemeName } from 'react-native'
+import { DEFAULT_THEME_TYPE } from './theme'
 
 export enum ThemeOption {
   LIGHT = 'light',
@@ -29,9 +30,9 @@ export async function loadThemeSelection(): Promise<ThemeOption> {
     if (isValidTheme(value)) {
       return value as ThemeOption
     }
-    return ThemeOption.SYSTEM
+    return DEFAULT_THEME_TYPE as ThemeOption
   } catch {
-    return ThemeOption.SYSTEM
+    return DEFAULT_THEME_TYPE as ThemeOption
   }
 }
 
