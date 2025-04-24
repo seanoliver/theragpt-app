@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { SwipeMenu } from '../../shared/SwipeMenu'
+import { Theme } from '@/apps/mobile/lib/theme'
 
 interface ManifestoItemProps {
   statement: Statement
@@ -20,6 +21,7 @@ export const ManifestoItem = ({
 }: ManifestoItemProps) => {
   const router = useRouter()
   const { themeObject: theme } = useTheme()
+  const styles = makeStyles(theme)
   const handlePress = () => {
     router.push(`/statements/${statement.id}`)
   }
@@ -59,33 +61,31 @@ export const ManifestoItem = ({
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginBottom: 0,
-    backgroundColor: 'transparent',
-  },
-  card: {
-    backgroundColor: 'rgba(255,255,255,0.75)',
-    paddingVertical: 22,
-    paddingHorizontal: 22,
-    borderRadius: 18,
-    marginHorizontal: 20,
-    marginBottom: 18,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
-    shadowRadius: 24,
-    borderWidth: 1.5,
-    // borderColor: theme.colors.border + '22',
-    overflow: 'hidden',
-  },
-  text: {
-    flex: 1,
-    fontSize: 15,
-    lineHeight: 24,
-    textAlign: 'left',
-    fontWeight: '400',
-    letterSpacing: 0.1,
-  },
-})
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      marginBottom: 0,
+      backgroundColor: 'transparent',
+    },
+    card: {
+      backgroundColor: theme.colors.background,
+      paddingVertical: 22,
+      paddingHorizontal: 22,
+      borderRadius: 18,
+      marginHorizontal: 20,
+      marginBottom: 18,
+      boxShadow: `0px 4px 8px 0px ${theme.colors.borderSubtle}`,
+
+      borderWidth: 0,
+      overflow: 'hidden',
+    },
+    text: {
+      flex: 1,
+      fontSize: 15,
+      lineHeight: 24,
+      textAlign: 'left',
+      fontWeight: '400',
+      letterSpacing: 0.1,
+    },
+  })

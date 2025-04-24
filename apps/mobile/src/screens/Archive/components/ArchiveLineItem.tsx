@@ -2,7 +2,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo } from 'react'
 import { StyleSheet, View, ViewStyle, Text } from 'react-native'
-import theme from '../../../../lib/theme'
+import { useTheme } from '../../../../lib/theme/context'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
 
 interface ArchiveLineItemProps {
@@ -23,6 +23,7 @@ export const ArchiveLineItem = ({
   onPublish,
   onDelete,
 }: ArchiveLineItemProps) => {
+  const { themeObject: theme } = useTheme()
   // const router = useRouter()
 
   // const handlePress = () => {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 24,
     borderWidth: 1.5,
-    borderColor: theme.colors.border + '22',
+    // borderColor: theme.colors.border + '22',
     overflow: 'hidden',
   },
   text: {
