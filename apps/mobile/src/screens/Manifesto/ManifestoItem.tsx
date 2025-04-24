@@ -3,7 +3,7 @@ import { Statement } from '@still/logic/src/statement/statementService'
 import { useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import theme from '../../../lib/theme'
+import { useTheme } from '../../../lib/theme/context'
 import { SwipeMenu } from '../../shared/SwipeMenu'
 
 interface ManifestoItemProps {
@@ -19,7 +19,7 @@ export const ManifestoItem = ({
   onDelete,
 }: ManifestoItemProps) => {
   const router = useRouter()
-
+  const { themeObject: theme } = useTheme()
   const handlePress = () => {
     router.push(`/statements/${statement.id}`)
   }
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 24,
     borderWidth: 1.5,
-    borderColor: theme.colors.border + '22',
+    // borderColor: theme.colors.border + '22',
     overflow: 'hidden',
   },
   text: {

@@ -1,8 +1,8 @@
-import { useTheme } from '@/apps/mobile/lib/theme.context'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '../../../lib/theme/context'
 import { useStatementService } from '../../hooks/useStatementService'
 import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
@@ -54,10 +54,6 @@ export const ArchiveScreen = () => {
                   service.update({ id: statement.id, isActive: true })
                 }
                 onDelete={() => service.deleteStatement(statement.id)}
-                autoFocus={statement.id === newlyCreatedId}
-                onSave={() => {
-                  if (statement.id === newlyCreatedId) setNewlyCreatedId(null)
-                }}
               />
               {index < statements.length - 1 && (
                 <View

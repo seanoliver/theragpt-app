@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTheme } from '../../../lib/theme.context'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '../../../lib/theme/context'
 import { useStatementService } from '../../hooks/useStatementService'
 
 export default function StatementView() {
@@ -21,7 +21,6 @@ export default function StatementView() {
   const [favoriteCount, setFavoriteCount] = useState(0)
   const { service, statements } = useStatementService()
   const { themeObject: theme } = useTheme()
-  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     if (!statementId || !statements) return
@@ -117,7 +116,7 @@ export default function StatementView() {
             styles.affirmationCard,
             {
               backgroundColor: theme.colors.background,
-              borderColor: theme.colors.border,
+              borderColor: theme.colors.borderSubtle,
             },
           ]}
         >
@@ -183,7 +182,7 @@ export default function StatementView() {
               styles.statCard,
               {
                 backgroundColor: theme.colors.background,
-                borderColor: theme.colors.border,
+                borderColor: theme.colors.borderSubtle,
               },
             ]}
           >
@@ -218,7 +217,7 @@ export default function StatementView() {
               styles.statCard,
               {
                 backgroundColor: theme.colors.background,
-                borderColor: theme.colors.border,
+                borderColor: theme.colors.borderSubtle,
               },
             ]}
           >
@@ -251,7 +250,7 @@ export default function StatementView() {
               styles.statCard,
               {
                 backgroundColor: theme.colors.background,
-                borderColor: theme.colors.border,
+                borderColor: theme.colors.borderSubtle,
               },
             ]}
           >
@@ -286,7 +285,7 @@ export default function StatementView() {
             styles.variationSection,
             {
               backgroundColor: theme.colors.background,
-              borderColor: theme.colors.border,
+              borderColor: theme.colors.borderSubtle,
             },
           ]}
         >

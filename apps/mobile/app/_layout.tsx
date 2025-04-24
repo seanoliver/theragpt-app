@@ -13,7 +13,7 @@ import { ActivityIndicator, Text } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ThemeProvider, useTheme } from '../lib/theme.context'
+import { ThemeProvider, useTheme } from '../lib/theme/context'
 import { Slot } from 'expo-router'
 import React from 'react'
 

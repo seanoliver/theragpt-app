@@ -1,6 +1,6 @@
 import { Statement } from '@still/logic/src/statement/statementService'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useTheme } from '../../lib/theme.context'
+import { useTheme } from '../../lib/theme/context'
 
 export const StatementCard = ({
   statement,

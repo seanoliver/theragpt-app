@@ -15,7 +15,7 @@ import { ActivityIndicator } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ThemeProvider, useTheme } from '../../lib/theme.context'
+import { ThemeProvider, useTheme } from '../../lib/theme/context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const TabRootLayout = () => {

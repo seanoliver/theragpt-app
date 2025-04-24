@@ -1,4 +1,4 @@
-import { useTheme } from '@/apps/mobile/lib/theme.context'
+import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { useState } from 'react'
 import { Dimensions, Text, View } from 'react-native'
 import PagerView, {

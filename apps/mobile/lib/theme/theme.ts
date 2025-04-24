@@ -4,7 +4,7 @@
  */
 
 // Theme construction, utilities, and types
-import { palettes, lightPalettes, darkPalettes, PaletteName, ThemePalette } from './theme/palettes'
+import { palettes, lightPalettes, darkPalettes, PaletteName, ThemePalette } from './palettes'
 import { ThemeTokenKey } from './tokens'
 
 export interface Theme {
