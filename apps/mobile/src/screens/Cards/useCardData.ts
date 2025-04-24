@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useStatementService } from '../../hooks/useStatementService'
+import { useCardService } from '../../hooks/useCardService'
 import { Statement } from '@/packages/logic/src/statement/statementService'
 
-export interface DisplayStatement {
+export interface DisplayCard {
   id: string
   text: string
+  isActive?: boolean
   category?: string
   lastReviewed?: string
   netVotes?: number
@@ -12,24 +13,24 @@ export interface DisplayStatement {
   reviews?: number
 }
 
-interface UseManifestoDataResult {
-  data: DisplayStatement[]
+interface UseCardDataResult {
+  data: DisplayCard[]
   loading: boolean
   error: string | null
-  createStatement: () => Promise<void>
+  createCard: () => Promise<void>
 }
 
-export const useManifestoData = (): UseManifestoDataResult => {
-  const { service, statements } = useStatementService()
-  const [loading, setLoading] = useState(!statements)
+export const useCardData = (): UseCardDataResult => {
+  const { service, cards } = useCardService()
+  const [loading, setLoading] = useState(!cards)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    setLoading(!statements)
-  }, [statements])
+    setLoading(!cards)
+  }, [cards])
 
   // Map raw statements to UI Statement type
-  const mapStatement = (s: Statement): DisplayStatement => {
+  const mapCard = (s: Statement): DisplayCard => {
     const netVotes = s.upvotes && s.downvotes ? s.upvotes - s.downvotes : 0
     const frequency =
       netVotes === 0 ? undefined : netVotes > 0 ? 'More' : 'Less'
@@ -39,6 +40,7 @@ export const useManifestoData = (): UseManifestoDataResult => {
       id: s.id,
       text: s.text,
       category,
+      isActive: s.isActive,
       lastReviewed: s.lastReviewed
         ? new Date(s.lastReviewed).toLocaleDateString('en-US', {
             month: 'short',
@@ -51,24 +53,25 @@ export const useManifestoData = (): UseManifestoDataResult => {
     }
   }
 
-  const mappedStatements = (statements || []).map(mapStatement)
+  const mappedCards = (cards || []).map(mapCard)
 
-  const createStatement = useCallback(async () => {
+  const createCard = useCallback(async () => {
     if (!service) return
     try {
       setLoading(true)
       await service.create({ text: '', isActive: true })
       setLoading(false)
-    } catch (err) {
+    } catch (e: any) {
       setError('Failed to create statement')
+      console.error('Error', e.message)
       setLoading(false)
     }
   }, [service])
 
   return {
-    data: mappedStatements,
+    data: mappedCards,
     loading,
     error,
-    createStatement,
+    createCard,
   }
 }

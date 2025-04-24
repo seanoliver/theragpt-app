@@ -3,18 +3,18 @@ import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme/context'
-import { useStatementService } from '../../hooks/useStatementService'
+import { useCardService } from '../../hooks/useCardService'
 import { FAB } from '../../shared/FAB'
 import { ArchiveEmptyState } from './components/ArchiveEmptyState'
 import { ArchiveLineItem } from './components/ArchiveLineItem'
 
 export const ArchiveScreen = () => {
-  const { service, statements } = useStatementService(true)
+  const { service, cards } = useCardService(true)
   const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
 
   const { themeObject: theme } = useTheme()
 
-  if (!service || !statements) {
+  if (!service || !cards) {
     return (
       <View
         style={{
@@ -29,7 +29,7 @@ export const ArchiveScreen = () => {
     )
   }
 
-  const isEmpty = statements.length === 0
+  const isEmpty = cards.length === 0
 
   const handleAddStatement = async () => {
     if (!service) return
@@ -46,7 +46,7 @@ export const ArchiveScreen = () => {
           style={styles.statementsList}
           keyboardShouldPersistTaps="handled"
         >
-          {statements.map((statement, index) => (
+          {cards.map((statement, index) => (
             <React.Fragment key={statement.id}>
               <ArchiveLineItem
                 statement={statement}
@@ -55,7 +55,7 @@ export const ArchiveScreen = () => {
                 }
                 onDelete={() => service.deleteStatement(statement.id)}
               />
-              {index < statements.length - 1 && (
+              {index < cards.length - 1 && (
                 <View
                   style={{
                     height: 1,

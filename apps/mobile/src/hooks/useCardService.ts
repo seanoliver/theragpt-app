@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { statementService } from '@still/logic/src/statement/statementService'
 import { Statement } from '@still/logic/src/statement/statementService'
 
-export const useStatementService = (archived: boolean = false) => {
+export const useCardService = (archived: boolean = false) => {
   const [ready, setReady] = useState(false)
-  const [statements, setStatements] = useState<Statement[] | null>(null)
+  const [cards, setCards] = useState<Statement[] | null>(null)
 
   useEffect(() => {
     let mounted = true
@@ -16,16 +16,16 @@ export const useStatementService = (archived: boolean = false) => {
 
       setReady(true)
 
-      const fetchedStatements = archived
+      const fetchedCards = archived
         ? statementService.getArchived
         : statementService.getActive
 
       // Need to .call(service) to bind 'this' to the service instance
-      setStatements(await fetchedStatements.call(statementService))
+      setCards(await fetchedCards.call(statementService))
 
       unsubscribe = statementService.subscribe(stmts => {
         if (mounted)
-          setStatements(
+          setCards(
             archived
               ? statementService.filterArchived(stmts)
               : statementService.filterActive(stmts),
@@ -41,5 +41,5 @@ export const useStatementService = (archived: boolean = false) => {
     }
   }, [])
 
-  return { service: ready ? statementService : null, statements }
+  return { service: ready ? statementService : null, cards }
 }

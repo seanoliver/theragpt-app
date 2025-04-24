@@ -12,30 +12,30 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme/context'
-import { useStatementService } from '../../hooks/useStatementService'
+import { useCardService } from '../../hooks/useCardService'
 
-export default function StatementView() {
+export const CardScreen = () => {
   const router = useRouter()
   const { statementId } = useLocalSearchParams<{ statementId: string }>()
-  const [statement, setStatement] = useState<Statement | null>(null)
+  const [card, setCard] = useState<Statement | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
-  const { service, statements } = useStatementService()
+  const { service, cards } = useCardService()
   const { themeObject: theme } = useTheme()
 
   useEffect(() => {
-    if (!statementId || !statements) return
-    const foundStatement = statements.find(a => a.id === statementId)
+    if (!statementId || !cards) return
+    const foundStatement = cards.find(a => a.id === statementId)
     if (foundStatement) {
-      setStatement(foundStatement)
-      const favorites = statements.filter(
+      setCard(foundStatement)
+      const favorites = cards.filter(
         a => a.text === foundStatement.text && a.isFavorite,
       )
       setFavoriteCount(favorites.length)
     }
-  }, [statementId, statements])
+  }, [statementId, cards])
 
   const handleDelete = async () => {
-    if (!statement || !service) return
+    if (!card || !service) return
 
     Alert.alert(
       'Delete Statement',
@@ -51,7 +51,7 @@ export default function StatementView() {
           onPress: async () => {
             try {
               await service.update({
-                id: statement.id,
+                id: card.id,
                 isActive: false,
               })
               router.back()
@@ -66,12 +66,12 @@ export default function StatementView() {
   }
 
   const handleSaveStatement = async (newText: string) => {
-    if (service && statement && newText !== statement.text) {
-      await service.update({ id: statement.id, text: newText })
+    if (service && card && newText !== card.text) {
+      await service.update({ id: card.id, text: newText })
     }
   }
 
-  if (!service || !statements) {
+  if (!service || !cards) {
     return (
       <View
         style={{
@@ -89,7 +89,7 @@ export default function StatementView() {
     )
   }
 
-  const foundStatement = statements.find(a => a.id === statementId)
+  const foundStatement = cards.find(a => a.id === statementId)
   if (!statementId || !foundStatement) {
     return (
       <View
@@ -107,7 +107,9 @@ export default function StatementView() {
 
   // --- UI Layout ---
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.hoverBackground }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: theme.colors.hoverBackground }}
+    >
       {/* Main Content (starts below the existing header) */}
       <View style={styles.content}>
         {/* Affirmation Card */}

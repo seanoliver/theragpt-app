@@ -2,35 +2,30 @@ import React, { useMemo, useState } from 'react'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
-// Placeholder imports for new components to be implemented
+// TODO: Placeholder imports for new components to be implemented
 // import { SearchBar } from './SearchBar';
 // import { NewStatementButton } from './NewStatementButton';
-import { ManifestoList } from './ManifestoList'
+import { CardList } from './CardList'
 // import { EmptyState } from './EmptyState';
-import { filterManifestoData } from './filterManifestoData'
-import { useManifestoData } from './useManifestoData'
+import { filterCardData } from './filterCardData'
+import { useCardData } from './useCardData'
 import { Theme } from '@/apps/mobile/lib/theme'
 
-export const ManifestoScreen = () => {
+export const CardsScreen = () => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
   const [searchQuery, setSearchQuery] = useState('')
-  const {
-    data: statements,
-    loading,
-    error,
-    createStatement,
-  } = useManifestoData()
+  const { data: statements, loading, error, createCard } = useCardData()
 
   // Filtered data based on search query
   const filteredStatements = useMemo(
-    () => filterManifestoData(statements, searchQuery),
+    () => filterCardData(statements, searchQuery),
     [statements, searchQuery],
   )
 
-  // Handler for creating a new statement
+  // Handler for creating a new card
   const handleNew = async () => {
-    await createStatement()
+    await createCard()
     // Optionally scroll to top or show feedback
   }
 
@@ -56,7 +51,7 @@ export const ManifestoScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
         {/* TODO: <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
-        <ManifestoList statements={filteredStatements} />
+        <CardList cards={filteredStatements} />
         {/* TODO: {filteredStatements.length === 0 && <EmptyState />} */}
       </View>
       <FAB onPress={handleNew} backgroundColor={theme.colors.accent}>
@@ -74,7 +69,6 @@ const makeStyles = (theme: Theme) =>
     },
     inner: {
       flex: 1,
-      paddingTop: 16,
       paddingHorizontal: 0,
     },
     centered: {

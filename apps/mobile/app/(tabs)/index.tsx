@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { ManifestoScreen } from '../../src/screens/Manifesto/Manifesto'
+import { CardsScreen } from '../../src/screens/Cards/CardsScreen'
 import { ONBOARDING_KEY } from '../../src/screens/Onboarding/constants'
 
 export default function Page() {
@@ -16,5 +16,5 @@ export default function Page() {
     })
   }, [])
 
-  return <ManifestoScreen />
+  return <CardsScreen />
 }

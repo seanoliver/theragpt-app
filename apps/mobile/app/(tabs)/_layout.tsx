@@ -81,18 +81,18 @@ const TabRootLayout = () => {
               <Tabs.Screen
                 name="index"
                 options={{
-                  title: 'Manifesto',
+                  title: 'Cards',
                   tabBarIcon: ({ color }) => (
-                    <FontAwesome name="book" size={22} color={color} />
+                    <FontAwesome name="th-list" size={22} color={color} />
                   ),
                 }}
               />
               <Tabs.Screen
                 name="review"
                 options={{
-                  title: 'Review',
+                  title: 'Today',
                   tabBarIcon: ({ color }) => (
-                    <FontAwesome name="history" size={28} color={color} />
+                    <FontAwesome name="calendar-o" size={22} color={color} />
                   ),
                 }}
               />
@@ -107,7 +107,7 @@ const TabRootLayout = () => {
               />
               {/* Hide the statement detail screen from the tab bar */}
               <Tabs.Screen
-                name="statements/[statementId]"
+                name="cards/[cardId]"
                 options={{
                   href: null,
                 }}

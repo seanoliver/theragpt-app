@@ -1,20 +1,20 @@
 import React from 'react'
 import { FlatList, View, StyleSheet } from 'react-native'
-import { ManifestoCard } from './ManifestoCard'
-import { DisplayStatement } from './useManifestoData'
+import { Card } from './Card'
+import { DisplayCard } from './useCardData'
 
-interface ManifestoListProps {
-  statements: DisplayStatement[]
+interface CardListProps {
+  cards: DisplayCard[]
 }
 
-export const ManifestoList: React.FC<ManifestoListProps> = ({ statements }) => {
+export const CardList = ({ cards }: CardListProps) => {
   return (
     <FlatList
-      data={statements}
+      data={cards}
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <View style={styles.cardWrapper}>
-          <ManifestoCard statement={item} />
+          <Card statement={item} />
         </View>
       )}
       contentContainerStyle={styles.listContent}
@@ -25,6 +25,7 @@ export const ManifestoList: React.FC<ManifestoListProps> = ({ statements }) => {
 const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 120,
+    paddingTop: 16,
   },
   cardWrapper: {
     marginBottom: 16,

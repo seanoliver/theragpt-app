@@ -1,11 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
-import { useEffect } from 'react';
-import {
-  GestureHandlerRootView,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
-import StatementView from '../../../src/screens/StatementDetail/StatementView';
+import { Ionicons } from '@expo/vector-icons'
+import { useNavigation } from 'expo-router'
+import { useEffect } from 'react'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { CardScreen } from '../../../src/screens/Card/CardScreen'
 
 export default function Page() {
   const navigation = useNavigation()
@@ -22,5 +19,5 @@ export default function Page() {
       ),
     })
   }, [navigation])
-  return <StatementView />
+  return <CardScreen />
 }
