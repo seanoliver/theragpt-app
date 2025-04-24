@@ -52,7 +52,7 @@ const TabRootLayout = () => {
                   <FontAwesome
                     name="gear"
                     size={22}
-                    color={themeObject.colors.accent}
+                    color={themeObject.colors.textOnBackground}
                     style={{ marginRight: 20 }}
                   />
                 ),
