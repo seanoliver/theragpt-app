@@ -6,7 +6,7 @@ import { SwipeAction, SwipeMenu } from '../../shared/SwipeMenu'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Theme } from '@/apps/mobile/lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-import { useCardService } from '../../hooks/useCardService';
+import { useCardService } from '../../hooks/useCardService'
 interface CardListProps {
   cards: DisplayCard[]
 }
@@ -28,14 +28,18 @@ export const CardList = ({ cards }: CardListProps) => {
   const getSwipeActions = (card: DisplayCard): SwipeAction[] => [
     {
       label: 'archive',
-      icon: <Ionicons name="archive-outline" size={24} color={theme.colors.white} />,
+      icon: (
+        <Ionicons name="archive-outline" size={24} color={theme.colors.white} />
+      ),
       backgroundColor: theme.colors.accent,
       textColor: theme.colors.white,
       onPress: () => handleArchive(card),
     },
     {
       label: 'delete',
-      icon: <Ionicons name="trash-outline" size={24} color={theme.colors.white} />,
+      icon: (
+        <Ionicons name="trash-outline" size={24} color={theme.colors.white} />
+      ),
       backgroundColor: theme.colors.errorAccent,
       textColor: theme.colors.white,
       onPress: () => handleDelete(card),
