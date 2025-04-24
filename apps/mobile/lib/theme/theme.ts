@@ -1,10 +1,4 @@
-/**
- * Multi-Palette Theme System for the Mobile App
- * Supports runtime selection of pre-defined color palettes.
- */
-
-// Theme construction, utilities, and types
-import { palettes, lightPalettes, darkPalettes, PaletteName, ThemePalette } from './palettes'
+import { palettes, PaletteName, ThemePalette } from './palettes'
 import { ThemeTokenKey } from './tokens'
 
 export interface Theme {
@@ -31,6 +25,29 @@ export interface Theme {
     bodySansBold: string
     serifAlt: string
     sansAlt: string
+  }
+  rnShadows: {
+    subtle: {
+      shadowColor: string
+      shadowOffset: { width: number; height: number }
+      shadowOpacity: number
+      shadowRadius: number
+      elevation: number
+    }
+    medium: {
+      shadowColor: string
+      shadowOffset: { width: number; height: number }
+      shadowOpacity: number
+      shadowRadius: number
+      elevation: number
+    }
+    visible: {
+      shadowColor: string
+      shadowOffset: { width: number; height: number }
+      shadowOpacity: number
+      shadowRadius: number
+      elevation: number
+    }
   }
 }
 
@@ -79,6 +96,29 @@ export function getThemeByName(paletteName: string): Theme {
       bodySansBold: 'Inter_700Bold',
       serifAlt: 'Times New Roman',
       sansAlt: 'System',
+    },
+    rnShadows: {
+      subtle: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.06,
+        shadowRadius: 3,
+        elevation: 2,
+      },
+      medium: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.12,
+        shadowRadius: 8,
+        elevation: 6,
+      },
+      visible: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.18,
+        shadowRadius: 16,
+        elevation: 12,
+      },
     },
   }
 }

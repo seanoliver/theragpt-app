@@ -75,8 +75,7 @@ const makeStyles = (theme: Theme) =>
       borderRadius: 18,
       marginHorizontal: 20,
       marginBottom: 18,
-      boxShadow: `0px 4px 8px 0px ${theme.colors.borderSubtle}`,
-
+      ...theme.rnShadows.subtle,
       borderWidth: 0,
       overflow: 'hidden',
     },
