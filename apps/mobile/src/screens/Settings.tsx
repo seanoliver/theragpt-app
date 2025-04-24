@@ -8,9 +8,8 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native'
-import { useTheme } from '../../lib/theme.context'
-import { ThemeOption, getAvailableThemes } from '../../lib/theme.service'
-import theme from '../../lib/theme'
+import { useTheme } from '../../lib/theme/context'
+import { ThemeOption, getAvailableThemes } from '../../lib/theme/service'
 
 const THEME_LABELS: Record<ThemeOption, string> = {
   [ThemeOption.LIGHT]: 'Light',
@@ -72,7 +71,7 @@ export function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    // backgroundColor: theme.colors.background,
     padding: 20,
   },
   contentContainer: {
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 28,
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     fontWeight: '700',
     marginBottom: 32,
   },
@@ -89,16 +88,16 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
+    // borderBottomColor: theme.colors.border,
   },
   label: {
     fontSize: 18,
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     marginBottom: 8,
   },
   value: {
     fontSize: 16,
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
   },
   themeSelector: {
     flexDirection: 'row',
@@ -110,31 +109,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    backgroundColor: theme.colors.background,
+    // borderColor: theme.colors.border,
+    // backgroundColor: theme.colors.background,
     marginRight: 8,
   },
   themeOptionSelected: {
-    backgroundColor: theme.colors.hoverBackground,
-    borderColor: theme.colors.primary,
+    // backgroundColor: theme.colors.hoverBackground,
+    // borderColor: theme.colors.primary,
   },
   themeOptionLabel: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     fontSize: 16,
   },
   themeOptionLabelSelected: {
-    color: theme.colors.primary,
+    // color: theme.colors.primary,
     fontWeight: '700',
   },
   logoutButton: {
     marginTop: 40,
-    backgroundColor: theme.colors.hoverBackground,
+    // backgroundColor: theme.colors.hoverBackground,
     padding: 16,
     borderRadius: 10,
     alignItems: 'center',
   },
   logoutText: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     fontSize: 16,
     fontWeight: '600',
   },

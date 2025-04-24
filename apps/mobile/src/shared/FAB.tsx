@@ -12,7 +12,7 @@ import {
   StyleProp,
   TouchableOpacity,
 } from 'react-native'
-import theme from '../../lib/theme'
+import { useTheme } from '../../lib/theme/context'
 
 const MANIFESTO_TAB = 'index'
 const ARCHIVE_TAB = 'archive'
@@ -25,6 +25,7 @@ interface FABProps {
 }
 
 export const FAB: React.FC<FABProps> = ({ children, style, onPress, backgroundColor }) => {
+  const { themeObject: theme } = useTheme()
   const segments = useSegments() as any[] // To fix annoying type error
 
   const currentTab: string =
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   fabButton: {
-    backgroundColor: theme.colors.accent,
+    // backgroundColor: theme.colors.accent,
     width: 48,
     height: 48,
     borderRadius: 32,

@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import Modal from 'react-native-modal'
-import theme from '../../../lib/theme'
+import { useTheme } from '../../../lib/theme/context'
 import AIOptionsModalItem from './AIOptionsModalItem'
 
 interface Alternative {
@@ -40,9 +40,12 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
   onReplace,
   onAppend,
   onRetry,
-}) => (
-  <Modal
-    isVisible={visible}
+}) => {
+  const { themeObject: theme } = useTheme()
+
+  return (
+    <Modal
+      isVisible={visible}
     onBackdropPress={onClose}
     onBackButtonPress={onClose}
     style={styles.modal}
@@ -96,10 +99,11 @@ const AIOptionsModal: React.FC<AIModalProps> = ({
         >
           Close
         </Text>
-      </TouchableOpacity>
-    </View>
-  </Modal>
-)
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  )
+}
 
 const styles = StyleSheet.create({
   modal: {
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   container: {
-    backgroundColor: theme.colors.hoverBackground,
+    // backgroundColor: theme.colors.hoverBackground,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
     padding: 0,
@@ -118,12 +122,12 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     borderBottomWidth: 1,
-    borderColor: theme.colors.border,
-    backgroundColor: theme.colors.hoverBackground,
+    // borderColor: theme.colors.border,
+    // backgroundColor: theme.colors.hoverBackground,
     zIndex: 2,
   },
   headerLabel: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 4,
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   loadingText: {
-    color: theme.colors.textOnBackground,
+    // color: theme.colors.textOnBackground,
     marginTop: 12,
   },
   errorText: {

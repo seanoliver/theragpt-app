@@ -2,8 +2,9 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Statement } from '@still/logic/src/statement/statementService'
 import { useMemo } from 'react'
 import { StyleSheet, View, ViewStyle, Text } from 'react-native'
-import theme from '../../../../lib/theme'
+import { useTheme } from '../../../../lib/theme/context'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
+import { Theme } from '@/apps/mobile/lib/theme';
 
 interface ArchiveLineItemProps {
   statement: Statement
@@ -23,6 +24,8 @@ export const ArchiveLineItem = ({
   onPublish,
   onDelete,
 }: ArchiveLineItemProps) => {
+  const { themeObject: theme } = useTheme()
+  const styles = makeStyles(theme)
   // const router = useRouter()
 
   // const handlePress = () => {
@@ -66,7 +69,7 @@ export const ArchiveLineItem = ({
   )
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (theme: Theme) => ({
   container: {
     width: '100%',
     marginBottom: 0,
@@ -74,19 +77,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   card: {
-    backgroundColor: 'rgba(255,255,255,0.75)',
+    backgroundColor: theme.colors.background,
     paddingVertical: 22,
     paddingHorizontal: 22,
     borderRadius: 18,
     marginHorizontal: 20,
     marginBottom: 18,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
-    shadowRadius: 24,
-    borderWidth: 1.5,
-    borderColor: theme.colors.border + '22',
-    overflow: 'hidden',
+    ...theme.rnShadows.subtle,
+    borderWidth: 0,
   },
   text: {
     flex: 1,
@@ -95,5 +93,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontWeight: '400',
     letterSpacing: 0.1,
+    color: theme.colors.text,
   },
 })

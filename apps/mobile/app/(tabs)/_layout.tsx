@@ -15,9 +15,10 @@ import { ActivityIndicator } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ThemeProvider, useTheme } from '../../lib/theme.context'
+import { ThemeProvider, useTheme } from '../../lib/theme/context'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
-export default function RootLayout() {
+const TabRootLayout = () => {
   const [playfairLoaded] = usePlayfairFonts({
     PlayfairDisplay_400Regular,
     PlayfairDisplay_700Bold,
@@ -40,82 +41,83 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <KeyboardProvider>
-        <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
-        <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
-          <Tabs
-            screenOptions={{
-              headerShown: true,
-              headerRight: () => (
-                <FontAwesome
-                  name="gear"
-                  size={22}
-                  color={themeObject.colors.accent}
-                  style={{ marginRight: 20 }}
-                />
-              ),
-              headerBackgroundContainerStyle: {
-                backgroundColor: themeObject.colors.background,
-                borderBottomColor: themeObject.colors.border,
-              },
-              tabBarStyle: {
-                backgroundColor: themeObject.colors.background,
-                borderTopColor: themeObject.colors.border,
-              },
-              tabBarActiveTintColor: themeObject.colors.textOnBackground,
-              tabBarInactiveTintColor: themeObject.colors.textDisabled,
-              headerStyle: {
-                backgroundColor: themeObject.colors.background,
-              },
-              headerTintColor: themeObject.colors.textOnBackground,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              tabBarLabelStyle: {
-                // fontSize: 12,
-                paddingTop: 6,
-              },
-            }}
-          >
-            <Tabs.Screen
-              name="index"
-              options={{
-                title: 'Manifesto',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="book" size={22} color={color} />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <KeyboardProvider>
+          <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
+          <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+            <Tabs
+              screenOptions={{
+                headerShown: true,
+                headerRight: () => (
+                  <FontAwesome
+                    name="gear"
+                    size={22}
+                    color={themeObject.colors.textOnBackground}
+                    style={{ marginRight: 20 }}
+                  />
                 ),
+                headerBackgroundContainerStyle: {
+                  backgroundColor: themeObject.colors.background,
+                  borderBottomColor: themeObject.colors.border,
+                },
+                tabBarStyle: {
+                  backgroundColor: themeObject.colors.background,
+                  borderTopColor: themeObject.colors.border,
+                },
+                tabBarActiveTintColor: themeObject.colors.textOnBackground,
+                tabBarInactiveTintColor: themeObject.colors.textDisabled,
+                headerStyle: {
+                  backgroundColor: themeObject.colors.background,
+                },
+                headerTintColor: themeObject.colors.textOnBackground,
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+                tabBarLabelStyle: {
+                  paddingTop: 6,
+                },
               }}
-            />
-            <Tabs.Screen
-              name="review"
-              options={{
-                title: 'Review',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="history" size={28} color={color} />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="archive"
-              options={{
-                title: 'Archive',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome name="archive" size={22} color={color} />
-                ),
-              }}
-            />
-            {/* <Tabs.Screen
-                name="settings"
+            >
+              <Tabs.Screen
+                name="index"
                 options={{
-                  title: 'Settings',
+                  title: 'Manifesto',
                   tabBarIcon: ({ color }) => (
-                    <FontAwesome name="cog" size={22} color={color} />
+                    <FontAwesome name="book" size={22} color={color} />
                   ),
                 }}
-              /> */}
-          </Tabs>
-        </SafeAreaView>
-      </KeyboardProvider>
+              />
+              <Tabs.Screen
+                name="review"
+                options={{
+                  title: 'Review',
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome name="history" size={28} color={color} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="archive"
+                options={{
+                  title: 'Archive',
+                  tabBarIcon: ({ color }) => (
+                    <FontAwesome name="archive" size={22} color={color} />
+                  ),
+                }}
+              />
+              {/* Hide the statement detail screen from the tab bar */}
+              <Tabs.Screen
+                name="statements/[statementId]"
+                options={{
+                  href: null,
+                }}
+              />
+            </Tabs>
+          </SafeAreaView>
+        </KeyboardProvider>
+      </GestureHandlerRootView>
     </ThemeProvider>
   )
 }
+
+export default TabRootLayout
