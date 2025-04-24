@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { DisplayCard } from './useCardData'
 import { Theme } from '@/apps/mobile/lib/theme'
+import { router } from 'expo-router';
 
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
@@ -34,51 +35,51 @@ export const Card: React.FC<CardProps> = ({ card }) => {
   const showHeaderRow = category || netVotes || frequency
 
   return (
-    <View
-      style={[
-        styles.card,
-        {
-          backgroundColor: theme.colors.background,
-          borderColor: theme.colors.border,
-        },
-      ]}
-    >
-      {showHeaderRow && (
-        <View style={styles.headerRow}>
-          {category && (
-            <View style={styles.pill}>
-              <Text style={styles.pillText}>{category}</Text>
-            </View>
-          )}
-          {netVotes && (
-            <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
-              {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
-              {netVotes}
-            </Text>
-          )}
-          {frequency && (
-            <Text style={[styles.frequency, { color: getFrequencyColor() }]}>
-              {frequency}
-            </Text>
-          )}
-        </View>
-      )}
-      <Text style={styles.text}>{card.text}</Text>
-      <View style={styles.footerRow}>
-        <View style={styles.footerRowLeft}>
-          <Text style={styles.metaText}>
-            {!card.isActive && 'Archived'}
-          </Text>
-        </View>
-        {reviews && (
-          <View style={styles.footerRowRight}>
-            <Text style={styles.metaText}>{reviews} reviews</Text>
-            <Text style={styles.metaText}> • </Text>
+    <TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
+      <View
+        style={[
+          styles.card,
+          {
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.border,
+          },
+        ]}
+      >
+        {showHeaderRow && (
+          <View style={styles.headerRow}>
+            {category && (
+              <View style={styles.pill}>
+                <Text style={styles.pillText}>{category}</Text>
+              </View>
+            )}
+            {netVotes && (
+              <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
+                {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
+                {netVotes}
+              </Text>
+            )}
+            {frequency && (
+              <Text style={[styles.frequency, { color: getFrequencyColor() }]}>
+                {frequency}
+              </Text>
+            )}
           </View>
         )}
-        <Text style={styles.metaText}>Last: {lastReviewed}</Text>
+        <Text style={styles.text}>{card.text}</Text>
+        <View style={styles.footerRow}>
+          <View style={styles.footerRowLeft}>
+            <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
+          </View>
+          {reviews && (
+            <View style={styles.footerRowRight}>
+              <Text style={styles.metaText}>{reviews} reviews</Text>
+              <Text style={styles.metaText}> • </Text>
+            </View>
+          )}
+          <Text style={styles.metaText}>Last: {lastReviewed}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

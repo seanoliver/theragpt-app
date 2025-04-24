@@ -108,7 +108,7 @@ export const CardScreen = () => {
   // --- UI Layout ---
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: theme.colors.hoverBackground }}
+      style={{ flex: 1, backgroundColor: theme.colors.background }}
     >
       {/* Main Content (starts below the existing header) */}
       <View style={styles.content}>
