@@ -14,8 +14,14 @@ export function getAvailableThemes(): ThemeOption[] {
   return [ThemeOption.LIGHT, ThemeOption.DARK, ThemeOption.SYSTEM]
 }
 
-export function isValidTheme(theme: string | null | undefined): theme is ThemeOption {
-  return theme === ThemeOption.LIGHT || theme === ThemeOption.DARK || theme === ThemeOption.SYSTEM
+export function isValidTheme(
+  theme: string | null | undefined,
+): theme is ThemeOption {
+  return (
+    theme === ThemeOption.LIGHT ||
+    theme === ThemeOption.DARK ||
+    theme === ThemeOption.SYSTEM
+  )
 }
 
 export function getSystemTheme(): ThemeOption {

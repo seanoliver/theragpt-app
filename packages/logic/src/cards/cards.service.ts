@@ -143,9 +143,7 @@ export class CardService {
 
   async getAll(): Promise<Card[]> {
     try {
-      const data = await this.storageService.getItem<Card[]>(
-        this.storageKey,
-      )
+      const data = await this.storageService.getItem<Card[]>(this.storageKey)
       return data || []
     } catch (error) {
       console.error('Error getting cards from storage', error as Error)

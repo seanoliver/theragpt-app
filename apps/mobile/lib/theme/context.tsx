@@ -6,7 +6,7 @@ import {
   loadThemeSelection,
   saveThemeSelection,
 } from './service'
-import { themes, ThemeType, DEFAULT_THEME_TYPE, DEFAULT_THEME, Theme } from '../theme'
+import { themes, DEFAULT_THEME_TYPE, DEFAULT_THEME, Theme } from '../theme'
 
 interface ThemeContextType {
   theme: ThemeOption
@@ -27,8 +27,12 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setThemeState] = useState<ThemeOption>(DEFAULT_THEME_TYPE as ThemeOption)
-  const [effectiveTheme, setEffectiveTheme] = useState<ThemeOption>(DEFAULT_THEME_TYPE as ThemeOption)
+  const [theme, setThemeState] = useState<ThemeOption>(
+    DEFAULT_THEME_TYPE as ThemeOption,
+  )
+  const [effectiveTheme, setEffectiveTheme] = useState<ThemeOption>(
+    DEFAULT_THEME_TYPE as ThemeOption,
+  )
 
   useEffect(() => {
     const loadSavedTheme = async () => {
