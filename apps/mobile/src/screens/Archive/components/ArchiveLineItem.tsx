@@ -1,10 +1,10 @@
+import { Theme } from '@/apps/mobile/lib/theme'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Card } from '@still/logic/src/cards/cards.service'
 import { useMemo } from 'react'
-import { StyleSheet, View, ViewStyle, Text } from 'react-native'
+import { Text, View, ViewStyle } from 'react-native'
 import { useTheme } from '../../../../lib/theme/context'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
-import { Theme } from '@/apps/mobile/lib/theme';
 
 interface ArchiveLineItemProps {
   card: Card
