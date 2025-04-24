@@ -77,7 +77,6 @@ const makeStyles = (theme: Theme) =>
       marginBottom: 18,
       ...theme.rnShadows.subtle,
       borderWidth: 0,
-      overflow: 'hidden',
     },
     text: {
       flex: 1,

@@ -107,7 +107,7 @@ export default function StatementView() {
 
   // --- UI Layout ---
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.hoverBackground }}>
       {/* Main Content (starts below the existing header) */}
       <View style={styles.content}>
         {/* Affirmation Card */}

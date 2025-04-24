@@ -53,7 +53,7 @@ export const ManifestoScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: themeObject.colors.background }}>
+    <SafeAreaView style={{ backgroundColor: themeObject.colors.hoverBackground }}>
       <ScrollView
         ref={scrollViewRef}
         keyboardShouldPersistTaps="handled"
