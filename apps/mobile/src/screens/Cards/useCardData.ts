@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useCardService } from '../../hooks/useCardService'
-import { Statement } from '@/packages/logic/src/statement/statementService'
+import { Card } from '@/packages/logic/src/cards/cards.service'
 
 export interface DisplayCard {
   id: string
@@ -29,8 +29,8 @@ export const useCardData = (): UseCardDataResult => {
     setLoading(!cards)
   }, [cards])
 
-  // Map raw statements to UI Statement type
-  const mapCard = (s: Statement): DisplayCard => {
+  // Map raw cards to UI Card type
+  const mapCard = (s: Card): DisplayCard => {
     const netVotes = s.upvotes && s.downvotes ? s.upvotes - s.downvotes : 0
     const frequency =
       netVotes === 0 ? undefined : netVotes > 0 ? 'More' : 'Less'
@@ -62,7 +62,7 @@ export const useCardData = (): UseCardDataResult => {
       await service.create({ text: '', isActive: true })
       setLoading(false)
     } catch (e: any) {
-      setError('Failed to create statement')
+      setError('Failed to create card')
       console.error('Error', e.message)
       setLoading(false)
     }

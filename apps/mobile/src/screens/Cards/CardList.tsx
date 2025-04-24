@@ -14,7 +14,7 @@ export const CardList = ({ cards }: CardListProps) => {
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <View style={styles.cardWrapper}>
-          <Card statement={item} />
+          <Card card={item} />
         </View>
       )}
       contentContainerStyle={styles.listContent}

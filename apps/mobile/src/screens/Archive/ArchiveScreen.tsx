@@ -31,10 +31,10 @@ export const ArchiveScreen = () => {
 
   const isEmpty = cards.length === 0
 
-  const handleAddStatement = async () => {
+  const handleAddCard = async () => {
     if (!service) return
-    const newStatement = await service.create({ text: '', isActive: false })
-    setNewlyCreatedId(newStatement.id)
+    const newCard = await service.create({ text: '', isActive: false })
+    setNewlyCreatedId(newCard.id)
   }
 
   return (
@@ -43,17 +43,16 @@ export const ArchiveScreen = () => {
         <ArchiveEmptyState />
       ) : (
         <ScrollView
-          style={styles.statementsList}
+          style={styles.cardsList}
           keyboardShouldPersistTaps="handled"
         >
-          {cards.map((statement, index) => (
-            <React.Fragment key={statement.id}>
+          {cards.map((card, index) => (
+            <React.Fragment key={card.id}>
               <ArchiveLineItem
-                statement={statement}
-                onPublish={() =>
-                  service.update({ id: statement.id, isActive: true })
-                }
-                onDelete={() => service.deleteStatement(statement.id)}
+                card={card}
+                onRestore={() => service.update({ id: card.id, isActive: true })}
+                onDelete={() => service.deleteCard(card.id)}
+                isNew={card.id === newlyCreatedId}
               />
               {index < cards.length - 1 && (
                 <View
@@ -70,7 +69,7 @@ export const ArchiveScreen = () => {
         </ScrollView>
       )}
 
-      <FAB onPress={handleAddStatement}>
+      <FAB onPress={handleAddCard}>
         <Ionicons name="add" size={32} color={theme.colors.background} />
       </FAB>
     </SafeAreaView>
@@ -78,7 +77,7 @@ export const ArchiveScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  statementsList: {
+  cardsList: {
     flex: 1,
     paddingRight: 4,
   },

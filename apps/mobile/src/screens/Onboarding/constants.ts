@@ -3,38 +3,39 @@ export const ONBOARDING_KEY = 'onboarding_complete'
 export const ONBOARDING_CARDS = [
   {
     title: 'Meet Still',
-    text: "Still is your personal manifesto—a powerful, personal document that captures your deepest truths and serves as a reminder of who you are and who you're becoming.",
+    text: "Still is a deck of flashcards for mindful living—your personal space to capture ideas that keep you grounded, focused, and clear.",
     image: null,
   },
   {
-    title: 'What This Is',
-    text: "Still is not just another statement app. It's a ritual—grounded in your values, intentions, and personal truth.",
+    title: 'How It Works',
+    text: "You’ll create cards with thoughts, reminders, and intentions that matter to *you*. Then revisit them daily—like reps for your mindset.",
     image: null,
   },
   {
-    title: 'The Difference',
-    text: 'Unlike short, generic mantras, the statements you write here are thoughtful, specific, and deeply personal—like a living personal manifesto.',
+    title: 'Built for Reflection',
+    text: "Each card invites you to pause, reflect, and reconnect. The more a thought resonates, the smarter Still gets about when to show it again.",
     image: null,
   },
   {
     title: 'Why It Matters',
-    text: 'The words you repeat shape your focus. The more clearly they reflect you, the more powerfully they guide your day.',
+    text: "The words you repeat shape how you live. Still helps you remember the ones that truly reflect who you want to be.",
     image: null,
   },
   {
-    title: "What You'll Do",
-    text: 'Write or refine statements over time\n\nSwipe through them each morning\n\nMark the ones that resonate most today',
+    title: 'Your Daily Ritual',
+    text: "Swipe through a few cards each morning.\nMark the ones that resonate.\nTweak or write new ones as you grow.",
     image: null,
   },
   {
-    title: 'Need Help Writing?',
-    text: 'You can start from scratch or use AI to help wordsmith your ideas into statements that feel real.',
+    title: 'Need Help Getting Started?',
+    text: "Use your own words, or let AI help shape your thoughts into clear, powerful cards that feel like *you*.",
     image: null,
   },
   {
     title: '✨ Ready?',
-    text: "Let's build your personal manifesto. Start with a few statements that reflect what matters to you right now.",
+    text: "Start with just a few cards. You can add more over time. This is your space to grow—one thought at a time.",
     image: null,
     isFinal: true,
   },
+
 ]

@@ -1,34 +1,34 @@
 import { useEffect, useState } from 'react'
-import { statementService } from '@still/logic/src/statement/statementService'
-import { Statement } from '@still/logic/src/statement/statementService'
+import { cardService } from '@still/logic/src/cards/cards.service'
+import { Card } from '@still/logic/src/cards/cards.service'
 
 export const useCardService = (archived: boolean = false) => {
   const [ready, setReady] = useState(false)
-  const [cards, setCards] = useState<Statement[] | null>(null)
+  const [cards, setCards] = useState<Card[] | null>(null)
 
   useEffect(() => {
     let mounted = true
     let unsubscribe: (() => void) | undefined
 
     const initAndLoad = async () => {
-      await statementService.init()
+      await cardService.init()
       if (!mounted) return
 
       setReady(true)
 
       const fetchedCards = archived
-        ? statementService.getArchived
-        : statementService.getActive
+        ? cardService.getArchived
+        : cardService.getActive
 
       // Need to .call(service) to bind 'this' to the service instance
-      setCards(await fetchedCards.call(statementService))
+      setCards(await fetchedCards.call(cardService))
 
-      unsubscribe = statementService.subscribe(stmts => {
+      unsubscribe = cardService.subscribe(cards => {
         if (mounted)
           setCards(
             archived
-              ? statementService.filterArchived(stmts)
-              : statementService.filterActive(stmts),
+              ? cardService.filterArchived(cards)
+              : cardService.filterActive(cards),
           )
       })
     }
@@ -41,5 +41,5 @@ export const useCardService = (archived: boolean = false) => {
     }
   }, [])
 
-  return { service: ready ? statementService : null, cards }
+  return { service: ready ? cardService : null, cards }
 }

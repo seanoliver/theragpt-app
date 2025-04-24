@@ -3,21 +3,21 @@ import { apiService } from '@still/logic/src/api'
 import { getEnvironment } from '@still/config'
 
 /**
- * API route for generating alternative statements in different tones
+ * API route for generating alternative cards in different tones
  * @param request The incoming request
  * @returns The API response
  */
 export const POST = async (request: NextRequest): Promise<NextResponse> => {
   try {
     const body = await request.json()
-    const { statement, tones } = body
+    const { card, tones } = body
 
-    if (typeof statement !== 'string' || !Array.isArray(tones)) {
+    if (typeof card !== 'string' || !Array.isArray(tones)) {
       return NextResponse.json(
         {
           success: false,
           error:
-            'Invalid request: statement (string) and tones (string[]) are required.',
+            'Invalid request: card (string) and tones (string[]) are required.',
         },
         { status: 400 },
       )
@@ -25,7 +25,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
 
     // Get the OpenAI request configuration
     const openAIRequest = await apiService.generateAlternatives(
-      statement,
+      card,
       tones,
     )
 

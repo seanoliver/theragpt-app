@@ -105,7 +105,7 @@ const TabRootLayout = () => {
                   ),
                 }}
               />
-              {/* Hide the statement detail screen from the tab bar */}
+              {/* Hide the card detail screen from the tab bar */}
               <Tabs.Screen
                 name="cards/[cardId]"
                 options={{

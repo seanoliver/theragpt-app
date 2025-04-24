@@ -1,5 +1,5 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { Statement } from '@still/logic/src/statement/statementService'
+import { Card } from '@still/logic/src/cards/cards.service'
 import { useMemo } from 'react'
 import { StyleSheet, View, ViewStyle, Text } from 'react-native'
 import { useTheme } from '../../../../lib/theme/context'
@@ -7,7 +7,7 @@ import { SwipeMenu } from '../../../shared/SwipeMenu'
 import { Theme } from '@/apps/mobile/lib/theme';
 
 interface ArchiveLineItemProps {
-  statement: Statement
+  card: Card
   style?: ViewStyle
   animatedStyle?: any
   containerStyle?: ViewStyle
@@ -17,7 +17,7 @@ interface ArchiveLineItemProps {
 }
 
 export const ArchiveLineItem = ({
-  statement,
+  card,
   style,
   animatedStyle,
   containerStyle,
@@ -29,7 +29,7 @@ export const ArchiveLineItem = ({
   // const router = useRouter()
 
   // const handlePress = () => {
-  //   router.push(`/statement/${statement.id}`)
+  //   router.push(`/card/${card.id}`)
   // }
 
   const swipeActions = useMemo(
@@ -62,7 +62,7 @@ export const ArchiveLineItem = ({
     <SwipeMenu actions={swipeActions}>
       <View style={[styles.container, containerStyle, animatedStyle]}>
         <View style={[styles.card, style]}>
-          <Text style={styles.text}>{statement.text}</Text>
+          <Text style={styles.text}>{card.text}</Text>
         </View>
       </View>
     </SwipeMenu>
@@ -88,11 +88,11 @@ const makeStyles = (theme: Theme) => ({
   },
   text: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 18,
     lineHeight: 24,
     textAlign: 'left',
-    fontWeight: '400',
+    fontWeight: 'bold',
     letterSpacing: 0.1,
-    color: theme.colors.text,
+    color: '#222',
   },
 })

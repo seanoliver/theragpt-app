@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Statement } from '@still/logic/src/statement/statementService'
+import { Card } from '@still/logic/src/cards/cards.service'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import {
@@ -16,30 +16,30 @@ import { useCardService } from '../../hooks/useCardService'
 
 export const CardScreen = () => {
   const router = useRouter()
-  const { statementId } = useLocalSearchParams<{ statementId: string }>()
-  const [card, setCard] = useState<Statement | null>(null)
+  const { cardId } = useLocalSearchParams<{ cardId: string }>()
+  const [card, setCard] = useState<Card | null>(null)
   const [favoriteCount, setFavoriteCount] = useState(0)
   const { service, cards } = useCardService()
   const { themeObject: theme } = useTheme()
 
   useEffect(() => {
-    if (!statementId || !cards) return
-    const foundStatement = cards.find(a => a.id === statementId)
-    if (foundStatement) {
-      setCard(foundStatement)
+    if (!cardId || !cards) return
+    const foundCard = cards.find(a => a.id === cardId)
+    if (foundCard) {
+      setCard(foundCard)
       const favorites = cards.filter(
-        a => a.text === foundStatement.text && a.isFavorite,
+        a => a.text === foundCard.text && a.isFavorite,
       )
       setFavoriteCount(favorites.length)
     }
-  }, [statementId, cards])
+  }, [cardId, cards])
 
   const handleDelete = async () => {
     if (!card || !service) return
 
     Alert.alert(
-      'Delete Statement',
-      'Are you sure you want to delete this statement? This action cannot be undone.',
+      'Delete Card',
+      'Are you sure you want to delete this card? This action cannot be undone.',
       [
         {
           text: 'Cancel',
@@ -56,8 +56,8 @@ export const CardScreen = () => {
               })
               router.back()
             } catch (error) {
-              console.error('Error deleting statement:', error)
-              Alert.alert('Error', 'Failed to delete statement')
+              console.error('Error deleting card:', error)
+              Alert.alert('Error', 'Failed to delete card')
             }
           },
         },
@@ -65,7 +65,7 @@ export const CardScreen = () => {
     )
   }
 
-  const handleSaveStatement = async (newText: string) => {
+  const handleSaveCard = async (newText: string) => {
     if (service && card && newText !== card.text) {
       await service.update({ id: card.id, text: newText })
     }
@@ -89,8 +89,8 @@ export const CardScreen = () => {
     )
   }
 
-  const foundStatement = cards.find(a => a.id === statementId)
-  if (!statementId || !foundStatement) {
+  const foundCard = cards.find(a => a.id === cardId)
+  if (!cardId || !foundCard) {
     return (
       <View
         style={{
@@ -100,7 +100,7 @@ export const CardScreen = () => {
           backgroundColor: theme.colors.background,
         }}
       >
-        <Text style={{ color: 'red' }}>Statement not found.</Text>
+        <Text style={{ color: 'red' }}>Card not found.</Text>
       </View>
     )
   }
@@ -128,7 +128,7 @@ export const CardScreen = () => {
               { color: theme.colors.textOnBackground },
             ]}
           >
-            {foundStatement.text}
+            {foundCard.text}
           </Text>
           <View style={styles.affirmationActionsRow}>
             <TouchableOpacity
@@ -200,8 +200,8 @@ export const CardScreen = () => {
                 { color: theme.colors.textOnBackground },
               ]}
             >
-              {foundStatement.lastReviewed
-                ? new Date(foundStatement.lastReviewed).toLocaleDateString()
+              {foundCard.lastReviewed
+                ? new Date(foundCard.lastReviewed).toLocaleDateString()
                 : 'Never'}
             </Text>
             <Text

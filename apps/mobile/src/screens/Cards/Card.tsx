@@ -5,20 +5,20 @@ import { DisplayCard } from './useCardData'
 import { Theme } from '@/apps/mobile/lib/theme'
 
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
-interface ManifestoCardProps {
-  statement: DisplayCard
+interface CardProps {
+  card: DisplayCard
 }
 
-export const Card: React.FC<ManifestoCardProps> = ({ statement }) => {
+export const Card: React.FC<CardProps> = ({ card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 
   // TODO: Placeholder meta info for demonstration
-  const category = statement.category || undefined
-  const lastReviewed = statement.lastReviewed || 'Never'
-  const netVotes = statement.netVotes ?? 0
-  const frequency = statement.frequency || undefined
-  const reviews = statement.reviews || 0
+  const category = card.category || undefined
+  const lastReviewed = card.lastReviewed || 'Never'
+  const netVotes = card.netVotes ?? 0
+  const frequency = card.frequency || undefined
+  const reviews = card.reviews || 0
 
   const getNetVotesColor = () => {
     if (netVotes > 0) return theme.colors.successAccent
@@ -63,11 +63,11 @@ export const Card: React.FC<ManifestoCardProps> = ({ statement }) => {
           )}
         </View>
       )}
-      <Text style={styles.text}>{statement.text}</Text>
+      <Text style={styles.text}>{card.text}</Text>
       <View style={styles.footerRow}>
         <View style={styles.footerRowLeft}>
           <Text style={styles.metaText}>
-            {!statement.isActive && 'Archived'}
+            {!card.isActive && 'Archived'}
           </Text>
         </View>
         {reviews && (

@@ -1,9 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { StorageService, storageService } from '../sync/storage'
-import { NotFoundError } from '../utils/error'
-import { logger } from '../utils/logger'
 
-export interface Statement {
+export interface Card {
   id: string
   text: string
   createdAt: number
@@ -16,7 +14,7 @@ export interface Statement {
   reviews?: number
 }
 
-export interface UpdateStatementParams {
+export interface UpdateCardParams {
   id: string
   text?: string
   isActive?: boolean
@@ -28,14 +26,14 @@ export interface UpdateStatementParams {
   reviews?: number
 }
 
-export interface CreateStatementParams {
+export interface CreateCardParams {
   text: string
   tags?: string[]
   isActive?: boolean
   category?: string
 }
 
-const DEFAULT_STATEMENTS = [
+const DEFAULT_CARDS = [
   `I know the key to success is always to take action, even when I don't feel ready for it.`,
   `I know that what I react to in others, I strengthen in myself. I focus all of my energy on the current moment, so that I can consistently act with calm, intention, and thoughtfulness.`,
   `I know which actions bring me closer to my goals and which ones take me away from them. I focus on the former and work to eliminate the latter. Currently, these actions include:\n- excercise,\n- meditation,\n- conscious and purposeful eating,\n- taking exceptional notes,\n- writing,\n- setting a realistic and achievable daily to do list, and\n- reading this personal manifesto with the knowing conviction that its words are true.`,
@@ -48,37 +46,37 @@ const DEFAULT_STATEMENTS = [
   `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and my dreams will not work unless I do.`,
 ]
 
-type StatementsListener = (statements: Statement[]) => void
+type CardsListener = (cards: Card[]) => void
 
-export class StatementService {
+export class CardService {
   private storageService: StorageService
-  private storageKey = 'still_statements'
-  private listeners: StatementsListener[] = []
+  private storageKey = 'still_cards'
+  private listeners: CardsListener[] = []
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
   }
 
-  subscribe(listener: StatementsListener) {
+  subscribe(listener: CardsListener) {
     this.listeners.push(listener)
     return () => {
       this.listeners = this.listeners.filter(l => l !== listener)
     }
   }
 
-  private notifyListeners(statements: Statement[]) {
-    this.listeners.forEach(listener => listener(statements))
+  private notifyListeners(cards: Card[]) {
+    this.listeners.forEach(listener => listener(cards))
   }
 
   /**
-   * Initializes the service with default statements if none exist
+   * Initializes the service with default cards if none exist
    * NOTE: Must be called before using the service
    */
-  async init(): Promise<Statement[]> {
+  async init(): Promise<Card[]> {
     try {
-      const existingStatements = await this.getAll()
-      if (existingStatements.length === 0) {
-        const defaultStatements = DEFAULT_STATEMENTS.map(text => ({
+      const existingCards = await this.getAll()
+      if (existingCards.length === 0) {
+        const defaultCards = DEFAULT_CARDS.map(text => ({
           id: uuidv4(),
           text,
           createdAt: Date.now(),
@@ -87,20 +85,20 @@ export class StatementService {
           isFavorite: false,
           tags: [],
         }))
-        await this.saveAllStatements(defaultStatements)
-        this.notifyListeners(defaultStatements)
-        return defaultStatements
+        await this.saveAllCards(defaultCards)
+        this.notifyListeners(defaultCards)
+        return defaultCards
       }
-      this.notifyListeners(existingStatements)
-      return existingStatements
+      this.notifyListeners(existingCards)
+      return existingCards
     } catch (error) {
-      logger.error('Error initializing default statements', error as Error)
+      console.error('Error initializing default cards', error as Error)
       return []
     }
   }
 
-  async create(params: CreateStatementParams): Promise<Statement> {
-    const statement: Statement = {
+  async create(params: CreateCardParams): Promise<Card> {
+    const card: Card = {
       id: uuidv4(),
       text: params.text,
       createdAt: Date.now(),
@@ -108,95 +106,98 @@ export class StatementService {
       isActive: params.isActive ?? true,
       isFavorite: false,
       tags: params.tags || [],
+      upvotes: 0,
+      downvotes: 0,
+      reviews: 0,
     }
 
-    const statements = await this.getAll()
-    statements.push(statement)
-    await this.saveAllStatements(statements)
-    this.notifyListeners(statements)
+    const cards = await this.getAll()
+    cards.push(card)
+    await this.saveAllCards(cards)
+    this.notifyListeners(cards)
 
-    return statement
+    return card
   }
 
-  async update(params: UpdateStatementParams): Promise<Statement> {
-    const statements = await this.getAll()
-    const index = statements.findIndex(a => a.id === params.id)
+  async update(params: UpdateCardParams): Promise<Card> {
+    const cards = await this.getAll()
+    const index = cards.findIndex(a => a.id === params.id)
 
     if (index === -1) {
-      throw new NotFoundError(`Statement with ID ${params.id} not found`)
+      throw new Error(`Card with ID ${params.id} not found`)
     }
 
-    const statement = statements[index]
-    statements[index] = {
-      ...statement,
-      text: params.text ?? statement.text,
-      isActive: params.isActive ?? statement.isActive,
-      isFavorite: params.isFavorite ?? statement.isFavorite,
-      tags: params.tags ?? statement.tags,
+    const card = cards[index]
+    cards[index] = {
+      ...card,
+      text: params.text ?? card.text,
+      isActive: params.isActive ?? card.isActive,
+      isFavorite: params.isFavorite ?? card.isFavorite,
+      tags: params.tags ?? card.tags,
     }
 
-    await this.saveAllStatements(statements)
-    this.notifyListeners(statements)
-    return statements[index]
+    await this.saveAllCards(cards)
+    this.notifyListeners(cards)
+    return cards[index]
   }
 
-  async getAll(): Promise<Statement[]> {
+  async getAll(): Promise<Card[]> {
     try {
-      const data = await this.storageService.getItem<Statement[]>(
+      const data = await this.storageService.getItem<Card[]>(
         this.storageKey,
       )
       return data || []
     } catch (error) {
-      logger.error('Error getting statements from storage', error as Error)
+      console.error('Error getting cards from storage', error as Error)
       return []
     }
   }
 
-  async getActive(): Promise<Statement[]> {
-    const statements = await this.getAll()
-    return statements.filter(a => a.isActive)
+  async getActive(): Promise<Card[]> {
+    const cards = await this.getAll()
+    return cards.filter(a => a.isActive)
   }
 
-  async getArchived(): Promise<Statement[]> {
-    const statements = await this.getAll()
-    return statements.filter(a => !a.isActive)
+  async getArchived(): Promise<Card[]> {
+    const cards = await this.getAll()
+    return cards.filter(a => !a.isActive)
   }
 
-  async deleteStatement(id: string): Promise<void> {
-    const statements = await this.getAll()
-    const index = statements.findIndex(a => a.id === id)
+  async deleteCard(id: string): Promise<void> {
+    const cards = await this.getAll()
+    const index = cards.findIndex(a => a.id === id)
     if (index !== -1) {
-      statements.splice(index, 1)
-      await this.saveAllStatements(statements)
-      this.notifyListeners(statements)
+      cards.splice(index, 1)
+      await this.saveAllCards(cards)
+      this.notifyListeners(cards)
     }
   }
 
-  private async saveAllStatements(statements: Statement[]): Promise<void> {
+  private async saveAllCards(cards: Card[]): Promise<void> {
     try {
-      await this.storageService.setItem(this.storageKey, statements)
+      await this.storageService.setItem(this.storageKey, cards)
     } catch (error) {
-      logger.error('Error saving statements to storage', error as Error)
+      console.error('Error saving cards to storage', error as Error)
     }
   }
 
   /**
-   * Filter statements to only include active ones.
+   * Filter cards to only include active ones.
    * Unlike getActive(), this method works on an in-memory array without accessing storage,
    * making it more efficient for subscription handlers that already have the data.
    */
-  filterActive(statements: Statement[]): Statement[] {
-    return statements.filter(s => s.isActive)
+  filterActive(cards: Card[]): Card[] {
+    return cards.filter(s => s.isActive)
   }
 
   /**
-   * Filter statements to only include archived ones.
+   * Filter cards to only include archived ones.
    * Unlike getArchived(), this method works on an in-memory array without accessing storage,
    * making it more efficient for subscription handlers that already have the data.
    */
-  filterArchived(statements: Statement[]): Statement[] {
-    return statements.filter(s => !s.isActive)
+  filterArchived(cards: Card[]): Card[] {
+    return cards.filter(s => !s.isActive)
   }
 }
 
-export const statementService = new StatementService(storageService)
+export const cardService = new CardService(storageService)

@@ -47,7 +47,7 @@ export const ReviewScreen = () => {
             setCurrentIndex(e.nativeEvent.position)
           }
         >
-          {cards.map((statement, index) => {
+          {cards.map((card, index) => {
             return (
               <View
                 key={index}
@@ -61,7 +61,7 @@ export const ReviewScreen = () => {
                     color: themeObject.colors.text,
                   }}
                 >
-                  {statement.text}
+                  {card.text}
                 </Text>
               </View>
             )

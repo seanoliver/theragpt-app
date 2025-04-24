@@ -9,7 +9,7 @@ export default function Page() {
 
   useEffect(() => {
     navigation.setOptions({
-      title: 'Statement',
+      title: 'Card',
       headerShown: true,
       tabBarVisible: false,
       headerLeft: () => (

@@ -4,7 +4,7 @@ import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
 // TODO: Placeholder imports for new components to be implemented
 // import { SearchBar } from './SearchBar';
-// import { NewStatementButton } from './NewStatementButton';
+// import { NewCardButton } from './NewCardButton';
 import { CardList } from './CardList'
 // import { EmptyState } from './EmptyState';
 import { filterCardData } from './filterCardData'
@@ -15,12 +15,12 @@ export const CardsScreen = () => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
   const [searchQuery, setSearchQuery] = useState('')
-  const { data: statements, loading, error, createCard } = useCardData()
+  const { data: cards, loading, error, createCard } = useCardData()
 
   // Filtered data based on search query
-  const filteredStatements = useMemo(
-    () => filterCardData(statements, searchQuery),
-    [statements, searchQuery],
+  const filteredCards = useMemo(
+    () => filterCardData(cards, searchQuery),
+    [cards, searchQuery],
   )
 
   // Handler for creating a new card
@@ -51,8 +51,8 @@ export const CardsScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
         {/* TODO: <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
-        <CardList cards={filteredStatements} />
-        {/* TODO: {filteredStatements.length === 0 && <EmptyState />} */}
+        <CardList cards={filteredCards} />
+        {/* TODO: {filteredCards.length === 0 && <EmptyState />} */}
       </View>
       <FAB onPress={handleNew} backgroundColor={theme.colors.accent}>
         {/* TODO: Use Ionicons or similar for "+" icon */}
