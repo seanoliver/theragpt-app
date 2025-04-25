@@ -54,9 +54,6 @@ export const CardsScreen = () => {
         <CardList cards={filteredCards} />
         {/* TODO: {filteredCards.length === 0 && <EmptyState />} */}
       </View>
-      <FAB onPress={handleNew} backgroundColor={theme.colors.accent}>
-        {/* TODO: Use Ionicons or similar for "+" icon */}
-      </FAB>
     </SafeAreaView>
   )
 }

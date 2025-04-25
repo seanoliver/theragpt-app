@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useCardService } from '../../hooks/useCardService'
-import { Card } from '@/packages/logic/src/cards/cards.service'
+import { Card } from '@/packages/logic/src/cards/service'
 
 export interface DisplayCard {
   id: string

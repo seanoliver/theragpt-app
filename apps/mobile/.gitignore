@@ -45,9 +45,7 @@ pnpm-debug.log
 *.bundle.map
 
 # CocoaPods
-/ios/Pods/
 /vendor/bundle/
-ios/Podfile.lock
 
 # Expo
 .expo/
@@ -59,6 +57,10 @@ dist/
 *.key
 *.mobileprovision
 *.orig.*
+
+# Native directories for Prebuild
+/android/
+/ios/
 
 # Metro
 .metro-health-check*

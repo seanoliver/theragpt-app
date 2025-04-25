@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { DisplayCard } from './useCardData'
 import { Theme } from '@/apps/mobile/lib/theme'
-import { router } from 'expo-router';
+import { router } from 'expo-router'
+import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService'
 
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
@@ -13,13 +14,11 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
+  const { netVotes, reviewCount } = useCardInteractionService(card.id)
 
-  // TODO: Placeholder meta info for demonstration
   const category = card.category || undefined
   const lastReviewed = card.lastReviewed || 'Never'
-  const netVotes = card.netVotes ?? 0
-  const frequency = card.frequency || undefined
-  const reviews = card.reviews || 0
+  const frequency = netVotes ? (netVotes > 0 ? 'More' : 'Less') : undefined
 
   const getNetVotesColor = () => {
     if (netVotes > 0) return theme.colors.successAccent
@@ -28,41 +27,40 @@ export const Card: React.FC<CardProps> = ({ card }) => {
   }
 
   const getFrequencyColor = () => {
-    if (frequency === 'More') return theme.colors.successText
-    if (frequency === 'Less') return theme.colors.warningText
+    if (frequency === 'More') return theme.colors.successAccent
+    if (frequency === 'Less') return theme.colors.warningAccent
     return theme.colors.textDisabled
   }
+
   const showHeaderRow = category || netVotes || frequency
 
   return (
     <TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: theme.colors.background,
-            borderColor: theme.colors.border,
-          },
-        ]}
-      >
+      <View style={[styles.card]}>
         {showHeaderRow && (
           <View style={styles.headerRow}>
-            {category && (
-              <View style={styles.pill}>
-                <Text style={styles.pillText}>{category}</Text>
-              </View>
-            )}
-            {netVotes && (
-              <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
-                {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
-                {netVotes}
-              </Text>
-            )}
-            {frequency && (
-              <Text style={[styles.frequency, { color: getFrequencyColor() }]}>
-                {frequency}
-              </Text>
-            )}
+            <View style={styles.headerRowLeft}>
+              {category && (
+                <View style={styles.pill}>
+                  <Text style={styles.pillText}>{category}</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.headerRowRight}>
+              {netVotes && (
+                <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
+                  {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
+                  {netVotes}
+                </Text>
+              )}
+              {frequency && (
+                <Text
+                  style={[styles.frequency, { color: getFrequencyColor() }]}
+                >
+                  {frequency}
+                </Text>
+              )}
+            </View>
           </View>
         )}
         <Text style={styles.text}>{card.text}</Text>
@@ -70,9 +68,9 @@ export const Card: React.FC<CardProps> = ({ card }) => {
           <View style={styles.footerRowLeft}>
             <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
           </View>
-          {reviews && (
+          {reviewCount > 0 && (
             <View style={styles.footerRowRight}>
-              <Text style={styles.metaText}>{reviews} reviews</Text>
+              <Text style={styles.metaText}>{reviewCount} reviews</Text>
               <Text style={styles.metaText}> • </Text>
             </View>
           )}
@@ -88,11 +86,15 @@ const makeStyles = (theme: Theme) =>
     card: {
       borderRadius: 16,
       padding: 16,
+      backgroundColor: theme.colors.background,
+      borderColor: theme.colors.border,
       ...theme.rnShadows.subtle,
     },
     headerRow: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
       marginBottom: 8,
       gap: 8,
     },
@@ -116,11 +118,20 @@ const makeStyles = (theme: Theme) =>
     netVotes: {
       fontSize: 12,
       fontWeight: '600',
-      marginRight: 8,
     },
     frequency: {
       fontSize: 12,
-      fontWeight: '600',
+      fontWeight: '400',
+    },
+    headerRowRight: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      gap: 8,
+    },
+    headerRowLeft: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      gap: 8,
     },
     text: {
       fontSize: 15,

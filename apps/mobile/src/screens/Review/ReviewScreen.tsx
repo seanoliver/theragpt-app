@@ -1,19 +1,16 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { useState } from 'react'
-import { Dimensions, Text, View } from 'react-native'
-import PagerView, {
-  PagerViewOnPageSelectedEvent,
-} from 'react-native-pager-view'
+import { StyleSheet, Text, View } from 'react-native'
 import { useCardService } from '../../hooks/useCardService'
-
-export const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
-  Dimensions.get('window')
-
+import { CardPager } from './components/CardPager'
+import { Theme } from '@/apps/mobile/lib/theme/theme'
+import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService'
 export const ReviewScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const { service, cards } = useCardService()
 
   const { themeObject } = useTheme()
+  const styles = makeStyles(themeObject)
 
   if (!service || !cards) {
     return (
@@ -24,68 +21,53 @@ export const ReviewScreen = () => {
   }
 
   return (
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        justifyContent: 'space-between',
-        backgroundColor: themeObject.colors.background,
-      }}
-    >
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <PagerView
-          style={{
-            width: REVIEW_SCREEN_WIDTH * 0.9,
-            height: REVIEW_SCREEN_HEIGHT * 0.6,
-          }}
-          initialPage={0}
-          pageMargin={20}
-          orientation="horizontal"
-          overdrag={true}
-          onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
-            setCurrentIndex(e.nativeEvent.position)
-          }
-        >
-          {cards.map((card, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  justifyContent: 'center',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: themeObject.fontSizes.xxl,
-                    color: themeObject.colors.text,
-                  }}
-                >
-                  {card.text}
-                </Text>
-              </View>
-            )
-          })}
-        </PagerView>
+    <View style={styles.container}>
+      <View style={styles.cardPagerContainer}>
+        <CardPager
+          cards={cards}
+          currentIndex={currentIndex}
+          onPageSelected={setCurrentIndex}
+          themeObject={themeObject}
+        />
       </View>
 
       {/* Progress Bar */}
       <View>
-        <View
-          style={{
-            height: 1,
-            backgroundColor: themeObject.colors.hoverBackground,
-          }}
-        >
+        <View style={styles.progressBarContainer}>
           <View
-            style={{
-              backgroundColor: themeObject.colors.hoverPrimary,
-              height: 1,
-              width: `${((currentIndex + 1) / cards.length) * 100}%`,
-            }}
+            style={[
+              styles.progressBar,
+              {
+                width: `${((currentIndex + 1) / cards.length) * 100}%`,
+              },
+            ]}
           />
         </View>
       </View>
     </View>
   )
 }
+
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      justifyContent: 'space-between',
+      backgroundColor: theme.colors.background,
+    },
+    cardPagerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    progressBarContainer: {
+      height: 1,
+      backgroundColor: theme.colors.hoverBackground,
+    },
+    progressBar: {
+      height: 10,
+      backgroundColor: theme.colors.hoverPrimary,
+    },
+  })

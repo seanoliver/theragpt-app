@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="still"/>
         <data android:scheme="com.helloseanoliver.still"/>
+        <data android:scheme="exp+still"/>
       </intent-filter>
     </activity>
   </application>

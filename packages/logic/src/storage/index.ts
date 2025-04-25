@@ -1,2 +1,2 @@
 // Export sync-related functionality
-export * from './storage'
+export * from './storage.service'

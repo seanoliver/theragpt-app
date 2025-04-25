@@ -38,7 +38,7 @@ export interface StorageService {
   getItem<T>(key: string): Promise<T | null>
 
   /**
-   * Sets an item in storage
+   * Sets (creates or updates) an item in storage
    * @param key The key to set
    * @param value The value to set
    */
