@@ -1,8 +1,8 @@
 import { Theme } from '@/apps/mobile/lib/theme'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { Card } from '@still/logic/src/cards/cards.service'
+import { Card } from '@still/logic/src/cards/service'
 import { useMemo } from 'react'
-import { Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { useTheme } from '../../../../lib/theme/context'
 import { SwipeMenu } from '../../../shared/SwipeMenu'
 
@@ -69,30 +69,31 @@ export const ArchiveLineItem = ({
   )
 }
 
-const makeStyles = (theme: Theme) => ({
-  container: {
-    width: '100%',
-    marginBottom: 0,
-    marginTop: 20,
-    backgroundColor: 'transparent',
-  },
-  card: {
-    backgroundColor: theme.colors.background,
-    paddingVertical: 22,
-    paddingHorizontal: 22,
-    borderRadius: 18,
-    marginHorizontal: 20,
-    marginBottom: 18,
-    ...theme.rnShadows.subtle,
-    borderWidth: 0,
-  },
-  text: {
-    flex: 1,
-    fontSize: 18,
-    lineHeight: 24,
-    textAlign: 'left',
-    fontWeight: 'bold',
-    letterSpacing: 0.1,
-    color: '#222',
-  },
-})
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      width: '100%',
+      marginBottom: 0,
+      marginTop: 20,
+      backgroundColor: 'transparent',
+    },
+    card: {
+      backgroundColor: theme.colors.background,
+      paddingVertical: 22,
+      paddingHorizontal: 22,
+      borderRadius: 18,
+      marginHorizontal: 20,
+      marginBottom: 18,
+      ...theme.rnShadows.subtle,
+      borderWidth: 0,
+    },
+    text: {
+      flex: 1,
+      fontSize: 18,
+      lineHeight: 24,
+      textAlign: 'left',
+      fontWeight: 'bold',
+      letterSpacing: 0.1,
+      color: '#222',
+    },
+  })

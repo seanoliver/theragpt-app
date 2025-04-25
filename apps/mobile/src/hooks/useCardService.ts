@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
-import { cardService } from '@still/logic/src/cards/cards.service'
-import { Card } from '@still/logic/src/cards/cards.service'
+import { Card, cardService } from '@still/logic/src/cards/service';
+import { useEffect, useState } from 'react';
 
 export const useCardService = (archived: boolean = false) => {
   const [ready, setReady] = useState(false)

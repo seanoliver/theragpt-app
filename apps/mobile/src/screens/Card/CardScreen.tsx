@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Card } from '@still/logic/src/cards/cards.service'
+import { Card } from '@still/logic/src/cards/service'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import {

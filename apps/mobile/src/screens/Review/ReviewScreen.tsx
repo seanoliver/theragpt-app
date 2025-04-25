@@ -1,13 +1,8 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { useState } from 'react'
-import { Dimensions, Text, View } from 'react-native'
-import PagerView, {
-  PagerViewOnPageSelectedEvent,
-} from 'react-native-pager-view'
+import { Text, View } from 'react-native'
 import { useCardService } from '../../hooks/useCardService'
-
-export const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
-  Dimensions.get('window')
+import { CardPager } from './components/CardPager'
 
 export const ReviewScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -34,39 +29,12 @@ export const ReviewScreen = () => {
       }}
     >
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <PagerView
-          style={{
-            width: REVIEW_SCREEN_WIDTH * 0.9,
-            height: REVIEW_SCREEN_HEIGHT * 0.6,
-          }}
-          initialPage={0}
-          pageMargin={20}
-          orientation="horizontal"
-          overdrag={true}
-          onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
-            setCurrentIndex(e.nativeEvent.position)
-          }
-        >
-          {cards.map((card, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  justifyContent: 'center',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: themeObject.fontSizes.xxl,
-                    color: themeObject.colors.text,
-                  }}
-                >
-                  {card.text}
-                </Text>
-              </View>
-            )
-          })}
-        </PagerView>
+        <CardPager
+          cards={cards}
+          currentIndex={currentIndex}
+          onPageSelected={setCurrentIndex}
+          themeObject={themeObject}
+        />
       </View>
 
       {/* Progress Bar */}

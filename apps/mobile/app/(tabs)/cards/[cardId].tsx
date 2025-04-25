@@ -19,7 +19,11 @@ export default function Page() {
           onPress={() => navigation.goBack()}
           style={{ marginLeft: 16 }}
         >
-          <Ionicons name="chevron-back" size={24} color={theme.colors.textOnBackground} />
+          <Ionicons
+            name="chevron-back"
+            size={24}
+            color={theme.colors.textOnBackground}
+          />
         </TouchableOpacity>
       ),
     })
