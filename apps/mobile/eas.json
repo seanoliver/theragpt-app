@@ -4,7 +4,6 @@
   },
   "build": {
     "development": {
-      "workflow": "managed",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -12,14 +11,12 @@
       }
     },
     "preview": {
-      "workflow": "managed",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m-medium"
       }
     },
     "production": {
-      "workflow": "managed",
       "ios": {
         "resourceClass": "m-medium"
       }
