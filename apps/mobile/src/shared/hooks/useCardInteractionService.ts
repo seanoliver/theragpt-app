@@ -44,13 +44,6 @@ export const useCardInteractionService = (cardId: string) => {
     return totals.reviews
   }, [totals])
 
-  const lastReviewed = useMemo(() => {
-    if (!totals) {
-      return 0
-    }
-
-  }, [totals])
-
   useEffect(() => {
     getTotals()
   }, [getTotals, totals])
