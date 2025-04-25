@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { DisplayCard } from './useCardData'
 import { Theme } from '@/apps/mobile/lib/theme'
-import { router } from 'expo-router';
+import { router } from 'expo-router'
 
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
@@ -36,15 +36,7 @@ export const Card: React.FC<CardProps> = ({ card }) => {
 
   return (
     <TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: theme.colors.background,
-            borderColor: theme.colors.border,
-          },
-        ]}
-      >
+      <View style={[styles.card]}>
         {showHeaderRow && (
           <View style={styles.headerRow}>
             {category && (
@@ -88,6 +80,8 @@ const makeStyles = (theme: Theme) =>
     card: {
       borderRadius: 16,
       padding: 16,
+      backgroundColor: theme.colors.background,
+      borderColor: theme.colors.border,
       ...theme.rnShadows.subtle,
     },
     headerRow: {

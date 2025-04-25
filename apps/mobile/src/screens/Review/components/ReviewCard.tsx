@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Card } from '@still/logic/src/cards/service'
 import { CardActions } from './CardActions'
 import { Theme } from '@/apps/mobile/lib/theme'
+
 type ReviewCardProps = {
   card: Card
   onListen: () => void
@@ -19,25 +20,11 @@ export const ReviewCard = ({
   themeObject,
 }: ReviewCardProps) => {
   const styles = makeStyles(themeObject)
+
   return (
-    <View
-      style={[
-        styles.cardContainer,
-        { backgroundColor: themeObject.colors.cardBackground },
-      ]}
-    >
+    <View style={[styles.cardContainer]}>
       <View style={styles.textContainer}>
-        <Text
-          style={[
-            styles.cardText,
-            {
-              color: themeObject.colors.text,
-              fontSize: themeObject.fontSizes.xxl,
-            },
-          ]}
-        >
-          {card.text}
-        </Text>
+        <Text style={[styles.cardText]}>{card.text}</Text>
       </View>
       <CardActions
         onListen={onListen}
@@ -57,6 +44,7 @@ const makeStyles = (theme: Theme) =>
       alignItems: 'center',
       margin: 8,
       padding: 24,
+      backgroundColor: theme.colors.background,
       ...theme.rnShadows.subtle,
     },
     textContainer: {
@@ -68,5 +56,7 @@ const makeStyles = (theme: Theme) =>
     cardText: {
       textAlign: 'center',
       fontWeight: '600',
+      color: theme.colors.text,
+      fontSize: theme.fontSizes.xxl,
     },
   })

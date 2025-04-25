@@ -24,7 +24,6 @@ export const CardPager = ({
   onPageSelected,
   themeObject,
 }: CardPagerProps) => {
-  // Stubbed handlers for Listen, Upvote, Downvote
   const handleListen = (card: Card) => {
     // TODO: Replace with real logic
     // eslint-disable-next-line no-console
