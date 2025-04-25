@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme/context'
 import { useCardService } from '../../hooks/useCardService'
+import { InstructionalFooterText } from '../../shared/InstructionalFooterText'
 
 export const CardScreen = () => {
   const router = useRouter()
@@ -107,9 +108,7 @@ export const CardScreen = () => {
 
   // --- UI Layout ---
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: theme.colors.background }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       {/* Main Content (starts below the existing header) */}
       <View style={styles.content}>
         {/* Affirmation Card */}
@@ -330,17 +329,12 @@ export const CardScreen = () => {
         </View>
 
         {/* Footer Instructions */}
-        <View style={styles.footerInstructions}>
-          <Text
-            style={[
-              styles.footerText,
-              { color: theme.colors.textOnBackground, opacity: 0.7 },
-            ]}
-          >
-            Tap "Read Aloud" to hear your affirmation{'\n'}Use "Generate" to
-            create AI variations
-          </Text>
-        </View>
+        <InstructionalFooterText
+          text={[
+            'Tap "Read Aloud" to hear your affirmation.',
+            'Use "Generate" to create AI variations.',
+          ]}
+        />
       </View>
     </SafeAreaView>
   )

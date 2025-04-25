@@ -1,11 +1,10 @@
-import { cardInteractionService } from '@still/logic/src/card-interaction/service';
-import { Card } from '@still/logic/src/cards/service';
-import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { cardInteractionService, Card } from '@still/logic'
+import React from 'react'
+import { Dimensions, View } from 'react-native'
 import PagerView, {
   PagerViewOnPageSelectedEvent,
-} from 'react-native-pager-view';
-import { ReviewCard } from './ReviewCard';
+} from 'react-native-pager-view'
+import { ReviewCard } from './ReviewCard'
 
 const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
   Dimensions.get('window')
@@ -19,7 +18,6 @@ type CardPagerProps = {
 
 export const CardPager = ({
   cards,
-  currentIndex,
   onPageSelected,
   themeObject,
 }: CardPagerProps) => {
@@ -29,21 +27,13 @@ export const CardPager = ({
     console.log('Listen pressed for card:', card.id)
   }
 
-  const handleUpvote = async (card: Card) => {
+  const handleReview = async (cardIndex: number) => {
     try {
-      await cardInteractionService.logVote(card.id, 'upvote')
+      await cardInteractionService.logReview(cards[cardIndex].id)
+      onPageSelected(cardIndex)
+      console.log('Review logged for card:', cards[cardIndex].id)
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Upvote failed for card:', card.id, error)
-    }
-  }
-
-  const handleDownvote = async (card: Card) => {
-    try {
-      await cardInteractionService.logVote(card.id, 'downvote')
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Downvote failed for card:', card.id, error)
+      console.error('Review failed for card:', cards[cardIndex].id, error)
     }
   }
 
@@ -59,7 +49,7 @@ export const CardPager = ({
         orientation="horizontal"
         overdrag={true}
         onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
-          onPageSelected(e.nativeEvent.position)
+          handleReview(e.nativeEvent.position)
         }
         key={cards.length} // Ensures re-render if cards change
       >
@@ -68,8 +58,6 @@ export const CardPager = ({
             <ReviewCard
               card={card}
               onListen={() => handleListen(card)}
-              onUpvote={() => handleUpvote(card)}
-              onDownvote={() => handleDownvote(card)}
               themeObject={themeObject}
             />
           </View>

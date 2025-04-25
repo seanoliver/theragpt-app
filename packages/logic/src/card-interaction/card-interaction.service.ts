@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
-import { StorageService, storageService } from '../sync/storage'
+import { StorageService, storageService } from '../storage/storage.service'
+import { cardService } from '../cards'
 
 /**
  * Types
@@ -117,6 +118,7 @@ export class CardInteractionService {
   ): Promise<void> {
     const now = Date.now()
     const date = toISODate(now)
+    console.log('Logging action for card:', cardId, 'with action:', action)
     const entry: CardInteractionEntry = {
       id: uuidv4(),
       cardId,
@@ -127,8 +129,39 @@ export class CardInteractionService {
     const entries = await this.getAllEntries()
     entries.push(entry)
     await this.saveAllEntries(entries)
+    await this.updateCardMetadata(cardId, action)
   }
 
+  /**
+   * Update card metadata after action log.
+   */
+  private async updateCardMetadata(
+    cardId: string,
+    action: CardInteractionAction,
+  ) {
+    console.log('Updating card metadata for card:', cardId, 'with action:', action)
+    const now = Date.now()
+
+    const totals = await this.getTotals(cardId)
+    console.log('Totals:', totals)
+    if (action === 'review') {
+      console.log('Updating last reviewed for card:', cardId)
+      await cardService.update({
+        id: cardId,
+        lastReviewed: now,
+      })
+    } else if (action === 'upvote') {
+      await cardService.update({
+        id: cardId,
+        upvotes: totals.upvotes,
+      })
+    } else if (action === 'downvote') {
+      await cardService.update({
+        id: cardId,
+        downvotes: totals.downvotes,
+      })
+    }
+  }
   /**
    * Get all interaction entries.
    */
@@ -170,13 +203,13 @@ export class CardInteractionService {
     return computeTotals(entries.filter(entry => entry.cardId === cardId))
   }
 
-    /**
+  /**
    * Get total counts for all time across all cards
    */
-    async getOverallTotals(): Promise<Totals> {
-      const entries = await this.getAllEntries()
-      return computeTotals(entries)
-    }
+  async getOverallTotals(): Promise<Totals> {
+    const entries = await this.getAllEntries()
+    return computeTotals(entries)
+  }
 
   /**
    * Get current review streak (consecutive days with reviews, up to today).

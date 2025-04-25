@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { StorageService, storageService } from '../sync/storage'
+import { StorageService, storageService } from '../storage/storage.service'
 
 export interface Card {
   id: string
@@ -24,6 +24,7 @@ export interface UpdateCardParams {
   upvotes?: number
   downvotes?: number
   reviews?: number
+  lastReviewed?: number
 }
 
 export interface CreateCardParams {
@@ -134,6 +135,10 @@ export class CardService {
       isActive: params.isActive ?? card.isActive,
       isFavorite: params.isFavorite ?? card.isFavorite,
       tags: params.tags ?? card.tags,
+      upvotes: params.upvotes ?? card.upvotes,
+      downvotes: params.downvotes ?? card.downvotes,
+      reviews: params.reviews ?? card.reviews,
+      lastReviewed: params.lastReviewed ?? card.lastReviewed,
     }
 
     await this.saveAllCards(cards)

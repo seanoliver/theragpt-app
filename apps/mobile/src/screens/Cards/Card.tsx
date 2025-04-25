@@ -4,6 +4,7 @@ import { useTheme } from '../../../lib/theme/context'
 import { DisplayCard } from './useCardData'
 import { Theme } from '@/apps/mobile/lib/theme'
 import { router } from 'expo-router'
+import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService';
 
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
@@ -13,13 +14,11 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
+  const { netVotes, reviewCount } = useCardInteractionService(card.id)
 
-  // TODO: Placeholder meta info for demonstration
   const category = card.category || undefined
   const lastReviewed = card.lastReviewed || 'Never'
-  const netVotes = card.netVotes ?? 0
   const frequency = card.frequency || undefined
-  const reviews = card.reviews || 0
 
   const getNetVotesColor = () => {
     if (netVotes > 0) return theme.colors.successAccent
@@ -33,7 +32,7 @@ export const Card: React.FC<CardProps> = ({ card }) => {
     return theme.colors.textDisabled
   }
   const showHeaderRow = category || netVotes || frequency
-
+  console.log('card', card)
   return (
     <TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
       <View style={[styles.card]}>
@@ -62,9 +61,9 @@ export const Card: React.FC<CardProps> = ({ card }) => {
           <View style={styles.footerRowLeft}>
             <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
           </View>
-          {reviews && (
+          {reviewCount > 0 && (
             <View style={styles.footerRowRight}>
-              <Text style={styles.metaText}>{reviews} reviews</Text>
+              <Text style={styles.metaText}>{reviewCount} reviews</Text>
               <Text style={styles.metaText}> • </Text>
             </View>
           )}

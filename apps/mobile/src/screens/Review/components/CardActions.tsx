@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
-import { useCardInteractionService } from '@still/logic/src/card-interaction/useCardInteractionService'
+import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService'
 type CardActionsProps = {
   cardId: string
 }

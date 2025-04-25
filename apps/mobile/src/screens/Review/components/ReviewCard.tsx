@@ -1,23 +1,18 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Card } from '@still/logic/src/cards/service'
-import { CardActions } from './CardActions'
 import { Theme } from '@/apps/mobile/lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-
+import { Card } from '@still/logic'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { CardActions } from './CardActions'
 type ReviewCardProps = {
   card: Card
   onListen: () => void
-  onUpvote: () => void
-  onDownvote: () => void
   themeObject: Theme
 }
 
 export const ReviewCard = ({
   card,
   onListen,
-  onUpvote,
-  onDownvote,
   themeObject,
 }: ReviewCardProps) => {
   const styles = makeStyles(themeObject)
