@@ -1,10 +1,15 @@
 import React from 'react'
-import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
+import PagerView, {
+  PagerViewOnPageSelectedEvent,
+} from 'react-native-pager-view'
 import { Dimensions, View } from 'react-native'
 import { Card } from '@still/logic/src/cards/service'
 import { ReviewCard } from './ReviewCard'
+import { handleVote, VoteType } from './cardVoteHandler'
+import { cardInteractionService } from '@still/logic/src/card-interaction/service'
 
-const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } = Dimensions.get('window')
+const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
+  Dimensions.get('window')
 
 type CardPagerProps = {
   cards: Card[]
@@ -26,16 +31,24 @@ export const CardPager = ({
     console.log('Listen pressed for card:', card.id)
   }
 
-  const handleUpvote = (card: Card) => {
-    // TODO: Replace with real logic
-    // eslint-disable-next-line no-console
-    console.log('Upvote pressed for card:', card.id)
+  const handleUpvote = async (card: Card) => {
+    try {
+      await handleVote(card.id, 'upvote', cardInteractionService)
+    } catch (error) {
+      // Optionally show error to user
+      // eslint-disable-next-line no-console
+      console.error('Upvote failed for card:', card.id, error)
+    }
   }
 
-  const handleDownvote = (card: Card) => {
-    // TODO: Replace with real logic
-    // eslint-disable-next-line no-console
-    console.log('Downvote pressed for card:', card.id)
+  const handleDownvote = async (card: Card) => {
+    try {
+      await handleVote(card.id, 'downvote', cardInteractionService)
+    } catch (error) {
+      // Optionally show error to user
+      // eslint-disable-next-line no-console
+      console.error('Downvote failed for card:', card.id, error)
+    }
   }
 
   return (
