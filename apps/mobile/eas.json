@@ -21,34 +21,6 @@
         "resourceClass": "m-medium"
       }
     }
-  }
-}
-
-{
-  "cli": {
-    "version": ">= 16.1.0",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium",
-      }
-    },
-    "preview": {
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium",
-      }
-    },
-    "production": {
-      "autoIncrement": true,
-      "ios": {
-        "resourceClass": "m-medium",
-      }
-    }
   },
   "submit": {
     "production": {}
