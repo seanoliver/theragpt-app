@@ -16,10 +16,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "folders": [
-      ".",
-      "apps/mobile"
-    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.helloseanoliver.still",
