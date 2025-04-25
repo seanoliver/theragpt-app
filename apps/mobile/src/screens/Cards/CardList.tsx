@@ -14,16 +14,7 @@ interface CardListProps {
 export const CardList = ({ cards }: CardListProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
-
   const { service } = useCardService()
-
-  const handleArchive = (card: DisplayCard) => {
-    service?.update({ id: card.id, isActive: false })
-  }
-
-  const handleDelete = (card: DisplayCard) => {
-    service?.deleteCard(card.id)
-  }
 
   const getSwipeActions = (card: DisplayCard): SwipeAction[] => [
     {
@@ -33,7 +24,7 @@ export const CardList = ({ cards }: CardListProps) => {
       ),
       backgroundColor: theme.colors.accent,
       textColor: theme.colors.white,
-      onPress: () => handleArchive(card),
+      onPress: () => service?.update({ id: card.id, isActive: false }),
     },
     {
       label: 'delete',
@@ -42,7 +33,7 @@ export const CardList = ({ cards }: CardListProps) => {
       ),
       backgroundColor: theme.colors.errorAccent,
       textColor: theme.colors.white,
-      onPress: () => handleDelete(card),
+      onPress: () => service?.deleteCard(card.id),
     },
   ]
 
