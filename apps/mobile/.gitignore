@@ -59,8 +59,8 @@ dist/
 *.orig.*
 
 # Native directories for Prebuild
-/android/
-/ios/
+/android
+/ios
 
 # Metro
 .metro-health-check*
@@ -91,7 +91,3 @@ coverage/
 *.zip
 *.rar
 *.7z
-
-# EAS Managed Workflow
-ios/
-android/
