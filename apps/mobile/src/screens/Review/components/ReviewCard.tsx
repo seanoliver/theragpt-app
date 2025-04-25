@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Card } from '@still/logic/src/cards/service'
 import { CardActions } from './CardActions'
-
+import { Theme } from '@/apps/mobile/lib/theme'
 type ReviewCardProps = {
   card: Card
   onListen: () => void
@@ -18,6 +18,7 @@ export const ReviewCard = ({
   onDownvote,
   themeObject,
 }: ReviewCardProps) => {
+  const styles = makeStyles(themeObject)
   return (
     <View
       style={[
@@ -47,28 +48,25 @@ export const ReviewCard = ({
   )
 }
 
-const styles = StyleSheet.create({
-  cardContainer: {
-    flex: 1,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 8,
-    padding: 24,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  cardText: {
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-})
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    cardContainer: {
+      flex: 1,
+      borderRadius: 24,
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 8,
+      padding: 24,
+      ...theme.rnShadows.subtle,
+    },
+    textContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+    },
+    cardText: {
+      textAlign: 'center',
+      fontWeight: '600',
+    },
+  })
