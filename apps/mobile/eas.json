@@ -4,24 +4,24 @@
   },
   "build": {
     "development": {
+      "workflow": "managed",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "resourceClass": "m-medium",
-        "workflow": "managed"
+        "resourceClass": "m-medium"
       }
     },
     "preview": {
+      "workflow": "managed",
       "distribution": "internal",
       "ios": {
-        "resourceClass": "m-medium",
-        "workflow": "managed"
+        "resourceClass": "m-medium"
       }
     },
     "production": {
+      "workflow": "managed",
       "ios": {
-        "resourceClass": "m-medium",
-        "workflow": "managed"
+        "resourceClass": "m-medium"
       }
     }
   },

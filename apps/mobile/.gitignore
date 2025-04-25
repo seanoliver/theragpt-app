@@ -91,3 +91,7 @@ coverage/
 *.zip
 *.rar
 *.7z
+
+# EAS Managed Workflow
+ios/
+android/
