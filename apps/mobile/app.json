@@ -16,9 +16,16 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "folders": [
+      ".",
+      "apps/mobile"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.helloseanoliver.still"
+      "bundleIdentifier": "com.helloseanoliver.still",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
