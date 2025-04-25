@@ -35,7 +35,6 @@ export const CardPager = ({
     try {
       await handleVote(card.id, 'upvote', cardInteractionService)
     } catch (error) {
-      // Optionally show error to user
       // eslint-disable-next-line no-console
       console.error('Upvote failed for card:', card.id, error)
     }
@@ -45,7 +44,6 @@ export const CardPager = ({
     try {
       await handleVote(card.id, 'downvote', cardInteractionService)
     } catch (error) {
-      // Optionally show error to user
       // eslint-disable-next-line no-console
       console.error('Downvote failed for card:', card.id, error)
     }
