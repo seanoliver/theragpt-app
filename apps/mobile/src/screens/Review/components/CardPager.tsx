@@ -1,12 +1,11 @@
-import React from 'react'
+import { cardInteractionService } from '@still/logic/src/card-interaction/service';
+import { Card } from '@still/logic/src/cards/service';
+import React from 'react';
+import { Dimensions, View } from 'react-native';
 import PagerView, {
   PagerViewOnPageSelectedEvent,
-} from 'react-native-pager-view'
-import { Dimensions, View } from 'react-native'
-import { Card } from '@still/logic/src/cards/service'
-import { ReviewCard } from './ReviewCard'
-import { handleVote, VoteType } from './cardVoteHandler'
-import { cardInteractionService } from '@still/logic/src/card-interaction/service'
+} from 'react-native-pager-view';
+import { ReviewCard } from './ReviewCard';
 
 const { width: REVIEW_SCREEN_WIDTH, height: REVIEW_SCREEN_HEIGHT } =
   Dimensions.get('window')
@@ -32,7 +31,7 @@ export const CardPager = ({
 
   const handleUpvote = async (card: Card) => {
     try {
-      await handleVote(card.id, 'upvote', cardInteractionService)
+      await cardInteractionService.logVote(card.id, 'upvote')
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Upvote failed for card:', card.id, error)
@@ -41,7 +40,7 @@ export const CardPager = ({
 
   const handleDownvote = async (card: Card) => {
     try {
-      await handleVote(card.id, 'downvote', cardInteractionService)
+      await cardInteractionService.logVote(card.id, 'downvote')
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Downvote failed for card:', card.id, error)

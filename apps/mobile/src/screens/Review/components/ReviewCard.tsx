@@ -1,15 +1,16 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Card } from '@still/logic/src/cards/service'
 import { CardActions } from './CardActions'
 import { Theme } from '@/apps/mobile/lib/theme'
+import { Ionicons } from '@expo/vector-icons'
 
 type ReviewCardProps = {
   card: Card
   onListen: () => void
   onUpvote: () => void
   onDownvote: () => void
-  themeObject: any
+  themeObject: Theme
 }
 
 export const ReviewCard = ({
@@ -25,12 +26,28 @@ export const ReviewCard = ({
     <View style={[styles.cardContainer]}>
       <View style={styles.textContainer}>
         <Text style={[styles.cardText]}>{card.text}</Text>
+        <TouchableOpacity
+          onPress={onListen}
+          accessibilityLabel="Listen"
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 16,
+          }}
+        >
+          <Ionicons
+            name="play"
+            size={16}
+            color={themeObject.colors.textDisabled}
+          />
+          <Text
+            style={{ marginLeft: 8, color: themeObject.colors.textDisabled }}
+          >
+            Listen
+          </Text>
+        </TouchableOpacity>
       </View>
-      <CardActions
-        onListen={onListen}
-        onUpvote={onUpvote}
-        onDownvote={onDownvote}
-      />
+      <CardActions cardId={card.id} />
     </View>
   )
 }

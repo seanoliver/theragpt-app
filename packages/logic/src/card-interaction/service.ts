@@ -163,12 +163,20 @@ export class CardInteractionService {
   }
 
   /**
-   * Get total counts for all time.
+   * Get total counts for all time for a given card
    */
-  async getTotals(): Promise<Totals> {
+  async getTotals(cardId: string): Promise<Totals> {
     const entries = await this.getAllEntries()
-    return computeTotals(entries)
+    return computeTotals(entries.filter(entry => entry.cardId === cardId))
   }
+
+    /**
+   * Get total counts for all time across all cards
+   */
+    async getOverallTotals(): Promise<Totals> {
+      const entries = await this.getAllEntries()
+      return computeTotals(entries)
+    }
 
   /**
    * Get current review streak (consecutive days with reviews, up to today).

@@ -1,40 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-
+import { useTheme } from '@/apps/mobile/lib/theme/context'
+import { useCardInteractionService } from '@still/logic/src/card-interaction/useCardInteractionService'
 type CardActionsProps = {
-  onListen: () => void
-  onUpvote: () => void
-  onDownvote: () => void
+  cardId: string
 }
 
-export const CardActions: React.FC<CardActionsProps> = ({
-  onListen,
-  onUpvote,
-  onDownvote,
-}) => {
+export const CardActions: React.FC<CardActionsProps> = ({ cardId }) => {
+  const { themeObject: theme } = useTheme()
+  const { handleUpvote, handleDownvote } = useCardInteractionService(cardId)
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.actionButton}
-        onPress={onListen}
-        accessibilityLabel="Listen"
-      >
-        <Ionicons name="play-circle-outline" size={32} color="#4F8EF7" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.actionButton}
-        onPress={onUpvote}
-        accessibilityLabel="Upvote"
-      >
-        <Ionicons name="arrow-up-circle-outline" size={32} color="#4CAF50" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.actionButton}
-        onPress={onDownvote}
+        onPress={handleDownvote}
         accessibilityLabel="Downvote"
       >
-        <Ionicons name="arrow-down-circle-outline" size={32} color="#F44336" />
+        <Ionicons
+          name="chevron-down-circle-outline"
+          size={32}
+          color={theme.colors.errorAccent + '99'}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.actionButton}
+        onPress={handleUpvote}
+        accessibilityLabel="Upvote"
+      >
+        <Ionicons
+          name="chevron-up-circle-outline"
+          size={32}
+          color={theme.colors.successAccent + '99'}
+        />
       </TouchableOpacity>
     </View>
   )
