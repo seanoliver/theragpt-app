@@ -1,28 +1,9 @@
-// Import AsyncStorage conditionally to avoid issues in web environments
-// Define a type for AsyncStorage to avoid using 'any'
-interface AsyncStorageType {
-  getItem: (key: string) => Promise<string | null>
-  setItem: (key: string, value: string) => Promise<void>
-  removeItem: (key: string) => Promise<void>
-  getAllKeys: () => Promise<readonly string[]>
-  clear: () => Promise<void>
-}
-
-let AsyncStorage: AsyncStorageType | undefined
-try {
-  // This will only succeed in a React Native environment
-  // Use dynamic import instead of require
-  import('@react-native-async-storage/async-storage').then(module => {
-    AsyncStorage = module.default
-  })
-} catch {
-  // AsyncStorage is not available, we're in a web environment
-}
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 /**
  * Determines if we're running in a React Native environment
  */
 const isReactNative = (): boolean => {
+  // In React Native, AsyncStorage will be defined; in web, it will be undefined or throw
   return typeof AsyncStorage !== 'undefined'
 }
 

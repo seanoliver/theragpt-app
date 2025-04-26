@@ -6,7 +6,7 @@ import {
   loadThemeSelection,
   saveThemeSelection,
 } from './service'
-import { themes, DEFAULT_THEME_TYPE, DEFAULT_THEME, Theme } from '../theme'
+import { themes, DEFAULT_THEME_TYPE, DEFAULT_THEME, Theme } from './theme'
 
 interface ThemeContextType {
   theme: ThemeOption
