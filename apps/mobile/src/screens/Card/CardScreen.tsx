@@ -2,7 +2,6 @@ import { Card } from '@still/logic'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme/context'
 import { useCardService } from '../../hooks/useCardService'
 import { InstructionalFooterText } from '../../shared/InstructionalFooterText'
@@ -60,7 +59,7 @@ export const CardScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <View style={styles.content}>
         {/* Card Editor + Audio Playback */}
         <CardScreenEdit card={card} />
@@ -79,7 +78,7 @@ export const CardScreen = () => {
           ]}
         />
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 

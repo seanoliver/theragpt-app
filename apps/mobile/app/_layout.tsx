@@ -9,10 +9,9 @@ import {
   useFonts as usePlayfairFonts,
 } from '@expo-google-fonts/playfair-display'
 import { StatusBar } from 'expo-status-bar'
-import { ActivityIndicator, Text } from 'react-native'
+import { ActivityIndicator, Text, SafeAreaView, View } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { ThemeProvider, useTheme } from '../lib/theme/context'
 import { Slot } from 'expo-router'
 import React from 'react'
@@ -31,9 +30,9 @@ const InnerProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <KeyboardProvider>
       <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
-      <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+      <View style={{ flex: 1 }}>
         {children}
-      </SafeAreaView>
+      </View>
     </KeyboardProvider>
   )
 }

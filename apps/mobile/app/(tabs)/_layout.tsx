@@ -11,10 +11,9 @@ import {
 import { FontAwesome } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { ThemeProvider, useTheme } from '../../lib/theme/context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -44,7 +43,7 @@ const TabRootLayout = () => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <KeyboardProvider>
           <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
-          <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+          <View style={{ flex: 1 }}>
             <Tabs
               screenOptions={{
                 headerShown: true,
@@ -113,7 +112,7 @@ const TabRootLayout = () => {
                 }}
               />
             </Tabs>
-          </SafeAreaView>
+          </View>
         </KeyboardProvider>
       </GestureHandlerRootView>
     </ThemeProvider>

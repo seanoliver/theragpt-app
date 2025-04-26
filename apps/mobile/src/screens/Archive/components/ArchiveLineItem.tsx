@@ -1,6 +1,6 @@
 import { Theme } from '@/apps/mobile/lib/theme'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { Card } from '@still/logic/src/cards/service'
+import { Card } from '@still/logic'
 import { useMemo } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { useTheme } from '../../../../lib/theme/context'

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
 // TODO: Placeholder imports for new components to be implemented
@@ -32,29 +32,25 @@ export const CardsScreen = () => {
   // TODO: Render loading or error state
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.centered}>
-          {/* Replace with a loading spinner if desired */}
-        </View>
-      </SafeAreaView>
+      <View style={styles.centered}>
+        {/* Replace with a loading spinner if desired */}
+      </View>
     )
   }
   if (error) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.centered}>{/* TODO: Replace with error UI */}</View>
-      </SafeAreaView>
+      <View style={styles.centered}>{/* TODO: Replace with error UI */}</View>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.inner}>
         {/* TODO: <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
         <CardList cards={filteredCards} />
         {/* TODO: {filteredCards.length === 0 && <EmptyState />} */}
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 

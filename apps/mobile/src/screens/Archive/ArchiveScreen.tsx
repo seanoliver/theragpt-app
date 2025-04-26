@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '../../../lib/theme/context'
 import { useCardService } from '../../hooks/useCardService'
 import { FAB } from '../../shared/FAB'
@@ -38,7 +37,7 @@ export const ArchiveScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       {isEmpty ? (
         <ArchiveEmptyState />
       ) : (
@@ -50,9 +49,8 @@ export const ArchiveScreen = () => {
             <React.Fragment key={card.id}>
               <ArchiveLineItem
                 card={card}
-                onRestore={() => service.update({ id: card.id, isActive: true })}
+                onPublish={() => service.update({ id: card.id, isActive: true })}
                 onDelete={() => service.deleteCard(card.id)}
-                isNew={card.id === newlyCreatedId}
               />
               {index < cards.length - 1 && (
                 <View
@@ -72,7 +70,7 @@ export const ArchiveScreen = () => {
       <FAB onPress={handleAddCard}>
         <Ionicons name="add" size={32} color={theme.colors.background} />
       </FAB>
-    </SafeAreaView>
+    </View>
   )
 }
 
