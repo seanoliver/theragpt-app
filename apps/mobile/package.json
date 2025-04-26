@@ -31,6 +31,7 @@
     "@still/logic": "workspace:*",
     "expensify-common": "^2.0.129",
     "expo": "~52.0.46",
+    "expo-asset": "^11.0.5",
     "expo-constants": "^17.0.8",
     "expo-font": "^13.0.4",
     "expo-linear-gradient": "^14.0.2",
