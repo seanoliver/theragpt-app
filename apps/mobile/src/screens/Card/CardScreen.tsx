@@ -14,6 +14,7 @@ export const CardScreen = () => {
   const [card, setCard] = useState<Card | null>(null)
   const { service, cards } = useCardService()
   const { themeObject: theme } = useTheme()
+  const [areChildrenReady, setAreChildrenReady] = useState(false)
 
   useEffect(() => {
     if (!cardId || !cards) return
@@ -23,7 +24,18 @@ export const CardScreen = () => {
     }
   }, [cardId, cards])
 
+  useEffect(() => {
+    // Defer rendering of heavier children slightly after card data is ready
+    if (card) {
+      const timer = setTimeout(() => {
+        setAreChildrenReady(true)
+      }, 50) // Small delay to allow initial render
+      return () => clearTimeout(timer)
+    }
+  }, [card])
+
   if (!service || !cards || !card) {
+    // Keep existing loading indicator for when card data is not yet available
     return (
       <View
         style={{
@@ -64,11 +76,11 @@ export const CardScreen = () => {
         {/* Card Editor + Audio Playback */}
         <CardScreenEdit card={card} />
 
-        {/* Stats Row */}
-        <CardScreenStats card={card} />
+        {/* Stats Row - Deferred */}
+        {areChildrenReady && <CardScreenStats card={card} />}
 
-        {/* AI Variations Section */}
-        <CardScreenAIVariations card={card} />
+        {/* AI Variations Section - Deferred */}
+        {areChildrenReady && <CardScreenAIVariations card={card} />}
 
         {/* Footer Instructions */}
         <InstructionalFooterText
