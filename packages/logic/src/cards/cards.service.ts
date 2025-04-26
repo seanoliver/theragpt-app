@@ -53,6 +53,8 @@ export class CardService {
   private storageService: StorageService
   private storageKey = 'still_cards'
   private listeners: CardsListener[] = []
+  private cardsCache: Card[] | null = null
+  private cardsMap: Map<string, Card> = new Map()
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
@@ -147,9 +149,11 @@ export class CardService {
   }
 
   async getAll(): Promise<Card[]> {
+    if (this.cardsCache) return this.cardsCache
     try {
       const data = await this.storageService.getItem<Card[]>(this.storageKey)
-      return data || []
+      this.updateCache(data || [])
+      return this.cardsCache!
     } catch (error) {
       console.error('Error getting cards from storage', error as Error)
       return []
@@ -179,6 +183,7 @@ export class CardService {
   private async saveAllCards(cards: Card[]): Promise<void> {
     try {
       await this.storageService.setItem(this.storageKey, cards)
+      this.updateCache(cards)
     } catch (error) {
       console.error('Error saving cards to storage', error as Error)
     }
@@ -200,6 +205,15 @@ export class CardService {
    */
   filterArchived(cards: Card[]): Card[] {
     return cards.filter(s => !s.isActive)
+  }
+
+  private updateCache(cards: Card[]) {
+    this.cardsCache = cards
+    this.cardsMap = new Map(cards.map(card => [card.id, card]))
+  }
+
+  getCardById(id: string): Card | undefined {
+    return this.cardsMap.get(id)
   }
 }
 

@@ -1,9 +1,9 @@
 import { Card, cardService } from '@still/logic'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 export const useCardService = (archived: boolean = false) => {
   const [ready, setReady] = useState(false)
-  const [cards, setCards] = useState<Card[] | null>(null)
+  const [allCards, setAllCards] = useState<Card[] | null>(null)
 
   useEffect(() => {
     let mounted = true
@@ -15,20 +15,11 @@ export const useCardService = (archived: boolean = false) => {
 
       setReady(true)
 
-      const fetchedCards = archived
-        ? cardService.getArchived
-        : cardService.getActive
-
-      // Need to .call(service) to bind 'this' to the service instance
-      setCards(await fetchedCards.call(cardService))
+      // Fetch all cards (active + archived)
+      setAllCards(await cardService.getAll.call(cardService))
 
       unsubscribe = cardService.subscribe(cards => {
-        if (mounted)
-          setCards(
-            archived
-              ? cardService.filterArchived(cards)
-              : cardService.filterActive(cards),
-          )
+        if (mounted) setAllCards(cards)
       })
     }
 
@@ -40,5 +31,21 @@ export const useCardService = (archived: boolean = false) => {
     }
   }, [])
 
-  return { service: ready ? cardService : null, cards }
+  // Memoize the filtered cards
+  const cards = useMemo(() => {
+    if (!allCards) return null
+    return archived
+      ? cardService.filterArchived(allCards)
+      : cardService.filterActive(allCards)
+  }, [allCards, archived])
+
+  // Memoize a fast card lookup by ID using the service's Map
+  const getCardById = useMemo(() => {
+    return (id: string) => {
+      if (!allCards) return undefined
+      return cardService.getCardById(id)
+    }
+  }, [allCards])
+
+  return { service: ready ? cardService : null, cards, getCardById }
 }
