@@ -21,14 +21,16 @@
       "bundleIdentifier": "com.helloseanoliver.still",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#1F2A35"
       },
-      "package": "com.helloseanoliver.still"
+      "package": "com.helloseanoliver.still",
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro"
