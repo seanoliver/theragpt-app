@@ -40,12 +40,10 @@ export const useCardService = (archived: boolean = false) => {
   }, [allCards, archived])
 
   // Memoize a fast card lookup by ID using the service's Map
-  const getCardById = useMemo(() => {
-    return (id: string) => {
-      if (!allCards) return undefined
-      return cardService.getCardById(id)
-    }
-  }, [allCards])
+  const getCardById = (id: string) => {
+    if (!allCards) return undefined
+    return cardService.getCardById(id)
+  }
 
   return { service: ready ? cardService : null, cards, getCardById }
 }
