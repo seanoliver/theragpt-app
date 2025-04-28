@@ -50,14 +50,12 @@ export const CardPager = ({
           width: REVIEW_SCREEN_WIDTH * 0.9,
           height: REVIEW_SCREEN_HEIGHT * 0.6,
         }}
-        initialPage={0}
         pageMargin={20}
         orientation="horizontal"
         overdrag={true}
         onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
           onPageSelected(e.nativeEvent.position)
         }
-        key={cards.length} // Ensures re-render if cards change
       >
         {cards.map((card, index) => (
           <View key={card.id || index} style={{ flex: 1 }}>
