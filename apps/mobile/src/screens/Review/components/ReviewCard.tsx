@@ -66,8 +66,8 @@ const makeStyles = (theme: Theme) =>
       width: '100%',
     },
     cardText: {
-      textAlign: 'center',
-      fontWeight: '600',
+      textAlign: 'left',
+      fontWeight: '400',
       color: theme.colors.text,
       fontSize: theme.fontSizes.xxl,
     },

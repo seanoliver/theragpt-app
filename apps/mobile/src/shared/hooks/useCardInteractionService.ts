@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { cardInteractionService, Totals } from '@still/logic'
+import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 
-export const useCardInteractionService = (cardId: string) => {
+export const useCardInteractionService = (cardId: string, deps: any[] = []) => {
   const [totals, setTotals] = useState<Totals | null>(null)
+  const card = useCardStore(state => state.cards.find(c => c.id === cardId))
 
   const handleUpvote = async () => {
     try {
@@ -46,7 +48,7 @@ export const useCardInteractionService = (cardId: string) => {
 
   useEffect(() => {
     getTotals()
-  }, [getTotals, totals])
+  }, [cardId, card?.lastReviewed, card?.upvotes, card?.downvotes, card?.reviews, ...deps])
 
   return {
     handleUpvote,

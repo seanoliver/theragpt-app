@@ -150,7 +150,6 @@ export const useCardStore = create<CardStore>()(
 
       reviewCard: async id => {
         try {
-          set({ isLoading: true, error: null })
           await cardInteractionService.logReview(id)
           const totals = await cardInteractionService.getTotals(id)
           await cardService.update({
@@ -168,10 +167,8 @@ export const useCardStore = create<CardStore>()(
                   }
                 : card,
             ),
-            isLoading: false,
           }))
         } catch (error) {
-          set({ error: 'Failed to review card', isLoading: false })
           console.error('Error reviewing card:', error)
         }
       },

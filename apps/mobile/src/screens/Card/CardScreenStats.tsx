@@ -14,9 +14,10 @@ export const CardScreenStats = ({ card }: { card: Card }) => {
   const stats = [
     {
       icon: 'calendar',
-      value: card.lastReviewed
-        ? new Date(card.lastReviewed).toLocaleDateString()
-        : 'Never',
+      value:
+        reviewCount > 0 && card.lastReviewed
+          ? new Date(card.lastReviewed).toLocaleDateString()
+          : 'Never',
       label: 'Last Reviewed',
     },
     {
@@ -38,14 +39,7 @@ export const CardScreenStats = ({ card }: { card: Card }) => {
         <StatBox
           key={index}
           icon={stat.icon as keyof typeof Ionicons.glyphMap}
-          value={
-            typeof stat.value === 'number'
-              ? stat.value
-              : // If value is a string (e.g., date or 'Never'), show as '-' or 0
-                // You may want to display a string, but StatBox expects a number.
-                // We'll use 0 for 'Never' and NaN for other strings, or you can adjust as needed.
-                stat.value === 'Never' ? 0 : Number.NaN
-          }
+          value={stat.value}
           label={stat.label}
         />
       ))}
@@ -59,7 +53,7 @@ const StatBox = ({
   label,
 }: {
   icon: keyof typeof Ionicons.glyphMap
-  value: number
+  value: string | number
   label: string
 }) => {
   const { themeObject: theme } = useTheme()

@@ -14,7 +14,7 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
-  const { netVotes, reviewCount } = useCardInteractionService(card.id)
+  const { netVotes, reviewCount } = useCardInteractionService(card.id, [card])
 
   const category = card.tags?.[0]
   const lastReviewed = card.lastReviewed
