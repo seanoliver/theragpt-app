@@ -125,3 +125,18 @@ useEffect(() => {
   }
 }, [currentIndex, reviewCard])
 ```
+
+### Mistake: Showing NaN for Last Reviewed in CardScreenStats when there is a review
+**Wrong**:
+```
+value={
+  typeof stat.value === 'number'
+    ? stat.value
+    : stat.value === 'Never' ? 0 : Number.NaN
+}
+```
+
+**Correct**:
+```
+value={stat.value} // where stat.value is always a string for Last Reviewed, never coerced to a number
+```
