@@ -19,6 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "apps/web/tailwind.config.js"],
   "exclude": ["node_modules", ".next", "dist"]
 }

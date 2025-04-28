@@ -13,15 +13,18 @@ import { ActivityIndicator, Text, SafeAreaView, View } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { ThemeProvider, useTheme } from '../lib/theme/context'
+import { SettingsSheetProvider } from '../src/shared/SettingsSheet/SettingsSheetContext'
 import { Slot } from 'expo-router'
 import React from 'react'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   // ThemeProvider must be outside useTheme
   return (
-    <ThemeProvider>
-      <InnerProviders>{children}</InnerProviders>
-    </ThemeProvider>
+    <SettingsSheetProvider>
+      <ThemeProvider>
+        <InnerProviders>{children}</InnerProviders>
+      </ThemeProvider>
+    </SettingsSheetProvider>
   )
 }
 
