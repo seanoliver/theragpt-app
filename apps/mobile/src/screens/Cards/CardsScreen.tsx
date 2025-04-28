@@ -1,21 +1,20 @@
+import { Theme } from '@/apps/mobile/lib/theme'
+import { Ionicons } from '@expo/vector-icons'
 import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
-// TODO: Placeholder imports for new components to be implemented
-// import { SearchBar } from './SearchBar';
-// import { NewCardButton } from './NewCardButton';
+import { useCardStore } from '../../store/useCardStore'
 import { CardList } from './CardList'
-// import { EmptyState } from './EmptyState';
 import { filterCardData } from './filterCardData'
-import { useCardData } from './useCardData'
-import { Theme } from '@/apps/mobile/lib/theme'
 
 export const CardsScreen = () => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
   const [searchQuery, setSearchQuery] = useState('')
-  const { data: cards, loading, error, createCard } = useCardData()
+
+  // Use Zustand store
+  const { cards, isLoading, error, addCard } = useCardStore()
 
   // Filtered data based on search query
   const filteredCards = useMemo(
@@ -25,12 +24,12 @@ export const CardsScreen = () => {
 
   // Handler for creating a new card
   const handleNew = async () => {
-    await createCard()
+    await addCard({ text: '', isActive: true })
     // Optionally scroll to top or show feedback
   }
 
   // TODO: Render loading or error state
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={styles.centered}>
         {/* Replace with a loading spinner if desired */}
@@ -50,6 +49,9 @@ export const CardsScreen = () => {
         <CardList cards={filteredCards} />
         {/* TODO: {filteredCards.length === 0 && <EmptyState />} */}
       </View>
+      <FAB onPress={handleNew}>
+        <Ionicons name="add" size={24} color={theme.colors.white} />
+      </FAB>
     </View>
   )
 }

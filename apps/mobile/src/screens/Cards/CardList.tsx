@@ -1,22 +1,22 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { FlatList, View, StyleSheet } from 'react-native'
 import { Card } from './Card'
-import { DisplayCard } from './useCardData'
+import { Card as CardType } from '@still/logic'
 import { SwipeAction, SwipeMenu } from '../../shared/SwipeMenu'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Theme } from '@/apps/mobile/lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-import { useCardService } from '../../hooks/useCardService'
+import { useCardStore } from '../../store/useCardStore'
+
 interface CardListProps {
-  cards: DisplayCard[]
+  cards: CardType[]
 }
 
 export const CardList = ({ cards }: CardListProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
-  const { service } = useCardService()
 
-  const getSwipeActions = (card: DisplayCard): SwipeAction[] => [
+  const getSwipeActions = (card: CardType): SwipeAction[] => [
     {
       label: 'archive',
       icon: (
@@ -24,7 +24,7 @@ export const CardList = ({ cards }: CardListProps) => {
       ),
       backgroundColor: theme.colors.accent,
       textColor: theme.colors.white,
-      onPress: () => service?.update({ id: card.id, isActive: false }),
+      onPress: () => useCardStore.getState().updateCard({ id: card.id, isActive: false }),
     },
     {
       label: 'delete',
@@ -33,7 +33,7 @@ export const CardList = ({ cards }: CardListProps) => {
       ),
       backgroundColor: theme.colors.errorAccent,
       textColor: theme.colors.white,
-      onPress: () => service?.deleteCard(card.id),
+      onPress: () => useCardStore.getState().deleteCard(card.id),
     },
   ]
 

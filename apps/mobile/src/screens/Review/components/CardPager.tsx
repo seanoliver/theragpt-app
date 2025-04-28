@@ -1,5 +1,5 @@
 import { cardInteractionService, Card } from '@still/logic'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Dimensions, View } from 'react-native'
 import PagerView, {
   PagerViewOnPageSelectedEvent,
@@ -18,6 +18,7 @@ type CardPagerProps = {
 
 export const CardPager = ({
   cards,
+  currentIndex,
   onPageSelected,
   themeObject,
 }: CardPagerProps) => {
@@ -27,15 +28,17 @@ export const CardPager = ({
     console.log('Listen pressed for card:', card.id)
   }
 
-  const handleReview = async (cardIndex: number) => {
-    try {
-      await cardInteractionService.logReview(cards[cardIndex].id)
-      onPageSelected(cardIndex)
-      console.log('Review logged for card:', cards[cardIndex].id)
-    } catch (error) {
-      console.error('Review failed for card:', cards[cardIndex].id, error)
+  // Track which cards have been logged to avoid duplicate logs
+  const loggedCardIds = useRef<Set<string>>(new Set())
+
+  useEffect(() => {
+    if (cards[currentIndex] && !loggedCardIds.current.has(cards[currentIndex].id)) {
+      cardInteractionService.logReview(cards[currentIndex].id)
+      loggedCardIds.current.add(cards[currentIndex].id)
+      // eslint-disable-next-line no-console
+      console.log('Review logged for card:', cards[currentIndex].id)
     }
-  }
+  }, [currentIndex, cards])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -49,7 +52,7 @@ export const CardPager = ({
         orientation="horizontal"
         overdrag={true}
         onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
-          handleReview(e.nativeEvent.position)
+          onPageSelected(e.nativeEvent.position)
         }
         key={cards.length} // Ensures re-render if cards change
       >

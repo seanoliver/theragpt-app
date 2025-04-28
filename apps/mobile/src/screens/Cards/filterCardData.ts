@@ -1,17 +1,17 @@
-import { DisplayCard } from './useCardData'
+import { Card } from '@still/logic'
 
 /**
  * Filters the cards by search query.
  * Case-insensitive, matches text and (optionally) other meta fields.
  */
 export const filterCardData = (
-  cards: DisplayCard[],
+  cards: Card[],
   query: string,
-): DisplayCard[] => {
+): Card[] => {
   if (!query) return cards
   const lower = query.toLowerCase()
   return cards.filter(
     s => s.text.toLowerCase().includes(lower),
-    // Add more fields to search as needed (e.g., s.category)
+    // Add more fields to search as needed (e.g., s.tags)
   )
 }
