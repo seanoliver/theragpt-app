@@ -22,5 +22,9 @@ import type { Card } from '@still/logic'
 - All card state and actions in mobile apps should use useCardStore (Zustand) from store/useCardStore.ts.
 - Do not use custom hooks like useCardService for card state or actions.
 
+### State Management: Review/Vote Actions
+- All review and vote actions in the review flow (ReviewScreen, CardPager, CardActions, etc.) must use the Zustand store actions (reviewCard, upvoteCard, downvoteCard) to ensure immediate state sync across all screens.
+- Card stats (last reviewed, votes, review count, etc.) should always be derived from the store and update on store changes.
+
 ### Review Logging UX
 - Log the review for a card as soon as it is first shown (when currentIndex changes), not only when the user advances or swipes. Avoid duplicate logs for the same card.

@@ -1,4 +1,5 @@
-import { cardInteractionService, Card } from '@still/logic'
+import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
+import { Card } from '@still/logic'
 import React, { useEffect, useRef } from 'react'
 import { Dimensions, View } from 'react-native'
 import PagerView, {
@@ -14,6 +15,7 @@ type CardPagerProps = {
   currentIndex: number
   onPageSelected: (index: number) => void
   themeObject: any
+  loggedCardIds: React.MutableRefObject<Set<string>>
 }
 
 export const CardPager = ({
@@ -21,6 +23,7 @@ export const CardPager = ({
   currentIndex,
   onPageSelected,
   themeObject,
+  loggedCardIds,
 }: CardPagerProps) => {
   const handleListen = (card: Card) => {
     // TODO: Replace with real logic
@@ -28,17 +31,17 @@ export const CardPager = ({
     console.log('Listen pressed for card:', card.id)
   }
 
-  // Track which cards have been logged to avoid duplicate logs
-  const loggedCardIds = useRef<Set<string>>(new Set())
+  const reviewCard = useCardStore(state => state.reviewCard)
 
   useEffect(() => {
-    if (cards[currentIndex] && !loggedCardIds.current.has(cards[currentIndex].id)) {
-      cardInteractionService.logReview(cards[currentIndex].id)
-      loggedCardIds.current.add(cards[currentIndex].id)
+    const card = cards[currentIndex]
+    if (card && !loggedCardIds.current.has(card.id)) {
+      reviewCard(card.id)
+      loggedCardIds.current.add(card.id)
       // eslint-disable-next-line no-console
-      console.log('Review logged for card:', cards[currentIndex].id)
+      console.log('Review logged for card (store):', card.id)
     }
-  }, [currentIndex, cards])
+  }, [currentIndex, reviewCard])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -1,5 +1,5 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { CardPager } from './components/CardPager'
 import { Theme } from '@/apps/mobile/lib/theme/theme'
@@ -7,6 +7,7 @@ import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 
 export const ReviewScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const loggedCardIds = useRef<Set<string>>(new Set())
   const { cards, isLoading, error } = useCardStore()
 
   const { themeObject } = useTheme()
@@ -44,6 +45,7 @@ export const ReviewScreen = () => {
           currentIndex={currentIndex}
           onPageSelected={setCurrentIndex}
           themeObject={themeObject}
+          loggedCardIds={loggedCardIds}
         />
       </View>
 

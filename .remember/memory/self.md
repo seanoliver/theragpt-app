@@ -77,3 +77,51 @@ const card = cardId ? cards.find(card => card.id === cardId) : null
 ```
 
 - Also, updateCard and deleteCard should be called as actions from useCardStore, not from a service object.
+
+### Mistake: Not using Zustand store for review/vote actions in review flow, causing stale stats in CardsScreen
+**Wrong**:
+```
+// In CardPager.tsx
+cardInteractionService.logReview(cards[currentIndex].id)
+
+// In CardActions.tsx
+const { handleUpvote, handleDownvote } = useCardInteractionService(cardId)
+```
+
+**Correct**:
+```
+// In CardPager.tsx
+const reviewCard = useCardStore(state => state.reviewCard)
+reviewCard(cards[currentIndex].id)
+
+// In CardActions.tsx
+const upvoteCard = useCardStore(state => state.upvoteCard)
+const downvoteCard = useCardStore(state => state.downvoteCard)
+// ...
+onPress={() => upvoteCard(cardId)}
+onPress={() => downvoteCard(cardId)}
+```
+
+- Also, update useCardInteractionService to refetch stats when the card changes in the store, and pass the card as a dependency in Card.tsx.
+
+### Mistake: Including 'cards' in the dependency array of reviewCard useEffect in CardPager.tsx, causing infinite loop
+**Wrong**:
+```
+useEffect(() => {
+  if (cards[currentIndex] && !loggedCardIds.current.has(cards[currentIndex].id)) {
+    reviewCard(cards[currentIndex].id)
+    loggedCardIds.current.add(cards[currentIndex].id)
+  }
+}, [currentIndex, cards, reviewCard])
+```
+
+**Correct**:
+```
+useEffect(() => {
+  const card = cards[currentIndex]
+  if (card && !loggedCardIds.current.has(card.id)) {
+    reviewCard(card.id)
+    loggedCardIds.current.add(card.id)
+  }
+}, [currentIndex, reviewCard])
+```

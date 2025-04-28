@@ -2,20 +2,22 @@ import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
-import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService'
+import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
+
 type CardActionsProps = {
   cardId: string
 }
 
 export const CardActions: React.FC<CardActionsProps> = ({ cardId }) => {
   const { themeObject: theme } = useTheme()
-  const { handleUpvote, handleDownvote } = useCardInteractionService(cardId)
+  const upvoteCard = useCardStore(state => state.upvoteCard)
+  const downvoteCard = useCardStore(state => state.downvoteCard)
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.actionButton}
-        onPress={handleDownvote}
+        onPress={() => downvoteCard(cardId)}
         accessibilityLabel="Downvote"
       >
         <Ionicons
@@ -26,7 +28,7 @@ export const CardActions: React.FC<CardActionsProps> = ({ cardId }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.actionButton}
-        onPress={handleUpvote}
+        onPress={() => upvoteCard(cardId)}
         accessibilityLabel="Upvote"
       >
         <Ionicons
