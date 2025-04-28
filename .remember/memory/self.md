@@ -27,3 +27,34 @@ return <CardScreen />
 ```
 return <CardScreen key={cardId} />
 ```
+
+### Mistake: Using Zustand persist middleware without specifying AsyncStorage in React Native
+**Wrong**:
+```
+export const useCardStore = create<CardStore>()(
+  persist(
+    (set, get) => ({ /* ... */ }),
+    {
+      name: 'card-storage',
+      partialize: (state) => ({ cards: state.cards }),
+    }
+  )
+);
+```
+
+**Correct**:
+```
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { persist, createJSONStorage } from 'zustand/middleware';
+
+export const useCardStore = create<CardStore>()(
+  persist(
+    (set, get) => ({ /* ... */ }),
+    {
+      name: 'card-storage',
+      partialize: (state) => ({ cards: state.cards }),
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
+```

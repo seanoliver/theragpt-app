@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
@@ -13,13 +13,8 @@ export const CardsScreen = () => {
   const styles = makeStyles(theme)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Use Zustand store instead of useCardData
-  const { cards, isLoading, error, initialize, addCard } = useCardStore()
-
-  // Initialize cards on mount
-  useEffect(() => {
-    initialize()
-  }, [initialize])
+  // Use Zustand store
+  const { cards, isLoading, error, addCard } = useCardStore()
 
   // Filtered data based on search query
   const filteredCards = useMemo(

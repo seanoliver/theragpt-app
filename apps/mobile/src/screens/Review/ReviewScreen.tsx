@@ -1,21 +1,37 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { useCardService } from '../../hooks/useCardService'
 import { CardPager } from './components/CardPager'
 import { Theme } from '@/apps/mobile/lib/theme/theme'
-import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService'
+import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
+
 export const ReviewScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const { service, cards } = useCardService()
+  const { cards, isLoading, error } = useCardStore()
 
   const { themeObject } = useTheme()
   const styles = makeStyles(themeObject)
 
-  if (!service || !cards) {
+  if (isLoading) {
     return (
       <View>
         <Text>Loading...</Text>
+      </View>
+    )
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error}</Text>
+      </View>
+    )
+  }
+
+  if (!cards || cards.length === 0) {
+    return (
+      <View>
+        <Text>No cards available</Text>
       </View>
     )
   }

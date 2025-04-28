@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { Card, cardService, CreateCardParams, UpdateCardParams, cardInteractionService } from '@still/logic';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface CardStore {
   cards: Card[];
@@ -176,6 +177,7 @@ export const useCardStore = create<CardStore>()(
     {
       name: 'card-storage', // unique name for localStorage
       partialize: (state) => ({ cards: state.cards }), // only persist cards
+      storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage for React Native
     }
   )
 );
