@@ -1,14 +1,15 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { FlatList, View, StyleSheet } from 'react-native'
 import { Card } from './Card'
-import { DisplayCard } from './useCardData'
+import { Card as CardType } from '@still/logic'
 import { SwipeAction, SwipeMenu } from '../../shared/SwipeMenu'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Theme } from '@/apps/mobile/lib/theme'
 import { Ionicons } from '@expo/vector-icons'
 import { useCardService } from '../../hooks/useCardService'
+
 interface CardListProps {
-  cards: DisplayCard[]
+  cards: CardType[]
 }
 
 export const CardList = ({ cards }: CardListProps) => {
@@ -16,7 +17,7 @@ export const CardList = ({ cards }: CardListProps) => {
   const styles = makeStyles(theme)
   const { service } = useCardService()
 
-  const getSwipeActions = (card: DisplayCard): SwipeAction[] => [
+  const getSwipeActions = (card: CardType): SwipeAction[] => [
     {
       label: 'archive',
       icon: (

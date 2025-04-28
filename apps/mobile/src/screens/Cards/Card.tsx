@@ -1,14 +1,14 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
-import { DisplayCard } from './useCardData'
+import { Card as CardType } from '@still/logic'
 import { Theme } from '@/apps/mobile/lib/theme'
 import { router } from 'expo-router'
 import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCardInteractionService'
 
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
-  card: DisplayCard
+  card: CardType
 }
 
 export const Card: React.FC<CardProps> = ({ card }) => {
@@ -16,8 +16,13 @@ export const Card: React.FC<CardProps> = ({ card }) => {
   const styles = makeStyles(theme)
   const { netVotes, reviewCount } = useCardInteractionService(card.id)
 
-  const category = card.category || undefined
-  const lastReviewed = card.lastReviewed || 'Never'
+  const category = card.tags?.[0]
+  const lastReviewed = card.lastReviewed
+    ? new Date(card.lastReviewed).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      })
+    : 'Never'
   const frequency = netVotes ? (netVotes > 0 ? 'More' : 'Less') : undefined
 
   const getNetVotesColor = () => {
