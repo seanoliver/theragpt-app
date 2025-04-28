@@ -35,16 +35,16 @@ export interface CreateCardParams {
 }
 
 const DEFAULT_CARDS = [
-  `I know the key to success is always to take action, even when I don't feel ready for it.`,
-  `I know that what I react to in others, I strengthen in myself. I focus all of my energy on the current moment, so that I can consistently act with calm, intention, and thoughtfulness.`,
-  `I know which actions bring me closer to my goals and which ones take me away from them. I focus on the former and work to eliminate the latter. Currently, these actions include:\n- excercise,\n- meditation,\n- conscious and purposeful eating,\n- taking exceptional notes,\n- writing,\n- setting a realistic and achievable daily to do list, and\n- reading this personal manifesto with the knowing conviction that its words are true.`,
-  `I know that alcohol and drugs take me away from my goals by sapping my energy, my creativity, my compassion, and my capacity for mindfulness.`,
-  `I create positive habits, and I know that progress comes little by little. By making a 1% improvement every day, I will change my life dramatically over time.`,
-  `I do not get down about my mistakes as they are proof that I am trying. The more I practice trying, failing, and learning, the easier it will become. I know the only thing that counts is what I do from now on.`,
-  `I know that working on a problem reduces my resistance to it. It is harder to fear things when I am making progress on them—even if that progress is imperfect and slow. Action relieves anxiety.`,
-  `I know that when I embrace discomfort, I embrace progress. It is only by challenging myself that I will continue to grow toward my dreams.`,
-  `I strongly believe in the path I am on. I do not judge others, nor do I compare myself to others. Everyone is on their own path, and I will focus on mine.`,
-  `I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and my dreams will not work unless I do.`,
+  'I know the key to success is always to take action, even when I don\'t feel ready for it.',
+  'I know that what I react to in others, I strengthen in myself. I focus all of my energy on the current moment, so that I can consistently act with calm, intention, and thoughtfulness.',
+  'I know which actions bring me closer to my goals and which ones take me away from them. I focus on the former and work to eliminate the latter. Currently, these actions include:\n- excercise,\n- meditation,\n- conscious and purposeful eating,\n- taking exceptional notes,\n- writing,\n- setting a realistic and achievable daily to do list, and\n- reading this personal manifesto with the knowing conviction that its words are true.',
+  'I know that alcohol and drugs take me away from my goals by sapping my energy, my creativity, my compassion, and my capacity for mindfulness.',
+  'I create positive habits, and I know that progress comes little by little. By making a 1% improvement every day, I will change my life dramatically over time.',
+  'I do not get down about my mistakes as they are proof that I am trying. The more I practice trying, failing, and learning, the easier it will become. I know the only thing that counts is what I do from now on.',
+  'I know that working on a problem reduces my resistance to it. It is harder to fear things when I am making progress on them—even if that progress is imperfect and slow. Action relieves anxiety.',
+  'I know that when I embrace discomfort, I embrace progress. It is only by challenging myself that I will continue to grow toward my dreams.',
+  'I strongly believe in the path I am on. I do not judge others, nor do I compare myself to others. Everyone is on their own path, and I will focus on mine.',
+  'I know that how I do anything is how I do everything and that challenge today leads to change tomorrow. I get stronger with each good choice I make, and my dreams will not work unless I do.',
 ]
 
 type CardsListener = (cards: Card[]) => void

@@ -8,20 +8,21 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native'
-import { useCardService } from '../../hooks/useCardService'
+import { useCardStore } from '../../store/useCardStore'
 import debounce from 'lodash/debounce'
 import { useCallback, useRef, useEffect, useState } from 'react'
 
 export const CardScreenEdit = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
-  const { service } = useCardService()
   const [text, setText] = useState(card.text)
+
+  const updateCard = useCardStore(state => state.updateCard)
 
   const debouncedSave = useRef(
     debounce(async (newText: string) => {
-      if (service && card && newText !== card.text) {
-        await service.update({ id: card.id, text: newText })
+      if (card && newText !== card.text) {
+        await updateCard({ id: card.id, text: newText })
       }
     }, 300),
   )

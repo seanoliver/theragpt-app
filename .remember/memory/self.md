@@ -58,3 +58,22 @@ export const useCardStore = create<CardStore>()(
   )
 );
 ```
+
+### Mistake: Using useCardService instead of useCardStore (Zustand) for card state management in mobile screens
+**Wrong**:
+```
+import { useCardService } from '../../hooks/useCardService'
+const { service, cards, getCardById } = useCardService()
+// ...
+const card = cardId ? getCardById(cardId) : null
+```
+
+**Correct**:
+```
+import { useCardStore } from '../../store/useCardStore'
+const cards = useCardStore(state => state.cards)
+const isLoading = useCardStore(state => state.isLoading)
+const card = cardId ? cards.find(card => card.id === cardId) : null
+```
+
+- Also, updateCard and deleteCard should be called as actions from useCardStore, not from a service object.

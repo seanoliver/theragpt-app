@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Modal, Platform } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
-import { useCardService } from '../../hooks/useCardService'
+import { useCardStore } from '../../store/useCardStore'
 import ThemeSelector from './ThemeSelector'
 import PaletteSelector from './PaletteSelector'
 import StatisticsDisplay from './StatisticsDisplay'
@@ -13,7 +13,7 @@ type SettingsSheetProps = {
 
 const SettingsSheet = ({ visible, onClose }: SettingsSheetProps) => {
   const { themeObject: theme } = useTheme()
-  const { cards } = useCardService(false)
+  const cards = useCardStore(state => state.cards)
 
   // Styles
   const styles = makeStyles(theme)

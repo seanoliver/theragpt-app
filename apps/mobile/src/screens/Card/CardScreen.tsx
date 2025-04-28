@@ -1,22 +1,22 @@
-import { Card } from '@still/logic'
 import { useLocalSearchParams } from 'expo-router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
-import { useCardService } from '../../hooks/useCardService'
 import { InstructionalFooterText } from '../../shared/InstructionalFooterText'
+import { useCardStore } from '../../store/useCardStore'
 import { CardScreenEdit } from './CardEdit'
-import { CardScreenStats } from './CardScreenStats'
 import { CardScreenAIVariations } from './CardScreenAIVariations'
+import { CardScreenStats } from './CardScreenStats'
 
 export const CardScreen = () => {
   const { cardId } = useLocalSearchParams<{ cardId: string }>()
-  const { service, cards, getCardById } = useCardService()
   const { themeObject: theme } = useTheme()
+  const cards = useCardStore(state => state.cards)
+  const isLoading = useCardStore(state => state.isLoading)
 
-  const card = cardId ? getCardById(cardId) : null
+  const card = cardId ? cards.find(card => card.id === cardId) : null
 
-  if (!service || !cards || !card) {
+  if (isLoading || !cards) {
     // Keep existing loading indicator for when card data is not yet available
     return (
       <View

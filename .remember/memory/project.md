@@ -17,3 +17,7 @@ import type { Card } from '@still/logic'
 - Actual content should be centered and constrained using a container (e.g., max-w-screen-xl mx-auto).
 - Do not apply max-width or centering to the outermost wrapper; only to inner content containers.
 - Use Tailwind classes as in the landing page for consistency.
+
+### State Management: Use Zustand (useCardStore) for cards in mobile
+- All card state and actions in mobile apps should use useCardStore (Zustand) from store/useCardStore.ts.
+- Do not use custom hooks like useCardService for card state or actions.

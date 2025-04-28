@@ -1,12 +1,12 @@
+import { Theme } from '@/apps/mobile/lib/theme'
+import { Ionicons } from '@expo/vector-icons'
 import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
+import { useCardStore } from '../../store/useCardStore'
 import { CardList } from './CardList'
 import { filterCardData } from './filterCardData'
-import { useCardStore } from '../../store/useCardStore'
-import { Theme } from '@/apps/mobile/lib/theme'
-import { Ionicons } from '@expo/vector-icons'
 
 export const CardsScreen = () => {
   const { themeObject: theme } = useTheme()

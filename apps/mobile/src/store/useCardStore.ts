@@ -1,24 +1,30 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { Card, cardService, CreateCardParams, UpdateCardParams, cardInteractionService } from '@still/logic';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import {
+  Card,
+  cardService,
+  CreateCardParams,
+  UpdateCardParams,
+  cardInteractionService,
+} from '@still/logic'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface CardStore {
-  cards: Card[];
-  isLoading: boolean;
-  error: string | null;
+  cards: Card[]
+  isLoading: boolean
+  error: string | null
   // Actions
-  initialize: () => Promise<void>;
-  setCards: (cards: Card[]) => void;
-  addCard: (params: CreateCardParams) => Promise<void>;
-  updateCard: (params: UpdateCardParams) => Promise<void>;
-  deleteCard: (id: string) => Promise<void>;
+  initialize: () => Promise<void>
+  setCards: (cards: Card[]) => void
+  addCard: (params: CreateCardParams) => Promise<void>
+  updateCard: (params: UpdateCardParams) => Promise<void>
+  deleteCard: (id: string) => Promise<void>
   // Card interaction actions
-  upvoteCard: (id: string) => Promise<void>;
-  downvoteCard: (id: string) => Promise<void>;
-  reviewCard: (id: string) => Promise<void>;
-  setLoading: (isLoading: boolean) => void;
-  setError: (error: string | null) => void;
+  upvoteCard: (id: string) => Promise<void>
+  downvoteCard: (id: string) => Promise<void>
+  reviewCard: (id: string) => Promise<void>
+  setLoading: (isLoading: boolean) => void
+  setError: (error: string | null) => void
 }
 
 export const useCardStore = create<CardStore>()(
@@ -30,154 +36,154 @@ export const useCardStore = create<CardStore>()(
 
       initialize: async () => {
         try {
-          set({ isLoading: true, error: null });
-          const cards = await cardService.init();
-          set({ cards, isLoading: false });
+          set({ isLoading: true, error: null })
+          const cards = await cardService.init()
+          set({ cards, isLoading: false })
         } catch (error) {
-          set({ error: 'Failed to initialize cards', isLoading: false });
-          console.error('Error initializing cards:', error);
+          set({ error: 'Failed to initialize cards', isLoading: false })
+          console.error('Error initializing cards:', error)
         }
       },
 
-      setCards: (cards) => set({ cards }),
+      setCards: cards => set({ cards }),
 
-      addCard: async (params) => {
+      addCard: async params => {
         try {
-          set({ isLoading: true, error: null });
-          const newCard = await cardService.create(params);
-          set((state) => ({
+          set({ isLoading: true, error: null })
+          const newCard = await cardService.create(params)
+          set(state => ({
             cards: [...state.cards, newCard],
             isLoading: false,
-          }));
+          }))
         } catch (error) {
-          set({ error: 'Failed to add card', isLoading: false });
-          console.error('Error adding card:', error);
+          set({ error: 'Failed to add card', isLoading: false })
+          console.error('Error adding card:', error)
         }
       },
 
-      updateCard: async (params) => {
+      updateCard: async params => {
         try {
-          set({ isLoading: true, error: null });
-          const updatedCard = await cardService.update(params);
-          set((state) => ({
-            cards: state.cards.map((card) =>
-              card.id === params.id ? updatedCard : card
+          set({ isLoading: true, error: null })
+          const updatedCard = await cardService.update(params)
+          set(state => ({
+            cards: state.cards.map(card =>
+              card.id === params.id ? updatedCard : card,
             ),
             isLoading: false,
-          }));
+          }))
         } catch (error) {
-          set({ error: 'Failed to update card', isLoading: false });
-          console.error('Error updating card:', error);
+          set({ error: 'Failed to update card', isLoading: false })
+          console.error('Error updating card:', error)
         }
       },
 
-      deleteCard: async (id) => {
+      deleteCard: async id => {
         try {
-          set({ isLoading: true, error: null });
-          await cardService.deleteCard(id);
-          set((state) => ({
-            cards: state.cards.filter((card) => card.id !== id),
+          set({ isLoading: true, error: null })
+          await cardService.deleteCard(id)
+          set(state => ({
+            cards: state.cards.filter(card => card.id !== id),
             isLoading: false,
-          }));
+          }))
         } catch (error) {
-          set({ error: 'Failed to delete card', isLoading: false });
-          console.error('Error deleting card:', error);
+          set({ error: 'Failed to delete card', isLoading: false })
+          console.error('Error deleting card:', error)
         }
       },
 
       // Card interaction actions
-      upvoteCard: async (id) => {
+      upvoteCard: async id => {
         try {
-          set({ isLoading: true, error: null });
-          await cardInteractionService.logVote(id, 'upvote');
-          const totals = await cardInteractionService.getTotals(id);
+          set({ isLoading: true, error: null })
+          await cardInteractionService.logVote(id, 'upvote')
+          const totals = await cardInteractionService.getTotals(id)
           await cardService.update({
             id,
             upvotes: totals.upvotes,
             downvotes: totals.downvotes,
-          });
-          set((state) => ({
-            cards: state.cards.map((card) =>
+          })
+          set(state => ({
+            cards: state.cards.map(card =>
               card.id === id
                 ? {
                     ...card,
                     upvotes: totals.upvotes,
                     downvotes: totals.downvotes,
                   }
-                : card
+                : card,
             ),
             isLoading: false,
-          }));
+          }))
         } catch (error) {
-          set({ error: 'Failed to upvote card', isLoading: false });
-          console.error('Error upvoting card:', error);
+          set({ error: 'Failed to upvote card', isLoading: false })
+          console.error('Error upvoting card:', error)
         }
       },
 
-      downvoteCard: async (id) => {
+      downvoteCard: async id => {
         try {
-          set({ isLoading: true, error: null });
-          await cardInteractionService.logVote(id, 'downvote');
-          const totals = await cardInteractionService.getTotals(id);
+          set({ isLoading: true, error: null })
+          await cardInteractionService.logVote(id, 'downvote')
+          const totals = await cardInteractionService.getTotals(id)
           await cardService.update({
             id,
             upvotes: totals.upvotes,
             downvotes: totals.downvotes,
-          });
-          set((state) => ({
-            cards: state.cards.map((card) =>
+          })
+          set(state => ({
+            cards: state.cards.map(card =>
               card.id === id
                 ? {
                     ...card,
                     upvotes: totals.upvotes,
                     downvotes: totals.downvotes,
                   }
-                : card
+                : card,
             ),
             isLoading: false,
-          }));
+          }))
         } catch (error) {
-          set({ error: 'Failed to downvote card', isLoading: false });
-          console.error('Error downvoting card:', error);
+          set({ error: 'Failed to downvote card', isLoading: false })
+          console.error('Error downvoting card:', error)
         }
       },
 
-      reviewCard: async (id) => {
+      reviewCard: async id => {
         try {
-          set({ isLoading: true, error: null });
-          await cardInteractionService.logReview(id);
-          const totals = await cardInteractionService.getTotals(id);
+          set({ isLoading: true, error: null })
+          await cardInteractionService.logReview(id)
+          const totals = await cardInteractionService.getTotals(id)
           await cardService.update({
             id,
             reviews: totals.reviews,
             lastReviewed: Date.now(),
-          });
-          set((state) => ({
-            cards: state.cards.map((card) =>
+          })
+          set(state => ({
+            cards: state.cards.map(card =>
               card.id === id
                 ? {
                     ...card,
                     reviews: totals.reviews,
                     lastReviewed: Date.now(),
                   }
-                : card
+                : card,
             ),
             isLoading: false,
-          }));
+          }))
         } catch (error) {
-          set({ error: 'Failed to review card', isLoading: false });
-          console.error('Error reviewing card:', error);
+          set({ error: 'Failed to review card', isLoading: false })
+          console.error('Error reviewing card:', error)
         }
       },
 
-      setLoading: (isLoading) => set({ isLoading }),
+      setLoading: isLoading => set({ isLoading }),
 
-      setError: (error) => set({ error }),
+      setError: error => set({ error }),
     }),
     {
       name: 'card-storage', // unique name for localStorage
-      partialize: (state) => ({ cards: state.cards }), // only persist cards
+      partialize: state => ({ cards: state.cards }), // only persist cards
       storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage for React Native
-    }
-  )
-);
+    },
+  ),
+)

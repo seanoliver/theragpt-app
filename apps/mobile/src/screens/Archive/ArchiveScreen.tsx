@@ -1,19 +1,30 @@
-import { Ionicons } from '@expo/vector-icons'
-import React, { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { useTheme } from '../../../lib/theme/context'
-import { useCardService } from '../../hooks/useCardService'
-import { FAB } from '../../shared/FAB'
-import { ArchiveEmptyState } from './components/ArchiveEmptyState'
-import { ArchiveLineItem } from './components/ArchiveLineItem'
+import { Ionicons } from '@expo/vector-icons';
+import React, { useMemo } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '../../../lib/theme/context';
+import { FAB } from '../../shared/FAB';
+import { useCardStore } from '../../store/useCardStore';
+import { ArchiveEmptyState } from './components/ArchiveEmptyState';
+import { ArchiveLineItem } from './components/ArchiveLineItem';
 
 export const ArchiveScreen = () => {
-  const { service, cards } = useCardService(true)
-  const [newlyCreatedId, setNewlyCreatedId] = useState<string | null>(null)
-
   const { themeObject: theme } = useTheme()
 
-  if (!service || !cards) {
+  // Zustand store selectors
+  const cards = useCardStore(state => state.cards)
+  const isLoading = useCardStore(state => state.isLoading)
+  const addCard = useCardStore(state => state.addCard)
+  const updateCard = useCardStore(state => state.updateCard)
+  const deleteCard = useCardStore(state => state.deleteCard)
+
+  // Filter for archived cards (isActive === false)
+  const archivedCards = useMemo(
+    () => cards.filter(card => !card.isActive),
+    [cards],
+  )
+  const isEmpty = archivedCards.length === 0
+
+  if (isLoading) {
     return (
       <View
         style={{
@@ -28,12 +39,14 @@ export const ArchiveScreen = () => {
     )
   }
 
-  const isEmpty = cards.length === 0
-
   const handleAddCard = async () => {
-    if (!service) return
-    const newCard = await service.create({ text: '', isActive: false })
-    setNewlyCreatedId(newCard.id)
+    const prevLength = cards.length
+    await addCard({ text: '', isActive: false })
+    // After addCard, the new card should be last in the array
+    const updatedCards = useCardStore.getState().cards
+    if (updatedCards.length > prevLength) {
+      const lastCard = updatedCards[updatedCards.length - 1]
+    }
   }
 
   return (
@@ -45,14 +58,14 @@ export const ArchiveScreen = () => {
           style={styles.cardsList}
           keyboardShouldPersistTaps="handled"
         >
-          {cards.map((card, index) => (
+          {archivedCards.map((card, index) => (
             <React.Fragment key={card.id}>
               <ArchiveLineItem
                 card={card}
-                onPublish={() => service.update({ id: card.id, isActive: true })}
-                onDelete={() => service.deleteCard(card.id)}
+                onPublish={() => updateCard({ id: card.id, isActive: true })}
+                onDelete={() => deleteCard(card.id)}
               />
-              {index < cards.length - 1 && (
+              {index < archivedCards.length - 1 && (
                 <View
                   style={{
                     height: 1,
