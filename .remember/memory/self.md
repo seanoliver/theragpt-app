@@ -160,3 +160,20 @@ const handleCardPress = (card: CardType) => bottomSheetRef.current?.open(card)
 
 // CardList passes onPress to Card, Card uses onPress prop
 ```
+
+### Mistake: CardsScreen did not filter out archived cards (isActive: false)
+**Wrong**:
+```
+const filteredCards = useMemo(
+  () => filterCardData(cards, searchQuery),
+  [cards, searchQuery],
+)
+```
+
+**Correct**:
+```
+const filteredCards = useMemo(
+  () => filterCardData(cards.filter(card => card.isActive), searchQuery),
+  [cards, searchQuery],
+)
+```
