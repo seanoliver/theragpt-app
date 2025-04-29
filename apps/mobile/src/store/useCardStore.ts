@@ -63,7 +63,6 @@ export const useCardStore = create<CardStore>()(
 
       updateCard: async params => {
         try {
-          set({ isLoading: true, error: null })
           const updatedCard = await cardService.update(params)
           set(state => ({
             cards: state.cards.map(card =>
