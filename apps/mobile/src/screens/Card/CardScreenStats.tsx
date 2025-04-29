@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 import { Card } from '@still/logic'
-import { useCardInteractionService } from '../../shared/hooks/useCardInteractionService';
+import { useCardInteractionService } from '../../shared/hooks/useCardInteractionService'
 
 export const CardScreenStats = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
@@ -11,37 +11,57 @@ export const CardScreenStats = ({ card }: { card: Card }) => {
 
   const { netVotes, reviewCount } = useCardInteractionService(card.id)
 
-  const stats = [
-    {
-      icon: 'calendar',
-      value:
-        reviewCount > 0 && card.lastReviewed
-          ? new Date(card.lastReviewed).toLocaleDateString()
-          : 'Never',
-      label: 'Last Reviewed',
-    },
-    {
-      icon: netVotes > 0 ? 'chevron-up' : 'chevron-down',
-      value: netVotes,
-      label: 'Net Votes',
-    },
-    {
-      icon: 'eye',
-      value: reviewCount,
-      label: 'Reviews',
-    },
-  ]
+  const stats = useMemo(
+    () => [
+      {
+        icon: 'calendar-outline',
+        value:
+          reviewCount > 0 && card.lastReviewed
+            ? new Date(card.lastReviewed).toLocaleDateString()
+            : 'Never',
+        label: 'Last Review',
+      },
+      {
+        icon:
+          netVotes === 0
+            ? 'checkmark-circle-outline'
+            : netVotes > 0
+              ? 'chevron-up'
+              : 'chevron-down',
+        value: netVotes,
+        label: 'Net Votes',
+      },
+      {
+        icon: 'eye-outline',
+        value: reviewCount,
+        label: 'Reviews',
+      },
+    ],
+    [reviewCount, card.lastReviewed, netVotes],
+  )
 
   return (
     <View style={styles.statsRow}>
       {/* Last Reviewed */}
       {stats.map((stat, index) => (
-        <StatBox
-          key={index}
-          icon={stat.icon as keyof typeof Ionicons.glyphMap}
-          value={stat.value}
-          label={stat.label}
-        />
+        <React.Fragment key={index}>
+          <StatBox
+            icon={stat.icon as keyof typeof Ionicons.glyphMap}
+            value={stat.value}
+            label={stat.label}
+          />
+          {index < stats.length - 1 && (
+            <View
+              style={{
+                width: 1,
+                height: '50%',
+                backgroundColor: theme.colors.border,
+                alignSelf: 'center',
+                marginHorizontal: 6,
+              }}
+            />
+          )}
+        </React.Fragment>
       ))}
     </View>
   )
@@ -61,6 +81,7 @@ const StatBox = ({
 
   return (
     <View style={styles.statCard}>
+      <Text style={styles.statLabel}>{label}</Text>
       <Ionicons
         name={icon}
         size={22}
@@ -68,7 +89,6 @@ const StatBox = ({
         style={styles.statIcon}
       />
       <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
     </View>
   )
 }
@@ -80,34 +100,40 @@ const makeStyles = (theme: Theme) =>
       justifyContent: 'space-between',
       marginBottom: 24,
       gap: 10,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: theme.colors.border,
     },
     statCard: {
       flex: 1,
+      flexDirection: 'column',
+      gap: 6,
       alignItems: 'center',
-      borderRadius: 10,
-      borderWidth: 1,
       paddingVertical: 12,
       paddingHorizontal: 10,
       marginHorizontal: 2,
       minWidth: 0,
       backgroundColor: theme.colors.background,
-      borderColor: theme.colors.borderSubtle,
+      borderColor: theme.colors.border,
     },
     statIcon: {
       marginBottom: 4,
+      fontSize: 18,
+      color: theme.colors.textDisabled,
     },
     statValue: {
-      fontSize: 16,
-      fontWeight: '700',
+      fontSize: 12,
+      fontWeight: '400',
       marginBottom: 2,
       textAlign: 'center',
-      color: theme.colors.textOnBackground,
+      color: theme.colors.textDisabled,
     },
     statLabel: {
-      fontSize: 13,
-      fontWeight: '400',
+      fontSize: 10,
+      fontWeight: '600',
       opacity: 0.7,
       textAlign: 'center',
-      color: theme.colors.textOnBackground,
+      color: theme.colors.textDisabled,
+      textTransform: 'uppercase',
     },
   })

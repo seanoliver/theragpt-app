@@ -58,13 +58,6 @@ export const Card: React.FC<CardProps> = ({ card }) => {
                   {netVotes}
                 </Text>
               )}
-              {frequency && (
-                <Text
-                  style={[styles.frequency, { color: getFrequencyColor() }]}
-                >
-                  {frequency}
-                </Text>
-              )}
             </View>
           </View>
         )}
