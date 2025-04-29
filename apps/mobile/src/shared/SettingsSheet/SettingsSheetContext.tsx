@@ -1,5 +1,8 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet'
 import React, {
   createContext,
   ReactNode,
@@ -31,13 +34,20 @@ export const useSettingsContext = (): SettingsContextType => {
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ['95%'], [])
+  const snapPoints = useMemo(() => ['40%'], [])
 
   const openSettings = useCallback(() => bottomSheetRef.current?.expand(), [])
   const closeSettings = useCallback(() => bottomSheetRef.current?.close(), [])
 
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
+
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop {...props} enableTouchThrough={true} />
+    ),
+    [],
+  )
 
   return (
     <SettingsContext.Provider
@@ -50,12 +60,13 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         index={-1}
         enablePanDownToClose
         onClose={closeSettings}
+        backdropComponent={renderBackdrop}
       >
         <BottomSheetView style={styles.overlay}>
           <View style={styles.sheet}>
             <View style={styles.handle} />
             <ThemeSelector />
-            <PaletteSelector />
+            {/* <PaletteSelector /> */}
             {/* <StatisticsDisplay cards={cards} /> */}
           </View>
           <View style={styles.background} onTouchEnd={closeSettings} />
@@ -69,21 +80,16 @@ const makeStyles = (theme: any) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      justifyContent: 'flex-end',
-      backgroundColor: 'rgba(0,0,0,0.3)',
     },
     sheet: {
-      backgroundColor: theme.background,
+      backgroundColor: theme.colors.foregroundBackground,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       paddingHorizontal: 24,
       paddingTop: 16,
       paddingBottom: Platform.OS === 'ios' ? 32 : 16,
       minHeight: 360,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: -2 },
-      shadowOpacity: 0.15,
-      shadowRadius: 10,
+      ...theme.rnShadows.subtle,
     },
     handle: {
       width: 32,
@@ -94,6 +100,6 @@ const makeStyles = (theme: any) =>
     },
     background: {
       flex: 1,
-      backgroundColor: 'rgba(0,0,0,0.3)',
+      backgroundColor: theme.colors.foregroundBackground,
     },
   })
