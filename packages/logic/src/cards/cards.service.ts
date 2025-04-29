@@ -5,9 +5,9 @@ export interface Card {
   id: string
   text: string
   createdAt: number
-  lastReviewed: number | null
+  lastReviewed?: number | null
   isActive: boolean
-  isFavorite: boolean
+  isFavorite?: boolean
   tags?: string[]
   upvotes?: number
   downvotes?: number
