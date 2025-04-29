@@ -1,25 +1,39 @@
 import { Theme } from '@/apps/mobile/lib/theme/theme'
 import { Card } from '@/packages/logic/src/cards/cards.service'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { CardSheetStats } from './CardSheetStats'
 import { CardSheetMenu } from './CardSheetMenuProps'
 import { CardSheetText } from './CardSheetText'
 import { CardSheetEditor } from './CardSheetEditor'
+import { useCardStore } from '../../store/useCardStore'
+import { debounce } from 'lodash'
 
 interface CardSheetProps {
-  card: Card
+  cardId: string
 }
 
-export const CardSheet = ({ card }: CardSheetProps) => {
+export const CardSheet = ({ cardId }: CardSheetProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 
+  const card = useCardStore(state => state.getCardById(cardId))
+
   const [isEditing, setIsEditing] = useState(false)
+  const { updateCard } = useCardStore()
 
   const onEdit = () => {
     setIsEditing(prev => !prev)
+  }
+
+  const debouncedUpdateCard = useCallback(
+    debounce((text: string) => updateCard({ id: cardId, text }), 1000),
+    [cardId, updateCard],
+  )
+
+  const onSave = (text: string) => {
+    debouncedUpdateCard(text)
   }
 
   if (!card) {
@@ -34,7 +48,7 @@ export const CardSheet = ({ card }: CardSheetProps) => {
     <View style={styles.container}>
       <View style={styles.content}>
         {isEditing ? (
-          <CardSheetEditor card={card} />
+          <CardSheetEditor card={card} onSave={onSave} />
         ) : (
           <>
             <CardSheetText card={card} />

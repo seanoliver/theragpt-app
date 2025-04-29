@@ -89,7 +89,7 @@ export const CardList = ({ cards }: CardListProps) => {
         onClose={() => setSelectedCard(null)}
       >
         <BottomSheetView style={{ flex: 1 }}>
-          {selectedCard && <CardSheet card={selectedCard} />}
+          {selectedCard && <CardSheet cardId={selectedCard.id} />}
         </BottomSheetView>
       </BottomSheet>
     </>

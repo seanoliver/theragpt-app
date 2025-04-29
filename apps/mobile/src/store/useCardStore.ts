@@ -25,6 +25,7 @@ interface CardStore {
   reviewCard: (id: string) => Promise<void>
   setLoading: (isLoading: boolean) => void
   setError: (error: string | null) => void
+  getCardById: (id: string) => Card | undefined
 }
 
 export const useCardStore = create<CardStore>()(
@@ -162,10 +163,13 @@ export const useCardStore = create<CardStore>()(
           console.error('Error reviewing card:', error)
         }
       },
+      
+      getCardById: id => get().cards.find(card => card.id === id),
 
       setLoading: isLoading => set({ isLoading }),
 
       setError: error => set({ error }),
+
     }),
     {
       name: 'card-storage', // unique name for localStorage

@@ -1,13 +1,15 @@
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 import { Card } from '@/packages/logic/src/cards/cards.service'
-import React from 'react'
+import React, { useState } from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 
 interface CardSheetEditorProps {
   card: Card
+  onSave: (text: string) => void
 }
 
-export const CardSheetEditor = ({ card }: CardSheetEditorProps) => {
+export const CardSheetEditor = ({ card, onSave }: CardSheetEditorProps) => {
+  const [text, setText] = useState(card.text)
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 
@@ -16,10 +18,12 @@ export const CardSheetEditor = ({ card }: CardSheetEditorProps) => {
       <TextInput
         style={[styles.cardText]}
         multiline
-        value={card.text}
+        value={text}
         onChangeText={text => {
-          console.log(text)
+          setText(text)
+          onSave(text)
         }}
+        autoFocus
       />
     </View>
   )
