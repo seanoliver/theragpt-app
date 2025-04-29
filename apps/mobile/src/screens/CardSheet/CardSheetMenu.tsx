@@ -67,7 +67,7 @@ export const CardSheetMenu = ({
         textColor: theme.colors.errorText,
       },
     ],
-    [],
+    [isEditing],
   )
 
   return (
