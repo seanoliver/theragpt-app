@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { useTheme } from '../../../lib/theme/context'
+import { useTheme } from '../../../../lib/theme/context'
 import type { Card } from '@still/logic'
 
 type StatisticsDisplayProps = {

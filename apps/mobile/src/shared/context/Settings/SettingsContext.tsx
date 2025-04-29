@@ -12,7 +12,6 @@ import React, {
   useRef,
 } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
-import PaletteSelector from './PaletteSelector'
 import ThemeSelector from './ThemeSelector'
 
 type SettingsContextType = {

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Inter_400Regular,
   Inter_700Bold,
@@ -12,16 +11,12 @@ import {
 import { FontAwesome } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { ActivityIndicator, View, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
-import { ThemeProvider, useTheme } from '../../lib/theme/context'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import SettingsSheet from '../../src/shared/SettingsSheet/SettingsSheet'
-import {
-  SettingsProvider,
-  useSettingsContext,
-} from '../../src/shared/SettingsSheet/SettingsSheetContext'
+import { useTheme } from '../../lib/theme/context'
+import { useSettingsContext } from '../../src/shared/context/Settings/SettingsContext'
 
 const TabRootLayout = (): JSX.Element => {
   const [playfairLoaded] = usePlayfairFonts({
@@ -35,7 +30,7 @@ const TabRootLayout = (): JSX.Element => {
 
   const { theme, themeObject } = useTheme()
   // Use context for settings sheet
-  const { visible, openSettings, closeSettings } = useSettingsContext()
+  const { openSettings } = useSettingsContext()
 
   // Stable headerRight callback using context
   const renderHeaderRight = React.useCallback(

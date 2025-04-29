@@ -1,9 +1,9 @@
 import { Theme } from '@/apps/mobile/lib/theme'
-import { Ionicons } from '@expo/vector-icons'
 import React, { useMemo, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
-import { FAB } from '../../shared/FAB'
+import { FAB } from '../../shared/context/FAB/FAB'
+import { useFABContext } from '../../shared/context/FAB/FABContext'
 import { useCardStore } from '../../store/useCardStore'
 import { CardList } from './CardList'
 import { filterCardData } from './filterCardData'
@@ -13,10 +13,9 @@ export const CardsScreen = () => {
   const styles = makeStyles(theme)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Use Zustand store
   const { cards, isLoading, error, addCard } = useCardStore()
+  const { openFAB, setEditingCard } = useFABContext()
 
-  // Filtered data based on search query
   const filteredCards = useMemo(
     () =>
       filterCardData(
@@ -26,13 +25,14 @@ export const CardsScreen = () => {
     [cards, searchQuery],
   )
 
-  // Handler for creating a new card
   const handleNew = async () => {
-    await addCard({ text: '', isActive: true })
-    // Optionally scroll to top or show feedback
+    const newCard = await addCard({ text: '', isActive: true })
+    if (newCard) {
+      setEditingCard(newCard)
+      openFAB()
+    }
   }
 
-  // TODO: Render loading or error state
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -42,20 +42,18 @@ export const CardsScreen = () => {
   }
   if (error) {
     return (
-      <View style={styles.centered}>{/* TODO: Replace with error UI */}</View>
+      <View style={styles.centered}>
+        <Text>Error</Text>
+      </View>
     )
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        {/* TODO: <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
         <CardList cards={filteredCards} />
-        {/* TODO: {filteredCards.length === 0 && <EmptyState />} */}
       </View>
-      <FAB onPress={handleNew}>
-        <Ionicons name="add" size={24} color={theme.colors.white} />
-      </FAB>
+      <FAB onPress={handleNew} />
     </View>
   )
 }

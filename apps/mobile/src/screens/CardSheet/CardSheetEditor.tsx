@@ -1,6 +1,6 @@
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 import { Card } from '@/packages/logic/src/cards/cards.service'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 
 interface CardSheetEditorProps {
@@ -12,6 +12,10 @@ export const CardSheetEditor = ({ card, onSave }: CardSheetEditorProps) => {
   const [text, setText] = useState(card.text)
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
+
+  useEffect(() => {
+    setText(card.text)
+  }, [card.text])
 
   return (
     <View style={[styles.card]}>

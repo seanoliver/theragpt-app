@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../../lib/theme/context';
-import { FAB } from '../../shared/FAB';
+import { FAB } from '../../shared/context/FAB/FAB';
 import { useCardStore } from '../../store/useCardStore';
 import { ArchiveEmptyState } from './components/ArchiveEmptyState';
 import { ArchiveLineItem } from './components/ArchiveLineItem';
