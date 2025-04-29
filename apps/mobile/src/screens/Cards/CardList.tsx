@@ -1,25 +1,18 @@
-import React, { useMemo, useRef, useState } from 'react'
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-} from 'react-native'
-import { Card } from './Card'
-import { Card as CardType } from '@still/logic'
-import { SwipeAction, SwipeMenu } from '../../shared/SwipeMenu'
-import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Theme } from '@/apps/mobile/lib/theme'
+import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Ionicons } from '@expo/vector-icons'
-import { useCardStore } from '../../store/useCardStore'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import { Card as CardType } from '@still/logic'
+import React, { useMemo, useRef, useState } from 'react'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import Animated, {
-  Layout,
   LinearTransition,
   SlideOutLeft,
 } from 'react-native-reanimated'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { CardScreen } from '../Card/CardScreen'
+import { SwipeAction, SwipeMenu } from '../../shared/SwipeMenu'
+import { useCardStore } from '../../store/useCardStore'
+import { CardSheet } from '../CardSheet/CardSheet'
+import { Card } from './Card'
 
 interface CardListProps {
   cards: CardType[]
@@ -96,7 +89,7 @@ export const CardList = ({ cards }: CardListProps) => {
         onClose={() => setSelectedCard(null)}
       >
         <BottomSheetView style={{ flex: 1 }}>
-          {selectedCard && <CardScreen card={selectedCard} />}
+          {selectedCard && <CardSheet card={selectedCard} />}
         </BottomSheetView>
       </BottomSheet>
     </>

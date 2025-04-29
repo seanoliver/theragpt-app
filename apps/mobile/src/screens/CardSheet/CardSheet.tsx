@@ -1,17 +1,25 @@
 import { Theme } from '@/apps/mobile/lib/theme/theme'
 import { Card } from '@/packages/logic/src/cards/cards.service'
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
-import { InstructionalFooterText } from '../../shared/InstructionalFooterText'
-import { CardScreenEdit } from './CardEdit'
-import { CardScreenAIVariations } from './CardScreenAIVariations'
-import { CardScreenStats } from './CardScreenStats'
+import { CardSheetStats } from './CardSheetStats'
 import { CardSheetMenu } from './CardSheetMenuProps'
+import { CardSheetText } from './CardSheetText'
 
-export const CardScreen = ({ card }: { card: Card }) => {
+interface CardSheetProps {
+  card: Card
+}
+
+export const CardSheet = ({ card }: CardSheetProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
+
+  const [isEditing, setIsEditing] = useState(false)
+
+  const onEdit = () => {
+    setIsEditing(!isEditing)
+  }
 
   if (!card) {
     return (
@@ -24,16 +32,15 @@ export const CardScreen = ({ card }: { card: Card }) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        {/* Card Editor + Audio Playback */}
-        <CardScreenEdit card={card} />
+        <CardSheetText card={card} />
 
         {/* Stats Row */}
-        <CardScreenStats card={card} />
+        <CardSheetStats card={card} />
 
         {/* AI Variations Section */}
         {/* <CardScreenAIVariations card={card} /> */}
 
-        <CardSheetMenu card={card} />
+        <CardSheetMenu card={card} isEditing={isEditing} onEdit={onEdit} />
       </View>
     </View>
   )
