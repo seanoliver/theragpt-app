@@ -72,7 +72,7 @@ const makeStyles = (theme: Theme) => {
     },
     cardText: {
       fontSize: 16,
-      fontWeight: 'bold',
+      lineHeight: 28,
       marginBottom: 8,
       color: theme.colors.textOnBackground,
     },
