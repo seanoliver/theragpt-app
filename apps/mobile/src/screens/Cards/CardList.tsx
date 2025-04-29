@@ -1,5 +1,11 @@
-import React, { useState } from 'react'
-import { FlatList, View, StyleSheet } from 'react-native'
+import React, { useMemo, useRef, useState } from 'react'
+import {
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+} from 'react-native'
 import { Card } from './Card'
 import { Card as CardType } from '@still/logic'
 import { SwipeAction, SwipeMenu } from '../../shared/SwipeMenu'
@@ -11,25 +17,32 @@ import Animated, {
   Layout,
   LinearTransition,
   SlideOutLeft,
-  runOnJS,
 } from 'react-native-reanimated'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import { CardScreen } from '../Card/CardScreen'
 
 interface CardListProps {
   cards: CardType[]
-  onCardPress?: (card: CardType) => void
 }
 
-type RemovingCard = { id: string; action: 'archive' | 'delete' }
-
-export const CardList = ({ cards, onCardPress }: CardListProps) => {
+export const CardList = ({ cards }: CardListProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 
+  const [selectedCard, setSelectedCard] = useState<CardType | null>(null)
+  const bottomSheetRef = useRef<BottomSheet>(null)
+
+  const snapPoints = useMemo(() => ['25%', '50%', '95%'], [])
   const handleArchive = (cardId: string) => {
     useCardStore.getState().updateCard({ id: cardId, isActive: false })
   }
   const handleDelete = (cardId: string) => {
     useCardStore.getState().deleteCard(cardId)
+  }
+
+  const handleOpenBottomSheet = (card: CardType) => {
+    setSelectedCard(card)
+    bottomSheetRef.current?.expand()
   }
 
   const getSwipeActions = (card: CardType): SwipeAction[] => [
@@ -54,24 +67,39 @@ export const CardList = ({ cards, onCardPress }: CardListProps) => {
   ]
 
   return (
-    <FlatList
-      data={cards}
-      keyExtractor={item => item.id}
-      renderItem={({ item }) => {
-        return (
-          <SwipeMenu actions={getSwipeActions(item)}>
-            <Animated.View
-              exiting={SlideOutLeft}
-              layout={LinearTransition}
-              style={styles.cardWrapper}
-            >
-              <Card card={item} onPress={() => onCardPress?.(item)} />
-            </Animated.View>
-          </SwipeMenu>
-        )
-      }}
-      contentContainerStyle={styles.listContent}
-    />
+    <>
+      <FlatList
+        data={cards}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => {
+          return (
+            <SwipeMenu actions={getSwipeActions(item)}>
+              <Animated.View
+                exiting={SlideOutLeft}
+                layout={LinearTransition}
+                style={styles.cardWrapper}
+              >
+                <TouchableOpacity onPress={() => handleOpenBottomSheet(item)}>
+                  <Card card={item} />
+                </TouchableOpacity>
+              </Animated.View>
+            </SwipeMenu>
+          )
+        }}
+        contentContainerStyle={styles.listContent}
+      />
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        index={-1}
+        enablePanDownToClose
+        onClose={() => setSelectedCard(null)}
+      >
+        <BottomSheetView style={{ flex: 1 }}>
+          {selectedCard && <CardScreen card={selectedCard} />}
+        </BottomSheetView>
+      </BottomSheet>
+    </>
   )
 }
 

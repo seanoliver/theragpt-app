@@ -32,51 +32,43 @@ export const Card: React.FC<CardProps> = ({ card, onPress }) => {
     return theme.colors.textDisabled
   }
 
-  const getFrequencyColor = () => {
-    if (frequency === 'More') return theme.colors.successAccent
-    if (frequency === 'Less') return theme.colors.warningAccent
-    return theme.colors.textDisabled
-  }
-
   const showHeaderRow = category || netVotes || frequency
 
   return (
-    <TouchableOpacity onPress={onPress ? onPress : () => router.push(`/cards/${card.id}`)}>
-      <View style={[styles.card]}>
-        {showHeaderRow && (
-          <View style={styles.headerRow}>
-            <View style={styles.headerRowLeft}>
-              {category && (
-                <View style={styles.pill}>
-                  <Text style={styles.pillText}>{category}</Text>
-                </View>
-              )}
-            </View>
-            <View style={styles.headerRowRight}>
-              {netVotes && (
-                <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
-                  {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
-                  {netVotes}
-                </Text>
-              )}
-            </View>
+    <View style={[styles.card]}>
+      {showHeaderRow && (
+        <View style={styles.headerRow}>
+          <View style={styles.headerRowLeft}>
+            {category && (
+              <View style={styles.pill}>
+                <Text style={styles.pillText}>{category}</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.headerRowRight}>
+            {netVotes && (
+              <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
+                {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
+                {netVotes}
+              </Text>
+            )}
+          </View>
+        </View>
+      )}
+      <Text style={styles.text}>{card.text}</Text>
+      <View style={styles.footerRow}>
+        <View style={styles.footerRowLeft}>
+          <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
+        </View>
+        {reviewCount > 0 && (
+          <View style={styles.footerRowRight}>
+            <Text style={styles.metaText}>{reviewCount} reviews</Text>
+            <Text style={styles.metaText}> • </Text>
           </View>
         )}
-        <Text style={styles.text}>{card.text}</Text>
-        <View style={styles.footerRow}>
-          <View style={styles.footerRowLeft}>
-            <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
-          </View>
-          {reviewCount > 0 && (
-            <View style={styles.footerRowRight}>
-              <Text style={styles.metaText}>{reviewCount} reviews</Text>
-              <Text style={styles.metaText}> • </Text>
-            </View>
-          )}
-          <Text style={styles.metaText}>Last: {lastReviewed}</Text>
-        </View>
+        <Text style={styles.metaText}>Last: {lastReviewed}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 

@@ -1,35 +1,18 @@
-import { useLocalSearchParams } from 'expo-router'
-import React from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
-import { useTheme } from '../../../lib/theme/context'
-import { InstructionalFooterText } from '../../shared/InstructionalFooterText'
-import { useCardStore } from '../../store/useCardStore'
-import { CardScreenEdit } from './CardEdit'
-import { CardScreenAIVariations } from './CardScreenAIVariations'
-import { CardScreenStats } from './CardScreenStats'
-import { Theme } from '@/apps/mobile/lib/theme/theme'
+import { Theme } from '@/apps/mobile/lib/theme/theme';
+import { Card } from '@/packages/logic/src/cards/cards.service';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '../../../lib/theme/context';
+import { InstructionalFooterText } from '../../shared/InstructionalFooterText';
+import { CardScreenEdit } from './CardEdit';
+import { CardScreenAIVariations } from './CardScreenAIVariations';
+import { CardScreenStats } from './CardScreenStats';
 
-export const CardScreen = () => {
-  const { cardId } = useLocalSearchParams<{ cardId: string }>()
+export const CardScreen = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
-  const cards = useCardStore(state => state.cards)
-  const isLoading = useCardStore(state => state.isLoading)
-
-  const card = cardId ? cards.find(card => card.id === cardId) : null
-
   const styles = makeStyles(theme)
 
-  if (isLoading || !cards) {
-    // Keep existing loading indicator for when card data is not yet available
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={theme.colors.accent} />
-        <Text style={styles.loadingText}>Loading...</Text>
-      </View>
-    )
-  }
-
-  if (!cardId || !card) {
+  if (!card) {
     return (
       <View style={styles.container}>
         <Text style={styles.errorText}>Card not found.</Text>
@@ -95,6 +78,6 @@ const makeStyles = (theme: Theme) =>
       marginTop: 16,
     },
     errorText: {
-      color: theme.colors.errorText
+      color: theme.colors.errorText,
     },
   })
