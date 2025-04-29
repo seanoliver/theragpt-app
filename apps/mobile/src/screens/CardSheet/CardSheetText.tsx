@@ -20,7 +20,6 @@ const makeStyles = (theme: Theme) => {
       borderRadius: 8,
       marginBottom: 16,
       backgroundColor: theme.colors.foregroundBackground,
-      ...theme.rnShadows.subtle,
     },
     cardText: {
       fontSize: 16,

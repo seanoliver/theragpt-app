@@ -6,6 +6,7 @@ import { useTheme } from '../../../lib/theme/context'
 import { CardSheetStats } from './CardSheetStats'
 import { CardSheetMenu } from './CardSheetMenuProps'
 import { CardSheetText } from './CardSheetText'
+import { CardSheetEditor } from './CardSheetEditor'
 
 interface CardSheetProps {
   card: Card
@@ -18,7 +19,7 @@ export const CardSheet = ({ card }: CardSheetProps) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const onEdit = () => {
-    setIsEditing(!isEditing)
+    setIsEditing(prev => !prev)
   }
 
   if (!card) {
@@ -32,14 +33,14 @@ export const CardSheet = ({ card }: CardSheetProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <CardSheetText card={card} />
-
-        {/* Stats Row */}
-        <CardSheetStats card={card} />
-
-        {/* AI Variations Section */}
-        {/* <CardScreenAIVariations card={card} /> */}
-
+        {isEditing ? (
+          <CardSheetEditor card={card} />
+        ) : (
+          <>
+            <CardSheetText card={card} />
+            <CardSheetStats card={card} />
+          </>
+        )}
         <CardSheetMenu card={card} isEditing={isEditing} onEdit={onEdit} />
       </View>
     </View>
