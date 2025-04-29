@@ -18,6 +18,7 @@ export const FABSheet = () => {
         await updateCard({ ...editingCard, text });
         setEditingCard({ ...editingCard, text });
       }}
+      onClose={closeFAB}
     />
   );
 };

@@ -6,9 +6,14 @@ import { View, TextInput, StyleSheet } from 'react-native'
 interface CardSheetEditorProps {
   card: Card
   onSave: (text: string) => void
+  onClose: () => void
 }
 
-export const CardSheetEditor = ({ card, onSave }: CardSheetEditorProps) => {
+export const CardSheetEditor = ({
+  card,
+  onSave,
+  onClose,
+}: CardSheetEditorProps) => {
   const [text, setText] = useState(card.text)
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
@@ -28,6 +33,12 @@ export const CardSheetEditor = ({ card, onSave }: CardSheetEditorProps) => {
           onSave(text)
         }}
         autoFocus
+        returnKeyType="done"
+        onSubmitEditing={() => {
+          onSave(text)
+          onClose()
+        }}
+        submitBehavior="blurAndSubmit"
       />
     </View>
   )
