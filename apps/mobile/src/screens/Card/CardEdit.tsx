@@ -67,7 +67,7 @@ const makeStyles = (theme: Theme) => {
       padding: 16,
       borderRadius: 8,
       marginBottom: 16,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       ...theme.rnShadows.subtle,
     },
     cardText: {

@@ -18,7 +18,10 @@ import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { ThemeProvider, useTheme } from '../../lib/theme/context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import SettingsSheet from '../../src/shared/SettingsSheet/SettingsSheet'
-import { SettingsSheetProvider, useSettingsSheet } from '../../src/shared/SettingsSheet/SettingsSheetContext'
+import {
+  SettingsSheetProvider,
+  useSettingsSheet,
+} from '../../src/shared/SettingsSheet/SettingsSheetContext'
 
 const TabRootLayout = (): JSX.Element => {
   const [playfairLoaded] = usePlayfairFonts({
@@ -49,7 +52,7 @@ const TabRootLayout = (): JSX.Element => {
         />
       </TouchableOpacity>
     ),
-    [openSettings, themeObject.colors.textOnBackground]
+    [openSettings, themeObject.colors.textOnBackground],
   )
 
   if (!playfairLoaded || !interLoaded) {
@@ -73,17 +76,17 @@ const TabRootLayout = (): JSX.Element => {
                   headerShown: true,
                   headerRight: renderHeaderRight,
                   headerBackgroundContainerStyle: {
-                    backgroundColor: themeObject.colors.background,
+                    backgroundColor: themeObject.colors.foregroundBackground,
                     borderBottomColor: themeObject.colors.border,
                   },
                   tabBarStyle: {
-                    backgroundColor: themeObject.colors.background,
+                    backgroundColor: themeObject.colors.foregroundBackground,
                     borderTopColor: themeObject.colors.border,
                   },
                   tabBarActiveTintColor: themeObject.colors.textOnBackground,
                   tabBarInactiveTintColor: themeObject.colors.textDisabled,
                   headerStyle: {
-                    backgroundColor: themeObject.colors.background,
+                    backgroundColor: themeObject.colors.foregroundBackground,
                   },
                   headerTintColor: themeObject.colors.textOnBackground,
                   headerTitleStyle: {
@@ -94,45 +97,45 @@ const TabRootLayout = (): JSX.Element => {
                   },
                 }}
               >
-              <Tabs.Screen
-                name="index"
-                options={{
-                  title: 'Cards',
-                  tabBarIcon: ({ color }) => (
-                    <FontAwesome name="th-list" size={22} color={color} />
-                  ),
-                }}
-              />
-              <Tabs.Screen
-                name="review"
-                options={{
-                  title: 'Today',
-                  tabBarIcon: ({ color }) => (
-                    <FontAwesome name="calendar-o" size={22} color={color} />
-                  ),
-                }}
-              />
-              <Tabs.Screen
-                name="archive"
-                options={{
-                  title: 'Archive',
-                  tabBarIcon: ({ color }) => (
-                    <FontAwesome name="archive" size={22} color={color} />
-                  ),
-                }}
-              />
-              {/* Hide the card detail screen from the tab bar */}
-              <Tabs.Screen
-                name="cards/[cardId]"
-                options={{
-                  href: null,
-                }}
-              />
-            </Tabs>
-          </View>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+                <Tabs.Screen
+                  name="index"
+                  options={{
+                    title: 'Cards',
+                    tabBarIcon: ({ color }) => (
+                      <FontAwesome name="th-list" size={22} color={color} />
+                    ),
+                  }}
+                />
+                <Tabs.Screen
+                  name="review"
+                  options={{
+                    title: 'Today',
+                    tabBarIcon: ({ color }) => (
+                      <FontAwesome name="calendar-o" size={22} color={color} />
+                    ),
+                  }}
+                />
+                <Tabs.Screen
+                  name="archive"
+                  options={{
+                    title: 'Archive',
+                    tabBarIcon: ({ color }) => (
+                      <FontAwesome name="archive" size={22} color={color} />
+                    ),
+                  }}
+                />
+                {/* Hide the card detail screen from the tab bar */}
+                <Tabs.Screen
+                  name="cards/[cardId]"
+                  options={{
+                    href: null,
+                  }}
+                />
+              </Tabs>
+            </View>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
     </SettingsSheetProvider>
   )
 }

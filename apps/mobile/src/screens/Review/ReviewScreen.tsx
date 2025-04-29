@@ -73,7 +73,7 @@ const makeStyles = (theme: Theme) =>
       flexDirection: 'column',
       height: '100%',
       justifyContent: 'space-between',
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.primaryBackground,
     },
     cardPagerContainer: {
       flex: 1,

@@ -1,12 +1,17 @@
 import { Theme } from '@/apps/mobile/lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/FAB'
 import { useCardStore } from '../../store/useCardStore'
 import { CardList } from './CardList'
 import { filterCardData } from './filterCardData'
+import {
+  CardEditBottomSheet,
+  CardEditBottomSheetRef,
+} from '../Card/CardEditBottomSheet'
+import { Card as CardType } from '@still/logic'
 
 export const CardsScreen = () => {
   const { themeObject: theme } = useTheme()
@@ -22,10 +27,16 @@ export const CardsScreen = () => {
     [cards, searchQuery],
   )
 
+  const bottomSheetRef = useRef<CardEditBottomSheetRef>(null)
+
   // Handler for creating a new card
   const handleNew = async () => {
     await addCard({ text: '', isActive: true })
     // Optionally scroll to top or show feedback
+  }
+
+  const handleCardPress = (card: CardType) => {
+    bottomSheetRef.current?.open(card)
   }
 
   // TODO: Render loading or error state
@@ -46,12 +57,13 @@ export const CardsScreen = () => {
     <View style={styles.container}>
       <View style={styles.inner}>
         {/* TODO: <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
-        <CardList cards={filteredCards} />
+        <CardList cards={filteredCards} onCardPress={handleCardPress} />
         {/* TODO: {filteredCards.length === 0 && <EmptyState />} */}
       </View>
       <FAB onPress={handleNew}>
         <Ionicons name="add" size={24} color={theme.colors.white} />
       </FAB>
+      <CardEditBottomSheet ref={bottomSheetRef} />
     </View>
   )
 }
@@ -60,7 +72,7 @@ const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.primaryBackground,
     },
     inner: {
       flex: 1,

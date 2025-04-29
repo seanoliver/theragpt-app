@@ -1,8 +1,8 @@
 // Theme token keys for palette and theme definitions
 
 export type ThemeTokenKey =
-  | 'primary'
-  | 'background'
+  | 'primaryBackground'
+  | 'foregroundBackground'
   | 'text'
   | 'accent'
   | 'border'

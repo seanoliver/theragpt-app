@@ -31,7 +31,7 @@ export const ArchiveScreen = () => {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: theme.colors.background,
+          backgroundColor: theme.colors.foregroundBackground,
         }}
       >
         <Text>Loading...</Text>
@@ -50,7 +50,7 @@ export const ArchiveScreen = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.primaryBackground }}>
       {isEmpty ? (
         <ArchiveEmptyState />
       ) : (
@@ -79,10 +79,6 @@ export const ArchiveScreen = () => {
           ))}
         </ScrollView>
       )}
-
-      <FAB onPress={handleAddCard}>
-        <Ionicons name="add" size={32} color={theme.colors.background} />
-      </FAB>
     </View>
   )
 }

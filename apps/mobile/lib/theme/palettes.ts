@@ -8,8 +8,8 @@ export type ThemePalettes = Record<PaletteName, ThemePalette>
 
 export const palettes: ThemePalettes = {
   indigo: {
-    primary: '#3e4a89',
-    background: '#232946',
+    primaryBackground: '#3e4a89',
+    foregroundBackground: '#232946',
     text: '#FFFFFF',
     accent: '#5f6caf',
     border: '#3e4a89',
@@ -37,8 +37,8 @@ export const palettes: ThemePalettes = {
     black: '#000000',
   },
   forest: {
-    primary: '#2e7d32',
-    background: '#1b2e1b',
+    primaryBackground: '#2e7d32',
+    foregroundBackground: '#1b2e1b',
     text: '#FFFFFF',
     accent: '#66bb6a',
     border: '#388e3c',
@@ -66,8 +66,8 @@ export const palettes: ThemePalettes = {
     black: '#000000',
   },
   sunset: {
-    primary: '#ff7043',
-    background: '#fff3e0',
+    primaryBackground: '#ff7043',
+    foregroundBackground: '#fff3e0',
     text: '#232946',
     accent: '#ffa726',
     border: '#ff7043',
@@ -95,10 +95,10 @@ export const palettes: ThemePalettes = {
     black: '#000000',
   },
   white: {
-    primary: '#FFFFFF',
-    background: '#FFFFFF',
+    primaryBackground: '#EBEBEB',
+    foregroundBackground: '#FFFFFF',
     text: '#232946',
-    accent: '#3e4a89',
+    accent: '#2364AA',
     border: '#E0E0E0',
     borderSubtle: '#F5F5F5',
     errorAccent: '#D7263D',
@@ -124,8 +124,8 @@ export const palettes: ThemePalettes = {
     black: '#000000',
   },
   charcoal: {
-    primary: '#232323',
-    background: '#18191A',
+    primaryBackground: '#232323',
+    foregroundBackground: '#18191A',
     text: '#F5F6FA',
     accent: '#3e4a89',
     border: '#232323',

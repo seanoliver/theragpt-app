@@ -113,7 +113,7 @@ const makeStyles = (theme: Theme) =>
       paddingHorizontal: 10,
       marginHorizontal: 2,
       minWidth: 0,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       borderColor: theme.colors.border,
     },
     statIcon: {

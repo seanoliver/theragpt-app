@@ -78,7 +78,7 @@ const makeStyles = (theme: Theme) =>
       backgroundColor: 'transparent',
     },
     card: {
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       paddingVertical: 22,
       paddingHorizontal: 22,
       borderRadius: 18,

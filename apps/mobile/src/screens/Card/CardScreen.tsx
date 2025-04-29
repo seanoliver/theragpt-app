@@ -88,7 +88,7 @@ const makeStyles = (theme: Theme) =>
     },
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
     },
     loadingText: {
       color: theme.colors.textOnBackground,

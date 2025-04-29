@@ -26,7 +26,7 @@ const AIOptionsModalItem: React.FC<AIOptionsModalItem> = ({
   return (
     <View
       style={{
-        backgroundColor: theme.colors.background,
+        backgroundColor: theme.colors.foregroundBackground,
         borderRadius: 10,
         padding: 14,
         marginBottom: 12,

@@ -9,9 +9,10 @@ import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCar
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
   card: CardType
+  onPress?: () => void
 }
 
-export const Card: React.FC<CardProps> = ({ card }) => {
+export const Card: React.FC<CardProps> = ({ card, onPress }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
   const { netVotes, reviewCount } = useCardInteractionService(card.id, [card])
@@ -40,7 +41,7 @@ export const Card: React.FC<CardProps> = ({ card }) => {
   const showHeaderRow = category || netVotes || frequency
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
+    <TouchableOpacity onPress={onPress ? onPress : () => router.push(`/cards/${card.id}`)}>
       <View style={[styles.card]}>
         {showHeaderRow && (
           <View style={styles.headerRow}>
@@ -84,7 +85,7 @@ const makeStyles = (theme: Theme) =>
     card: {
       borderRadius: 16,
       padding: 16,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       borderColor: theme.colors.border,
       ...theme.rnShadows.subtle,
     },

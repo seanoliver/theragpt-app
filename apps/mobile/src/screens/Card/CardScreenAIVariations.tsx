@@ -31,7 +31,7 @@ const makeStyles = (theme: Theme) =>
       borderWidth: 1,
       padding: 16,
       marginBottom: 18,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       borderColor: theme.colors.borderSubtle,
     },
     variationHeaderRow: {

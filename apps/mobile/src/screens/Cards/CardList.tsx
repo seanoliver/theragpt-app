@@ -10,9 +10,10 @@ import { useCardStore } from '../../store/useCardStore'
 
 interface CardListProps {
   cards: CardType[]
+  onCardPress?: (card: CardType) => void
 }
 
-export const CardList = ({ cards }: CardListProps) => {
+export const CardList = ({ cards, onCardPress }: CardListProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 
@@ -44,7 +45,7 @@ export const CardList = ({ cards }: CardListProps) => {
       renderItem={({ item }) => (
         <SwipeMenu actions={getSwipeActions(item)}>
           <View style={styles.cardWrapper}>
-            <Card card={item} />
+            <Card card={item} onPress={() => onCardPress?.(item)} />
           </View>
         </SwipeMenu>
       )}
