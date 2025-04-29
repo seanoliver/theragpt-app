@@ -140,3 +140,40 @@ value={
 ```
 value={stat.value} // where stat.value is always a string for Last Reviewed, never coerced to a number
 ```
+
+### Mistake: Not using a ref-based Gorhom BottomSheet for editing FlatList items
+**Wrong**:
+```
+// Navigating to a detail screen or opening a modal from inside FlatList item directly
+<TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
+  ...
+</TouchableOpacity>
+```
+
+**Correct**:
+```
+// Use a ref-based Gorhom BottomSheet at the screen root
+const bottomSheetRef = useRef<CardEditBottomSheetRef>(null)
+const handleCardPress = (card: CardType) => bottomSheetRef.current?.open(card)
+<CardList cards={filteredCards} onCardPress={handleCardPress} />
+<CardEditBottomSheet ref={bottomSheetRef} />
+
+// CardList passes onPress to Card, Card uses onPress prop
+```
+
+### Mistake: CardsScreen did not filter out archived cards (isActive: false)
+**Wrong**:
+```
+const filteredCards = useMemo(
+  () => filterCardData(cards, searchQuery),
+  [cards, searchQuery],
+)
+```
+
+**Correct**:
+```
+const filteredCards = useMemo(
+  () => filterCardData(cards.filter(card => card.isActive), searchQuery),
+  [cards, searchQuery],
+)
+```

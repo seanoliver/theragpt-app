@@ -31,9 +31,9 @@ const PaletteSelector = () => {
               accessibilityState={{ selected: selected === name }}
             >
               <View style={styles.swatchRow}>
-                <View style={[styles.swatch, { backgroundColor: palette.primary }]} />
+                <View style={[styles.swatch, { backgroundColor: palette.primaryBackground }]} />
                 <View style={[styles.swatch, { backgroundColor: palette.accent }]} />
-                <View style={[styles.swatch, { backgroundColor: palette.background, borderWidth: 1, borderColor: '#ccc' }]} />
+                <View style={[styles.swatch, { backgroundColor: palette.foregroundBackground, borderWidth: 1, borderColor: '#ccc' }]} />
               </View>
               <Text style={styles.paletteLabel}>{name.charAt(0).toUpperCase() + name.slice(1)}</Text>
             </TouchableOpacity>

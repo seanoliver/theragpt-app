@@ -18,7 +18,11 @@ export const CardsScreen = () => {
 
   // Filtered data based on search query
   const filteredCards = useMemo(
-    () => filterCardData(cards, searchQuery),
+    () =>
+      filterCardData(
+        cards.filter(card => card.isActive),
+        searchQuery,
+      ),
     [cards, searchQuery],
   )
 
@@ -60,7 +64,7 @@ const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.primaryBackground,
     },
     inner: {
       flex: 1,

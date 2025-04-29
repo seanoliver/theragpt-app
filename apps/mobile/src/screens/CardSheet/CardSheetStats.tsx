@@ -5,7 +5,7 @@ import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 import { Card } from '@still/logic'
 import { useCardInteractionService } from '../../shared/hooks/useCardInteractionService'
 
-export const CardScreenStats = ({ card }: { card: Card }) => {
+export const CardSheetStats = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 
@@ -113,7 +113,7 @@ const makeStyles = (theme: Theme) =>
       paddingHorizontal: 10,
       marginHorizontal: 2,
       minWidth: 0,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       borderColor: theme.colors.border,
     },
     statIcon: {

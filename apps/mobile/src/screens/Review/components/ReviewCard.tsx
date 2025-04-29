@@ -56,7 +56,7 @@ const makeStyles = (theme: Theme) =>
       alignItems: 'center',
       margin: 8,
       padding: 24,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       ...theme.rnShadows.subtle,
     },
     textContainer: {

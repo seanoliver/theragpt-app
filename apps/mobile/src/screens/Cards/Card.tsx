@@ -9,9 +9,10 @@ import { useCardInteractionService } from '@/apps/mobile/src/shared/hooks/useCar
 // TODO: Add props for meta info (category, lastReviewed, votes, frequency, reviews, etc.)
 interface CardProps {
   card: CardType
+  onPress?: () => void
 }
 
-export const Card: React.FC<CardProps> = ({ card }) => {
+export const Card: React.FC<CardProps> = ({ card, onPress }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
   const { netVotes, reviewCount } = useCardInteractionService(card.id, [card])
@@ -31,51 +32,43 @@ export const Card: React.FC<CardProps> = ({ card }) => {
     return theme.colors.textDisabled
   }
 
-  const getFrequencyColor = () => {
-    if (frequency === 'More') return theme.colors.successAccent
-    if (frequency === 'Less') return theme.colors.warningAccent
-    return theme.colors.textDisabled
-  }
-
   const showHeaderRow = category || netVotes || frequency
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/cards/${card.id}`)}>
-      <View style={[styles.card]}>
-        {showHeaderRow && (
-          <View style={styles.headerRow}>
-            <View style={styles.headerRowLeft}>
-              {category && (
-                <View style={styles.pill}>
-                  <Text style={styles.pillText}>{category}</Text>
-                </View>
-              )}
-            </View>
-            <View style={styles.headerRowRight}>
-              {netVotes && (
-                <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
-                  {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
-                  {netVotes}
-                </Text>
-              )}
-            </View>
+    <View style={[styles.card]}>
+      {showHeaderRow && (
+        <View style={styles.headerRow}>
+          <View style={styles.headerRowLeft}>
+            {category && (
+              <View style={styles.pill}>
+                <Text style={styles.pillText}>{category}</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.headerRowRight}>
+            {netVotes && (
+              <Text style={[styles.netVotes, { color: getNetVotesColor() }]}>
+                {netVotes > 0 ? '↑' : netVotes < 0 ? '↓' : '-'}
+                {netVotes}
+              </Text>
+            )}
+          </View>
+        </View>
+      )}
+      <Text style={styles.text}>{card.text}</Text>
+      <View style={styles.footerRow}>
+        <View style={styles.footerRowLeft}>
+          <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
+        </View>
+        {reviewCount > 0 && (
+          <View style={styles.footerRowRight}>
+            <Text style={styles.metaText}>{reviewCount} reviews</Text>
+            <Text style={styles.metaText}> • </Text>
           </View>
         )}
-        <Text style={styles.text}>{card.text}</Text>
-        <View style={styles.footerRow}>
-          <View style={styles.footerRowLeft}>
-            <Text style={styles.metaText}>{!card.isActive && 'Archived'}</Text>
-          </View>
-          {reviewCount > 0 && (
-            <View style={styles.footerRowRight}>
-              <Text style={styles.metaText}>{reviewCount} reviews</Text>
-              <Text style={styles.metaText}> • </Text>
-            </View>
-          )}
-          <Text style={styles.metaText}>Last: {lastReviewed}</Text>
-        </View>
+        <Text style={styles.metaText}>Last: {lastReviewed}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 
@@ -84,7 +77,7 @@ const makeStyles = (theme: Theme) =>
     card: {
       borderRadius: 16,
       padding: 16,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.foregroundBackground,
       borderColor: theme.colors.border,
       ...theme.rnShadows.subtle,
     },
