@@ -22,7 +22,7 @@
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
-      "buildNumber": "1"
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +30,7 @@
         "backgroundColor": "#1F2A35"
       },
       "package": "com.helloseanoliver.still",
-      "versionCode": 1
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro"

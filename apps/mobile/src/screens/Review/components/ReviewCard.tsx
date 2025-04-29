@@ -68,6 +68,7 @@ const makeStyles = (theme: Theme) =>
     cardText: {
       textAlign: 'left',
       fontWeight: '400',
+      lineHeight: 32,
       color: theme.colors.text,
       fontSize: theme.fontSizes.xxl,
     },

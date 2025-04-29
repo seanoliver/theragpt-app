@@ -19,8 +19,8 @@ import { ThemeProvider, useTheme } from '../../lib/theme/context'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import SettingsSheet from '../../src/shared/SettingsSheet/SettingsSheet'
 import {
-  SettingsSheetProvider,
-  useSettingsSheet,
+  SettingsProvider,
+  useSettingsContext,
 } from '../../src/shared/SettingsSheet/SettingsSheetContext'
 
 const TabRootLayout = (): JSX.Element => {
@@ -35,7 +35,7 @@ const TabRootLayout = (): JSX.Element => {
 
   const { theme, themeObject } = useTheme()
   // Use context for settings sheet
-  const { visible, openSettings, closeSettings } = useSettingsSheet()
+  const { visible, openSettings, closeSettings } = useSettingsContext()
 
   // Stable headerRight callback using context
   const renderHeaderRight = React.useCallback(
@@ -65,78 +65,65 @@ const TabRootLayout = (): JSX.Element => {
   }
 
   return (
-    <SettingsSheetProvider>
-      <ThemeProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <KeyboardProvider>
-            <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
-            <View style={{ flex: 1 }}>
-              <Tabs
-                screenOptions={{
-                  headerShown: true,
-                  headerRight: renderHeaderRight,
-                  headerBackgroundContainerStyle: {
-                    backgroundColor: themeObject.colors.foregroundBackground,
-                    borderBottomColor: themeObject.colors.border,
-                  },
-                  tabBarStyle: {
-                    backgroundColor: themeObject.colors.foregroundBackground,
-                    borderTopColor: themeObject.colors.border,
-                  },
-                  tabBarActiveTintColor: themeObject.colors.textOnBackground,
-                  tabBarInactiveTintColor: themeObject.colors.textDisabled,
-                  headerStyle: {
-                    backgroundColor: themeObject.colors.foregroundBackground,
-                  },
-                  headerTintColor: themeObject.colors.textOnBackground,
-                  headerTitleStyle: {
-                    fontWeight: 'bold',
-                  },
-                  tabBarLabelStyle: {
-                    paddingTop: 6,
-                  },
-                }}
-              >
-                <Tabs.Screen
-                  name="index"
-                  options={{
-                    title: 'Cards',
-                    tabBarIcon: ({ color }) => (
-                      <FontAwesome name="th-list" size={22} color={color} />
-                    ),
-                  }}
-                />
-                <Tabs.Screen
-                  name="review"
-                  options={{
-                    title: 'Today',
-                    tabBarIcon: ({ color }) => (
-                      <FontAwesome name="calendar-o" size={22} color={color} />
-                    ),
-                  }}
-                />
-                <Tabs.Screen
-                  name="archive"
-                  options={{
-                    title: 'Archive',
-                    tabBarIcon: ({ color }) => (
-                      <FontAwesome name="archive" size={22} color={color} />
-                    ),
-                  }}
-                />
-                {/* Hide the card detail screen from the tab bar */}
-                <Tabs.Screen
-                  name="cards/[cardId]"
-                  options={{
-                    href: null,
-                  }}
-                />
-              </Tabs>
-            </View>
-          </KeyboardProvider>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </SettingsSheetProvider>
+    <KeyboardProvider>
+      <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
+      <View style={{ flex: 1 }}>
+        <Tabs
+          screenOptions={{
+            headerShown: true,
+            headerRight: renderHeaderRight,
+            headerBackgroundContainerStyle: {
+              backgroundColor: themeObject.colors.foregroundBackground,
+              borderBottomColor: themeObject.colors.border,
+            },
+            tabBarStyle: {
+              backgroundColor: themeObject.colors.foregroundBackground,
+              borderTopColor: themeObject.colors.border,
+            },
+            tabBarActiveTintColor: themeObject.colors.textOnBackground,
+            tabBarInactiveTintColor: themeObject.colors.textDisabled,
+            headerStyle: {
+              backgroundColor: themeObject.colors.foregroundBackground,
+            },
+            headerTintColor: themeObject.colors.textOnBackground,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            tabBarLabelStyle: {
+              paddingTop: 6,
+            },
+          }}
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: 'Cards',
+              tabBarIcon: ({ color }) => (
+                <FontAwesome name="th-list" size={22} color={color} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="review"
+            options={{
+              title: 'Today',
+              tabBarIcon: ({ color }) => (
+                <FontAwesome name="calendar-o" size={22} color={color} />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="archive"
+            options={{
+              title: 'Archive',
+              tabBarIcon: ({ color }) => (
+                <FontAwesome name="archive" size={22} color={color} />
+              ),
+            }}
+          />
+        </Tabs>
+      </View>
+    </KeyboardProvider>
   )
 }
 

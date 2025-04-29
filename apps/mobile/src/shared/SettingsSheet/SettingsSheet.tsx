@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useMemo, useRef } from 'react'
 import { View, StyleSheet, Modal, Platform } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'
 import { useCardStore } from '../../store/useCardStore'
 import ThemeSelector from './ThemeSelector'
 import PaletteSelector from './PaletteSelector'
 import StatisticsDisplay from './StatisticsDisplay'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 
 type SettingsSheetProps = {
   visible: boolean
@@ -15,18 +16,22 @@ const SettingsSheet = ({ visible, onClose }: SettingsSheetProps) => {
   const { themeObject: theme } = useTheme()
   const cards = useCardStore(state => state.cards)
 
+  const bottomSheetRef = useRef<BottomSheet>(null)
+  const snapPoints = useMemo(() => ['95%'], [])
+
   // Styles
   const styles = makeStyles(theme)
 
   // Use Modal for cross-platform bottom sheet (replace with custom sheet if available)
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      onRequestClose={onClose}
+    <BottomSheet
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      index={-1}
+      enablePanDownToClose
+      onClose={onClose}
     >
-      <View style={styles.overlay}>
+      <BottomSheetView style={styles.overlay}>
         <View style={styles.sheet}>
           <View style={styles.handle} />
           <ThemeSelector />
@@ -34,8 +39,8 @@ const SettingsSheet = ({ visible, onClose }: SettingsSheetProps) => {
           <StatisticsDisplay cards={cards} />
         </View>
         <View style={styles.background} onTouchEnd={onClose} />
-      </View>
-    </Modal>
+      </BottomSheetView>
+    </BottomSheet>
   )
 }
 
