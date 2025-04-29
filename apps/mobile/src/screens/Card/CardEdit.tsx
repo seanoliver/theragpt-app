@@ -40,23 +40,7 @@ export const CardScreenEdit = ({ card }: { card: Card }) => {
 
   return (
     <View style={[styles.card]}>
-      <TextInput
-        style={[styles.cardText]}
-        value={text}
-        onChangeText={handleChangeText}
-        multiline
-      />
-      <View style={styles.cardActionsRow}>
-        <TouchableOpacity style={[styles.cardActionButton]}>
-          <Ionicons
-            name="volume-high-outline"
-            size={18}
-            color={theme.colors.textOnBackground}
-            style={{ marginRight: 6 }}
-          />
-          <Text style={[styles.cardActionText]}>Read Aloud</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={[styles.cardText]}>{text}</Text>
     </View>
   )
 }

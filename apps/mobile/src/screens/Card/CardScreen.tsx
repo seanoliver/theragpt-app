@@ -1,12 +1,13 @@
-import { Theme } from '@/apps/mobile/lib/theme/theme';
-import { Card } from '@/packages/logic/src/cards/cards.service';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../../lib/theme/context';
-import { InstructionalFooterText } from '../../shared/InstructionalFooterText';
-import { CardScreenEdit } from './CardEdit';
-import { CardScreenAIVariations } from './CardScreenAIVariations';
-import { CardScreenStats } from './CardScreenStats';
+import { Theme } from '@/apps/mobile/lib/theme/theme'
+import { Card } from '@/packages/logic/src/cards/cards.service'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { useTheme } from '../../../lib/theme/context'
+import { InstructionalFooterText } from '../../shared/InstructionalFooterText'
+import { CardScreenEdit } from './CardEdit'
+import { CardScreenAIVariations } from './CardScreenAIVariations'
+import { CardScreenStats } from './CardScreenStats'
+import { CardSheetMenu } from './CardSheetMenuProps'
 
 export const CardScreen = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
@@ -30,15 +31,9 @@ export const CardScreen = ({ card }: { card: Card }) => {
         <CardScreenStats card={card} />
 
         {/* AI Variations Section */}
-        <CardScreenAIVariations card={card} />
+        {/* <CardScreenAIVariations card={card} /> */}
 
-        {/* Footer Instructions */}
-        <InstructionalFooterText
-          text={[
-            'Tap "Read Aloud" to hear your affirmation.',
-            'Use "Generate" to create AI variations.',
-          ]}
-        />
+        <CardSheetMenu card={card} />
       </View>
     </View>
   )
