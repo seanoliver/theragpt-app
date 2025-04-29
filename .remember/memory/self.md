@@ -177,3 +177,47 @@ const filteredCards = useMemo(
   [cards, searchQuery],
 )
 ```
+
+### Mistake: FAB appears above the bottom sheet when it should be hidden
+**Wrong**:
+```
+export const FAB = ({ style, onPress = () => {}, backgroundColor }: FABProps) => {
+  const { themeObject: theme } = useTheme()
+  const styles = makeStyles(theme)
+
+  return (
+    <View style={[styles.fabContainer, style]}>
+      <TouchableOpacity
+        onPress={onPress}
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Ionicons name="add" size={24} color={theme.colors.white} />
+      </TouchableOpacity>
+    </View>
+  )
+}
+```
+
+**Correct**:
+```
+import { useFABContext } from './FABContext'
+
+export const FAB = ({ style, onPress = () => {}, backgroundColor }: FABProps) => {
+  const { themeObject: theme } = useTheme()
+  const styles = makeStyles(theme)
+  const { editingCard } = useFABContext()
+
+  if (editingCard) return null
+
+  return (
+    <View style={[styles.fabContainer, style]}>
+      <TouchableOpacity
+        onPress={onPress}
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Ionicons name="add" size={24} color={theme.colors.white} />
+      </TouchableOpacity>
+    </View>
+  )
+}
+```

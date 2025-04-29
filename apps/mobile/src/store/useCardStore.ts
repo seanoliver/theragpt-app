@@ -16,7 +16,7 @@ interface CardStore {
   // Actions
   initialize: () => Promise<void>
   setCards: (cards: Card[]) => void
-  addCard: (params: CreateCardParams) => Promise<void>
+  addCard: (params: CreateCardParams) => Promise<Card | undefined>
   updateCard: (params: UpdateCardParams) => Promise<void>
   deleteCard: (id: string) => Promise<void>
   // Card interaction actions
@@ -50,13 +50,22 @@ export const useCardStore = create<CardStore>()(
 
       addCard: async params => {
         try {
-          const newCard = await cardService.create(params)
-          set(state => ({
-            cards: [...state.cards, newCard],
-          }))
+          // Always create a new card with blank text and unique id
+          const newCard = await cardService.create({ ...params, text: '' })
+          set(state => {
+            const alreadyExists = state.cards.some(
+              card => card.id === newCard.id,
+            )
+            if (alreadyExists) {
+              return state
+            }
+            return { cards: [...state.cards, newCard] }
+          })
+          return newCard
         } catch (error) {
           set({ error: 'Failed to add card' })
           console.error('Error adding card:', error)
+          return undefined
         }
       },
 
@@ -163,13 +172,12 @@ export const useCardStore = create<CardStore>()(
           console.error('Error reviewing card:', error)
         }
       },
-      
+
       getCardById: id => get().cards.find(card => card.id === id),
 
       setLoading: isLoading => set({ isLoading }),
 
       setError: error => set({ error }),
-
     }),
     {
       name: 'card-storage', // unique name for localStorage

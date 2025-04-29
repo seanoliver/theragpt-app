@@ -44,11 +44,15 @@ export const CardSheet = ({ cardId }: CardSheetProps) => {
     )
   }
 
+  const onClose = () => {
+    setIsEditing(false)
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         {isEditing ? (
-          <CardSheetEditor card={card} onSave={onSave} />
+          <CardSheetEditor card={card} onSave={onSave} onClose={onClose} />
         ) : (
           <>
             <CardSheetText card={card} />

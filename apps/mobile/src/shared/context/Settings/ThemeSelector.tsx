@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { useTheme } from '../../../lib/theme/context'
-import { ThemeOption } from '../../../lib/theme/service'
+import { useTheme } from '../../../../lib/theme/context'
+import { ThemeOption } from '../../../../lib/theme/service'
 
 const THEME_OPTIONS: { label: string; value: ThemeOption }[] = [
   { label: 'Light', value: ThemeOption.LIGHT },

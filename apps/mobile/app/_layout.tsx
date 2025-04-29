@@ -13,13 +13,13 @@ import { ActivityIndicator, Text, SafeAreaView, View } from 'react-native'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { ThemeProvider, useTheme } from '../lib/theme/context'
-import { SettingsProvider } from '../src/shared/SettingsSheet/SettingsSheetContext'
+import { SettingsProvider } from '../src/shared/context/Settings/SettingsContext'
 import { Slot } from 'expo-router'
 import React from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { FABProvider } from '../src/shared/context/FAB/FABContext';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  // ThemeProvider must be outside useTheme
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
@@ -35,8 +35,10 @@ const InnerProviders = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useTheme()
   return (
     <KeyboardProvider>
-      <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
-      <View style={{ flex: 1 }}>{children}</View>
+      <FABProvider>
+        <StatusBar style={theme === 'dark' ? 'dark' : 'dark'} />
+        <View style={{ flex: 1 }}>{children}</View>
+      </FABProvider>
     </KeyboardProvider>
   )
 }
