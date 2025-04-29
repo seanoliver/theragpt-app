@@ -1,19 +1,16 @@
+import { useTheme } from '@/apps/mobile/lib/theme/context'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import React, {
   createContext,
-  useContext,
-  useState,
-  useCallback,
   ReactNode,
-  useRef,
+  useCallback,
+  useContext,
   useMemo,
+  useRef,
 } from 'react'
-import StatisticsDisplay from './StatisticsDisplay'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { Platform, View, StyleSheet } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import PaletteSelector from './PaletteSelector'
-import { styles } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/BottomSheetFlashList'
 import ThemeSelector from './ThemeSelector'
-import { useTheme } from '@/apps/mobile/lib/theme/context'
 
 type SettingsContextType = {
   bottomSheetRef: React.RefObject<BottomSheet>
