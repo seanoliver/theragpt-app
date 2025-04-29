@@ -66,14 +66,13 @@ const makeStyles = (theme: Theme) => {
     card: {
       padding: 16,
       borderRadius: 8,
-      borderWidth: 1,
       marginBottom: 16,
       backgroundColor: theme.colors.background,
-      borderColor: theme.colors.borderSubtle,
+      ...theme.rnShadows.subtle,
     },
     cardText: {
       fontSize: 16,
-      fontWeight: 'bold',
+      lineHeight: 28,
       marginBottom: 8,
       color: theme.colors.textOnBackground,
     },
