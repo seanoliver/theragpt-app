@@ -5,7 +5,7 @@ import { useTheme } from '../../../lib/theme/context'
 import { FAB } from '../../shared/context/FAB/FAB'
 import { useFABContext } from '../../shared/context/FAB/FABContext'
 import { useCardStore } from '../../store/useCardStore'
-import { CardList } from './CardList'
+import { CardList } from '../../shared/CardList/CardList'
 import { filterCardData } from './filterCardData'
 
 export const CardsScreen = () => {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { themes, ThemeMode } from '../../../../lib/theme/palettes'
-import { getThemeByName } from '../../../../lib/theme/theme'
-import { useTheme } from '../../../../lib/theme/context'
+import { themes, ThemeMode } from '../../../lib/theme/palettes'
+import { getThemeByName } from '../../../lib/theme/theme'
+import { useTheme } from '../../../lib/theme/context'
 
 const PALETTE_NAMES: ThemeMode[] = ['indigo', 'forest', 'sunset', 'white', 'charcoal']
 

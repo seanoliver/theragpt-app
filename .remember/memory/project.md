@@ -37,3 +37,23 @@ Perform a full clean install and cache reset (remove node_modules, lock files, .
 ```bash
 cd apps/mobile && rm -rf node_modules .expo package-lock.json yarn.lock pnpm-lock.yaml && pnpm install && cd ../.. && npx expo start -c
 ```
+
+### Mistake: Conditionally rendering <Text> with && or short-circuit logic inside a <Text> parent in React Native
+**Wrong**:
+```
+<Text>
+  {!card.isActive && <Text>Archived</Text>}
+  {showArchiveBulletSeparator && <Text> • </Text>}
+</Text>
+```
+or
+```
+{!card.isActive && <Text>Archived</Text>}
+```
+**Correct**:
+Always use a ternary to ensure a <Text> node is rendered in all cases, or move the condition outside the <Text> parent:
+```
+<Text>{!card.isActive ? 'Archived' : ''}</Text>
+<Text>{showArchiveBulletSeparator ? ' • ' : ''}</Text>
+```
+**Note**: In React Native, children of <Text> must always be valid nodes (string or <Text>), never false/null/undefined. Using && or short-circuit logic can result in invalid children and runtime errors.

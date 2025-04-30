@@ -1,4 +1,4 @@
-import { CardSheetEditor } from '@/apps/mobile/src/screens/CardSheet/CardSheetEditor'
+import { CardSheetEditor } from '@/apps/mobile/src/shared/CardSheet/CardSheetEditor'
 import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 import { Card } from '@/packages/logic/src/cards/cards.service'
 import React from 'react'

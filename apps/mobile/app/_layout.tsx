@@ -1,3 +1,4 @@
+import * as eva from '@eva-design/eva'
 import {
   Inter_400Regular,
   Inter_700Bold,
@@ -8,37 +9,31 @@ import {
   PlayfairDisplay_700Bold,
   useFonts as usePlayfairFonts,
 } from '@expo-google-fonts/playfair-display'
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
+import { EvaIconsPack } from '@ui-kitten/eva-icons'
+import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { ActivityIndicator, Text, SafeAreaView, View } from 'react-native'
+import React from 'react'
+import { ActivityIndicator, SafeAreaView, Text, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-get-random-values'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { ThemeProvider, useTheme } from '../lib/theme/context'
-import { SettingsProvider } from '../src/shared/context/Settings/SettingsContext'
-import { Slot } from 'expo-router'
-import React from 'react'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { FABProvider } from '../src/shared/context/FAB/FABContext'
-import * as eva from '@eva-design/eva'
-import {
-  ApplicationProvider,
-  IconRegistry,
-  Layout,
-  Text as UIKittenText,
-} from '@ui-kitten/components'
 import { evaCustomTheme } from '../lib/theme/eva-custom-theme'
-import { EvaIconsPack } from '@ui-kitten/eva-icons'
+import { FABProvider } from '../src/shared/context/FAB/FABContext'
+import { SettingsProvider } from '../src/shared/context/Settings/SettingsContext'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* <IconRegistry icons={EvaIconsPack} />{' '} */}
-      {/* <ApplicationProvider {...eva} theme={eva.light}> */}
-      <ThemeProvider>
-        <SettingsProvider>
-          <InnerProviders>{children}</InnerProviders>
-        </SettingsProvider>
-      </ThemeProvider>
-      {/* </ApplicationProvider> */}
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...evaCustomTheme }}>
+        <ThemeProvider>
+          <SettingsProvider>
+            <InnerProviders>{children}</InnerProviders>
+          </SettingsProvider>
+        </ThemeProvider>
+      </ApplicationProvider>
     </GestureHandlerRootView>
   )
 }

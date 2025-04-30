@@ -46,13 +46,6 @@ export const CardSheetMenu = ({
         textColor: theme.colors.text,
       },
       {
-        icon: 'sparkles-outline',
-        onPress: () => {},
-        label: 'Generate',
-        color: theme.colors.disabledBackground,
-        textColor: theme.colors.text,
-      },
-      {
         icon: 'archive-outline',
         onPress: () => {},
         label: 'Archive',

@@ -8,10 +8,10 @@ import BottomSheet, {
 import { Card as CardType } from '@still/logic'
 import React, { useMemo, useRef, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
-import { ListCard } from '../../shared/CardListItem'
-import { SwipeAction } from '../../shared/SwipeMenu'
+import { CardListItem } from './CardListItem'
+import { SwipeAction } from '../SwipeMenu'
 import { useCardStore } from '../../store/useCardStore'
-import { CardSheet } from '../../shared/CardSheet/CardSheet'
+import { CardSheet } from '../CardSheet/CardSheet'
 
 interface CardListProps {
   cards: CardType[]
@@ -65,7 +65,7 @@ export const CardList = ({ cards }: CardListProps) => {
         keyExtractor={item => item.id}
         renderItem={({ item }) => {
           return (
-            <ListCard
+            <CardListItem
               card={item}
               handleOpenBottomSheet={handleOpenBottomSheet}
               getSwipeActions={getSwipeActions}

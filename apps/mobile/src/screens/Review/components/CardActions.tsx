@@ -10,31 +10,21 @@ type CardActionsProps = {
 
 export const CardActions: React.FC<CardActionsProps> = ({ cardId }) => {
   const { themeObject: theme } = useTheme()
-  const upvoteCard = useCardStore(state => state.upvoteCard)
-  const downvoteCard = useCardStore(state => state.downvoteCard)
+  const heartCard = useCardStore(state => state.upvoteCard)
+
+  const isHearted = false
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.actionButton}
-        onPress={() => downvoteCard(cardId)}
-        accessibilityLabel="Downvote"
+        onPress={() => heartCard(cardId)}
+        accessibilityLabel="Heart"
       >
         <Ionicons
-          name="chevron-down-circle-outline"
+          name={isHearted ? 'heart' : 'heart-outline'}
           size={32}
-          color={theme.colors.errorAccent + '99'}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.actionButton}
-        onPress={() => upvoteCard(cardId)}
-        accessibilityLabel="Upvote"
-      >
-        <Ionicons
-          name="chevron-up-circle-outline"
-          size={32}
-          color={theme.colors.successAccent + '99'}
+          color={theme.colors.errorAccent}
         />
       </TouchableOpacity>
     </View>

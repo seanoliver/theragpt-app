@@ -1,4 +1,4 @@
-import { PaletteName, palettes, ThemePalette } from './palettes'
+import { ThemeMode, themes, ThemePalette } from './palettes'
 import { ThemeTokenKey } from './tokens'
 
 export interface Theme {
@@ -51,8 +51,8 @@ export interface Theme {
   }
 }
 
-export const DEFAULT_LIGHT_PALETTE: PaletteName = 'white'
-export const DEFAULT_DARK_PALETTE: PaletteName = 'charcoal'
+export const DEFAULT_LIGHT_PALETTE: ThemeMode = 'light'
+export const DEFAULT_DARK_PALETTE: ThemeMode = 'dark'
 
 function completePalette(
   palette: Partial<ThemePalette>,
@@ -68,8 +68,8 @@ function completePalette(
 }
 
 export function getThemeByName(paletteName: string): Theme {
-  const fallback = palettes['indigo']
-  const base = palettes[paletteName as PaletteName] || fallback
+  const fallback = themes['light']
+  const base = themes[paletteName as ThemeMode] || fallback
   const colors = completePalette(base, fallback)
 
   return {
@@ -125,46 +125,14 @@ export function getThemeByName(paletteName: string): Theme {
 
 export const defaultTheme = getThemeByName(DEFAULT_LIGHT_PALETTE)
 
-export function getColor(theme: Theme, token: ThemeTokenKey): string {
-  return theme.colors[token]
-}
-
-function luminance(hex: string): number {
-  const c = hex.replace('#', '')
-  const rgb = [
-    parseInt(c.substring(0, 2), 16),
-    parseInt(c.substring(2, 4), 16),
-    parseInt(c.substring(4, 6), 16),
-  ].map(v => {
-    v /= 255
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
-  })
-  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]
-}
-
-export function contrastRatio(hex1: string, hex2: string): number {
-  const lum1 = luminance(hex1)
-  const lum2 = luminance(hex2)
-  return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05)
-}
-
-export function getAccessibleTextColor(theme: Theme, bg: string): string {
-  const whiteContrast = contrastRatio(bg, theme.colors.text)
-  const blackContrast = contrastRatio(bg, '#000000')
-  // WCAG recommends at least 4.5:1 for normal text
-  return whiteContrast >= blackContrast ? theme.colors.text : '#000000'
-}
-
-export const availablePalettes = Object.keys(palettes) as PaletteName[]
-
 export type ThemeType = 'light' | 'dark' | 'system'
 export const THEME_TYPES: ThemeType[] = ['light', 'dark', 'system']
 
-export const themes: Record<ThemeType, Theme> = {
+export const appThemes: Record<ThemeType, Theme> = {
   light: getThemeByName(DEFAULT_LIGHT_PALETTE),
   dark: getThemeByName(DEFAULT_DARK_PALETTE),
   system: getThemeByName(DEFAULT_LIGHT_PALETTE),
 }
 
 export const DEFAULT_THEME_TYPE: ThemeType = 'light'
-export const DEFAULT_THEME: Theme = themes[DEFAULT_THEME_TYPE]
+export const DEFAULT_THEME: Theme = appThemes[DEFAULT_THEME_TYPE]

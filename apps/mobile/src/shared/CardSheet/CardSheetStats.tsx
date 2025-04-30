@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 import { Card } from '@still/logic'
-import { useCardInteractionService } from '../../shared/hooks/useCardInteractionService'
+import { useCardInteractionService } from '../hooks/useCardInteractionService'
 
 export const CardSheetStats = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
