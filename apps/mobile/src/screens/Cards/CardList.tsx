@@ -1,7 +1,7 @@
 import { Theme } from '@/apps/mobile/lib/theme'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Ionicons } from '@expo/vector-icons'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetHandle, BottomSheetView } from '@gorhom/bottom-sheet'
 import { Card as CardType } from '@still/logic'
 import React, { useMemo, useRef, useState } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
@@ -87,6 +87,8 @@ export const CardList = ({ cards }: CardListProps) => {
         index={-1}
         enablePanDownToClose
         onClose={() => setSelectedCard(null)}
+        handleComponent={BottomSheetHandle}
+        backgroundStyle={styles.sheetBackground}
       >
         <BottomSheetView style={{ flex: 1 }}>
           {selectedCard && <CardSheet cardId={selectedCard.id} />}
@@ -105,5 +107,8 @@ const makeStyles = (theme: Theme) =>
     cardWrapper: {
       marginBottom: 16,
       marginHorizontal: 16,
+    },
+    sheetBackground: {
+      backgroundColor: theme.colors.foregroundBackground,
     },
   })

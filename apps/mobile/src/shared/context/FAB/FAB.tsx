@@ -1,28 +1,26 @@
-import { Ionicons } from '@expo/vector-icons'
-import React, { useEffect } from 'react'
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
 import {
   StyleProp,
   StyleSheet,
   TouchableOpacity,
   View,
   ViewStyle,
-} from 'react-native'
-import { useTheme } from '../../../../lib/theme/context'
-import { Theme } from '../../../../lib/theme/theme'
-import { useFABContext } from './FABContext'
+} from 'react-native';
+import { useTheme } from '../../../../lib/theme/context';
+import { Theme } from '../../../../lib/theme/theme';
 
 interface FABProps {
   style?: StyleProp<ViewStyle>
   onPress?: () => void
-  backgroundColor?: string
 }
 
-export const FAB = ({ style, onPress = () => {}, backgroundColor }: FABProps) => {
+export const FAB = ({
+  style,
+  onPress = () => {},
+}: FABProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
-  const { editingCard } = useFABContext()
-
-  if (editingCard) return null
 
   return (
     <View style={[styles.fabContainer, style]}>
@@ -30,18 +28,10 @@ export const FAB = ({ style, onPress = () => {}, backgroundColor }: FABProps) =>
         onPress={onPress}
         style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
       >
-        <Ionicons name="add" size={24} color={theme.colors.white} />
+        <Ionicons name="add" size={24} color={theme.colors.primaryBackground} />
       </TouchableOpacity>
     </View>
   )
-}
-
-function usePrevious<T>(value: T): T | undefined {
-  const ref = React.useRef<T>()
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-  return ref.current
 }
 
 const makeStyles = (theme: Theme) =>
@@ -51,7 +41,7 @@ const makeStyles = (theme: Theme) =>
       right: 24,
       bottom: 32,
       zIndex: 100,
-      backgroundColor: theme.colors.accent,
+      backgroundColor: theme.colors.textOnPrimary,
       width: 48,
       height: 48,
       borderRadius: 32,

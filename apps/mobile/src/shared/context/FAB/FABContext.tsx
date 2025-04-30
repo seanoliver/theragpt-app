@@ -9,6 +9,7 @@ import { createContext, useCallback, useContext, useMemo, useRef } from 'react'
 import { StyleSheet } from 'react-native'
 import { FABSheet } from './FABSheet'
 import type { Card } from '@/packages/logic/src/cards/cards.service'
+import { BottomSheetHandle } from '../../BottomSheetHandle'
 
 export type FABContextType = {
   bottomSheetRef: React.RefObject<BottomSheet>
@@ -62,6 +63,8 @@ export const FABProvider = ({ children }: { children: React.ReactNode }) => {
         enablePanDownToClose
         backdropComponent={renderBackdrop}
         onClose={closeFAB}
+        handleComponent={BottomSheetHandle}
+        backgroundStyle={styles.sheetBackground}
       >
         <BottomSheetView style={styles.overlay}>
           {editingCard && (
@@ -81,5 +84,15 @@ const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    sheet: {
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    sheetBackground: {
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    handleIndicator: {
+      backgroundColor: theme.colors.hoverAccent,
     },
   })
