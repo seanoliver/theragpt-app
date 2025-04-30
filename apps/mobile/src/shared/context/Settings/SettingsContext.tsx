@@ -3,6 +3,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
+import { BottomSheetHandle } from '../../BottomSheetHandle'
 import React, {
   createContext,
   ReactNode,
@@ -33,7 +34,7 @@ export const useSettingsContext = (): SettingsContextType => {
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ['40%'], [])
+  const snapPoints = useMemo(() => ['20%'], [])
 
   const openSettings = useCallback(() => bottomSheetRef.current?.expand(), [])
   const closeSettings = useCallback(() => bottomSheetRef.current?.close(), [])
@@ -60,13 +61,13 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         enablePanDownToClose
         onClose={closeSettings}
         backdropComponent={renderBackdrop}
+        handleComponent={BottomSheetHandle}
+        backgroundStyle={styles.sheetBackground}
       >
         <BottomSheetView style={styles.overlay}>
           <View style={styles.sheet}>
             <View style={styles.handle} />
             <ThemeSelector />
-            {/* <PaletteSelector /> */}
-            {/* <StatisticsDisplay cards={cards} /> */}
           </View>
           <View style={styles.background} onTouchEnd={closeSettings} />
         </BottomSheetView>
@@ -93,12 +94,14 @@ const makeStyles = (theme: any) =>
     handle: {
       width: 32,
       height: 4,
-      backgroundColor: theme.text,
       borderRadius: 2,
       marginBottom: 8,
     },
     background: {
       flex: 1,
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    sheetBackground: {
       backgroundColor: theme.colors.foregroundBackground,
     },
   })

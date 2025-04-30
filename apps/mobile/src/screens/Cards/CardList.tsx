@@ -1,18 +1,15 @@
 import { Theme } from '@/apps/mobile/lib/theme'
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Ionicons } from '@expo/vector-icons'
-import BottomSheet, {
-  BottomSheetHandle,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { Card as CardType } from '@still/logic'
 import React, { useMemo, useRef, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
-import { ListCard } from '../../shared/CardListItem'
+import { CardListItem } from '../../shared/CardList/CardListItem'
 import { SwipeAction } from '../../shared/SwipeMenu'
 import { useCardStore } from '../../store/useCardStore'
 import { CardSheet } from '../../shared/CardSheet/CardSheet'
-
+import { BottomSheetHandle } from '../../shared/BottomSheetHandle'
 interface CardListProps {
   cards: CardType[]
 }
@@ -65,7 +62,7 @@ export const CardList = ({ cards }: CardListProps) => {
         keyExtractor={item => item.id}
         renderItem={({ item }) => {
           return (
-            <ListCard
+            <CardListItem
               card={item}
               handleOpenBottomSheet={handleOpenBottomSheet}
               getSwipeActions={getSwipeActions}
