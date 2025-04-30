@@ -1,19 +1,19 @@
-const { getDefaultConfig } = require('expo/metro-config');
-const path = require('path');
+const { getDefaultConfig } = require('expo/metro-config')
+const path = require('path')
 
-const projectRoot = __dirname;
-const monorepoRoot = path.resolve(projectRoot, '../..');
+const projectRoot = __dirname
+const monorepoRoot = path.resolve(projectRoot, '../..')
 
-const config = getDefaultConfig(projectRoot);
+const config = getDefaultConfig(projectRoot)
 
-config.watchFolders = [monorepoRoot];
+config.watchFolders = [monorepoRoot]
 
 // Ensure we're only building for mobile platforms
-config.resolver.platforms = ['ios', 'android'];
+config.resolver.platforms = ['ios', 'android']
 
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, 'node_modules'),
   path.resolve(monorepoRoot, 'node_modules'),
-];
+]
 
-module.exports = config;
+module.exports = config

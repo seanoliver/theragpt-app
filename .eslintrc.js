@@ -41,6 +41,13 @@ module.exports = {
         'func-style': 'off',
       },
     },
+    {
+      // Allow require() imports in metro.config.js as Metro doesn't support ESM imports yet
+      files: ['apps/mobile/metro.config.js'],
+      rules: {
+        '@typescript-eslint/no-require-imports': 'off',
+      },
+    },
   ],
   ignorePatterns: [
     'node_modules/',
