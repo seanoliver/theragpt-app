@@ -24,6 +24,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.7.1",
   "dependencies": {
+    "clsx": "^2.1.1",
     "expo-blur": "^14.0.3",
     "expo-linear-gradient": "^14.0.2",
     "html-entities": "2.5.3",
