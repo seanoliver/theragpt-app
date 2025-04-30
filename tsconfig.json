@@ -35,5 +35,4 @@
     ".next",
     "dist"
   ],
-  "extends": "expo/tsconfig.base"
 }
