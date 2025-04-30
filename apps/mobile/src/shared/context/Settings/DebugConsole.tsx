@@ -1,7 +1,15 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Theme } from '@/apps/mobile/lib/theme/theme'
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Modal, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 
@@ -11,10 +19,9 @@ let Constants: any = null
 // Self-executing async function to load Constants
 ;(async () => {
   try {
-    // @ts-expect-error - Dynamic import of expo-constants for version/build info
     Constants = (await import('expo-constants')).default
   } catch {
-    // Fallback: Constants not available
+    console.error('Error importing expo-constants')
   }
 })()
 
@@ -26,7 +33,9 @@ export const DebugConsole = ({ env }: DebugConsoleProps) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
   const [asyncStorageVisible, setAsyncStorageVisible] = useState(false)
-  const [asyncStorageContents, setAsyncStorageContents] = useState<{ [key: string]: string }>({})
+  const [asyncStorageContents, setAsyncStorageContents] = useState<{
+    [key: string]: string
+  }>({})
   const [loadingStorage, setLoadingStorage] = useState(false)
   const setCards = useCardStore(state => state.setCards)
 
@@ -47,7 +56,7 @@ export const DebugConsole = ({ env }: DebugConsoleProps) => {
             Alert.alert('AsyncStorage cleared')
           },
         },
-      ]
+      ],
     )
   }
 
@@ -85,17 +94,23 @@ export const DebugConsole = ({ env }: DebugConsoleProps) => {
             Alert.alert('Card store reset')
           },
         },
-      ]
+      ],
     )
   }
 
   // App version/build info
   const getAppInfo = () => {
     if (Constants) {
-      const { manifest, expoConfig, nativeAppVersion, nativeBuildVersion } = Constants
+      const { manifest, expoConfig, nativeAppVersion, nativeBuildVersion } =
+        Constants
       // Try to get info from manifest or expoConfig
-      const version = manifest?.version || expoConfig?.version || nativeAppVersion || '1.0.2'
-      const build = manifest?.ios?.buildNumber || expoConfig?.ios?.buildNumber || nativeBuildVersion || '2'
+      const version =
+        manifest?.version || expoConfig?.version || nativeAppVersion || '1.0.2'
+      const build =
+        manifest?.ios?.buildNumber ||
+        expoConfig?.ios?.buildNumber ||
+        nativeBuildVersion ||
+        '2'
       return { version, build }
     }
     // Fallback to static values from app.json
@@ -110,11 +125,20 @@ export const DebugConsole = ({ env }: DebugConsoleProps) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>AsyncStorage</Text>
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.button} onPress={handleClearAsyncStorage}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleClearAsyncStorage}
+          >
             <Text style={styles.buttonText}>Clear All</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleViewAsyncStorage} disabled={loadingStorage}>
-            <Text style={styles.buttonText}>{loadingStorage ? 'Loading...' : 'View Contents'}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleViewAsyncStorage}
+            disabled={loadingStorage}
+          >
+            <Text style={styles.buttonText}>
+              {loadingStorage ? 'Loading...' : 'View Contents'}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -153,7 +177,10 @@ export const DebugConsole = ({ env }: DebugConsoleProps) => {
                 ))
               )}
             </ScrollView>
-            <TouchableOpacity style={styles.closeButton} onPress={() => setAsyncStorageVisible(false)}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setAsyncStorageVisible(false)}
+            >
               <Text style={styles.buttonText}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -252,4 +279,3 @@ const makeStyles = (theme: Theme) =>
       alignItems: 'center',
     },
   })
-
