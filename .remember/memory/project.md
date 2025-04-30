@@ -57,3 +57,12 @@ Always use a ternary to ensure a <Text> node is rendered in all cases, or move t
 <Text>{showArchiveBulletSeparator ? ' • ' : ''}</Text>
 ```
 **Note**: In React Native, children of <Text> must always be valid nodes (string or <Text>), never false/null/undefined. Using && or short-circuit logic can result in invalid children and runtime errors.
+### Mistake: Incorrect dependency scope for shared lib/utils.ts
+**Wrong**:
+```
+lib/utils.ts imported 'clsx', but 'clsx' was only listed in apps/web/package.json. This caused build failures when the shared lib was used, as the dependency was not resolvable from outside the web app.
+```
+**Correct**:
+```
+Since lib/utils.ts is only used by the web app, 'clsx' should be added to apps/web/package.json. If it were used by multiple packages, it should be hoisted to the workspace root. The fix was to add 'clsx' to apps/web and re-run the build.
+```
