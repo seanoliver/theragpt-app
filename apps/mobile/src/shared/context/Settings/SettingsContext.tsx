@@ -12,7 +12,7 @@ import React, {
   useMemo,
   useRef,
 } from 'react'
-import { Platform, StyleSheet, View, Text } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import ThemeSelector from './ThemeSelector'
 import { DebugConsole } from './DebugConsole'
 

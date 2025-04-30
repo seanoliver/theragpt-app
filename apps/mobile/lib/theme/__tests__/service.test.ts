@@ -1,13 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Appearance } from 'react-native';
-import { ThemeOption, isValidTheme, getAvailableThemes, getSystemTheme, saveThemeSelection, loadThemeSelection, clearThemeSelection } from '../service';
+// Test file - imports removed as they're currently unused
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
-}));
+}))
 
 // Mock Appearance API
 jest.mock('react-native', () => ({
@@ -16,8 +14,8 @@ jest.mock('react-native', () => ({
     addChangeListener: jest.fn(),
     removeChangeListener: jest.fn(),
   },
-}));
+}))
 
-const THEME_STORAGE_KEY = 'user_theme_preference';
+// Removed unused constant
 
 // ... existing code ...

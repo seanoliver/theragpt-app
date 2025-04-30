@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
-import { DisplayCard } from '../screens/Cards/useCardData';
+import { DisplayCard } from '../screens/Cards/useCardData'
 
 export interface SwipeAction {
   label: string
@@ -45,7 +45,7 @@ export const SwipeMenu = ({
 
 const ActionWrapper = ({
   icon,
-  textColor,
+  _textColor,
   backgroundColor,
   onPress,
 }: Omit<SwipeAction, 'label'>) => {

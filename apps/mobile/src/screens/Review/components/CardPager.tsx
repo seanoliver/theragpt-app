@@ -1,6 +1,6 @@
 import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 import { Card } from '@still/logic'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Dimensions, View } from 'react-native'
 import PagerView, {
   PagerViewOnPageSelectedEvent,

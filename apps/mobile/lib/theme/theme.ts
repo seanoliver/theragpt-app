@@ -54,7 +54,7 @@ export interface Theme {
 export const DEFAULT_LIGHT_PALETTE: ThemeMode = 'light'
 export const DEFAULT_DARK_PALETTE: ThemeMode = 'dark'
 
-function completePalette(
+const completePalette = function(
   palette: Partial<ThemePalette>,
   fallback: ThemePalette,
 ): ThemePalette {
@@ -67,7 +67,7 @@ function completePalette(
   return completed as ThemePalette
 }
 
-export function getThemeByName(paletteName: string): Theme {
+export const getThemeByName = function(paletteName: string): Theme {
   const fallback = themes['light']
   const base = themes[paletteName as ThemeMode] || fallback
   const colors = completePalette(base, fallback)

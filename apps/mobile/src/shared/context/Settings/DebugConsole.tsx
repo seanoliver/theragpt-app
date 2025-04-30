@@ -1,18 +1,22 @@
 import { useTheme } from '@/apps/mobile/lib/theme/context'
 import { Theme } from '@/apps/mobile/lib/theme/theme'
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Button, Modal, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, Modal, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 
 // Try to import expo-constants for version/build info
 let Constants: any = null
-try {
-  // @ts-ignore
-  Constants = require('expo-constants').default
-} catch (e) {
-  // Fallback: Constants not available
-}
+
+// Self-executing async function to load Constants
+;(async () => {
+  try {
+    // @ts-expect-error - Dynamic import of expo-constants for version/build info
+    Constants = (await import('expo-constants')).default
+  } catch {
+    // Fallback: Constants not available
+  }
+})()
 
 interface DebugConsoleProps {
   env: string
@@ -59,7 +63,7 @@ export const DebugConsole = ({ env }: DebugConsoleProps) => {
       })
       setAsyncStorageContents(contents)
       setAsyncStorageVisible(true)
-    } catch (e) {
+    } catch {
       Alert.alert('Error', 'Failed to load AsyncStorage contents')
     }
     setLoadingStorage(false)

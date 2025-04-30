@@ -1,14 +1,14 @@
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import React from 'react'
 import {
   StyleProp,
   StyleSheet,
   TouchableOpacity,
   View,
   ViewStyle,
-} from 'react-native';
-import { useTheme } from '../../../../lib/theme/context';
-import { Theme } from '../../../../lib/theme/theme';
+} from 'react-native'
+import { useTheme } from '../../../../lib/theme/context'
+import { Theme } from '../../../../lib/theme/theme'
 
 interface FABProps {
   style?: StyleProp<ViewStyle>

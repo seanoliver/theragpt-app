@@ -15,7 +15,7 @@ import { ONBOARDING_CARDS } from './constants'
 
 const { width } = Dimensions.get('window')
 
-export function OnboardingCarousel({ onCancel }: { onCancel?: () => void }) {
+export const OnboardingCarousel = function({ onCancel }: { onCancel?: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const router = useRouter()
 

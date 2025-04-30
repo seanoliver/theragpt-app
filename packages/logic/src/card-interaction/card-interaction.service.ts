@@ -30,17 +30,17 @@ export interface Totals {
 
 const STORAGE_KEY = 'still_card_interaction_entries'
 
-function getTodayISO(): string {
+const getTodayISO = (): string => {
   return new Date().toISOString().split('T')[0]
 }
 
-function toISODate(ts: number): string {
+const toISODate = (ts: number): string => {
   return new Date(ts).toISOString().split('T')[0]
 }
 
-function groupByDate(
+const groupByDate = (
   entries: CardInteractionEntry[],
-): Record<string, DailySummary> {
+): Record<string, DailySummary> => {
   const summary: Record<string, DailySummary> = {}
   for (const entry of entries) {
     if (!summary[entry.date]) {
@@ -58,7 +58,7 @@ function groupByDate(
   return summary
 }
 
-function computeTotals(entries: CardInteractionEntry[]): Totals {
+const computeTotals = (entries: CardInteractionEntry[]): Totals => {
   return entries.reduce(
     (acc, entry) => {
       if (entry.action === 'review') acc.reviews += 1
@@ -70,7 +70,7 @@ function computeTotals(entries: CardInteractionEntry[]): Totals {
   )
 }
 
-function computeCurrentStreak(dailySummaries: DailySummary[]): number {
+const computeCurrentStreak = (dailySummaries: DailySummary[]): number => {
   // Assumes dailySummaries sorted DESC by date
   let streak = 0
   for (const day of dailySummaries) {
@@ -118,7 +118,6 @@ export class CardInteractionService {
   ): Promise<void> {
     const now = Date.now()
     const date = toISODate(now)
-    console.log('Logging action for card:', cardId, 'with action:', action)
     const entry: CardInteractionEntry = {
       id: uuidv4(),
       cardId,
@@ -139,13 +138,10 @@ export class CardInteractionService {
     cardId: string,
     action: CardInteractionAction,
   ) {
-    console.log('Updating card metadata for card:', cardId, 'with action:', action)
     const now = Date.now()
 
     const totals = await this.getTotals(cardId)
-    console.log('Totals:', totals)
     if (action === 'review') {
-      console.log('Updating last reviewed for card:', cardId)
       await cardService.update({
         id: cardId,
         lastReviewed: now,
@@ -171,7 +167,7 @@ export class CardInteractionService {
         this.storageKey,
       )
       return data || []
-    } catch (error) {
+    } catch {
       // Optionally log error
       return []
     }

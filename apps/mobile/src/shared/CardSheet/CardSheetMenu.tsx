@@ -20,7 +20,7 @@ type MenuItem = {
 }
 
 export const CardSheetMenu = ({
-  card,
+  card: _card,
   isEditing,
   onEdit,
 }: CardSheetMenuProps) => {

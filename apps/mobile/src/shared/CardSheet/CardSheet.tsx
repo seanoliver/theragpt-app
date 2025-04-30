@@ -1,5 +1,5 @@
 import { Theme } from '@/apps/mobile/lib/theme/theme'
-import { Card } from '@/packages/logic/src/cards/cards.service'
+// Unused import removed: import { Card } from '@/packages/logic/src/cards/cards.service'
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../../lib/theme/context'

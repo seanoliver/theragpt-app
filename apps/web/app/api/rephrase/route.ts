@@ -54,7 +54,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     try {
       const parsed = JSON.parse(data.choices?.[0]?.message?.content)
       alternatives = parsed.alternatives
-    } catch (e) {
+    } catch {
       throw new Error('Failed to parse alternatives JSON from LLM response')
     }
     if (!alternatives) {

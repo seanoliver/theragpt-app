@@ -11,7 +11,7 @@ import { toRad } from 'react-native-redash'
 import { useTheme } from '../../lib/theme/context'
 import { Theme } from '../../lib/theme/theme'
 
-// @ts-ignore
+// @ts-expect-error - Third-party library type compatibility issues
 export const transformOrigin = ({ x, y }, ...transformations) => {
   'worklet'
   return [

@@ -10,11 +10,11 @@ export enum ThemeOption {
 
 export const THEME_STORAGE_KEY = 'user_theme_preference'
 
-export function getAvailableThemes(): ThemeOption[] {
+export const getAvailableThemes = function(): ThemeOption[] {
   return [ThemeOption.LIGHT, ThemeOption.DARK, ThemeOption.SYSTEM]
 }
 
-export function isValidTheme(
+export const isValidTheme = function(
   theme: string | null | undefined,
 ): theme is ThemeOption {
   return (
@@ -24,13 +24,13 @@ export function isValidTheme(
   )
 }
 
-export function getSystemTheme(): ThemeOption {
+export const getSystemTheme = function(): ThemeOption {
   const scheme: ColorSchemeName = Appearance.getColorScheme?.() ?? 'light'
   if (scheme === 'dark') return ThemeOption.DARK
   return ThemeOption.LIGHT
 }
 
-export async function loadThemeSelection(): Promise<ThemeOption> {
+export const loadThemeSelection = async function(): Promise<ThemeOption> {
   try {
     const value = await AsyncStorage.getItem(THEME_STORAGE_KEY)
     if (isValidTheme(value)) {
@@ -42,7 +42,7 @@ export async function loadThemeSelection(): Promise<ThemeOption> {
   }
 }
 
-export async function saveThemeSelection(theme: ThemeOption): Promise<void> {
+export const saveThemeSelection = async function(theme: ThemeOption): Promise<void> {
   try {
     await AsyncStorage.setItem(THEME_STORAGE_KEY, theme)
   } catch {
@@ -50,7 +50,7 @@ export async function saveThemeSelection(theme: ThemeOption): Promise<void> {
   }
 }
 
-export async function clearThemeSelection(): Promise<void> {
+export const clearThemeSelection = async function(): Promise<void> {
   try {
     await AsyncStorage.removeItem(THEME_STORAGE_KEY)
   } catch {

@@ -2,7 +2,7 @@ import { Card } from '@/packages/logic'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 
-export const CardScreenAIVariations = ({ card }: { card: Card }) => {
+export const CardScreenAIVariations = ({ card: _card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
 

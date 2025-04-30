@@ -11,7 +11,7 @@ import { filterCardData } from './filterCardData'
 export const CardsScreen = () => {
   const { themeObject: theme } = useTheme()
   const styles = makeStyles(theme)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, _setSearchQuery] = useState('')
 
   const { cards, isLoading, error, addCard } = useCardStore()
   const { openFAB, setEditingCard } = useFABContext()

@@ -7,10 +7,10 @@ import {
   CheckCircle,
   Sparkles,
   Volume2,
-} from 'lucide-react';
-import Image from 'next/image';
-import { Footer } from '../components/footer';
-import { WaitlistForm } from '../components/waitlist-form';
+} from 'lucide-react'
+import Image from 'next/image'
+import { Footer } from '../components/footer'
+import { WaitlistForm } from '../components/waitlist-form'
 
 export default function LandingPage() {
   return (
