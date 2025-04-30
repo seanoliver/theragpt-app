@@ -282,3 +282,16 @@ const makeStyles = (theme: Theme) =>
 ```
 
 Also ensure the BottomSheetHandle component has consistent styles with overflow: 'hidden' and proper borderRadius values.
+
+### Mistake: Using invalid theme color keys in DebugConsole styles
+**Wrong**:
+```
+backgroundColor: theme.colors.background,
+backgroundColor: theme.colors.primary,
+color: theme.colors.buttonText,
+```
+**Correct**:
+```
+backgroundColor: theme.colors.primaryBackground,
+backgroundColor: theme.colors.accent,
+color: theme.colors.textOnAccent,

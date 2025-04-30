@@ -12,8 +12,9 @@ import React, {
   useMemo,
   useRef,
 } from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View, Text } from 'react-native'
 import ThemeSelector from './ThemeSelector'
+import { DebugConsole } from './DebugConsole'
 
 type SettingsContextType = {
   bottomSheetRef: React.RefObject<BottomSheet>
@@ -34,7 +35,7 @@ export const useSettingsContext = (): SettingsContextType => {
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ['20%'], [])
+  const snapPoints = useMemo(() => ['20%', '50%', '95%'], [])
 
   const openSettings = useCallback(() => bottomSheetRef.current?.expand(), [])
   const closeSettings = useCallback(() => bottomSheetRef.current?.close(), [])
@@ -48,6 +49,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     ),
     [],
   )
+  // Get the current ENV
+  const ENV = process.env.NODE_ENV || 'production'
 
   return (
     <SettingsContext.Provider
@@ -68,6 +71,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
           <View style={styles.sheet}>
             <View style={styles.handle} />
             <ThemeSelector />
+            {ENV === 'development' && <DebugConsole env={ENV} />}
           </View>
           <View style={styles.background} onTouchEnd={closeSettings} />
         </BottomSheetView>
