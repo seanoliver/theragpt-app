@@ -64,7 +64,13 @@ export const FABProvider = ({ children }: { children: React.ReactNode }) => {
         onClose={closeFAB}
       >
         <BottomSheetView style={styles.overlay}>
-          <FABSheet />
+          {editingCard && (
+            <FABSheet
+              editingCard={editingCard}
+              setEditingCard={setEditingCard}
+              closeFAB={closeFAB}
+            />
+          )}
         </BottomSheetView>
       </BottomSheet>
     </FABContext.Provider>

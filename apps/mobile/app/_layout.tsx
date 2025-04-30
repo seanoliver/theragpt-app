@@ -17,16 +17,28 @@ import { SettingsProvider } from '../src/shared/context/Settings/SettingsContext
 import { Slot } from 'expo-router'
 import React from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { FABProvider } from '../src/shared/context/FAB/FABContext';
+import { FABProvider } from '../src/shared/context/FAB/FABContext'
+import * as eva from '@eva-design/eva'
+import {
+  ApplicationProvider,
+  IconRegistry,
+  Layout,
+  Text as UIKittenText,
+} from '@ui-kitten/components'
+import { evaCustomTheme } from '../lib/theme/eva-custom-theme'
+import { EvaIconsPack } from '@ui-kitten/eva-icons'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* <IconRegistry icons={EvaIconsPack} />{' '} */}
+      {/* <ApplicationProvider {...eva} theme={eva.light}> */}
       <ThemeProvider>
         <SettingsProvider>
           <InnerProviders>{children}</InnerProviders>
         </SettingsProvider>
       </ThemeProvider>
+      {/* </ApplicationProvider> */}
     </GestureHandlerRootView>
   )
 }

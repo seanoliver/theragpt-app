@@ -1,24 +1,29 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { useFABContext } from './FABContext';
-import { useCardStore } from '@/apps/mobile/src/store/useCardStore';
-import { CardSheetEditor } from '@/apps/mobile/src/screens/CardSheet/CardSheetEditor';
-import type { Card } from '@/packages/logic/src/cards/cards.service';
+import { CardSheetEditor } from '@/apps/mobile/src/screens/CardSheet/CardSheetEditor'
+import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
+import { Card } from '@/packages/logic/src/cards/cards.service'
+import React from 'react'
 
-export const FABSheet = () => {
-  const { editingCard, setEditingCard, closeFAB } = useFABContext();
-  const updateCard = useCardStore((state: any) => state.updateCard);
+export const FABSheet = ({
+  editingCard,
+  setEditingCard,
+  closeFAB,
+}: {
+  editingCard: Card
+  setEditingCard: (card: Card) => void
+  closeFAB: () => void
+}) => {
+  const updateCard = useCardStore((state: any) => state.updateCard)
 
-  if (!editingCard) return null;
+  if (!editingCard) return null
 
   return (
     <CardSheetEditor
       card={editingCard}
       onSave={async (text: string) => {
-        await updateCard({ ...editingCard, text });
-        setEditingCard({ ...editingCard, text });
+        await updateCard({ ...editingCard, text })
+        setEditingCard({ ...editingCard, text })
       }}
       onClose={closeFAB}
     />
-  );
-};
+  )
+}

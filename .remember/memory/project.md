@@ -28,3 +28,12 @@ import type { Card } from '@still/logic'
 
 ### Review Logging UX
 - Log the review for a card as soon as it is first shown (when currentIndex changes), not only when the user advances or swipes. Avoid duplicate logs for the same card.
+
+### Mistake: JS bundle corruption or dependency mismatch after UI Kitten integration
+**Wrong**:
+App fails to load with "Invariant Violation: Failed to call into JavaScript module method RCTLog.logIfNoNativeHook()" after adding/removing UI Kitten or other native modules, or after partial migration.
+**Correct**:
+Perform a full clean install and cache reset (remove node_modules, lock files, .expo, reinstall dependencies with pnpm, and clear Expo cache) to resolve bundle/dependency mismatches.
+```bash
+cd apps/mobile && rm -rf node_modules .expo package-lock.json yarn.lock pnpm-lock.yaml && pnpm install && cd ../.. && npx expo start -c
+```
