@@ -3,6 +3,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
+import { BottomSheetHandle } from '../../BottomSheetHandle'
 import React, {
   createContext,
   ReactNode,
@@ -11,8 +12,9 @@ import React, {
   useMemo,
   useRef,
 } from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View, Text } from 'react-native'
 import ThemeSelector from './ThemeSelector'
+import { DebugConsole } from './DebugConsole'
 
 type SettingsContextType = {
   bottomSheetRef: React.RefObject<BottomSheet>
@@ -33,7 +35,7 @@ export const useSettingsContext = (): SettingsContextType => {
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ['40%'], [])
+  const snapPoints = useMemo(() => ['20%', '50%', '95%'], [])
 
   const openSettings = useCallback(() => bottomSheetRef.current?.expand(), [])
   const closeSettings = useCallback(() => bottomSheetRef.current?.close(), [])
@@ -47,6 +49,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     ),
     [],
   )
+  // Get the current ENV
+  const ENV = process.env.NODE_ENV || 'production'
 
   return (
     <SettingsContext.Provider
@@ -60,13 +64,14 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
         enablePanDownToClose
         onClose={closeSettings}
         backdropComponent={renderBackdrop}
+        handleComponent={BottomSheetHandle}
+        backgroundStyle={styles.sheetBackground}
       >
         <BottomSheetView style={styles.overlay}>
           <View style={styles.sheet}>
             <View style={styles.handle} />
             <ThemeSelector />
-            {/* <PaletteSelector /> */}
-            {/* <StatisticsDisplay cards={cards} /> */}
+            {ENV === 'development' && <DebugConsole env={ENV} />}
           </View>
           <View style={styles.background} onTouchEnd={closeSettings} />
         </BottomSheetView>
@@ -93,12 +98,14 @@ const makeStyles = (theme: any) =>
     handle: {
       width: 32,
       height: 4,
-      backgroundColor: theme.text,
       borderRadius: 2,
       marginBottom: 8,
     },
     background: {
       flex: 1,
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    sheetBackground: {
       backgroundColor: theme.colors.foregroundBackground,
     },
   })

@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,9 +20,20 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "apps/web/tailwind.config.js"],
-  "exclude": ["node_modules", ".next", "dist"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "apps/web/tailwind.config.js"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist"
+  ],
+  "extends": "expo/tsconfig.base"
 }

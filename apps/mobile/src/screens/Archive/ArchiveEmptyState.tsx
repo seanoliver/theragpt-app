@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated'
 import { Ionicons } from '@expo/vector-icons'
-import { useTheme } from '../../../../lib/theme/context'
+import { useTheme } from '../../../lib/theme/context'
 import { useFocusEffect } from 'expo-router'
 import { Theme } from '@/apps/mobile/lib/theme'
 

@@ -51,7 +51,7 @@ const makeStyles = (theme: any) =>
     title: {
       fontSize: 16,
       fontWeight: '600',
-      color: theme.colors.text,
+      color: theme.colors.primaryText,
       marginBottom: 8,
     },
     optionsRow: {
@@ -64,18 +64,18 @@ const makeStyles = (theme: any) =>
       borderRadius: 8,
       backgroundColor: theme.colors.foregroundBackground,
       borderWidth: 1,
-      borderColor: theme.colors.borderSubtle,
+      borderColor: theme.colors.hoverAccent,
     },
     selectedOption: {
       backgroundColor: theme.colors.primary,
-      borderColor: theme.colors.primary,
+      borderColor: theme.colors.tertiaryText,
     },
     optionText: {
-      color: theme.colors.text,
+      color: theme.colors.primaryText,
       fontSize: 15,
     },
     selectedOptionText: {
-      color: theme.colors.textOnPrimary,
+      color: theme.colors.primaryText,
       fontWeight: '700',
     },
   })

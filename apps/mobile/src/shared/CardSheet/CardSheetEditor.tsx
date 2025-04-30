@@ -47,6 +47,7 @@ export const CardSheetEditor = ({
 const makeStyles = (theme: Theme) => {
   return StyleSheet.create({
     card: {
+      flex: 1,
       padding: 16,
       borderRadius: 8,
       marginBottom: 16,

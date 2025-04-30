@@ -36,28 +36,21 @@ export const CardSheetMenu = ({
         color: isEditing
           ? theme.colors.accent
           : theme.colors.disabledBackground,
-        textColor: isEditing ? theme.colors.white : theme.colors.text,
+        textColor: isEditing ? theme.colors.white : theme.colors.primaryText,
       },
       {
         icon: 'volume-high-outline',
         onPress: () => {},
         label: 'Listen',
         color: theme.colors.disabledBackground,
-        textColor: theme.colors.text,
-      },
-      {
-        icon: 'sparkles-outline',
-        onPress: () => {},
-        label: 'Generate',
-        color: theme.colors.disabledBackground,
-        textColor: theme.colors.text,
+        textColor: theme.colors.primaryText,
       },
       {
         icon: 'archive-outline',
         onPress: () => {},
         label: 'Archive',
         color: theme.colors.disabledBackground,
-        textColor: theme.colors.text,
+        textColor: theme.colors.primaryText,
       },
       {
         icon: 'trash-outline',
@@ -119,6 +112,6 @@ const makeStyles = (theme: Theme) =>
     },
     menuItemLabel: {
       fontSize: 10,
-      color: theme.colors.text,
+      color: theme.colors.primaryText,
     },
   })

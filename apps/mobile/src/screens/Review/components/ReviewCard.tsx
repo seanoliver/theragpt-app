@@ -33,10 +33,10 @@ export const ReviewCard = ({
           <Ionicons
             name="play"
             size={16}
-            color={themeObject.colors.textDisabled}
+            color={themeObject.colors.tertiaryText}
           />
           <Text
-            style={{ marginLeft: 8, color: themeObject.colors.textDisabled }}
+            style={{ marginLeft: 8, color: themeObject.colors.tertiaryText }}
           >
             Listen
           </Text>
@@ -69,7 +69,7 @@ const makeStyles = (theme: Theme) =>
       textAlign: 'left',
       fontWeight: '400',
       lineHeight: 32,
-      color: theme.colors.text,
+      color: theme.colors.primaryText,
       fontSize: theme.fontSizes.xxl,
     },
   })

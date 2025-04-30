@@ -221,3 +221,77 @@ export const FAB = ({ style, onPress = () => {}, backgroundColor }: FABProps) =>
   )
 }
 ```
+
+### Mistake: White edges appearing in BottomSheet components
+**Wrong**:
+```
+<BottomSheet
+  ref={bottomSheetRef}
+  snapPoints={snapPoints}
+  index={-1}
+  enablePanDownToClose
+  backdropComponent={renderBackdrop}
+  onClose={closeFAB}
+  handleComponent={BottomSheetHandle}
+  style={styles.sheet}
+>
+  <BottomSheetView style={styles.overlay}>
+    {children}
+  </BottomSheetView>
+</BottomSheet>
+
+// Missing overflow and consistent background styling between components
+```
+
+**Correct**:
+```
+<BottomSheet
+  ref={bottomSheetRef}
+  snapPoints={snapPoints}
+  index={-1}
+  enablePanDownToClose
+  backdropComponent={renderBackdrop}
+  onClose={closeFAB}
+  handleComponent={BottomSheetHandle}
+  style={styles.sheet}
+  backgroundStyle={styles.sheetBackground}
+  handleIndicatorStyle={styles.handleIndicator}
+>
+  <BottomSheetView style={styles.overlay}>
+    {children}
+  </BottomSheetView>
+</BottomSheet>
+
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    overlay: {
+      flex: 1,
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    sheet: {
+      backgroundColor: theme.colors.foregroundBackground,
+      overflow: 'hidden',
+    },
+    sheetBackground: {
+      backgroundColor: theme.colors.foregroundBackground,
+    },
+    handleIndicator: {
+      backgroundColor: theme.colors.hoverAccent,
+    },
+  })
+```
+
+Also ensure the BottomSheetHandle component has consistent styles with overflow: 'hidden' and proper borderRadius values.
+
+### Mistake: Using invalid theme color keys in DebugConsole styles
+**Wrong**:
+```
+backgroundColor: theme.colors.background,
+backgroundColor: theme.colors.primary,
+color: theme.colors.buttonText,
+```
+**Correct**:
+```
+backgroundColor: theme.colors.primaryBackground,
+backgroundColor: theme.colors.accent,
+color: theme.colors.textOnAccent,

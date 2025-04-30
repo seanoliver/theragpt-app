@@ -28,3 +28,32 @@ import type { Card } from '@still/logic'
 
 ### Review Logging UX
 - Log the review for a card as soon as it is first shown (when currentIndex changes), not only when the user advances or swipes. Avoid duplicate logs for the same card.
+
+### Mistake: JS bundle corruption or dependency mismatch after UI Kitten integration
+**Wrong**:
+App fails to load with "Invariant Violation: Failed to call into JavaScript module method RCTLog.logIfNoNativeHook()" after adding/removing UI Kitten or other native modules, or after partial migration.
+**Correct**:
+Perform a full clean install and cache reset (remove node_modules, lock files, .expo, reinstall dependencies with pnpm, and clear Expo cache) to resolve bundle/dependency mismatches.
+```bash
+cd apps/mobile && rm -rf node_modules .expo package-lock.json yarn.lock pnpm-lock.yaml && pnpm install && cd ../.. && npx expo start -c
+```
+
+### Mistake: Conditionally rendering <Text> with && or short-circuit logic inside a <Text> parent in React Native
+**Wrong**:
+```
+<Text>
+  {!card.isActive && <Text>Archived</Text>}
+  {showArchiveBulletSeparator && <Text> • </Text>}
+</Text>
+```
+or
+```
+{!card.isActive && <Text>Archived</Text>}
+```
+**Correct**:
+Always use a ternary to ensure a <Text> node is rendered in all cases, or move the condition outside the <Text> parent:
+```
+<Text>{!card.isActive ? 'Archived' : ''}</Text>
+<Text>{showArchiveBulletSeparator ? ' • ' : ''}</Text>
+```
+**Note**: In React Native, children of <Text> must always be valid nodes (string or <Text>), never false/null/undefined. Using && or short-circuit logic can result in invalid children and runtime errors.

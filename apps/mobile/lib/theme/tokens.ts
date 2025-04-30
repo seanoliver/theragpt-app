@@ -3,7 +3,9 @@
 export type ThemeTokenKey =
   | 'primaryBackground'
   | 'foregroundBackground'
-  | 'text'
+  | 'primaryText'
+  | 'secondaryText'
+  | 'tertiaryText'
   | 'accent'
   | 'border'
   | 'borderSubtle'

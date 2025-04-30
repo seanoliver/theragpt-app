@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
 import { Card } from '@still/logic'
-import { useCardInteractionService } from '../../shared/hooks/useCardInteractionService'
+import { useCardInteractionService } from '../hooks/useCardInteractionService'
 
 export const CardSheetStats = ({ card }: { card: Card }) => {
   const { themeObject: theme } = useTheme()
@@ -114,26 +114,26 @@ const makeStyles = (theme: Theme) =>
       marginHorizontal: 2,
       minWidth: 0,
       backgroundColor: theme.colors.foregroundBackground,
-      borderColor: theme.colors.border,
+      borderColor: theme.colors.tertiaryText,
     },
     statIcon: {
       marginBottom: 4,
       fontSize: 18,
-      color: theme.colors.textDisabled,
+      color: theme.colors.tertiaryText,
     },
     statValue: {
       fontSize: 12,
       fontWeight: '400',
       marginBottom: 2,
       textAlign: 'center',
-      color: theme.colors.textDisabled,
+      color: theme.colors.tertiaryText,
     },
     statLabel: {
       fontSize: 10,
       fontWeight: '600',
       opacity: 0.7,
       textAlign: 'center',
-      color: theme.colors.textDisabled,
+      color: theme.colors.tertiaryText,
       textTransform: 'uppercase',
     },
   })

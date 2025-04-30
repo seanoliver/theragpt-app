@@ -6,7 +6,7 @@ import {
   loadThemeSelection,
   saveThemeSelection,
 } from './service'
-import { themes, DEFAULT_THEME_TYPE, DEFAULT_THEME, Theme } from './theme'
+import { appThemes, DEFAULT_THEME_TYPE, DEFAULT_THEME, Theme } from './theme'
 
 interface ThemeContextType {
   theme: ThemeOption
@@ -76,7 +76,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     theme,
     effectiveTheme,
     setTheme,
-    themeObject: themes[effectiveTheme],
+    themeObject: appThemes[effectiveTheme],
   }
 
   return (

@@ -95,7 +95,7 @@ const makeStyles = (theme: Theme) =>
       backgroundColor: theme.colors.foregroundBackground,
     },
     loadingText: {
-      color: theme.colors.textOnBackground,
+      color: theme.colors.primaryText,
       marginTop: 16,
     },
     errorText: {
