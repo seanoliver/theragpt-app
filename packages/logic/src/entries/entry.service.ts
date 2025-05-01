@@ -1,48 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
-
-export interface Distortion {
-  id: string
-  icon: string
-  label: string
-  text: string
-}
-
-export interface DistortionInstance {
-  id: string
-  distortionId: Distortion['id']
-  text: string
-  timestamp?: number
-}
-
-export interface ConversationTurn {
-  role: 'user' | 'ai'
-  message: string
-  timestamp?: number
-  model?: string
-}
-
-export interface Entry {
-  id: string
-  entryText: string
-  distortions?: DistortionInstance[]
-  reframedThought?: string
-  tags?: string[]
-  createdAt: number
-  updatedAt?: number
-  reviewedAt?: number
-  reviewCount?: number
-  conversation?: ConversationTurn[]
-  isPinned?: boolean
-}
-
-export interface EntryInput {
-  id: string
-  entryText: string
-  createdAt: number
-}
-
-type EntryListener = (entries: Entry[]) => void
+import { Entry, EntryListener, EntryInput } from './types'
 
 export class EntryService {
   private storageService: StorageService
@@ -69,7 +27,7 @@ export class EntryService {
   async create(params: EntryInput): Promise<Entry> {
     const entry: Entry = {
       id: uuidv4(),
-      entryText: params.entryText,
+      rawText: params.rawText,
       createdAt: Date.now(),
     }
 
@@ -81,7 +39,32 @@ export class EntryService {
     return entry
   }
 
-  // update
+  async update(params: Entry): Promise<Entry> {
+    const entries = await this.getAll()
+    const index = entries.findIndex(a => a.id === params.id)
+
+    if (index === -1) {
+      throw new Error(`Entry with ID ${params.id} not found`)
+    }
+
+    const entry = entries[index]
+    entries[index] = {
+      ...entry,
+      rawText: params.rawText ?? entry.rawText,
+      distortions: params.distortions ?? entry.distortions,
+      reframes: params.reframes ?? entry.reframes,
+      tags: params.tags ?? entry.tags,
+      reviewedAt: params.reviewedAt ?? entry.reviewedAt,
+      reviewCount: params.reviewCount ?? entry.reviewCount,
+      isPinned: params.isPinned ?? entry.isPinned,
+      updatedAt: Date.now(),
+    }
+
+    await this.saveAllEntries(entries)
+    this.notifyListeners(entries)
+
+    return entries[index]
+  }
 
   async getAll(): Promise<Entry[]> {
     if (this.entryCache) return this.entryCache
@@ -95,9 +78,19 @@ export class EntryService {
     }
   }
 
-  // get by id
+  async getById(id: string): Promise<Entry | undefined> {
+    return this.entryMap.get(id)
+  }
 
-  // delete
+  async deleteEntry(id: string): Promise<void> {
+    const entries = await this.getAll()
+    const index = entries.findIndex(a => a.id === id)
+    if (index !== -1) {
+      entries.splice(index, 1)
+      await this.saveAllEntries(entries)
+      this.notifyListeners(entries)
+    }
+  }
 
   private async saveAllEntries(entries: Entry[]): Promise<void> {
     try {
