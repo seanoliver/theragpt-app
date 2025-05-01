@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { useTheme } from '../../../../lib/theme/context'
-import type { Card } from '@still/logic'
+import type { Card } from '@theragpt/logic'
 
 type StatisticsDisplayProps = {
   cards: Card[] | null

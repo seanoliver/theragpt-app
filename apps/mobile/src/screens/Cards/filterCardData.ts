@@ -1,4 +1,4 @@
-import { Card } from '@still/logic'
+import { Card } from '@theragpt/logic'
 
 /**
  * Filters the cards by search query.

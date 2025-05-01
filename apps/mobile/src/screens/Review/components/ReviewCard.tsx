@@ -1,6 +1,6 @@
 import { Theme } from '@/apps/mobile/lib/theme'
 import { Ionicons } from '@expo/vector-icons'
-import { Card } from '@still/logic'
+import { Card } from '@theragpt/logic'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { CardActions } from './CardActions'

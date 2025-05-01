@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Still",
-    "slug": "still",
+    "name": "TheraGPT",
+    "slug": "theragpt",
     "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "still",
+    "scheme": "theragpt",
     "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash.png",
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.helloseanoliver.still",
+      "bundleIdentifier": "com.helloseanoliver.theragpt",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -29,7 +29,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#1F2A35"
       },
-      "package": "com.helloseanoliver.still",
+      "package": "com.helloseanoliver.theragpt",
       "versionCode": 1
     },
     "web": {

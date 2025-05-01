@@ -8,7 +8,7 @@ const envSchema = z.object({
   OPENAI_API_URL: z.string().url().default('https://api.openai.com/v1'),
   // API keys only available server-side
   OPENAI_API_KEY: z.string().optional(),
-  STILL_API_BASE_URL: z.string().url().optional(),
+  THERAGPT_API_BASE_URL: z.string().url().optional(),
 })
 
 // Type for the environment variables
@@ -21,8 +21,8 @@ export const getEnvironment = (serverSide = false): Environment => {
     OPENAI_API_URL: process.env.OPENAI_API_URL || 'https://api.openai.com/v1',
     // Only include API key if server-side
     ...(serverSide ? { OPENAI_API_KEY: process.env.OPENAI_API_KEY } : {}),
-    STILL_API_BASE_URL:
-      process.env.STILL_API_BASE_URL ||
+    THERAGPT_API_BASE_URL:
+      process.env.THERAGPT_API_BASE_URL ||
       (process.env.NODE_ENV === 'production'
         ? 'https://example.com'
         : 'http://localhost:3000'),

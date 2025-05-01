@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-teal-500" />
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} Still App. All rights reserved.
+            © {new Date().getFullYear()} TheraGPT App. All rights reserved.
           </p>
         </div>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">

@@ -1,4 +1,4 @@
-### Mistake: Redefining shared types (e.g., Card) in frontend code instead of importing from @still/logic
+### Mistake: Redefining shared types (e.g., Card) in frontend code instead of importing from @TheraGPT/logic
 **Wrong**:
 ```
 type Card = {
@@ -8,9 +8,9 @@ type Card = {
 ```
 **Correct**:
 ```
-import type { Card } from '@still/logic'
+import type { Card } from '@theragpt/logic'
 ```
-**Note**: Always import shared types (such as Card, UpdateCardParams, etc.) from the `@still/logic` package in all frontend and mobile code. Never redefine these types locally. This ensures type consistency and prevents drift between service and UI layers.
+**Note**: Always import shared types (such as Card, UpdateCardParams, etc.) from the `@theragpt/logic` package in all frontend and mobile code. Never redefine these types locally. This ensures type consistency and prevents drift between service and UI layers.
 
 ### Layout: Full-width backgrounds, centered content
 - For all pages/sections, backgrounds (including header/footer) should span the full width of the viewport.

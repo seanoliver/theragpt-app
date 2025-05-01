@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { cardInteractionService, Totals } from '@still/logic'
+import { cardInteractionService, Totals } from '@theragpt/logic'
 import { useCardStore } from '@/apps/mobile/src/store/useCardStore'
 
 export const useCardInteractionService = (cardId: string, deps: any[] = []) => {

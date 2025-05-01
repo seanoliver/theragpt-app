@@ -1,5 +1,5 @@
 import { Theme, useTheme } from '@/apps/mobile/lib/theme'
-import { Card } from '@still/logic'
+import { Card } from '@theragpt/logic'
 import { StyleSheet, Text, View } from 'react-native'
 
 export const CardSheetText = ({ card }: { card: Card }) => {

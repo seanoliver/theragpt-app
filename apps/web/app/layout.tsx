@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Still - Daily Card App',
+  title: 'TheraGPT - Daily Card App',
   description: 'Identify cognitive distortions and reframe thoughts with AI assistance',
 }
 

@@ -19,7 +19,7 @@ export default function LandingPage() {
         <div className="max-w-screen-xl mx-auto w-full flex items-center justify-between px-4 lg:px-6">
           <div className="flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-teal-500" />
-            <span className="text-xl font-bold">Still</span>
+            <span className="text-xl font-bold">TheraGPT</span>
           </div>
           {/* Button removed from header since it's now in the hero */}
         </div>
@@ -35,7 +35,7 @@ export default function LandingPage() {
                   </div>
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                     Stay grounded. Stay focused. Stay{' '}
-                    <span className="text-teal-600">Still</span>.
+                    <span className="text-teal-600">TheraGPT</span>.
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
                     An AI-powered personal reflection and affirmation app
@@ -73,7 +73,7 @@ export default function LandingPage() {
                 <div className="relative h-[450px] w-[250px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 shadow-xl">
                   <Image
                     src="/placeholder.svg?height=800&width=400"
-                    alt="Still app preview"
+                    alt="TheraGPT app preview"
                     className="object-cover"
                     fill
                     priority
@@ -146,7 +146,7 @@ export default function LandingPage() {
                   App Screenshots
                 </h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  A glimpse into the Still experience
+                  A glimpse into the TheraGPT experience
                 </p>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function LandingPage() {
               <div className="relative mx-auto h-[500px] w-[250px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 shadow-xl">
                 <Image
                   src="/placeholder.svg?height=800&width=400"
-                  alt="Still app dashboard"
+                  alt="TheraGPT app dashboard"
                   className="object-cover"
                   fill
                 />
@@ -162,7 +162,7 @@ export default function LandingPage() {
               <div className="relative mx-auto h-[500px] w-[250px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 shadow-xl">
                 <Image
                   src="/placeholder.svg?height=800&width=400"
-                  alt="Still app affirmations"
+                  alt="TheraGPT app affirmations"
                   className="object-cover"
                   fill
                 />
@@ -170,7 +170,7 @@ export default function LandingPage() {
               <div className="relative mx-auto h-[500px] w-[250px] overflow-hidden rounded-[40px] border-[8px] border-gray-800 shadow-xl">
                 <Image
                   src="/placeholder.svg?height=800&width=400"
-                  alt="Still app progress"
+                  alt="TheraGPT app progress"
                   className="object-cover"
                   fill
                 />
@@ -184,7 +184,7 @@ export default function LandingPage() {
             <div className="flex flex-col items-center justify-center space-y-8 text-center">
               <div className="space-y-3">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Be the first to experience Still
+                  Be the first to experience TheraGPT
                 </h2>
                 <p className="max-w-[600px] mx-auto text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                   We're launching on iOS first, with Android coming soon after.

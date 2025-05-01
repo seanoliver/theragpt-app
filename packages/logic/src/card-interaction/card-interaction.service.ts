@@ -28,7 +28,7 @@ export interface Totals {
   downvotes: number
 }
 
-const STORAGE_KEY = 'still_card_interaction_entries'
+const STORAGE_KEY = 'theragpt_card_interaction_entries'
 
 const getTodayISO = (): string => {
   return new Date().toISOString().split('T')[0]

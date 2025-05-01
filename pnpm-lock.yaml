@@ -102,10 +102,10 @@ importers:
       '@react-native-async-storage/async-storage':
         specifier: 1.23.1
         version: 1.23.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
-      '@still/config':
+      '@theragpt/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@still/logic':
+      '@theragpt/logic':
         specifier: workspace:*
         version: link:../../packages/logic
       '@ui-kitten/components':
@@ -208,10 +208,10 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.0
         version: 1.2.0(@types/react@18.3.20)(react@18.3.1)
-      '@still/config':
+      '@theragpt/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@still/logic':
+      '@theragpt/logic':
         specifier: workspace:*
         version: link:../../packages/logic
       class-variance-authority:
@@ -265,7 +265,7 @@ importers:
       '@react-native-async-storage/async-storage':
         specifier: ^1.19.3
         version: 1.24.0(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
-      '@still/config':
+      '@theragpt/config':
         specifier: workspace:*
         version: link:../config
       uuid:

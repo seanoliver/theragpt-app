@@ -2,8 +2,8 @@ export const ONBOARDING_KEY = 'onboarding_complete'
 
 export const ONBOARDING_CARDS = [
   {
-    title: 'Meet Still',
-    text: 'Still is a deck of flashcards for mindful living—your personal space to capture ideas that keep you grounded, focused, and clear.',
+    title: 'Meet TheraGPT',
+    text: 'TheraGPT is a deck of flashcards for mindful living—your personal space to capture ideas that keep you grounded, focused, and clear.',
     image: null,
   },
   {
@@ -13,12 +13,12 @@ export const ONBOARDING_CARDS = [
   },
   {
     title: 'Built for Reflection',
-    text: 'Each card invites you to pause, reflect, and reconnect. The more a thought resonates, the smarter Still gets about when to show it again.',
+    text: 'Each card invites you to pause, reflect, and reconnect. The more a thought resonates, the smarter TheraGPT gets about when to show it again.',
     image: null,
   },
   {
     title: 'Why It Matters',
-    text: 'The words you repeat shape how you live. Still helps you remember the ones that truly reflect who you want to be.',
+    text: 'The words you repeat shape how you live. TheraGPT helps you remember the ones that truly reflect who you want to be.',
     image: null,
   },
   {

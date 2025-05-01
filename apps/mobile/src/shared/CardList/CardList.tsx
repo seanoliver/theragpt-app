@@ -5,7 +5,7 @@ import BottomSheet, {
   BottomSheetHandle,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
-import { Card as CardType } from '@still/logic'
+import { Card as CardType } from '@theragpt/logic'
 import React, { useMemo, useRef, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import { CardListItem } from './CardListItem'

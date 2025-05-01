@@ -51,7 +51,7 @@ type CardsListener = (cards: Card[]) => void
 
 export class CardService {
   private storageService: StorageService
-  private storageKey = 'still_cards'
+  private storageKey = 'theragpt_cards'
   private listeners: CardsListener[] = []
   private cardsCache: Card[] | null = null
   private cardsMap: Map<string, Card> = new Map()

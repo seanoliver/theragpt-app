@@ -6,7 +6,7 @@ import {
   CreateCardParams,
   UpdateCardParams,
   cardInteractionService,
-} from '@still/logic'
+} from '@theragpt/logic'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface CardStore {

@@ -1,10 +1,10 @@
-# Still
+# TheraGPT
 
-Still is a mobile-first app designed to help users start each day with clarity and confidence through personal affirmations. Users can swipe through affirmations, edit them with AI assistance, and mark the ones that resonate most each day. The goal is to foster a consistent, lightweight ritual that reinforces self-identity and emotional well-being.
+TheraGPT is a mobile-first app designed to help users start each day with clarity and confidence through personal affirmations. Users can swipe through affirmations, edit them with AI assistance, and mark the ones that resonate most each day. The goal is to foster a consistent, lightweight ritual that reinforces self-identity and emotional well-being.
 
 ## Overview
 
-Still helps users establish an emotionally meaningful morning ritual for self-connection. The app simplifies the process of creating, editing, and evolving affirmations while encouraging daily reflection through gentle, user-driven engagement. Users can:
+TheraGPT helps users establish an emotionally meaningful morning ritual for self-connection. The app simplifies the process of creating, editing, and evolving affirmations while encouraging daily reflection through gentle, user-driven engagement. Users can:
 
 - Swipe through daily affirmation cards
 - Create and edit affirmations manually
@@ -17,7 +17,7 @@ Still helps users establish an emotionally meaningful morning ritual for self-co
 This project follows a monorepo architecture using Turborepo and PNPM workspaces:
 
 ```
-still-app/
+theragpt-app/
 ├── apps/
 │   ├── mobile/     # Expo mobile app
 │   └── web/        # Next.js web app (frontend + API routes)
@@ -52,8 +52,8 @@ still-app/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/still-app.git
-   cd still-app
+   git clone https://github.com/yourusername/theragpt-app.git
+   cd theragpt-app
    ```
 
 2. Install dependencies:

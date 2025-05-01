@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { getEnvironment } from '@still/config'
+import { getEnvironment } from '@theragpt/config'
 import { TONES } from '../AIOptionsModal/constants'
 
 export const useFetchAlternatives = () => {
@@ -13,7 +13,7 @@ export const useFetchAlternatives = () => {
     setAlternatives([])
     const env = getEnvironment(true)
     try {
-      const res = await fetch(`${env.STILL_API_BASE_URL}/api/rephrase`, {
+      const res = await fetch(`${env.THERAGPT_API_BASE_URL}/api/rephrase`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
