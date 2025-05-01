@@ -1,6 +1,14 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
-This is a monorepo environment, so make sure you're specific about which package you are in when adding, deleting, updating packages.
+- This is a monorepo environment, so make sure you're specific about which package you are in when adding, deleting, updating packages.
+- Always use pnpm for package management.
+- Please honor the following eslint rules in all code you write in this codebase:
+    - Use camelCase for variable names.
+    - Use PascalCase for React functional components.
+    - Use kebab-case for file names.
+    - Use single quotes for strings.
+    - Use 2 spaces for indentation.
+    - Do not use semicolons.

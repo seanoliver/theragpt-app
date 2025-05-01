@@ -1,22 +1,34 @@
+import type React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '../components/theme-provider'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'TheraGPT - Daily Card App',
-  description: 'Identify cognitive distortions and reframe thoughts with AI assistance',
+  title: 'TheraGPT - AI-Assisted CBT Journaling',
+  description: 'Process negative thoughts with AI-generated CBT techniques',
 }
-
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="min-h-screen bg-gradient-radial from-white to-slate-50 dark:from-slate-950 dark:to-slate-900">
+            {children}
+          </div>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
