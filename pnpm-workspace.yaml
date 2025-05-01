@@ -2,5 +2,6 @@ packages:
   - apps/*
   - packages/config
   - packages/logic
+  - packages/prompts
 patchedDependencies:
   html-entities: patches/html-entities.patch
