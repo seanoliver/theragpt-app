@@ -10,6 +10,7 @@ export const POST = async (req: NextRequest) => {
   const { thought, tone } = await req.json()
   const prompt = analyzePrompt({ rawText: thought, tone })
 
+  // Create the client registry using environment variables
   const registry = createLLMRegistry()
 
   const result = await callLLM(LLMModel.GPT_4O, registry, {

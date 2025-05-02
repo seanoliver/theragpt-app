@@ -1,6 +1,13 @@
-import { getProviderFromModel, LLMCallOptions, LLMModel } from './types'
-import { ClientRegistry } from '@theragpt/web'
+import { getProviderFromModel, LLMCallOptions, LLMModel, ClientRegistry } from './types'
 
+/**
+ * Calls an LLM with the specified model, using the appropriate client from the registry
+ *
+ * @param model The LLM model to use
+ * @param registry Registry of LLM clients by provider
+ * @param opts Options for the LLM call
+ * @returns The LLM response as a string
+ */
 export const callLLM = async (
   model: LLMModel,
   registry: ClientRegistry,

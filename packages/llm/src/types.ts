@@ -14,9 +14,24 @@ export interface LLMClient {
   toolCall?(opts: LLMCallOptions & { tools: any[] }): Promise<any>
   functionCall?(opts: LLMCallOptions & { functionName: string }): Promise<any>
 }
+
 export enum LLMProvider {
   OpenAI = 'openai',
   Anthropic = 'anthropic',
+}
+
+/**
+ * Registry of LLM clients by provider
+ */
+export type ClientRegistry = Partial<Record<LLMProvider, LLMClient>>
+
+/**
+ * Configuration for creating LLM clients
+ */
+export interface LLMClientConfig {
+  openAIApiKey?: string;
+  anthropicApiKey?: string;
+  // Add other provider configs as needed
 }
 
 export enum LLMModel {
