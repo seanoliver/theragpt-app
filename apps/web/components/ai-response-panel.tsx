@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/apps/web/components/ui/button'
 import { Card } from '@/apps/web/components/ui/card'
 import { Textarea } from '@/apps/web/components/ui/textarea'
@@ -9,36 +9,52 @@ import { Badge } from '@/apps/web/components/ui/badge'
 import { Separator } from '@/apps/web/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/apps/web/components/ui/tabs'
 
-// Mock data for the AI response
-const mockDistortions = [
-  {
-    id: 1,
-    name: 'Catastrophizing',
-    explanation: 'You\'re imagining the worst possible outcome without considering more likely scenarios.',
-  },
-  {
-    id: 2,
-    name: 'All-or-Nothing Thinking',
-    explanation: 'You\'re seeing the situation in black and white terms without acknowledging the middle ground.',
-  },
-]
-
-const mockReframedThought =
-  'While this presentation is important, one mistake won\'t ruin my career. I\'ve prepared well and can recover from small errors. Most people are supportive and understand that everyone makes mistakes.'
-
-const mockJustification =
-  'This reframed thought is more realistic because it acknowledges both the importance of the presentation and the fact that small mistakes are normal and recoverable. It also recognizes that most people are understanding rather than harshly judgmental.'
+interface Distortion {
+  id: string;
+  name: string;
+  explanation: string;
+}
 
 interface AIResponsePanelProps {
   originalThought: string
   onSave: () => void
   onReset: () => void
+  analysisResult?: {
+    distortions: Distortion[];
+    reframedThought: string;
+    justification: string;
+  }
 }
 
-export const AIResponsePanel = ({ originalThought, onSave, onReset }: AIResponsePanelProps) => {
+export const AIResponsePanel = ({
+  originalThought,
+  onSave,
+  onReset,
+  analysisResult,
+}: AIResponsePanelProps) => {
+  // If no analysis result is provided, we shouldn't show this component
+  if (!analysisResult) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-slate-600 dark:text-slate-300">
+          No analysis result available. Please try again.
+        </p>
+      </div>
+    )
+  }
+
+  const { distortions, reframedThought: initialReframedThought, justification } = analysisResult
+
   const [editingReframe, setEditingReframe] = useState(false)
-  const [reframedThought, setReframedThought] = useState(mockReframedThought)
+  const [reframedThought, setReframedThought] = useState(initialReframedThought)
   const [activeTab, setActiveTab] = useState('analysis')
+
+  // Update reframedThought if analysisResult changes
+  useEffect(() => {
+    if (analysisResult?.reframedThought) {
+      setReframedThought(analysisResult.reframedThought)
+    }
+  }, [analysisResult])
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -88,7 +104,7 @@ export const AIResponsePanel = ({ originalThought, onSave, onReset }: AIResponse
             </div>
 
             <div className="space-y-4">
-              {mockDistortions.map((distortion) => (
+              {distortions.map((distortion) => (
                 <Card key={distortion.id} className="p-5 glass-panel">
                   <div className="flex justify-between items-start mb-3">
                     <Badge className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0">
@@ -153,7 +169,7 @@ export const AIResponsePanel = ({ originalThought, onSave, onReset }: AIResponse
 
             <h3 className="text-lg font-semibold gradient-text mb-4">Why This Reframe Works</h3>
             <Card className="p-5 glass-panel">
-              <p className="text-slate-600 dark:text-slate-300">{mockJustification}</p>
+              <p className="text-slate-600 dark:text-slate-300">{justification}</p>
             </Card>
           </section>
         </TabsContent>

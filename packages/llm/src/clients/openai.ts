@@ -71,7 +71,7 @@ export class OpenAIClient implements LLMClient {
       model,
       messages,
       temperature,
-      max_completion_tokens: maxTokens,
+      max_tokens: maxTokens, // Using standard parameter name
       stream: true,
     })
 
