@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import { PUBLIC_DISTORTIONS_LIST } from '@theragpt/logic'
 import { DistortionIllustration } from './distortion-illustration'
 
-export function DistortionsList() {
+export const DistortionsList = () => {
   const [activeSection, setActiveSection] = useState<string>(
     PUBLIC_DISTORTIONS_LIST[0].id,
   )

@@ -15,7 +15,7 @@ interface DistortionIllustrationProps {
   type: string
 }
 
-export function DistortionIllustration({ type }: DistortionIllustrationProps) {
+export const DistortionIllustration = ({ type }: DistortionIllustrationProps) => {
   const illustrations: Record<string, React.ReactNode> = {
     catastrophizing: <CatastrophizingIllustration />,
     'all-or-nothing': <AllOrNothingIllustration />,
@@ -36,7 +36,7 @@ export function DistortionIllustration({ type }: DistortionIllustrationProps) {
   )
 }
 
-function CatastrophizingIllustration() {
+const CatastrophizingIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -60,7 +60,7 @@ function CatastrophizingIllustration() {
   )
 }
 
-function AllOrNothingIllustration() {
+const AllOrNothingIllustration = () => {
   return (
     <div className="text-center">
       <div className="flex items-center justify-center space-x-4 mb-4">
@@ -85,7 +85,7 @@ function AllOrNothingIllustration() {
   )
 }
 
-function MindReadingIllustration() {
+const MindReadingIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -103,7 +103,7 @@ function MindReadingIllustration() {
   )
 }
 
-function EmotionalReasoningIllustration() {
+const EmotionalReasoningIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -124,7 +124,7 @@ function EmotionalReasoningIllustration() {
   )
 }
 
-function OvergeneralizationIllustration() {
+const OvergeneralizationIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -144,7 +144,7 @@ function OvergeneralizationIllustration() {
   )
 }
 
-function LabelingIllustration() {
+const LabelingIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -163,7 +163,7 @@ function LabelingIllustration() {
   )
 }
 
-function FilteringIllustration() {
+const FilteringIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -184,7 +184,7 @@ function FilteringIllustration() {
   )
 }
 
-function ShouldStatementsIllustration() {
+const ShouldStatementsIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -205,7 +205,7 @@ function ShouldStatementsIllustration() {
   )
 }
 
-function PersonalizationIllustration() {
+const PersonalizationIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
@@ -223,7 +223,7 @@ function PersonalizationIllustration() {
   )
 }
 
-function JumpingToIllustration() {
+const JumpingToIllustration = () => {
   return (
     <div className="text-center">
       <div className="relative inline-block">
