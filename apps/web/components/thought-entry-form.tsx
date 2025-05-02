@@ -6,9 +6,9 @@ import { AIResponsePanel } from '@/apps/web/components/ai-response-panel'
 import { Button } from '@/apps/web/components/ui/button'
 import { Textarea } from '@/apps/web/components/ui/textarea'
 import { entryService, useEntryStore } from '@theragpt/logic'
-import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { Loader2, Sparkles } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
+import { ThoughtStarters } from './thought-starters'
 
 interface Distortion {
   id: string
@@ -35,7 +35,6 @@ export const ThoughtEntryForm = () => {
   >(undefined)
 
   // Global state from Zustand store
-  const router = useRouter()
 
   // Use individual selectors to prevent unnecessary re-renders
   const addEntry = useEntryStore(state => state.addEntry)
@@ -142,34 +141,57 @@ export const ThoughtEntryForm = () => {
     }
   }
 
+  const handleThoughtStarterClick = (starter: string) => {
+    setThought(starter)
+    // Focus the textarea after setting the thought
+    const textarea = document.querySelector('textarea')
+    if (textarea) {
+      textarea.focus()
+      // Place cursor at the end of the text
+      const length = starter.length
+      textarea.setSelectionRange(length, length)
+    }
+  }
+
   return (
     <div>
       {!showResponse ? (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Textarea
-            placeholder="Type your thought here..."
-            className="min-h-[120px] border-slate-200 dark:border-slate-700 focus:border-purple-300 dark:focus:border-purple-700 focus:ring-purple-300 dark:focus:ring-purple-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
-            value={thought}
-            onChange={e => setThought(e.target.value)}
-            required
-          />
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0"
-              disabled={isLoading || !thought.trim()}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                'Analyze Thought'
-              )}
-            </Button>
+        <div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Textarea
+              placeholder="Type your thought here..."
+              className="min-h-[120px] border-slate-200 dark:border-slate-700 focus:border-purple-300 dark:focus:border-purple-700 focus:ring-purple-300 dark:focus:ring-purple-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
+              value={thought}
+              onChange={e => setThought(e.target.value)}
+              required
+            />
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0"
+                disabled={isLoading || !thought.trim()}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  'Analyze Thought'
+                )}
+              </Button>
+            </div>
+          </form>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-purple-500" />
+              <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Need inspiration? Try one of these thought starters:
+              </h3>
+            </div>
+            <ThoughtStarters onSelect={handleThoughtStarterClick} />
           </div>
-        </form>
+        </div>
       ) : (
         <AIResponsePanel
           originalThought={thought}

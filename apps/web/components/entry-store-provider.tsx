@@ -14,7 +14,7 @@ const EntryStoreContext = createContext<EntryStoreContextType>({ initialized: fa
 export const useEntryStoreInitialized = () => useContext(EntryStoreContext)
 
 export const EntryStoreProvider = ({ children }: { children: ReactNode }) => {
-  const { initialize, isLoading } = useEntryStore()
+  const { initialize } = useEntryStore()
   const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const EntryStoreProvider = ({ children }: { children: ReactNode }) => {
       try {
         await initialize()
         setInitialized(true)
-        console.log('Entry store initialized successfully')
+        // Entry store initialized successfully
       } catch (error) {
         console.error('Failed to initialize entry store:', error)
       }

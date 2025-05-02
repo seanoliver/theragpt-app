@@ -7,29 +7,34 @@ import { Textarea } from '@/apps/web/components/ui/textarea'
 import { ThumbsUp, ThumbsDown, Edit2, Save, RefreshCw } from 'lucide-react'
 import { Badge } from '@/apps/web/components/ui/badge'
 import { Separator } from '@/apps/web/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/apps/web/components/ui/tabs'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/apps/web/components/ui/tabs'
 
 interface Distortion {
-  id: string;
-  name: string;
-  explanation: string;
+  id: string
+  name: string
+  explanation: string
 }
 
 interface AIResponsePanelProps {
   originalThought: string
-  onSave: () => void
   onReset: () => void
+  onSave: () => Promise<void>
   analysisResult?: {
-    distortions: Distortion[];
-    reframedThought: string;
-    justification: string;
+    distortions: Distortion[]
+    reframedThought: string
+    justification: string
   }
 }
 
 export const AIResponsePanel = ({
   originalThought,
-  onSave,
   onReset,
+  onSave,
   analysisResult,
 }: AIResponsePanelProps) => {
   // If no analysis result is provided, we shouldn't show this component
@@ -43,7 +48,11 @@ export const AIResponsePanel = ({
     )
   }
 
-  const { distortions, reframedThought: initialReframedThought, justification } = analysisResult
+  const {
+    distortions,
+    reframedThought: initialReframedThought,
+    justification,
+  } = analysisResult
 
   const [editingReframe, setEditingReframe] = useState(false)
   const [reframedThought, setReframedThought] = useState(initialReframedThought)
@@ -59,11 +68,19 @@ export const AIResponsePanel = ({
   return (
     <div className="space-y-6 animate-fade-in">
       <Card className="p-5 glass-panel bg-gradient-to-r from-purple-50/80 to-indigo-50/80 dark:from-purple-900/20 dark:to-indigo-900/20">
-        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Your Original Thought</h3>
-        <p className="text-slate-800 dark:text-slate-200 italic">{originalThought}</p>
+        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">
+          Your Original Thought
+        </h3>
+        <p className="text-slate-800 dark:text-slate-200 italic">
+          {originalThought}
+        </p>
       </Card>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-4"
+      >
         <TabsList className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
           <TabsTrigger
             value="analysis"
@@ -82,7 +99,9 @@ export const AIResponsePanel = ({
         <TabsContent value="analysis" className="space-y-6">
           <section>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold gradient-text">Identified Cognitive Distortions</h3>
+              <h3 className="text-lg font-semibold gradient-text">
+                Identified Cognitive Distortions
+              </h3>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
@@ -104,14 +123,16 @@ export const AIResponsePanel = ({
             </div>
 
             <div className="space-y-4">
-              {distortions.map((distortion) => (
+              {distortions.map(distortion => (
                 <Card key={distortion.id} className="p-5 glass-panel">
                   <div className="flex justify-between items-start mb-3">
                     <Badge className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0">
                       {distortion.name}
                     </Badge>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300">{distortion.explanation}</p>
+                  <p className="text-slate-600 dark:text-slate-300">
+                    {distortion.explanation}
+                  </p>
                 </Card>
               ))}
             </div>
@@ -121,7 +142,9 @@ export const AIResponsePanel = ({
         <TabsContent value="reframe" className="space-y-6">
           <section>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold gradient-text">Reframed Thought</h3>
+              <h3 className="text-lg font-semibold gradient-text">
+                Reframed Thought
+              </h3>
               <div className="flex gap-2">
                 {!editingReframe ? (
                   <Button
@@ -138,7 +161,14 @@ export const AIResponsePanel = ({
                     variant="outline"
                     size="sm"
                     className="text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800 hover:bg-purple-50/50 dark:hover:bg-purple-900/20"
-                    onClick={() => setEditingReframe(false)}
+                    onClick={async () => {
+                      try {
+                        await onSave()
+                        setEditingReframe(false)
+                      } catch (error) {
+                        console.error('Error saving reframed thought:', error)
+                      }
+                    }}
                   >
                     <Save className="h-4 w-4 mr-1" />
                     Save
@@ -159,17 +189,23 @@ export const AIResponsePanel = ({
               {editingReframe ? (
                 <Textarea
                   value={reframedThought}
-                  onChange={(e) => setReframedThought(e.target.value)}
+                  onChange={e => setReframedThought(e.target.value)}
                   className="min-h-[100px] border-slate-200 dark:border-slate-700 focus:border-purple-300 dark:focus:border-purple-700 focus:ring-purple-300 dark:focus:ring-purple-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
                 />
               ) : (
-                <p className="text-slate-700 dark:text-slate-200">{reframedThought}</p>
+                <p className="text-slate-700 dark:text-slate-200">
+                  {reframedThought}
+                </p>
               )}
             </Card>
 
-            <h3 className="text-lg font-semibold gradient-text mb-4">Why This Reframe Works</h3>
+            <h3 className="text-lg font-semibold gradient-text mb-4">
+              Why This Reframe Works
+            </h3>
             <Card className="p-5 glass-panel">
-              <p className="text-slate-600 dark:text-slate-300">{justification}</p>
+              <p className="text-slate-600 dark:text-slate-300">
+                {justification}
+              </p>
             </Card>
           </section>
         </TabsContent>

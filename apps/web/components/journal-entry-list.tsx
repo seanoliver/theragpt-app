@@ -57,7 +57,7 @@ export const JournalEntryList = () => {
         sortedEntries.map((entry, index) => (
           <Link href={`/entry/${entry.id}`} key={entry.id}>
             <Card
-              className="glass-panel p-6 hover:shadow-lg transition-all duration-300 gradient-border"
+              className="glass-panel p-6 hover:shadow-lg transition-all duration-300 gradient-border mb-6"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="mb-3 flex justify-between items-start">
