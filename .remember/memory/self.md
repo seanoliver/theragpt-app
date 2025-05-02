@@ -347,3 +347,42 @@ export default async function EntryDetailPage({
 2. Type the `params` prop as a Promise
 3. Use `await` to resolve the Promise and get the actual params
 4. Use the resolved params in the component
+
+### Mistake: Hardcoded fallback response in API route causing same output regardless of input
+**Wrong**:
+```
+// In parseLLMResponse function
+try {
+  // Attempt to parse as JSON
+  // ...
+} catch (e) {
+  // If parsing fails, return hardcoded mock response
+  return {
+    distortions: [
+      {
+        id: uuidv4(),
+        name: 'Catastrophizing',
+        explanation: 'You\'re imagining the worst possible outcome...',
+      },
+      // ...more hardcoded distortions
+    ],
+    reframedThought: 'While this situation is challenging...',
+    justification: 'This reframed thought acknowledges the difficulty...',
+  }
+}
+```
+**Correct**:
+```
+// In parseLLMResponse function
+try {
+  // Attempt to parse as JSON
+  // Handle different possible response formats
+  // ...
+} catch (e) {
+  // Log the error and throw it to be handled by the route handler
+  console.error('Error parsing LLM response:', e)
+  console.error('Raw LLM response:', response)
+  throw new Error('Failed to parse LLM response')
+}
+```
+**Note**: Never use hardcoded fallback responses in API routes that process dynamic user input. This can lead to confusing behavior where the same output is returned regardless of input. Instead, properly handle errors and provide meaningful error messages to the client.
