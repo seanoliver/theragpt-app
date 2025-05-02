@@ -4,45 +4,57 @@ import { Card } from '@/apps/web/components/ui/card'
 import { Badge } from '@/apps/web/components/ui/badge'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
-
-// Mock data for journal entries
-const mockEntries = [
-  {
-    id: '1',
-    originalThought: 'I\'m going to mess up this presentation tomorrow and everyone will think I\'m incompetent.',
-    reframedThought:
-      'While this presentation is important, one mistake won\'t ruin my career. I\'ve prepared well and can recover from small errors.',
-    date: new Date(2023, 3, 15),
-    distortions: ['Catastrophizing', 'All-or-Nothing Thinking'],
-  },
-  {
-    id: '2',
-    originalThought: 'My friend didn\'t respond to my text. They must be mad at me or don\'t want to be friends anymore.',
-    reframedThought:
-      'There are many reasons why someone might not respond right away. They could be busy, have their phone off, or just need some space.',
-    date: new Date(2023, 3, 12),
-    distortions: ['Mind Reading', 'Jumping to Conclusions'],
-  },
-  {
-    id: '3',
-    originalThought:
-      'I should be able to handle this workload without feeling stressed. I\'m weak for feeling overwhelmed.',
-    reframedThought:
-      'It\'s normal to feel stressed with a heavy workload. Acknowledging my limits is a strength, not a weakness.',
-    date: new Date(2023, 3, 10),
-    distortions: ['Should Statements', 'Labeling'],
-  },
-]
+import { useEntryStore, Entry } from '@theragpt/logic'
+import { useEntryStoreInitialized } from './entry-store-provider'
 
 export const JournalEntryList = () => {
+  const { entries, isLoading, error } = useEntryStore()
+  const { initialized } = useEntryStoreInitialized()
+
+  // Helper function to get distortion labels from distortion instances
+  const getDistortionLabels = (entry: Entry) => {
+    if (!entry.distortions || entry.distortions.length === 0) {
+      return []
+    }
+    return entry.distortions.map(d => d.distortionId)
+  }
+
+  // Helper function to get reframed thought from reframes
+  const getReframedThought = (entry: Entry) => {
+    if (!entry.reframes || entry.reframes.length === 0) {
+      return 'No reframe yet'
+    }
+    return entry.reframes[0].text
+  }
+
+  // Sort entries by createdAt date (newest first)
+  const sortedEntries = [...entries].sort((a, b) =>
+    (b.createdAt || 0) - (a.createdAt || 0)
+  )
+
+  if (isLoading || !initialized) {
+    return (
+      <Card className="glass-panel p-6 text-center text-slate-600 dark:text-slate-300">
+        <p>Loading journal entries...</p>
+      </Card>
+    )
+  }
+
+  if (error) {
+    return (
+      <Card className="glass-panel p-6 text-center text-slate-600 dark:text-slate-300">
+        <p>Error loading entries: {error}</p>
+      </Card>
+    )
+  }
   return (
     <div className="space-y-6">
-      {mockEntries.length === 0 ? (
+      {sortedEntries.length === 0 ? (
         <Card className="glass-panel p-6 text-center text-slate-600 dark:text-slate-300">
           <p>You haven't created any journal entries yet.</p>
         </Card>
       ) : (
-        mockEntries.map((entry, index) => (
+        sortedEntries.map((entry, index) => (
           <Link href={`/entry/${entry.id}`} key={entry.id}>
             <Card
               className="glass-panel p-6 hover:shadow-lg transition-all duration-300 gradient-border"
@@ -50,10 +62,10 @@ export const JournalEntryList = () => {
             >
               <div className="mb-3 flex justify-between items-start">
                 <p className="text-sm text-purple-500 dark:text-purple-400">
-                  {formatDistanceToNow(entry.date, { addSuffix: true })}
+                  {formatDistanceToNow(new Date(entry.createdAt), { addSuffix: true })}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {entry.distortions.map((distortion, index) => (
+                  {getDistortionLabels(entry).map((distortion, index) => (
                     <Badge
                       key={index}
                       variant="outline"
@@ -68,12 +80,12 @@ export const JournalEntryList = () => {
               <div className="space-y-4">
                 <div>
                   <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Original Thought</h3>
-                  <p className="text-slate-700 dark:text-slate-300 line-through opacity-70">{entry.originalThought}</p>
+                  <p className="text-slate-700 dark:text-slate-300 line-through opacity-70">{entry.rawText}</p>
                 </div>
 
                 <div>
                   <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Reframed Thought</h3>
-                  <p className="text-slate-800 dark:text-slate-200 font-medium">{entry.reframedThought}</p>
+                  <p className="text-slate-800 dark:text-slate-200 font-medium">{getReframedThought(entry)}</p>
                 </div>
               </div>
             </Card>

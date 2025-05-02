@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '../components/theme-provider'
+import { EntryStoreProvider } from '../components/entry-store-provider'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -24,9 +25,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-gradient-radial from-white to-slate-50 dark:from-slate-950 dark:to-slate-900">
-            {children}
-          </div>
+          <EntryStoreProvider>
+            <div className="min-h-screen bg-gradient-radial from-white to-slate-50 dark:from-slate-950 dark:to-slate-900">
+              {children}
+            </div>
+          </EntryStoreProvider>
         </ThemeProvider>
       </body>
     </html>
