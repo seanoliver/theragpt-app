@@ -1,5 +1,5 @@
 export * from './cards'
 export * from './card-interaction'
 export * from './storage'
-export * from './entries'
+export * from './entry'
 export * from './cbt'

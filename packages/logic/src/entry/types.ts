@@ -1,4 +1,4 @@
-import { Reframe } from '../reframes/types'
+import { Reframe } from '../reframe/types'
 
 export interface Distortion {
   id: string

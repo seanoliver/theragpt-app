@@ -39,6 +39,7 @@
   },
   "peerDependencies": {
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.2.0"
+    "tailwind-merge": "^3.2.0",
+    "zustand": "^5.0.3"
   }
 }
