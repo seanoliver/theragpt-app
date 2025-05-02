@@ -1,10 +1,15 @@
 import Link from 'next/link'
-import { Button } from '@/apps/web/components/ui/button'
-import { ThemeToggle } from '@/apps/web/components/theme-toggle'
+import { Button } from './ui/button'
+import { ThemeToggle } from './theme-toggle'
 import { Menu } from 'lucide-react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/apps/web/components/ui/dropdown-menu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu'
 
-export const Header = () => {
+export function Header() {
   return (
     <header className="sticky top-0 z-10 glass-panel shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -31,6 +36,12 @@ export const Header = () => {
           >
             Journal
           </Link>
+          <Link
+            href="/distortions"
+            className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+          >
+            Cognitive Distortions
+          </Link>
           <ThemeToggle />
         </nav>
 
@@ -52,6 +63,9 @@ export const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/journal">Journal</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/cognitive-distortions">Cognitive Distortions</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
