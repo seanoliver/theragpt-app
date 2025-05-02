@@ -10,15 +10,18 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface CardStore {
+  // State
   cards: Card[]
   isLoading: boolean
   error: string | null
+
   // Actions
   initialize: () => Promise<void>
   setCards: (cards: Card[]) => void
   addCard: (params: CreateCardParams) => Promise<Card | undefined>
   updateCard: (params: UpdateCardParams) => Promise<void>
   deleteCard: (id: string) => Promise<void>
+
   // Card interaction actions
   upvoteCard: (id: string) => Promise<void>
   downvoteCard: (id: string) => Promise<void>

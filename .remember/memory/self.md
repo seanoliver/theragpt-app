@@ -295,3 +295,55 @@ color: theme.colors.buttonText,
 backgroundColor: theme.colors.primaryBackground,
 backgroundColor: theme.colors.accent,
 color: theme.colors.textOnAccent,
+
+### Mistake: Using `async` on a Next.js app directory page component without needing it causes type errors for route params
+**Wrong**:
+```
+export default async function EntryDetailPage({
+  params,
+}: EntryDetailPageProps) {
+  // ...no await inside...
+}
+```
+**Correct**:
+```
+export default function EntryDetailPage({
+  params,
+}: EntryDetailPageProps) {
+  // ...no await inside...
+}
+```
+**Note**: Declaring a page component as `async` when it does not use `await` can cause Next.js to infer that `params` is a Promise, leading to type errors like "Type '{ id: string }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]". Only use `async` if you actually need to await something in the component body.
+
+### Mistake: Next.js 15.3.x expects dynamic route params to be a Promise in app directory
+**Wrong**:
+```
+type EntryDetailPageProps = {
+  params: {
+    id: string
+  }
+}
+
+export default function EntryDetailPage({ params }: EntryDetailPageProps) {
+  // ...
+  <EntryDetail id={params.id} />
+}
+```
+**Correct**:
+```
+export default async function EntryDetailPage({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
+  // Resolve the Promise to get the actual params
+  const resolvedParams = await params;
+  // ...
+  <EntryDetail id={resolvedParams.id} />
+}
+```
+**Note**: In Next.js 15.3.x, the type system expects `params` in dynamic route components to be a Promise, not a direct object. This is unusual compared to standard Next.js behavior and documentation. When using dynamic routes in the app directory with Next.js 15.3.x, you must:
+1. Declare the page component as `async`
+2. Type the `params` prop as a Promise
+3. Use `await` to resolve the Promise and get the actual params
+4. Use the resolved params in the component

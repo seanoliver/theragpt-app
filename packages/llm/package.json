@@ -1,5 +1,5 @@
 {
-  "name": "@theragpt/logic",
+  "name": "@theragpt/llm",
   "version": "1.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -12,6 +12,8 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",
     "@theragpt/config": "workspace:*",
+    "@theragpt/logic": "workspace:*",
+    "openai": "^4.96.2",
     "uuid": "^9.0.0",
     "zod": "^3.22.4"
   },
