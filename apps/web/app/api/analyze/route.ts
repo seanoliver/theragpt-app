@@ -68,7 +68,7 @@ export const POST = async (req: NextRequest) => {
           llmError instanceof Error
             ? Object.getOwnPropertyNames(llmError).reduce(
                 (acc, key) => {
-                  // @ts-ignore - We're intentionally accessing properties dynamically
+                  // @ts-expect-error - We're intentionally accessing properties dynamically
                   acc[key] = llmError[key]?.toString()
                   return acc
                 },
@@ -99,7 +99,7 @@ export const POST = async (req: NextRequest) => {
  * you would need to parse the actual LLM response format, which might be
  * JSON, markdown, or plain text that needs to be parsed.
  */
-function parseLLMResponse(response: string): AnalysisResult {
+const parseLLMResponse = (response: string): AnalysisResult => {
   try {
     // Clean up the response to handle potential formatting issues
     let cleanedResponse = response.trim()
@@ -123,6 +123,7 @@ function parseLLMResponse(response: string): AnalysisResult {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       'Cleaned response for parsing:',
       cleanedResponse.substring(0, 100) + '...',
@@ -130,6 +131,7 @@ function parseLLMResponse(response: string): AnalysisResult {
 
     // Attempt to parse as JSON
     const jsonResponse = JSON.parse(cleanedResponse)
+    // eslint-disable-next-line no-console
     console.log('Parsed LLM response:', jsonResponse)
 
     // Handle the expected format from the prompt (distortions and reframe)

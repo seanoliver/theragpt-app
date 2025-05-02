@@ -8,7 +8,6 @@ import { ThumbsUp, ThumbsDown, Edit2, Save, RefreshCw } from 'lucide-react'
 import { Badge } from '@/apps/web/components/ui/badge'
 import { Separator } from '@/apps/web/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/apps/web/components/ui/tabs'
-import { useEntryStore } from '@theragpt/logic/src/entry'
 
 interface Distortion {
   id: string;
@@ -31,7 +30,7 @@ export const AIResponsePanel = ({
   originalThought,
   onSave,
   onReset,
-  analysisResult
+  analysisResult,
 }: AIResponsePanelProps) => {
   // If no analysis result is provided, we shouldn't show this component
   if (!analysisResult) {

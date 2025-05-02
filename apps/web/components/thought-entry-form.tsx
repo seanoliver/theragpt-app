@@ -43,6 +43,7 @@ export const ThoughtEntryForm = () => {
     setIsSubmitting(true)
 
     try {
+      // eslint-disable-next-line no-console
       console.log('Analyzing thought:', thought)
       const response = await fetch('/api/analyze', {
         method: 'POST',
@@ -60,6 +61,7 @@ export const ThoughtEntryForm = () => {
       }
 
       const data: AnalyzeResponse = await response.json()
+      // eslint-disable-next-line no-console
       console.log('Analysis result:', data.result)
       setAnalysisResult(data.result)
       setIsSubmitting(false)
