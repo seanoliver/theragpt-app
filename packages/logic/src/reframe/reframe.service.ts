@@ -1,18 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
-import { Reframe } from './types'
+import { Reframe, ReframeInput, ReframeListener } from './types'
 import { Entry } from '../entry'
-
-export interface ReframeInput {
-  entryId: Entry['id']
-  text: string
-  source: 'ai' | 'user-edit'
-  style?: string
-}
-
-export interface ReframeListener {
-  (reframes: Reframe[]): void
-}
 
 /**
  * Service for managing reframes in the application.
@@ -112,6 +101,7 @@ export class ReframeService {
       timestamp: Date.now(),
       source: params.source,
       style: params.style,
+      explanation: params.explanation,
     }
 
     const reframes = await this.getAll()
@@ -149,6 +139,7 @@ export class ReframeService {
       text: params.text ?? reframe.text,
       source: params.source ?? reframe.source,
       style: params.style ?? reframe.style,
+      explanation: params.explanation ?? reframe.explanation,
       feedback: params.feedback ?? reframe.feedback,
       rejectionReason: params.rejectionReason ?? reframe.rejectionReason,
     }

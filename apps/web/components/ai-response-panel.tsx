@@ -177,19 +177,13 @@ export const AIResponsePanel = ({
 
       <Separator className="bg-slate-200 dark:bg-slate-700" />
 
-      <div className="flex justify-between">
+      <div className="flex justify-end">
         <Button
           variant="outline"
           className="border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400 hover:bg-purple-50/50 dark:hover:bg-purple-900/20"
           onClick={onReset}
         >
           Start Over
-        </Button>
-        <Button
-          className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0"
-          onClick={onSave}
-        >
-          Save to Journal
         </Button>
       </div>
     </div>
