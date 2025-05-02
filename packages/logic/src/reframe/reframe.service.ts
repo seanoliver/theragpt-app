@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
 import { Reframe, ReframeInput, ReframeListener } from './types'
-import { Entry } from '../entry'
 
 /**
  * Service for managing reframes in the application.
@@ -282,7 +281,6 @@ export class ReframeService {
     this.reframeCache = reframes
     this.reframeMap = new Map(reframes.map(reframe => [reframe.id, reframe]))
   }
-
 }
 
 export const reframeService = new ReframeService(storageService)

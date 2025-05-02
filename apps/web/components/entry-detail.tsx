@@ -65,7 +65,7 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
       'disqualifying-the-positive': 'Disqualifying the Positive',
       'magnification-minimization': 'Magnification/Minimization',
       'personalization': 'Personalization',
-      'overgeneralization': 'Overgeneralization'
+      'overgeneralization': 'Overgeneralization',
     }
     return distortionMap[distortionId] || distortionId
   }
@@ -79,14 +79,14 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
       if (entry.reframes && entry.reframes.length > 0) {
         const reframeId = entry.reframes[0].id
         await entryService.updateReframe(reframeId, {
-          text: reframedThought
+          text: reframedThought,
         })
       } else {
         // Otherwise create a new reframe
         await entryService.addReframe(entry.id, {
           text: reframedThought,
           source: 'user-edit',
-          style: 'custom'
+          style: 'custom',
         })
       }
       setEditingReframe(false)
