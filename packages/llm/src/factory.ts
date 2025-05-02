@@ -1,4 +1,4 @@
-import { LLMClient, LLMClientConfig, LLMProvider, ClientRegistry } from './types'
+import { LLMClientConfig, LLMProvider, ClientRegistry } from './types'
 import { OpenAIClient } from './clients/openai'
 
 /**

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
 import { Reframe } from './types'
-import { Entry, entryService } from '../entry'
+import { Entry } from '../entry'
 
 export interface ReframeInput {
   entryId: Entry['id']

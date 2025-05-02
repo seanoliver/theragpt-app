@@ -1,10 +1,25 @@
-import { Header } from '@/apps/web/components/header'
 import { EntryDetail } from '@/apps/web/components/entry-detail'
+import { Header } from '@/apps/web/components/header'
 import { Button } from '@/apps/web/components/ui/button'
-import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
-export default function EntryDetailPage({ params }: { params: { id: string } }) {
+/**
+ * IMPORTANT: This is a workaround for a type issue in Next.js 15.3.x
+ *
+ * In Next.js 15.3.x, the type system expects `params` in dynamic route components
+ * to be a Promise<{ id: string }>, not a direct object { id: string }.
+ *
+ * This is unusual compared to standard Next.js behavior and documentation.
+ * If you upgrade or downgrade Next.js, you may need to adjust this.
+ */
+export default async function EntryDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  // Resolve the Promise to get the actual params
+  const resolvedParams = await params
   return (
     <main className="min-h-screen">
       <Header />
@@ -22,7 +37,7 @@ export default function EntryDetailPage({ params }: { params: { id: string } }) 
         <h1 className="text-3xl font-bold gradient-text mb-8">Journal Entry</h1>
 
         <div className="animate-fade-in">
-          <EntryDetail id={params.id} />
+          <EntryDetail id={resolvedParams.id} />
         </div>
       </div>
     </main>

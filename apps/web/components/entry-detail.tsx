@@ -46,7 +46,9 @@ interface EntryDetailProps {
   id: string
 }
 
-export const EntryDetail = ({ _id }: EntryDetailProps) => {
+export const EntryDetail = ({ id: _id }: EntryDetailProps) => {
+  // In a real implementation, we would use the id to fetch the entry data
+  // For now, using mock data for demonstration
   const [entry] = useState(mockEntry)
   const [editingReframe, setEditingReframe] = useState(false)
   const [reframedThought, setReframedThought] = useState(mockEntry.reframedThought)

@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { ThoughtEntryForm } from '@/apps/web/components/thought-entry-form'
 import { Header } from '@/apps/web/components/header'
 import dynamic from 'next/dynamic'
-import type { LucideIcon } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -69,15 +68,15 @@ const FeatureCard = ({ title, description, icon }: { title: string; description:
   const IconComponent = dynamic<Omit<import('lucide-react').LucideProps, 'ref'>>(
     () =>
       import('lucide-react').then((mod) => {
-        const Icon = mod[icon as keyof typeof mod];
+        const Icon = mod[icon as keyof typeof mod]
         // Only return if it's a valid LucideIcon (not a factory function)
         if (
           typeof Icon === 'function' &&
           !(Icon as any).iconNode // iconNode only exists on the factory, not on LucideIcon components
         ) {
-          return Icon as React.ComponentType<Omit<import('lucide-react').LucideProps, 'ref'>>;
+          return Icon as React.ComponentType<Omit<import('lucide-react').LucideProps, 'ref'>>
         }
-        return mod['Circle'] as React.ComponentType<Omit<import('lucide-react').LucideProps, 'ref'>>;
+        return mod['Circle'] as React.ComponentType<Omit<import('lucide-react').LucideProps, 'ref'>>
       }),
     {
       ssr: false,

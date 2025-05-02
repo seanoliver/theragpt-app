@@ -60,7 +60,7 @@ export const MODEL_PROVIDER_MAP: Record<LLMModel, LLMProvider> = {
   [LLMModel.CLAUDE_3_HAIKU]: LLMProvider.Anthropic,
 }
 
-export function getProviderFromModel(model: LLMModel): LLMProvider {
+export const getProviderFromModel = function(model: LLMModel): LLMProvider {
   const provider = MODEL_PROVIDER_MAP[model]
   if (!provider) throw new Error(`Unrecognized or unsupported model: ${model}`)
   return provider

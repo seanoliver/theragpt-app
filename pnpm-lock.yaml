@@ -304,9 +304,6 @@ importers:
       '@theragpt/logic':
         specifier: workspace:*
         version: link:../logic
-      '@theragpt/web':
-        specifier: workspace:*
-        version: link:../../apps/web
       openai:
         specifier: ^4.96.2
         version: 4.96.2(ws@8.18.1)(zod@3.24.3)

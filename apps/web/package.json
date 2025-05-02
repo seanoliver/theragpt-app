@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:clean": "rm -rf .next/ && pnpm exec next build --no-lint",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next .turbo node_modules"

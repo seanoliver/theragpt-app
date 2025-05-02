@@ -177,7 +177,7 @@ export class EntryService {
     if (entry) {
       await this.update({
         ...entry,
-        reframes: [] // Set to empty array
+        reframes: [], // Set to empty array
       })
     }
   }
@@ -269,9 +269,9 @@ export class EntryService {
     }
 
     // Create the reframe
-    const reframe = await reframeService.create({
+    await reframeService.create({
       ...reframeInput,
-      entryId
+      entryId,
     })
 
     // Get all reframes for this entry (including the new one)
@@ -280,7 +280,7 @@ export class EntryService {
     // Explicitly update the entry with the reframes
     const updatedEntry = await this.update({
       ...entry,
-      reframes: allReframes
+      reframes: allReframes,
     })
 
     return updatedEntry
@@ -323,7 +323,7 @@ export class EntryService {
     // Update the reframe
     await reframeService.update({
       id: reframeId,
-      ...updateData
+      ...updateData,
     })
 
     // Get all reframes for this entry (including the updated one)
@@ -332,7 +332,7 @@ export class EntryService {
     // Explicitly update the entry with the reframes
     const updatedEntry = await this.update({
       ...entry,
-      reframes: allReframes
+      reframes: allReframes,
     })
 
     return updatedEntry
@@ -380,7 +380,7 @@ export class EntryService {
     // Explicitly update the entry with the remaining reframes
     const updatedEntry = await this.update({
       ...entry,
-      reframes: remainingReframes
+      reframes: remainingReframes,
     })
 
     return updatedEntry
