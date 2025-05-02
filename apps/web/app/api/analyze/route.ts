@@ -9,12 +9,12 @@ const MAX_TOKENS = 512
 
 interface AnalysisResult {
   distortions: Array<{
-    id: string;
-    name: string;
-    explanation: string;
-  }>;
-  reframedThought: string;
-  justification: string;
+    id: string
+    name: string
+    explanation: string
+  }>
+  reframedThought: string
+  justification: string
 }
 
 export const POST = async (req: NextRequest) => {
@@ -25,23 +25,69 @@ export const POST = async (req: NextRequest) => {
     // Create the client registry using environment variables
     const registry = createLLMRegistry()
 
-    const llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
-      prompt,
-      temperature: TEMPERATURE,
-      maxTokens: MAX_TOKENS,
-    })
+    try {
+      // TODO: Implement dynamic fallback logic for different models
+      let llmResponse: string
+      try {
+        llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
+          prompt,
+          temperature: TEMPERATURE,
+          maxTokens: MAX_TOKENS,
+          systemPrompt:
+            'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+        })
+      } catch (modelError) {
+        console.warn('Failed to use GPT-4O, falling back to GPT-4:', modelError)
+        llmResponse = await callLLM(LLMModel.GPT_4, registry, {
+          prompt,
+          temperature: TEMPERATURE,
+          maxTokens: MAX_TOKENS,
+          // TODO: Put the system prompt somewhere else
+          systemPrompt:
+            'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+        })
+      }
+      // Parse the LLM response to extract structured data
+      const parsedResult = parseLLMResponse(llmResponse)
 
-    // Parse the LLM response to extract structured data
-    // This is a simplified example - in a real implementation, you would
-    // need to parse the LLM response based on its actual format
-    const parsedResult = parseLLMResponse(llmResponse)
+      return NextResponse.json({ result: parsedResult })
+    } catch (llmError: unknown) {
+      console.error('Error calling LLM:', llmError)
 
-    return NextResponse.json({ result: parsedResult })
-  } catch (error) {
-    console.error('Error in analyze route:', error)
+      // TODO: Move this safe error handler into a utility function
+      const errorMessage =
+        llmError instanceof Error
+          ? llmError.message
+          : typeof llmError === 'string'
+            ? llmError
+            : 'Unknown LLM error'
+
+      console.error(
+        'Error details:',
+        JSON.stringify(
+          llmError instanceof Error
+            ? Object.getOwnPropertyNames(llmError).reduce(
+                (acc, key) => {
+                  // @ts-ignore - We're intentionally accessing properties dynamically
+                  acc[key] = llmError[key]?.toString()
+                  return acc
+                },
+                {} as Record<string, string>,
+              )
+            : llmError,
+        ),
+      )
+
+      throw new Error(`LLM call failed: ${errorMessage}`)
+    }
+  } catch (error: any) {
     return NextResponse.json(
-      { error: 'Failed to analyze thought' },
-      { status: 500 }
+      {
+        error: 'Failed to analyze thought',
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      },
+      { status: 500 },
     )
   }
 }
@@ -55,23 +101,50 @@ export const POST = async (req: NextRequest) => {
  */
 function parseLLMResponse(response: string): AnalysisResult {
   try {
-    // Attempt to parse as JSON if the LLM returns JSON
-    const jsonResponse = JSON.parse(response)
+    // Clean up the response to handle potential formatting issues
+    let cleanedResponse = response.trim()
+
+    // If the response starts with ``` (code block), extract the content
+    if (cleanedResponse.startsWith('```json')) {
+      cleanedResponse = cleanedResponse
+        .replace(/^```json\n/, '')
+        .replace(/\n```$/, '')
+    } else if (cleanedResponse.startsWith('```')) {
+      cleanedResponse = cleanedResponse
+        .replace(/^```\n/, '')
+        .replace(/\n```$/, '')
+    }
+
+    // Try to find JSON in the response if it's not a complete JSON
+    if (!cleanedResponse.startsWith('{')) {
+      const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        cleanedResponse = jsonMatch[0]
+      }
+    }
+
+    console.log(
+      'Cleaned response for parsing:',
+      cleanedResponse.substring(0, 100) + '...',
+    )
+
+    // Attempt to parse as JSON
+    const jsonResponse = JSON.parse(cleanedResponse)
     console.log('Parsed LLM response:', jsonResponse)
 
-    // Handle the expected format from the prompt
+    // Handle the expected format from the prompt (distortions and reframe)
     if (jsonResponse.distortions && jsonResponse.reframe) {
       // Map the distortions from the LLM format to our expected format
       const distortionsWithIds = jsonResponse.distortions.map((d: any) => ({
-        id: d.id || d.label.toLowerCase().replace(/\s+/g, '-') || uuidv4(),
-        name: d.label,
-        explanation: d.description,
+        id: d.id || d.label?.toLowerCase().replace(/\s+/g, '-') || uuidv4(),
+        name: d.label || '',
+        explanation: d.description || '',
       }))
 
       return {
         distortions: distortionsWithIds,
-        reframedThought: jsonResponse.reframe.text,
-        justification: jsonResponse.reframe.explanation,
+        reframedThought: jsonResponse.reframe.text || '',
+        justification: jsonResponse.reframe.explanation || '',
       }
     }
 
@@ -84,13 +157,36 @@ function parseLLMResponse(response: string): AnalysisResult {
       // Ensure each distortion has an ID
       const distortionsWithIds = jsonResponse.distortions.map((d: any) => ({
         ...d,
-        id: d.id || uuidv4(),
+        id: d.id || d.name?.toLowerCase().replace(/\s+/g, '-') || uuidv4(),
       }))
 
       return {
         distortions: distortionsWithIds,
         reframedThought: jsonResponse.reframedThought,
         justification: jsonResponse.justification,
+      }
+    }
+
+    // Try to handle other possible formats
+    if (jsonResponse.distortions) {
+      const distortionsWithIds = jsonResponse.distortions.map((d: any) => {
+        // Handle different property naming conventions
+        return {
+          id:
+            d.id ||
+            (d.label || d.name)?.toLowerCase().replace(/\s+/g, '-') ||
+            uuidv4(),
+          name: d.label || d.name || '',
+          explanation: d.description || d.explanation || '',
+        }
+      })
+
+      return {
+        distortions: distortionsWithIds,
+        reframedThought:
+          jsonResponse.reframe?.text || jsonResponse.reframedThought || '',
+        justification:
+          jsonResponse.reframe?.explanation || jsonResponse.justification || '',
       }
     }
 
@@ -102,7 +198,23 @@ function parseLLMResponse(response: string): AnalysisResult {
     console.error('Error parsing LLM response:', e)
     console.error('Raw LLM response:', response)
 
-    // Throw the error to be caught by the route handler
-    throw new Error('Failed to parse LLM response')
+    // Instead of throwing an error, return a fallback response
+    console.warn('Using fallback response due to parsing error')
+
+    // TODO: Don't love this, but it's fine for now
+    return {
+      distortions: [
+        {
+          id: 'parsing-error',
+          name: 'Unable to analyze thought',
+          explanation:
+            'There was an error processing your thought. Please try again with a different thought or wording.',
+        },
+      ],
+      reframedThought:
+        'I was unable to properly analyze your thought. Please try again with a different thought or wording.',
+      justification:
+        'The system encountered an error while processing your thought. This could be due to the complexity of the thought or a temporary issue with the analysis system.',
+    }
   }
 }
