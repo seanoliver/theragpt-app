@@ -1,12 +1,14 @@
 import type React from 'react'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Quicksand, Lora, Oxygen } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
 import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
 import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const quicksand = Quicksand({ subsets: ['latin'], variable: '--font-quicksand' })
+const lora = Lora({ subsets: ['latin'], variable: '--font-lora', weight: ['400', '500', '600', '700'] })
+const oxygen = Oxygen({ subsets: ['latin'], variable: '--font-oxygen', weight: ['400', '700'] })
 
 export const metadata: Metadata = {
   title: 'TheraGPT - AI-Assisted CBT Journaling',
@@ -19,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${quicksand.variable} ${lora.variable} ${oxygen.variable} font-oxygen antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

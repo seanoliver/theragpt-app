@@ -33,6 +33,8 @@ export const ThoughtEntryForm = () => {
   const [analysisResult, setAnalysisResult] = useState<
     AnalysisResult | undefined
   >(undefined)
+  const [showStarters, setShowStarters] = useState(false)
+  const startersRef = useRef<HTMLDivElement>(null)
 
   // Global state from Zustand store
 
@@ -156,19 +158,45 @@ export const ThoughtEntryForm = () => {
   return (
     <div>
       {!showResponse ? (
-        <div>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="relative space-y-4">
             <Textarea
               placeholder="Type your thought here..."
-              className="min-h-[120px] border-slate-200 dark:border-slate-700 focus:border-purple-300 dark:focus:border-purple-700 focus:ring-purple-300 dark:focus:ring-purple-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
+              className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
               value={thought}
               onChange={e => setThought(e.target.value)}
               required
             />
-            <div className="flex justify-end">
+            <div className="absolute bottom-0 right-0 p-2 gap-2 flex">
+              <Button
+                type="button"
+                variant="outline"
+                className={`border-0 transition-opacity duration-500 ease-in-out ${
+                  thought.length === 0
+                    ? 'opacity-100 pointer-events-auto'
+                    : 'opacity-0 pointer-events-none'
+                }`}
+                tabIndex={thought.length === 0 ? 0 : -1}
+                aria-hidden={thought.length !== 0}
+                onClick={e => {
+                  e.preventDefault()
+                  setShowStarters(prev => !prev)
+                }}
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                {showStarters
+                  ? 'Hide thought starters'
+                  : 'Need a thought starter?'}
+              </Button>
               <Button
                 type="submit"
-                className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0"
+                className={`
+                bg-gradient-to-r from-purple-500 to-indigo-500
+                hover:from-purple-600 hover:to-indigo-600
+                border-0
+                transition-opacity duration-500 ease-in-out
+                ${isLoading || !thought.trim() ? 'opacity-50 cursor-not-allowed' : 'opacity-100'}
+              `}
                 disabled={isLoading || !thought.trim()}
               >
                 {isLoading ? (
@@ -182,13 +210,12 @@ export const ThoughtEntryForm = () => {
               </Button>
             </div>
           </form>
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-purple-500" />
-              <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                Need inspiration? Try one of these thought starters:
-              </h3>
-            </div>
+          <div
+            ref={startersRef}
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              showStarters ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
             <ThoughtStarters onSelect={handleThoughtStarterClick} />
           </div>
         </div>

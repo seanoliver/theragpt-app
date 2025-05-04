@@ -9,40 +9,53 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 
+const MENU_ITEMS = [
+  {
+    label: 'Home',
+    href: '/',
+  },
+  {
+    label: 'Pricing',
+    href: '/pricing',
+  },
+  {
+    label: 'About',
+    href: '/about',
+  },
+  {
+    label: 'New Entry',
+    href: '/new-entry',
+  },
+  {
+    label: 'Journal',
+    href: '/journal',
+  },
+  {
+    label: 'Cognitive Distortions',
+    href: '/distortions',
+  },
+]
+
 export const Header = () => {
   return (
     <header className="sticky top-0 z-10 glass-panel shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <span className="text-2xl font-bold gradient-text">TheraGPT</span>
+          <span className="text-2xl font-bold gradient-text font-heading">
+            TheraGPT
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/"
-            className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-          >
-            Home
-          </Link>
-          <Link
-            href="/new-entry"
-            className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-          >
-            New Entry
-          </Link>
-          <Link
-            href="/journal"
-            className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-          >
-            Journal
-          </Link>
-          <Link
-            href="/distortions"
-            className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-          >
-            Cognitive Distortions
-          </Link>
-          <ThemeToggle />
+          {MENU_ITEMS.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="md:hidden flex items-center">
@@ -55,18 +68,11 @@ export const Header = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="glass-panel">
-              <DropdownMenuItem asChild>
-                <Link href="/">Home</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/new-entry">New Entry</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/journal">Journal</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/cognitive-distortions">Cognitive Distortions</Link>
-              </DropdownMenuItem>
+              {MENU_ITEMS.map(item => (
+                <DropdownMenuItem asChild key={item.href}>
+                  <Link href={item.href}>{item.label}</Link>
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

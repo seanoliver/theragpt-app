@@ -10,6 +10,16 @@ const config: Config = {
     '*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    fontFamily: {
+      quicksand: ['var(--font-quicksand)', 'sans-serif'],
+      lora: ['var(--font-lora)', 'serif'],
+      oxygen: ['var(--font-oxygen)', 'sans-serif'],
+      sans: ['var(--font-oxygen)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      serif: ['var(--font-lora)', 'ui-serif', 'Georgia', 'serif'],
+      heading: ['var(--font-quicksand)', 'sans-serif'],
+      subheading: ['var(--font-lora)', 'serif'],
+      body: ['var(--font-oxygen)', 'sans-serif'],
+    },
     container: {
       center: true,
       padding: '2rem',

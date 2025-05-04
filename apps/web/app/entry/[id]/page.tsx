@@ -34,7 +34,7 @@ export default async function EntryDetailPage({
           </Button>
         </Link>
 
-        <h1 className="text-3xl font-bold gradient-text mb-8">Journal Entry</h1>
+        <h1 className="text-3xl font-bold gradient-text mb-8 font-heading">Journal Entry</h1>
 
         <div className="animate-fade-in">
           <EntryDetail id={resolvedParams.id} />

@@ -138,7 +138,7 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
       <div className="flex justify-between items-start">
         <div>
           <p className="text-sm text-purple-500 dark:text-purple-400 mb-2">
-            {format(new Date(entry.createdAt), 'MMMM d, yyyy \'at\' h:mm a')}
+            <span className="font-body">{format(new Date(entry.createdAt), 'MMMM d, yyyy \'at\' h:mm a')}</span>
           </p>
           <div className="flex flex-wrap gap-2 mt-2">
             {entry.distortions && entry.distortions.map((distortion, index) => (
@@ -228,12 +228,12 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
 
         <TabsContent value="thoughts" className="space-y-6">
           <Card className="glass-panel p-5 bg-gradient-to-r from-purple-50/80 to-indigo-50/80 dark:from-purple-900/20 dark:to-indigo-900/20">
-            <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Original Thought</h3>
-            <p className="text-slate-700 dark:text-slate-300 italic line-through opacity-70">{entry.rawText}</p>
+            <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 subheading">Original Thought</h3>
+            <p className="text-slate-700 dark:text-slate-300 italic line-through opacity-70 font-body">{entry.rawText}</p>
           </Card>
 
           <Card className="glass-panel p-5">
-            <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Reframed Thought</h3>
+            <h3 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 subheading">Reframed Thought</h3>
             {editingReframe ? (
               <Textarea
                 value={reframedThought}
@@ -241,7 +241,7 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
                 className="min-h-[100px] border-slate-200 dark:border-slate-700 focus:border-purple-300 dark:focus:border-purple-700 focus:ring-purple-300 dark:focus:ring-purple-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
               />
             ) : (
-              <p className="text-slate-800 dark:text-slate-200 font-medium">
+              <p className="text-slate-800 dark:text-slate-200 font-medium font-body">
                 {entry.reframes && entry.reframes.length > 0
                   ? entry.reframes[0].text
                   : 'No reframe available'}
@@ -252,7 +252,7 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
 
         <TabsContent value="analysis" className="space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold gradient-text">Identified Cognitive Distortions</h3>
+            <h3 className="text-lg font-semibold gradient-text font-heading">Identified Cognitive Distortions</h3>
             {entry.distortions && entry.distortions.length > 0 ? (
               entry.distortions.map((distortion, index) => (
                 <Card key={index} className="glass-panel p-5">
@@ -261,21 +261,21 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
                       {getDistortionName(distortion.distortionId)}
                     </Badge>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300">{distortion.text}</p>
+                  <p className="text-slate-600 dark:text-slate-300 font-body">{distortion.text}</p>
                 </Card>
               ))
             ) : (
               <Card className="glass-panel p-5 text-center text-slate-600 dark:text-slate-300">
-                <p>No cognitive distortions identified</p>
+                <p className="font-body">No cognitive distortions identified</p>
               </Card>
             )}
           </div>
 
           {entry.reframes && entry.reframes.length > 0 && entry.reframes[0].explanation && (
             <div>
-              <h3 className="text-lg font-semibold gradient-text mb-4">Why This Reframe Works</h3>
+              <h3 className="text-lg font-semibold gradient-text mb-4 font-heading">Why This Reframe Works</h3>
               <Card className="glass-panel p-5">
-                <p className="text-slate-600 dark:text-slate-300">{entry.reframes[0].explanation}</p>
+                <p className="text-slate-600 dark:text-slate-300 font-body">{entry.reframes[0].explanation}</p>
               </Card>
             </div>
           )}
