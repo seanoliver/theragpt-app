@@ -8,8 +8,8 @@ export const HeroSection = (): JSX.Element => {
     <section className="md:mt-16 mb-16 animate-fade-in">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col text-center gap-3">
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 gradient-text font-heading">
-            Shift your mindset. Shape your life.
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 gradient-text font-heading">
+            Reframe your mindset. Reshape your life.
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 w-full subheading">
             Your AI-assisted CBT journaling companion to help process negative

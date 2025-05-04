@@ -17,12 +17,6 @@ export const HomePage = ({}: HomePageProps) => {
 
         <section className="mb-16 animate-slide-up">
           <Card className="glass-panel shadow-lg p-8">
-            {/* <h2 className="text-2xl font-semibold mb-4 gradient-text font-heading">
-              Quick Entry
-            </h2>
-            <p className="text-slate-600 dark:text-slate-300 mb-6 font-body">
-              What's something that's been bothering you today?
-            </p> */}
             <ThoughtEntryForm />
           </Card>
         </section>

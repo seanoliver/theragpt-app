@@ -6,7 +6,7 @@ import { AIResponsePanel } from './AIResponsePanel'
 import { Button } from '@/apps/web/components/ui/button'
 import { Textarea } from '@/apps/web/components/ui/textarea'
 import { entryService, useEntryStore } from '@theragpt/logic'
-import { Loader2, Sparkles } from 'lucide-react'
+import { Loader2, Sparkles, ChevronDown } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import { ThoughtStarters } from './ThoughtStarters'
 
@@ -171,7 +171,8 @@ export const ThoughtEntryForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                className={`border-0 transition-opacity duration-500 ease-in-out ${
+                size="icon"
+                className={`bg-purple-50 border-0 rounded-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${
                   thought.length === 0
                     ? 'opacity-100 pointer-events-auto'
                     : 'opacity-0 pointer-events-none'
@@ -183,10 +184,11 @@ export const ThoughtEntryForm = () => {
                   setShowStarters(prev => !prev)
                 }}
               >
-                <Sparkles className="mr-2 h-4 w-4" />
-                {showStarters
-                  ? 'Hide thought starters'
-                  : 'Need a thought starter?'}
+                {showStarters ? (
+                  <ChevronDown className="h-5 w-5 text-purple-500" />
+                ) : (
+                  <Sparkles className="h-5 w-5 text-purple-500" />
+                )}
               </Button>
               <Button
                 type="submit"
