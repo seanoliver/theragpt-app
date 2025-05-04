@@ -1,5 +1,5 @@
-import { EntryDetail } from '@/apps/web/components/entry-detail'
-import { Header } from '@/apps/web/components/header'
+import { EntryDetail } from '@/apps/web/components/journal/EntryDetail'
+import { Header } from '@/apps/web/components/layout/Header'
 import { Button } from '@/apps/web/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'

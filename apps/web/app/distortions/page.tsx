@@ -1,8 +1,8 @@
 // Add a client directive to prevent hydration issues with scroll behavior
 'use client'
 
-import { Header } from '@/apps/web/components/header'
-import { DistortionsList } from '../../components/distortions-list'
+import { Header } from '@/apps/web/components/layout/Header'
+import { DistortionsList } from '@/apps/web/components/distortions/DistortionsList'
 import { useEffect } from 'react'
 
 export default function CognitiveDistortionsPage() {

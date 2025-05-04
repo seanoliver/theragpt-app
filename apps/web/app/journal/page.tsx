@@ -1,6 +1,6 @@
-import { Header } from '@/apps/web/components/header'
-import { JournalEntryList } from '@/apps/web/components/journal-entry-list'
-import { JournalFilters } from '@/apps/web/components/journal-filters'
+import { Header } from '@/apps/web/components/layout/Header'
+import { EntryList } from '@/apps/web/components/journal/EntryList'
+import { EntryFilters } from '@/apps/web/components/journal/EntryFilters'
 import { Card } from '@/apps/web/components/ui/card'
 import { Button } from '@/apps/web/components/ui/button'
 import Link from 'next/link'
@@ -22,11 +22,11 @@ export default function JournalPage() {
         </div>
 
         <Card className="glass-panel shadow-lg p-6 mb-8 animate-fade-in">
-          <JournalFilters />
+          <EntryFilters />
         </Card>
 
         <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
-          <JournalEntryList />
+          <EntryList />
         </div>
       </div>
     </main>
