@@ -2,9 +2,9 @@ import type React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '../components/theme-provider'
-import { EntryStoreProvider } from '../components/entry-store-provider'
-import { BackgroundTexture } from '../components/background-texture'
+import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
+import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
+import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -28,9 +28,7 @@ export default function RootLayout({
         >
           <EntryStoreProvider>
             <BackgroundTexture />
-            <div className="min-h-screen relative z-10">
-              {children}
-            </div>
+            <div className="min-h-screen relative z-10">{children}</div>
           </EntryStoreProvider>
         </ThemeProvider>
       </body>
