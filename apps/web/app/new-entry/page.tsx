@@ -1,5 +1,5 @@
 import { Header } from '@/apps/web/components/layout/Header'
-import { ThoughtEntryForm } from '@/apps/web/components/thought/ThoughtEntryForm'
+import { ThoughtEntryForm } from '@/apps/web/components/thought-analysis/ThoughtEntryForm'
 import { Card } from '@/apps/web/components/ui/card'
 
 export default function NewEntryPage() {

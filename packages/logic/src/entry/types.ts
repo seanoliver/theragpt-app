@@ -10,7 +10,8 @@ export interface Distortion {
 export interface DistortionInstance {
   id: string
   distortionId: Distortion['id']
-  text: string
+  explanation: string
+  label: string
   timestamp?: number
 }
 

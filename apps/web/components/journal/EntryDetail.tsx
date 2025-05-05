@@ -50,9 +50,14 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
     }
   }, [id, entries, initialized])
 
-  // Helper function to get distortion name from ID
-  const getDistortionName = (distortionId: string) => {
-    // This would ideally come from a distortions service or store
+  // Helper function to get distortion name from ID or label
+  const getDistortionName = (distortion: { distortionId: string, label?: string }) => {
+    // If the distortion has a label property, use that
+    if (distortion.label) {
+      return distortion.label
+    }
+
+    // Otherwise, use the distortion ID mapped to a friendly name
     const distortionMap: Record<string, string> = {
       'catastrophizing': 'Catastrophizing',
       'all-or-nothing': 'All-or-Nothing Thinking',
@@ -67,7 +72,7 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
       'personalization': 'Personalization',
       'overgeneralization': 'Overgeneralization',
     }
-    return distortionMap[distortionId] || distortionId
+    return distortionMap[distortion.distortionId] || distortion.distortionId
   }
 
   const handleSaveReframe = async () => {
@@ -146,7 +151,7 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
                 key={index}
                 className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0"
               >
-                {getDistortionName(distortion.distortionId)}
+                {getDistortionName(distortion)}
               </Badge>
             ))}
           </div>
@@ -258,10 +263,10 @@ export const EntryDetail = ({ id }: EntryDetailProps) => {
                 <Card key={index} className="glass-panel p-5">
                   <div className="flex justify-between items-start mb-3">
                     <Badge className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0">
-                      {getDistortionName(distortion.distortionId)}
+                      {getDistortionName(distortion)}
                     </Badge>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300 font-body">{distortion.text}</p>
+                  <p className="text-slate-600 dark:text-slate-300 font-body">{distortion.explanation}</p>
                 </Card>
               ))
             ) : (

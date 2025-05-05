@@ -1,6 +1,6 @@
 'use client'
 
-import { ThoughtEntryForm } from '../thought/ThoughtEntryForm'
+import { ThoughtEntryForm } from '../thought-analysis/ThoughtEntryForm'
 
 export const HeroSection = (): JSX.Element => {
   return (
