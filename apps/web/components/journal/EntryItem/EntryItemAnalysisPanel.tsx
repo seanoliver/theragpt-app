@@ -27,11 +27,21 @@ export const EntryItemAnalysisPanel = ({
           transition: 'opacity 300ms ease-in-out',
         }}
       >
+        {/* Why the positive thought is realistic */}
+        <div className="space-y-3">
+          <h4 className="font-medium text-slate-700">
+            Why the reframed thought is realistic
+          </h4>
+          <div className="pl-4 border-l-2 border-green-100 bg-green-50 p-3 rounded">
+            <p className="text-slate-700">{entry.reframes?.[0]?.explanation}</p>
+          </div>
+        </div>
+
         {/* Cognitive Distortions Section */}
         {entry.distortions && entry.distortions.length > 0 && (
           <div className="space-y-3">
-            <h4 className="font-medium text-slate-700 text-sm">
-              Cognitive Distortions
+            <h4 className="font-medium text-slate-700">
+              Distortions found in your original thought
             </h4>
             <div className="space-y-4 pl-3">
               {entry.distortions?.map((distortion, index) => (
@@ -60,16 +70,6 @@ export const EntryItemAnalysisPanel = ({
             </div>
           </div>
         )}
-
-        {/* Why the positive thought is realistic */}
-        <div className="space-y-3">
-          <h4 className="font-medium text-slate-700 text-sm">
-            Why the reframed thought is realistic
-          </h4>
-          <div className="pl-4 border-l-2 border-green-100 bg-green-50 p-3 rounded">
-            <p className="text-slate-700">{entry.reframes?.[0]?.explanation}</p>
-          </div>
-        </div>
       </div>
     </div>
   )

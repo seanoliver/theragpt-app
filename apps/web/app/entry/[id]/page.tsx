@@ -1,7 +1,6 @@
 import { EntryItem } from '@/apps/web/components/journal/EntryItem/EntryItem'
 import { Header } from '@/apps/web/components/layout/Header'
 import { Button } from '@/apps/web/components/ui/button'
-import { entryService } from '@theragpt/logic'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 /**

@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader } from '@/apps/web/components/ui/card'
-import { CalendarIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 import { Button } from '@/apps/web/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/apps/web/components/ui/card'
 import { Entry, entryService } from '@theragpt/logic'
 import { formatDistanceToNow } from 'date-fns'
-import { DistortionBadge } from '../../shared/DistortionBadge'
+import { CalendarIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel'
+import { EntryItemResponsiveBadges } from './EntryItemResponsiveBadges'
 
 interface EntryItemProps {
   entryId: string
@@ -27,19 +27,12 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
     fetchEntry()
   }, [entryId])
 
-  const getDistortionLabels = (entry: Entry) => {
-    if (!entry.distortions || entry.distortions.length === 0) {
-      return []
-    }
-    return entry.distortions.map(d => d.label || d.distortionId)
-  }
-
   if (!entry) {
     return <div>Loading...</div>
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 gradient-border mb-6">
+    <Card className="w-full max-w-3xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <CalendarIcon className="h-4 w-4" />
@@ -49,11 +42,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
             })}
           </span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {getDistortionLabels(entry).map((distortion, index) => (
-            <DistortionBadge key={index} distortion={distortion} />
-          ))}
-        </div>
+        <EntryItemResponsiveBadges distortions={entry.distortions || []} />
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4">
