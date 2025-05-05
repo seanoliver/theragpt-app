@@ -65,7 +65,7 @@ export const ThoughtStarters = ({ onSelect }: ThoughtStartersProps) => {
   const [activeTab, setActiveTab] = useState('work')
 
   return (
-    <div className="glass-panel rounded-lg p-4 animate-fade-in">
+    <div className="glass-panel rounded-lg p-4 text-left">
       <Tabs
         defaultValue="work"
         value={activeTab}

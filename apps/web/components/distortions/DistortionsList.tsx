@@ -89,10 +89,10 @@ export const DistortionsList = () => {
       {/* Sidebar Navigation */}
       <div className="md:w-64 lg:w-72 md:h-[calc(100vh-64px)] md:overflow-y-auto md:sticky md:top-16 glass-panel md:border-r border-slate-200 dark:border-slate-700 p-4 z-10">
         <div className="mb-6">
-          <h2 className="text-xl font-bold gradient-text mb-2">
+          <h2 className="text-xl font-bold gradient-text mb-2 font-heading">
             Cognitive Distortions
           </h2>
-          <p className="text-slate-600 dark:text-slate-300 text-sm">
+          <p className="text-slate-600 dark:text-slate-300 text-sm font-body">
             Common thinking patterns that can lead to negative emotions and
             behaviors.
           </p>
@@ -136,23 +136,23 @@ export const DistortionsList = () => {
               <Badge className="mb-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 border-0">
                 Cognitive Distortion
               </Badge>
-              <h1 className="text-3xl md:text-4xl font-bold gradient-text mb-6">
+              <h1 className="text-3xl md:text-4xl font-bold gradient-text mb-6 font-heading">
                 {distortion.title}
               </h1>
 
               <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div>
                   <Card className="glass-panel p-6 h-full">
-                    <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+                    <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4 font-heading">
                       Description
                     </h2>
-                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                    <p className="text-slate-600 dark:text-slate-300 mb-4 font-body">
                       {distortion.description}
                     </p>
-                    <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-2">
+                    <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-2 subheading">
                       Example Thoughts:
                     </h3>
-                    <ul className="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-300">
+                    <ul className="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-300 font-body">
                       {distortion.examples.map((example, index) => (
                         <li key={index}>{example}</li>
                       ))}
@@ -161,17 +161,17 @@ export const DistortionsList = () => {
                 </div>
                 <div>
                   <Card className="glass-panel p-6 h-full flex flex-col">
-                    <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+                    <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4 font-heading">
                       How to Overcome It
                     </h2>
                     <div className="flex-1 flex items-center justify-center p-4">
                       <DistortionIllustration type={distortion.id} />
                     </div>
                     <div className="mt-4">
-                      <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-2">
+                      <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-2 subheading">
                         Reframing Strategy:
                       </h3>
-                      <p className="text-slate-600 dark:text-slate-300">
+                      <p className="text-slate-600 dark:text-slate-300 font-body">
                         {distortion.reframing}
                       </p>
                     </div>

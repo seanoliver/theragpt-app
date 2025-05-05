@@ -66,3 +66,8 @@ lib/utils.ts imported 'clsx', but 'clsx' was only listed in apps/web/package.jso
 ```
 Since lib/utils.ts is only used by the web app, 'clsx' should be added to apps/web/package.json. If it were used by multiple packages, it should be hoisted to the workspace root. The fix was to add 'clsx' to apps/web and re-run the build.
 ```
+
+### Animation Patterns: Sliding animations for expandable content
+- Use combination of `max-h-0`/`max-h-[size]`, `opacity-0`/`opacity-100`, and `overflow-hidden` with `transition-all` for slide animations
+- Example implementation in ThoughtEntryForm.tsx where ThoughtStarters panel slides down from underneath the textarea
+- Apply `transition-all duration-300 ease-in-out` for smooth animations
