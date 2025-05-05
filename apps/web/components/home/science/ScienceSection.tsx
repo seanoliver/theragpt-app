@@ -4,7 +4,7 @@ import { Card } from '@/apps/web/components/ui/card'
 import { motion } from 'motion/react'
 import { Brain, ArrowRight, Lightbulb, Zap } from 'lucide-react'
 
-export function ScienceSection() {
+export const ScienceSection = () => {
   return (
     <div>
       <div className="relative">

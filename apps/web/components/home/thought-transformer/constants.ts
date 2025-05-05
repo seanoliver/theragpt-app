@@ -2,9 +2,9 @@ export const SAMPLE_TRANSFORMATIONS = [
   {
     id: 1,
     negativeThought:
-      "I totally screwed that up. Of course I did — I always mess things up. I'm just not cut out for this.",
+      'I totally screwed that up. Of course I did — I always mess things up. I\'m just not cut out for this.',
     positiveThought:
-      "I messed up, yeah — but that doesn't mean I always do. I’ve gotten through worse, and I’m still learning.",
+      'I messed up, yeah — but that doesn\'t mean I always do. I’ve gotten through worse, and I’m still learning.',
     distortion: 'All-or-Nothing Thinking',
     emotion: {
       before: 'Shame',
@@ -34,7 +34,7 @@ export const SAMPLE_TRANSFORMATIONS = [
   {
     id: 3,
     negativeThought:
-      "Everything feels pointless. I should be doing better, but I'm just stuck and broken.",
+      'Everything feels pointless. I should be doing better, but I\'m just stuck and broken.',
     positiveThought:
       'This feeling sucks, but it doesn’t mean I’m broken. I’ve felt stuck before and eventually things shifted.',
     distortion: 'Emotional Reasoning',

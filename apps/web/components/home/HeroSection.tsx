@@ -1,7 +1,5 @@
 'use client'
 
-import { Button } from '@/apps/web/components/ui/button'
-import Link from 'next/link'
 import { ThoughtEntryForm } from '../thought/ThoughtEntryForm'
 import { Card } from '../ui/card'
 

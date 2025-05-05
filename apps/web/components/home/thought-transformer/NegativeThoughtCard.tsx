@@ -3,8 +3,6 @@ import { Card } from '@/apps/web/components/ui/card'
 import { motion } from 'motion/react'
 import { CloudRain } from 'lucide-react'
 import { SAMPLE_TRANSFORMATIONS } from './constants'
-import { Badge } from '@/apps/web/components/ui/badge'
-
 interface NegativeThoughtCardProps {
   activeIndex: number
   activeTransformation: (typeof SAMPLE_TRANSFORMATIONS)[number]

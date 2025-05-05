@@ -3,9 +3,8 @@
 import { HeroSection } from '@/apps/web/components/home/HeroSection'
 import { Footer } from '@/apps/web/components/layout/Footer'
 import { Header } from '@/apps/web/components/layout/Header'
-interface HomePageProps {}
 
-export const HomePage = ({}: HomePageProps) => {
+export const HomePage = () => {
   return (
     <main className="min-h-screen">
       <Header />

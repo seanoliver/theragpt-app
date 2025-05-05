@@ -12,25 +12,25 @@ export const ThoughtCarousel = ({ interval = 5000 }: ThoughtCarouselProps): JSX.
   // Carousel content
   const carouselThoughts = [
     {
-      distortedThought: "If I make a mistake in this presentation, my career is over.",
-      reframedThought: "One mistake won't define my career. I can learn and improve from it."
+      distortedThought: 'If I make a mistake in this presentation, my career is over.',
+      reframedThought: 'One mistake won\'t define my career. I can learn and improve from it.',
     },
     {
-      distortedThought: "If I don't get an A on this test, I'm a complete failure.",
-      reframedThought: "My grades don't define my worth. I can still succeed even without perfect scores."
+      distortedThought: 'If I don\'t get an A on this test, I\'m a complete failure.',
+      reframedThought: 'My grades don\'t define my worth. I can still succeed even without perfect scores.',
     },
     {
-      distortedThought: "My friend didn't text back. They must be mad at me.",
-      reframedThought: "There could be many reasons they haven't responded. I'll check in with them directly."
+      distortedThought: 'My friend didn\'t text back. They must be mad at me.',
+      reframedThought: 'There could be many reasons they haven\'t responded. I\'ll check in with them directly.',
     },
     {
-      distortedThought: "I feel anxious about this meeting, so it's going to be a disaster.",
-      reframedThought: "My feelings don't predict outcomes. I can handle this meeting regardless of my anxiety."
+      distortedThought: 'I feel anxious about this meeting, so it\'s going to be a disaster.',
+      reframedThought: 'My feelings don\'t predict outcomes. I can handle this meeting regardless of my anxiety.',
     },
     {
-      distortedThought: "I got feedback on my project, but they pointed out one flaw, so it's terrible.",
-      reframedThought: "I can appreciate the positive feedback while addressing the constructive criticism."
-    }
+      distortedThought: 'I got feedback on my project, but they pointed out one flaw, so it\'s terrible.',
+      reframedThought: 'I can appreciate the positive feedback while addressing the constructive criticism.',
+    },
   ]
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import { motion } from 'motion/react'
 import { Shield, Lock, FileText, Download, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 
-export function PrivacySection() {
+export const PrivacySection = () => {
   return (
     <div>
       <div className="relative">

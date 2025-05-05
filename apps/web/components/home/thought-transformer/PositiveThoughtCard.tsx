@@ -1,6 +1,5 @@
 import React from 'react'
 import { SAMPLE_TRANSFORMATIONS } from './constants'
-import { Badge } from '../../ui/badge'
 import { Card } from '../../ui/card'
 import { motion } from 'motion/react'
 import { Sun } from 'lucide-react'

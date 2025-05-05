@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 
-export function ProgressSection() {
+export const ProgressSection = () => {
   return (
     <div>
       <div className="relative">

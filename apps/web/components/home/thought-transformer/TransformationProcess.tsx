@@ -2,9 +2,7 @@ import { motion } from 'motion/react'
 import React from 'react'
 import { Brain, Zap, ArrowRight } from 'lucide-react'
 
-interface TransformationProcessProps {}
-
-export const TransformationProcess = ({}: TransformationProcessProps) => {
+export const TransformationProcess = () => {
   return (
     <div className="flex justify-center items-center md:col-span-1">
       <div className="relative">
