@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const TEMPERATURE = 0.7
 const MAX_TOKENS = 512
 
+
 export const POST = async (req: NextRequest) => {
   try {
     const { thought, tone } = await req.json()

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { useEntryStore, Entry } from '@theragpt/logic'
 import { useEntryStoreInitialized } from './store/EntryStoreProvider'
+import { EntryItem } from './EntryItem/EntryItem'
 
 export const EntryList = () => {
   const { entries, isLoading, error } = useEntryStore()
@@ -56,7 +57,9 @@ export const EntryList = () => {
       ) : (
         sortedEntries.map((entry, index) => (
           <Link href={`/entry/${entry.id}`} key={entry.id}>
-            <Card
+
+            <EntryItem entryId={entry.id} />
+            {/* <Card
               className="glass-panel p-6 hover:shadow-lg transition-all duration-300 gradient-border mb-6"
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -88,7 +91,7 @@ export const EntryList = () => {
                   <p className="text-slate-800 dark:text-slate-200 font-medium">{getReframedThought(entry)}</p>
                 </div>
               </div>
-            </Card>
+            </Card> */}
           </Link>
         ))
       )}

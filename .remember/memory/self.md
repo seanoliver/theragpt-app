@@ -403,3 +403,22 @@ interface ComponentProps {
 ```
 
 **Note**: When passing setState functions as props to child components, use the React.Dispatch<React.SetStateAction<T>> type to properly handle both direct value updates and function-based updates.
+
+### Mistake: EntryService getById not loading entries from storage in server components
+**Wrong**:
+```
+async getById(id: string): Promise<Entry | undefined> {
+  return this.entryMap.get(id)
+}
+```
+**Correct**:
+```
+async getById(id: string): Promise<Entry | undefined> {
+  // If the entryMap is empty, load entries from storage first
+  if (this.entryMap.size === 0) {
+    await this.getAll()
+  }
+  return this.entryMap.get(id)
+}
+```
+**Note**: In server components, the entryMap might be empty because it hasn't been initialized yet. The getById method should check if the entryMap is empty and load entries from storage before attempting to retrieve an entry by ID.

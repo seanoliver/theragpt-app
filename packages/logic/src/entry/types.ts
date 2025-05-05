@@ -17,6 +17,7 @@ export interface DistortionInstance {
 
 export interface Entry {
   id: string
+  title?: string
   rawText: string
   distortions?: DistortionInstance[]
   reframes?: Reframe[]
