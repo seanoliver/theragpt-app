@@ -13,7 +13,9 @@ export const EntryItemResponsiveBadges = ({
     <div className="flex flex-wrap gap-2 items-center">
       {/* Always show the first badge */}
       {distortions.slice(0, 1).map((distortion, index) => (
-        <DistortionBadge key={index} distortion={distortion.label} />
+        <span key={index}>
+          <DistortionBadge distortion={distortion.label} />
+        </span>
       ))}
 
       {/* Show the second badge on md+ screens */}
