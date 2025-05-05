@@ -5,7 +5,6 @@ import type React from 'react'
 import { Textarea } from '@/apps/web/components/ui/textarea'
 import { entryService, useEntryStore } from '@theragpt/logic'
 import { useEffect, useRef, useState } from 'react'
-import { AIResponsePanel } from './AIResponsePanel'
 import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
 import { ThoughtStarters } from './ThoughtStarters'
 import { ThoughtStartersButton } from './ThoughtStartersButton'
@@ -28,7 +27,6 @@ interface AnalyzeResponse {
 export const ThoughtEntryForm = () => {
   // Local component state
   const [thought, setThought] = useState('')
-  const [showResponse, setShowResponse] = useState(false)
   const [analysisResult, setAnalysisResult] = useState<
     AnalysisResult | undefined
   >(undefined)
@@ -80,7 +78,6 @@ export const ThoughtEntryForm = () => {
       const data: AnalyzeResponse = await response.json()
       // eslint-disable-next-line no-console
       setAnalysisResult(data.result)
-      setShowResponse(true)
     } catch (error) {
       console.error('Error analyzing thought:', error)
       setError('Failed to analyze thought')
@@ -155,48 +152,35 @@ export const ThoughtEntryForm = () => {
 
   return (
     <div>
-      {!showResponse ? (
-        <div className="flex-col">
-          <form onSubmit={handleSubmit} className="relative space-y-4">
-            <Textarea
-              placeholder="What's a negative thought that's been bothering you?"
-              className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
-              value={thought}
-              onChange={e => setThought(e.target.value)}
-              required
+      <div className="flex-col">
+        <form onSubmit={handleSubmit} className="relative space-y-4">
+          <Textarea
+            placeholder="What's a negative thought that's been bothering you?"
+            className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
+            value={thought}
+            onChange={e => setThought(e.target.value)}
+            required
+          />
+          <div className="absolute bottom-0 right-0 p-2 gap-2 flex">
+            <ThoughtStartersButton
+              thought={thought}
+              showStarters={showStarters}
+              setShowStarters={setShowStarters}
             />
-            <div className="absolute bottom-0 right-0 p-2 gap-2 flex">
-              <ThoughtStartersButton
-                thought={thought}
-                showStarters={showStarters}
-                setShowStarters={setShowStarters}
-              />
-              <AnalyzeThoughtButton isLoading={isLoading} thought={thought} />
-            </div>
-          </form>
-          <div
-            ref={startersRef}
-            className={`overflow-hidden transition-all shadow-md duration-300 ease-in-out ${
-              showStarters
-                ? 'max-h-[600px] opacity-100 mt-4'
-                : 'max-h-0 opacity-0'
-            }`}
-          >
-            <ThoughtStarters onSelect={handleThoughtStarterClick} />
+            <AnalyzeThoughtButton isLoading={isLoading} thought={thought} />
           </div>
+        </form>
+        <div
+          ref={startersRef}
+          className={`overflow-hidden transition-all shadow-md duration-300 ease-in-out ${
+            showStarters
+              ? 'max-h-[600px] opacity-100 mt-4'
+              : 'max-h-0 opacity-0'
+          }`}
+        >
+          <ThoughtStarters onSelect={handleThoughtStarterClick} />
         </div>
-      ) : (
-        <AIResponsePanel
-          originalThought={thought}
-          analysisResult={analysisResult}
-          onSave={handleSave}
-          onReset={() => {
-            setThought('')
-            setShowResponse(false)
-            setAnalysisResult(undefined)
-          }}
-        />
-      )}
+      </div>
     </div>
   )
 }

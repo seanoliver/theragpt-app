@@ -1,15 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/apps/web/components/ui/tabs'
-import { Card } from '@/apps/web/components/ui/card'
 import { Badge } from '@/apps/web/components/ui/badge'
-import { Sparkles, ChevronDown } from 'lucide-react'
+import { Card } from '@/apps/web/components/ui/card'
 import {
   Select,
   SelectContent,
@@ -17,6 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/apps/web/components/ui/select'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/apps/web/components/ui/tabs'
+import { Sparkles } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 // Define categories and thought starters
 const thoughtStarterCategories = [
@@ -24,36 +24,36 @@ const thoughtStarterCategories = [
     id: 'work',
     name: 'Work & Career',
     starters: [
-      "I'm worried I'll mess up this presentation and everyone will think I'm incompetent.",
+      'I\'m worried I\'ll mess up this presentation and everyone will think I\'m incompetent.',
       'My colleague got praised for their work, but mine was ignored. I must be terrible at my job.',
-      "If I don't get this promotion, it means I'm a complete failure.",
+      'If I don\'t get this promotion, it means I\'m a complete failure.',
       'I made one mistake in the report, so the whole thing is ruined.',
-      "My boss gave me feedback, which means they're unhappy with my performance.",
-      "If I ask for help at work, everyone will think I can't handle my responsibilities.",
+      'My boss gave me feedback, which means they\'re unhappy with my performance.',
+      'If I ask for help at work, everyone will think I can\'t handle my responsibilities.',
     ],
   },
   {
     id: 'relationships',
     name: 'Relationships',
     starters: [
-      "My friend hasn't texted me back. They must be mad at me or don't want to be friends anymore.",
-      "If I share my true feelings, people will think I'm too needy and leave me.",
-      "I made one mistake in our conversation, and now they probably think I'm stupid.",
-      "If I disagree with someone, they won't like me anymore.",
+      'My friend hasn\'t texted me back. They must be mad at me or don\'t want to be friends anymore.',
+      'If I share my true feelings, people will think I\'m too needy and leave me.',
+      'I made one mistake in our conversation, and now they probably think I\'m stupid.',
+      'If I disagree with someone, they won\'t like me anymore.',
       'Everyone else has better relationships than I do.',
-      "If I don't get invited to every event, it means nobody really likes me.",
+      'If I don\'t get invited to every event, it means nobody really likes me.',
     ],
   },
   {
     id: 'self',
     name: 'Self-Image',
     starters: [
-      "I should be able to handle this workload without feeling stressed. I'm weak for feeling overwhelmed.",
-      "I made a mistake, which proves I'm not good enough.",
-      "Everyone else seems to have their life together. I'm the only one struggling.",
-      "If I'm not perfect at everything I do, I'm a failure.",
+      'I should be able to handle this workload without feeling stressed. I\'m weak for feeling overwhelmed.',
+      'I made a mistake, which proves I\'m not good enough.',
+      'Everyone else seems to have their life together. I\'m the only one struggling.',
+      'If I\'m not perfect at everything I do, I\'m a failure.',
       'I should be further along in life by now.',
-      "If I can't do something right the first time, I must not be smart.",
+      'If I can\'t do something right the first time, I must not be smart.',
     ],
   },
   {
@@ -62,10 +62,10 @@ const thoughtStarterCategories = [
     starters: [
       'This headache must mean something is seriously wrong with me.',
       'I missed one day at the gym, so my whole fitness routine is ruined.',
-      "I'll never be able to develop healthy habits. I always fail eventually.",
+      'I\'ll never be able to develop healthy habits. I always fail eventually.',
       'Everyone else finds it easy to stay healthy. I must be doing something wrong.',
-      "If I can't stick to this diet perfectly, I might as well not try at all.",
-      "If I feel tired today, it means I'm getting sick or something is wrong with me.",
+      'If I can\'t stick to this diet perfectly, I might as well not try at all.',
+      'If I feel tired today, it means I\'m getting sick or something is wrong with me.',
     ],
   },
 ]
@@ -97,11 +97,6 @@ export const ThoughtStarters = ({ onSelect }: ThoughtStartersProps) => {
   const handleCategoryChange = (value: string) => {
     setActiveTab(value)
   }
-
-  // Get the current category
-  const currentCategory = thoughtStarterCategories.find(
-    category => category.id === activeTab,
-  )
 
   return (
     <div className="glass-panel rounded-lg p-4 text-left">
