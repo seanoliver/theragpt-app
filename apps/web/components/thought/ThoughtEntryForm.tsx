@@ -2,14 +2,13 @@
 
 import type React from 'react'
 
-import { AIResponsePanel } from './AIResponsePanel'
-import { Button } from '@/apps/web/components/ui/button'
 import { Textarea } from '@/apps/web/components/ui/textarea'
 import { entryService, useEntryStore } from '@theragpt/logic'
-import { Loader2, Sparkles, ChevronDown } from 'lucide-react'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { AIResponsePanel } from './AIResponsePanel'
+import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
 import { ThoughtStarters } from './ThoughtStarters'
-
+import { ThoughtStartersButton } from './ThoughtStartersButton'
 interface Distortion {
   id: string
   name: string
@@ -167,48 +166,12 @@ export const ThoughtEntryForm = () => {
               required
             />
             <div className="absolute bottom-0 right-0 p-2 gap-2 flex">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                className={`bg-purple-50 border-0 rounded-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${
-                  thought.length === 0
-                    ? 'opacity-100 pointer-events-auto'
-                    : 'opacity-0 pointer-events-none'
-                }`}
-                tabIndex={thought.length === 0 ? 0 : -1}
-                aria-hidden={thought.length !== 0}
-                onClick={e => {
-                  e.preventDefault()
-                  setShowStarters(prev => !prev)
-                }}
-              >
-                {showStarters ? (
-                  <ChevronDown className="h-5 w-5 text-purple-500" />
-                ) : (
-                  <Sparkles className="h-5 w-5 text-purple-500" />
-                )}
-              </Button>
-              <Button
-                type="submit"
-                className={`
-                bg-gradient-to-r from-purple-500 to-indigo-500
-                hover:from-purple-600 hover:to-indigo-600
-                border-0
-                transition-opacity duration-500 ease-in-out
-                ${isLoading || !thought.trim() ? 'opacity-50 cursor-not-allowed' : 'opacity-100'}
-              `}
-                disabled={isLoading || !thought.trim()}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Analyzing...
-                  </>
-                ) : (
-                  'Analyze Thought'
-                )}
-              </Button>
+              <ThoughtStartersButton
+                thought={thought}
+                showStarters={showStarters}
+                setShowStarters={setShowStarters}
+              />
+              <AnalyzeThoughtButton isLoading={isLoading} thought={thought} />
             </div>
           </form>
           <div

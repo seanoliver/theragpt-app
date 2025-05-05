@@ -386,3 +386,20 @@ try {
 }
 ```
 **Note**: Never use hardcoded fallback responses in API routes that process dynamic user input. This can lead to confusing behavior where the same output is returned regardless of input. Instead, properly handle errors and provide meaningful error messages to the client.
+
+### Mistake: Incorrect typing of React setState function in component props
+**Wrong**:
+```
+interface ComponentProps {
+  setShowStarters: (showStarters: boolean) => void
+}
+```
+
+**Correct**:
+```
+interface ComponentProps {
+  setShowStarters: React.Dispatch<React.SetStateAction<boolean>>
+}
+```
+
+**Note**: When passing setState functions as props to child components, use the React.Dispatch<React.SetStateAction<T>> type to properly handle both direct value updates and function-based updates.
