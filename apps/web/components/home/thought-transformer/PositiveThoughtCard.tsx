@@ -2,8 +2,8 @@ import React from 'react'
 import { SAMPLE_TRANSFORMATIONS } from './constants'
 import { Badge } from '../../ui/badge'
 import { Card } from '../../ui/card'
-import { motion } from 'motion/dist/react'
-import { Sun } from 'lucide-react';
+import { motion } from 'motion/react'
+import { Sun } from 'lucide-react'
 
 interface PositiveThoughtCardProps {
   activeIndex: number
@@ -28,23 +28,17 @@ export const PositiveThoughtCard = ({
             <Sun className="h-5 w-5 text-green-500" />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-800 dark:text-slate-200">
+            <div className="font-semibold text-slate-800 dark:text-slate-200">
               Reframed Thought
-            </h3>
-            <p className="text-xs text-green-600 dark:text-green-400">
+            </div>
+            {/* <p className="text-xs text-green-600 dark:text-green-400">
               {activeTransformation.emotion.after}
-            </p>
+            </p> */}
           </div>
         </div>
         <p className="text-slate-700 dark:text-slate-300">
           {activeTransformation.positiveThought}
         </p>
-        <Badge
-          variant="outline"
-          className="mt-4 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 bg-green-50/50 dark:bg-green-900/20"
-        >
-          Balanced Perspective
-        </Badge>
       </Card>
     </motion.div>
   )

@@ -80,7 +80,6 @@ export const ThoughtEntryForm = () => {
 
       const data: AnalyzeResponse = await response.json()
       // eslint-disable-next-line no-console
-      console.log('Analysis result:', data.result)
       setAnalysisResult(data.result)
       setShowResponse(true)
     } catch (error) {
@@ -158,10 +157,10 @@ export const ThoughtEntryForm = () => {
   return (
     <div>
       {!showResponse ? (
-        <div className="flex flex-col gap-4">
+        <div className="flex-col">
           <form onSubmit={handleSubmit} className="relative space-y-4">
             <Textarea
-              placeholder="Type your thought here..."
+              placeholder="What's a negative thought that's been bothering you?"
               className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
               value={thought}
               onChange={e => setThought(e.target.value)}
@@ -214,8 +213,10 @@ export const ThoughtEntryForm = () => {
           </form>
           <div
             ref={startersRef}
-            className={`overflow-hidden transition-all duration-300 ease-in-out ${
-              showStarters ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+            className={`overflow-hidden transition-all shadow-md duration-300 ease-in-out ${
+              showStarters
+                ? 'max-h-[600px] opacity-100 mt-4'
+                : 'max-h-0 opacity-0'
             }`}
           >
             <ThoughtStarters onSelect={handleThoughtStarterClick} />

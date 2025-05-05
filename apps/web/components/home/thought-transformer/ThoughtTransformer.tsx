@@ -6,7 +6,7 @@ import { SAMPLE_TRANSFORMATIONS } from './constants'
 import { NegativeThoughtCard } from './NegativeThoughtCard'
 import { PositiveThoughtCard } from './PositiveThoughtCard'
 import { TransformationProcess } from './TransformationProcess'
-export function ThoughtTransformationShowcase() {
+export function ThoughtTransformationSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const activeTransformation = SAMPLE_TRANSFORMATIONS[activeIndex]
 

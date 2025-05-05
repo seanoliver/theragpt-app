@@ -1,4 +1,4 @@
-import { motion } from 'motion/dist/react'
+import { motion } from 'motion/react'
 import React from 'react'
 import { Brain, Zap, ArrowRight } from 'lucide-react'
 
@@ -8,6 +8,7 @@ export const TransformationProcess = ({}: TransformationProcessProps) => {
   return (
     <div className="flex justify-center items-center md:col-span-1">
       <div className="relative">
+      <ArrowRight className="absolute -left-10 top-1/2 transform -translate-y-1/2 h-6 w-6 text-purple-500 hidden md:block" />
         <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center">
           <Brain className="h-8 w-8 text-white" />
         </div>
