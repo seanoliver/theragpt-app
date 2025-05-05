@@ -9,6 +9,7 @@ import {
   analyzeAndSaveThought,
 } from '@theragpt/logic'
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
 import { ThoughtStarters } from './ThoughtStarters'
 import { ThoughtStartersButton } from './ThoughtStartersButton'
@@ -22,6 +23,7 @@ export const ThoughtEntryForm = () => {
   >(undefined)
   const [showStarters, setShowStarters] = useState(false)
   const startersRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   const isLoading = useEntryStore(state => state.isLoading)
   const setLoading = useEntryStore(state => state.setLoading)
@@ -56,11 +58,12 @@ export const ThoughtEntryForm = () => {
 
     try {
       setLoading(true)
-      const { analysisResult: savedResult } =
+      const { analysisResult: savedResult, entry } =
         await analyzeAndSaveThought(thought)
       if (!analysisResult) {
         setAnalysisResult(savedResult)
       }
+      router.push(`/entry/${entry.id}`)
     } catch (error) {
       console.error('Error saving entry:', error)
       setError('Failed to save entry')
