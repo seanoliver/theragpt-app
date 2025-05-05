@@ -10,12 +10,14 @@ export interface Distortion {
 export interface DistortionInstance {
   id: string
   distortionId: Distortion['id']
-  text: string
+  explanation: string
+  label: string
   timestamp?: number
 }
 
 export interface Entry {
   id: string
+  title?: string
   rawText: string
   distortions?: DistortionInstance[]
   reframes?: Reframe[]

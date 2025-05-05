@@ -1,7 +1,6 @@
 'use client'
 
-import { ThoughtEntryForm } from '../thought/ThoughtEntryForm'
-import { Card } from '../ui/card'
+import { ThoughtEntryForm } from '../thought-analysis/ThoughtEntryForm'
 
 export const HeroSection = (): JSX.Element => {
   return (
@@ -16,9 +15,9 @@ export const HeroSection = (): JSX.Element => {
             think clearer, feel stronger.
           </p>
           <div className="animate-slide-up">
-            <Card className="glass-panel shadow-lg p-8">
+            {/* <Card className="glass-panel shadow-lg p-8"> */}
               <ThoughtEntryForm />
-            </Card>
+            {/* </Card> */}
           </div>
         </div>
       </div>

@@ -1,35 +1,18 @@
 'use client'
 
 import { Card } from '@/apps/web/components/ui/card'
-import { Badge } from '@/apps/web/components/ui/badge'
+import { useEntryStore } from '@theragpt/logic'
 import Link from 'next/link'
-import { formatDistanceToNow } from 'date-fns'
-import { useEntryStore, Entry } from '@theragpt/logic'
+import { EntryItem } from './EntryItem/EntryItem'
 import { useEntryStoreInitialized } from './store/EntryStoreProvider'
 
 export const EntryList = () => {
   const { entries, isLoading, error } = useEntryStore()
   const { initialized } = useEntryStoreInitialized()
 
-  // Helper function to get distortion labels from distortion instances
-  const getDistortionLabels = (entry: Entry) => {
-    if (!entry.distortions || entry.distortions.length === 0) {
-      return []
-    }
-    return entry.distortions.map(d => d.distortionId)
-  }
-
-  // Helper function to get reframed thought from reframes
-  const getReframedThought = (entry: Entry) => {
-    if (!entry.reframes || entry.reframes.length === 0) {
-      return 'No reframe yet'
-    }
-    return entry.reframes[0].text
-  }
-
   // Sort entries by createdAt date (newest first)
-  const sortedEntries = [...entries].sort((a, b) =>
-    (b.createdAt || 0) - (a.createdAt || 0)
+  const sortedEntries = [...entries].sort(
+    (a, b) => (b.createdAt || 0) - (a.createdAt || 0),
   )
 
   if (isLoading || !initialized) {
@@ -54,9 +37,10 @@ export const EntryList = () => {
           <p>You haven't created any journal entries yet.</p>
         </Card>
       ) : (
-        sortedEntries.map((entry, index) => (
+        sortedEntries.map(entry => (
           <Link href={`/entry/${entry.id}`} key={entry.id}>
-            <Card
+            <EntryItem key={entry.id} entryId={entry.id} />
+            {/* <Card
               className="glass-panel p-6 hover:shadow-lg transition-all duration-300 gradient-border mb-6"
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -88,7 +72,7 @@ export const EntryList = () => {
                   <p className="text-slate-800 dark:text-slate-200 font-medium">{getReframedThought(entry)}</p>
                 </div>
               </div>
-            </Card>
+            </Card> */}
           </Link>
         ))
       )}

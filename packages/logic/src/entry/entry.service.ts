@@ -104,6 +104,7 @@ export class EntryService {
       rawText: params.rawText ?? entry.rawText,
       distortions: params.distortions ?? entry.distortions,
       reframes: params.reframes ?? entry.reframes,
+      title: params.title ?? entry.title,
       tags: params.tags ?? entry.tags,
       reviewedAt: params.reviewedAt ?? entry.reviewedAt,
       reviewCount: params.reviewCount ?? entry.reviewCount,
@@ -121,6 +122,7 @@ export class EntryService {
     if (this.entryCache) return this.entryCache
     try {
       const data = await this.storageService.getItem<Entry[]>(this.storageKey)
+      console.log('data', data)
       this.updateCache(data || [])
       return this.entryCache!
     } catch (error) {
@@ -130,7 +132,14 @@ export class EntryService {
   }
 
   async getById(id: string): Promise<Entry | undefined> {
-    return this.entryMap.get(id)
+    if (this.entryMap.size === 0) {
+      console.log('entryMap is empty, loading entries from storage')
+      const entries = await this.getAll()
+      console.log('entries', entries)
+      return entries.find(a => a.id === id)
+    } else {
+      return this.entryMap.get(id)
+    }
   }
 
   /**
@@ -261,7 +270,10 @@ export class EntryService {
    * @param reframeInput The reframe input data
    * @returns The updated entry with the new reframe
    */
-  async addReframe(entryId: string, reframeInput: Omit<import('../reframe').ReframeInput, 'entryId'>): Promise<Entry> {
+  async addReframe(
+    entryId: string,
+    reframeInput: Omit<import('../reframe').ReframeInput, 'entryId'>,
+  ): Promise<Entry> {
     // Get the entry first
     const entry = await this.getById(entryId)
     if (!entry) {
@@ -305,7 +317,10 @@ export class EntryService {
    * @param updateData The data to update the reframe with
    * @returns The updated entry with the updated reframe
    */
-  async updateReframe(reframeId: string, updateData: Partial<import('../reframe').Reframe>): Promise<Entry> {
+  async updateReframe(
+    reframeId: string,
+    updateData: Partial<import('../reframe').Reframe>,
+  ): Promise<Entry> {
     // Get the reframe to find its entryId
     const reframe = await reframeService.getById(reframeId)
     if (!reframe) {

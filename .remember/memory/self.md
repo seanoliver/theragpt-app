@@ -386,3 +386,39 @@ try {
 }
 ```
 **Note**: Never use hardcoded fallback responses in API routes that process dynamic user input. This can lead to confusing behavior where the same output is returned regardless of input. Instead, properly handle errors and provide meaningful error messages to the client.
+
+### Mistake: Incorrect typing of React setState function in component props
+**Wrong**:
+```
+interface ComponentProps {
+  setShowStarters: (showStarters: boolean) => void
+}
+```
+
+**Correct**:
+```
+interface ComponentProps {
+  setShowStarters: React.Dispatch<React.SetStateAction<boolean>>
+}
+```
+
+**Note**: When passing setState functions as props to child components, use the React.Dispatch<React.SetStateAction<T>> type to properly handle both direct value updates and function-based updates.
+
+### Mistake: EntryService getById not loading entries from storage in server components
+**Wrong**:
+```
+async getById(id: string): Promise<Entry | undefined> {
+  return this.entryMap.get(id)
+}
+```
+**Correct**:
+```
+async getById(id: string): Promise<Entry | undefined> {
+  // If the entryMap is empty, load entries from storage first
+  if (this.entryMap.size === 0) {
+    await this.getAll()
+  }
+  return this.entryMap.get(id)
+}
+```
+**Note**: In server components, the entryMap might be empty because it hasn't been initialized yet. The getById method should check if the entryMap is empty and load entries from storage before attempting to retrieve an entry by ID.
