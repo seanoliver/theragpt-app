@@ -6,6 +6,7 @@ export interface LLMCallOptions {
   systemPrompt?: string
   userId?: string
   logger?: (log: Record<string, any>) => void
+  responseFormat?: 'text' | 'json_object'
 }
 
 export interface LLMClient {
@@ -29,8 +30,8 @@ export type ClientRegistry = Partial<Record<LLMProvider, LLMClient>>
  * Configuration for creating LLM clients
  */
 export interface LLMClientConfig {
-  openAIApiKey?: string;
-  anthropicApiKey?: string;
+  openAIApiKey?: string
+  anthropicApiKey?: string
   // Add other provider configs as needed
 }
 
@@ -60,7 +61,7 @@ export const MODEL_PROVIDER_MAP: Record<LLMModel, LLMProvider> = {
   [LLMModel.CLAUDE_3_HAIKU]: LLMProvider.Anthropic,
 }
 
-export const getProviderFromModel = function(model: LLMModel): LLMProvider {
+export const getProviderFromModel = function (model: LLMModel): LLMProvider {
   const provider = MODEL_PROVIDER_MAP[model]
   if (!provider) throw new Error(`Unrecognized or unsupported model: ${model}`)
   return provider

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Entry, EntryInput } from './types'
+import { Entry } from './types'
 import { entryService } from './entry.service'
 
 export interface EntryStore {
@@ -14,18 +14,9 @@ export interface EntryStore {
   setEntries: (entries: Entry[]) => void
 
   // Mutations
-  addEntry: (params: EntryInput) => Promise<Entry | undefined>
+  addEntry: (params: Entry) => Promise<Entry | undefined>
   updateEntry: (entry: Entry) => Promise<void>
   deleteEntry: (id: string) => Promise<void>
-  addReframe: (
-    entryId: string,
-    reframeInput: {
-      text: string
-      source: 'ai' | 'user-edit'
-      style?: string
-      explanation?: string
-    }
-  ) => Promise<Entry>
 
   // Local state only (optional, nice to have)
   setLoading: (isLoading: boolean) => void
@@ -116,20 +107,4 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
   setLoading: isLoading => set({ isLoading }),
   setError: error => set({ error }),
   getEntryById: id => get().entries.find(entry => entry.id === id),
-
-  addReframe: async (entryId, reframeInput) => {
-    try {
-      const updatedEntry = await entryService.addReframe(entryId, reframeInput)
-      set(state => ({
-        entries: state.entries.map(entry =>
-          entry.id === entryId ? updatedEntry : entry
-        ),
-      }))
-      return updatedEntry
-    } catch (error) {
-      set({ error: 'Failed to add reframe' })
-      console.error('Error adding reframe: ', error)
-      throw error
-    }
-  },
 }))

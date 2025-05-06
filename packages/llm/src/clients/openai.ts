@@ -40,6 +40,7 @@ export class OpenAIClient implements LLMClient {
       messages,
       temperature,
       max_completion_tokens: maxTokens,
+      response_format: { type: 'json_object' },
     })
 
     const result = response.choices?.[0]?.message?.content ?? ''
@@ -71,8 +72,9 @@ export class OpenAIClient implements LLMClient {
       model,
       messages,
       temperature,
-      max_tokens: maxTokens, // Using standard parameter name
+      max_completion_tokens: maxTokens,
       stream: true,
+      response_format: { type: 'json_object' },
     })
 
     for await (const chunk of stream) {

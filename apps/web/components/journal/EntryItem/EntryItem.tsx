@@ -32,7 +32,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
+    <Card className="w-full max-w-4xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <CalendarIcon className="h-4 w-4" />
@@ -54,7 +54,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
 
           <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
             <p className="text-lg font-medium text-slate-800 mb-6">
-              {entry.reframes?.[0]?.text}
+              {entry.reframe?.text}
             </p>
 
             <div className="pt-3 border-t border-dashed border-slate-200">

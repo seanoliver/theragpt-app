@@ -1,1 +1,1 @@
-export * from './analyze'
+export * from './analyze.prompt'

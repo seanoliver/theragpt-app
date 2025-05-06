@@ -33,7 +33,7 @@ export const EntryItemAnalysisPanel = ({
             Why the reframed thought is realistic
           </h4>
           <div className="pl-4 border-l-2 border-green-100 bg-green-50 p-3 rounded">
-            <p className="text-slate-700">{entry.reframes?.[0]?.explanation}</p>
+            <p className="text-slate-700">{entry.reframe?.explanation}</p>
           </div>
         </div>
 
