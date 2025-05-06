@@ -22,14 +22,12 @@ export const useAnalyzeThought = () => {
 
     try {
       const prompt = getAnalyzePrompt({ rawText: thought })
-      const rawResult = await fetchPromptOutput(prompt)
-      console.log('rawResult', rawResult)
       let result
+      const rawResult = await fetchPromptOutput(prompt)
 
       try {
         result =
           typeof rawResult === 'string' ? JSON.parse(rawResult) : rawResult
-        console.log('result', result)
       } catch (err) {
         console.error('Failed to parse analysis result', err)
         setError('Failed to parse analysis result')
@@ -48,7 +46,6 @@ export const useAnalyzeThought = () => {
       } else {
         setError('Failed to save entry')
       }
-      console.log('entry', entry)
     } catch (error) {
       console.error('Error analyzing thought:', error)
       setError('Failed to analyze thought')

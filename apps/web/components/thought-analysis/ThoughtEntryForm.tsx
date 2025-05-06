@@ -8,8 +8,7 @@ import { ThoughtStartersButton } from './ThoughtStartersButton'
 import { useAnalyzeThought } from './useAnalyzeThought'
 export const ThoughtEntryForm = () => {
   // Local component state
-  const { handleSubmit, isLoading, error, thought, setThought } =
-    useAnalyzeThought()
+  const { handleSubmit, isLoading, thought, setThought } = useAnalyzeThought()
 
   const [showStarters, setShowStarters] = useState(false)
   const startersRef = useRef<HTMLDivElement>(null)

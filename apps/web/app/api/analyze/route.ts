@@ -1,6 +1,5 @@
 import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
 import { callLLM, LLMModel } from '@theragpt/llm'
-import { getAnalyzePrompt } from '@theragpt/prompts'
 import { NextRequest, NextResponse } from 'next/server'
 
 const TEMPERATURE = 0.7
@@ -10,9 +9,7 @@ export const POST = async (req: NextRequest) => {
     const { prompt } = await req.json()
     const registry = createLLMRegistry()
 
-    let llmResponse: string
-
-    llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
+    const llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
       prompt,
       temperature: TEMPERATURE,
       systemPrompt:

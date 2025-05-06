@@ -2,12 +2,14 @@ import Link from 'next/link'
 import { Button } from '../ui/button'
 import { ThemeToggle } from './theme/ThemeToggle'
 import { Menu } from 'lucide-react'
+import Image from 'next/image'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import TheraGPTLogo from '@/apps/web/public/assets/theragpt-logo.svg'
 
 const MENU_ITEMS = [
   {
@@ -24,7 +26,13 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-10 glass-panel shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src={TheraGPTLogo}
+            alt="TheraGPT Logo"
+            width={32}
+            height={32}
+          />
           <span className="text-2xl font-bold gradient-text font-heading">
             TheraGPT
           </span>
