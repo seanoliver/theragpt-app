@@ -83,7 +83,6 @@ export class EntryService {
     if (this.entryCache) return this.entryCache
     try {
       const data = await this.storageService.getItem<Entry[]>(this.storageKey)
-      console.log('data', data)
       this.updateCache(data || [])
       return this.entryCache!
     } catch (error) {
@@ -94,9 +93,7 @@ export class EntryService {
 
   async getById(id: string): Promise<Entry | undefined> {
     if (this.entryMap.size === 0) {
-      console.log('entryMap is empty, loading entries from storage')
       const entries = await this.getAll()
-      console.log('entries', entries)
       return entries.find(a => a.id === id)
     } else {
       return this.entryMap.get(id)
