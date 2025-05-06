@@ -30,7 +30,7 @@ export const ThoughtEntryForm = () => {
         <form onSubmit={handleSubmit} className="relative space-y-4">
           <Textarea
             placeholder="What's a negative thought that's been bothering you?"
-            className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
+            className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm font-semibold"
             value={thought}
             onChange={e => setThought(e.target.value)}
             required

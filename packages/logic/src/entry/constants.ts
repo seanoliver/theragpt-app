@@ -1,7 +1,7 @@
 import { Distortion, DistortionType } from './types'
 
 export const DISTORTION_LABELS: Record<DistortionType, string> = {
-  [DistortionType.AllOrNothing]: 'All-or-Nothing Thinking',
+  [DistortionType.AllOrNothingThinking]: 'All-or-Nothing Thinking',
   [DistortionType.Overgeneralization]: 'Overgeneralization',
   [DistortionType.MentalFilter]: 'Mental Filter',
   [DistortionType.DisqualifyingThePositive]: 'Disqualifying the Positive',
@@ -34,7 +34,7 @@ export const DISTORTIONS: Distortion[] = [
     ],
   },
   {
-    id: DistortionType.AllOrNothing,
+    id: DistortionType.AllOrNothingThinking,
     label: 'All-or-Nothing Thinking',
     description:
       'All-or-nothing thinking (also called black-and-white thinking) is seeing situations in only two categories instead of on a continuum. If your performance falls short of perfect, you see yourself as a total failure.',

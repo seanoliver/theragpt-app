@@ -34,11 +34,12 @@ export interface DistortionInstance {
   id: string
   label: (typeof DISTORTION_LABELS)[DistortionType]
   distortionId: Distortion['id']
-  explanation: string
+  description: string
+  confidenceScore?: number
 }
 
 export enum DistortionType {
-  AllOrNothing = 'all-or-nothing',
+  AllOrNothingThinking = 'all-or-nothing-thinking',
   Overgeneralization = 'overgeneralization',
   MentalFilter = 'mental-filter',
   DisqualifyingThePositive = 'disqualifying-the-positive',

@@ -21,9 +21,9 @@ export default function JournalPage() {
           </Link>
         </div>
 
-        <Card className="glass-panel shadow-lg p-6 mb-8 animate-fade-in">
+        {/* <Card className="glass-panel shadow-lg p-6 mb-8 animate-fade-in">
           <EntryFilters />
-        </Card>
+        </Card> */}
 
         <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
           <EntryList />

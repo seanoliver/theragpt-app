@@ -1,4 +1,4 @@
-import { AnalysisResponse, AnalysisResult } from './types';
+import { AnalysisResponse, AnalysisResult } from './types'
 
 export const fetchPromptOutput = async (
   prompt: string,
