@@ -1,10 +1,10 @@
-import { AnalysisResult } from './types'
-
-export type StreamEventType = 'thought' | 'chunk' | 'complete' | 'error'
+export type StreamEventType = 'thought' | 'field' | 'complete' | 'error'
 
 export interface StreamEvent {
   type: StreamEventType
   content: any
+  field?: string
+  value?: any
 }
 
 export type StreamEventCallback = (event: StreamEvent) => void
@@ -12,18 +12,18 @@ export type StreamEventCallback = (event: StreamEvent) => void
 export const streamPromptOutput = async (
   prompt: string,
   thought: string,
-  onEvent: StreamEventCallback
+  onEvent: StreamEventCallback,
+  endpoint: string = '/api/analyze-stream',
+  signal?: AbortSignal,
 ): Promise<void> => {
   try {
-    const response = await fetch('/api/analyze-stream', {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        prompt,
-        thought,
-      }),
+      body: JSON.stringify({ prompt, thought }),
+      signal,
     })
 
     if (!response.ok) {
@@ -41,34 +41,43 @@ export const streamPromptOutput = async (
 
     while (true) {
       const { done, value } = await reader.read()
+      if (done) break
 
-      if (done) {
-        break
-      }
-
-      // Decode the chunk and add it to our buffer
       buffer += decoder.decode(value, { stream: true })
+      const events = buffer.split('\n\n')
+      buffer = events.pop() || ''
 
-      // Process complete SSE messages
-      const lines = buffer.split('\n\n')
-      buffer = lines.pop() || '' // Keep the last incomplete chunk in the buffer
+      for (const rawEvent of events) {
+        if (!rawEvent.startsWith('data: ')) continue
 
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const eventData = JSON.parse(line.substring(6))
-            onEvent(eventData)
-          } catch (error) {
-            console.error('Error parsing SSE message:', error)
+        try {
+          const json = JSON.parse(rawEvent.slice(6))
+          const { type, content, field, value } = json
+
+          if (!type || !content) continue
+
+          // Emit structured event
+          onEvent({ type, content, field, value })
+
+          if (type === 'thought') {
+            console.log('🔵 SET RAW THOUGHT', content)
+          } else if (type === 'field') {
+            console.log('🟢 onPatch', field, value)
+          } else if (type === 'complete') {
+            console.log('🟠 onComplete', content)
+          } else if (type === 'error') {
+            console.log('🟣 onError', content)
           }
+        } catch (err) {
+          console.error('Error parsing SSE chunk:', err)
         }
       }
     }
-  } catch (error) {
-    console.error('Error streaming thought analysis:', error)
+  } catch (err: unknown) {
+    console.error('Error streaming thought analysis:', err)
     onEvent({
       type: 'error',
-      content: error instanceof Error ? error.message : 'Unknown error',
+      content: err instanceof Error ? err.message : 'Unknown error',
     })
   }
 }

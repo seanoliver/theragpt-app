@@ -24,31 +24,13 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
   const entry = useEntryStore(state =>
     state.entries.find(e => e.id === entryId),
   )
-  const updateEntryById = useEntryStore(state => state.updateEntryById)
+  const streamingEntryId = useEntryStore(state => state.streamingEntryId)
 
   useEffect(() => {
     console.log('entry changed', entry)
   }, [entry])
 
-  const prompt = useMemo(
-    () => (entry ? getAnalyzePrompt({ rawText: entry.rawText }) : ''),
-    [entry?.rawText],
-  )
-  const thought = useMemo(() => entry?.rawText || '', [entry?.rawText])
-
-  const { isStreaming } = useStreamEntry({
-    endpoint: '/api/analyze-stream',
-    prompt,
-    thought,
-    onPatch: patch => {
-      const sanitized = { ...patch, id: entryId }
-      updateEntryById(entryId, sanitized)
-    },
-    onComplete: finalEntryJSON => {
-      const sanitized = { ...finalEntryJSON, id: entryId }
-      updateEntryById(entryId, sanitized)
-    },
-  })
+  const isStreaming = streamingEntryId === entryId
 
   if (!entry) {
     return <div>Loading...</div>

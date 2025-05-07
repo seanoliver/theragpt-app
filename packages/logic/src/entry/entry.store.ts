@@ -1,7 +1,7 @@
-import { cloneDeep, merge } from 'lodash';
-import { create } from 'zustand';
-import { entryService } from './entry.service';
-import { Entry } from './types';
+import { cloneDeep, merge } from 'lodash'
+import { create } from 'zustand'
+import { entryService } from './entry.service'
+import { Entry } from './types'
 
 export interface EntryStore {
   // State
@@ -9,6 +9,9 @@ export interface EntryStore {
   isLoading: boolean
   error: string | null
   hasInitialized: boolean
+
+  streamingEntryId: string | null
+  setStreamingEntryId: (id: string | null) => void
 
   // Sync/Init
   initialize: () => Promise<void>
@@ -33,6 +36,9 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
   isLoading: false,
   error: null,
   hasInitialized: false,
+
+  streamingEntryId: null,
+  setStreamingEntryId: (id: string | null) => set({ streamingEntryId: id }),
 
   initialize: async () => {
     // Prevent duplicate initializations
@@ -105,7 +111,6 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
       }),
     }))
   },
-
 
   deleteEntry: async id => {
     try {
