@@ -2,12 +2,21 @@ import Link from 'next/link'
 import { Button } from '../ui/button'
 import { ThemeToggle } from './theme/ThemeToggle'
 import { Menu } from 'lucide-react'
+import Image from 'next/image'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import TheraGPTLogo from '@/apps/web/public/assets/theragpt-logo.svg'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from '@/apps/web/components/ui/navigation-menu'
 
 const MENU_ITEMS = [
   {
@@ -24,23 +33,41 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-10 glass-panel shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src={TheraGPTLogo}
+            alt="TheraGPT Logo"
+            width={32}
+            height={32}
+          />
           <span className="text-2xl font-bold gradient-text font-heading">
             TheraGPT
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          {MENU_ITEMS.map(item => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <NavigationMenu className="hidden md:flex items-center space-x-8">
+          <NavigationMenuList>
+            {MENU_ITEMS.map(item => (
+              <NavigationMenuItem key={item.href}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
+                >
+                  <NavigationMenuLink
+                    className={navigationMenuTriggerStyle()}
+                    asChild
+                  >
+                    <Link href={item.href}>{item.label}</Link>
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+            <NavigationMenuItem>
+              <ThemeToggle />
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="md:hidden flex items-center">
           <ThemeToggle />

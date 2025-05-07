@@ -18,7 +18,6 @@ import {
 import { Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-// Define categories and thought starters
 const thoughtStarterCategories = [
   {
     id: 'work',

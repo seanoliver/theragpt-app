@@ -1,5 +1,6 @@
 'use client'
 
+import { Badge } from '@/apps/web/components/ui/badge'
 import { Button } from '@/apps/web/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/apps/web/components/ui/card'
 import { Entry, entryService } from '@theragpt/logic'
@@ -7,7 +8,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { CalendarIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel'
-import { EntryItemResponsiveBadges } from './EntryItemResponsiveBadges'
 
 interface EntryItemProps {
   entryId: string
@@ -32,7 +32,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
+    <Card className="w-full max-w-4xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <CalendarIcon className="h-4 w-4" />
@@ -42,7 +42,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
             })}
           </span>
         </div>
-        <EntryItemResponsiveBadges distortions={entry.distortions || []} />
+        <Badge variant="outline">{entry.category}</Badge>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4">
@@ -53,12 +53,12 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
           )}
 
           <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-            <p className="text-lg font-medium text-slate-800 mb-6">
-              {entry.reframes?.[0]?.text}
+            <p className="text-xl font-medium text-slate-800 mb-6">
+              {entry.reframe?.text}
             </p>
 
             <div className="pt-3 border-t border-dashed border-slate-200">
-              <p className="text-sm text-slate-400 line-through italic">
+              <p className="text-md text-slate-400 line-through italic">
                 {entry.rawText}
               </p>
             </div>

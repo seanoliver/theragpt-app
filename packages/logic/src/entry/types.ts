@@ -1,38 +1,57 @@
-import { Reframe } from '../reframe/types'
-
-export interface Distortion {
-  id: string
-  icon: string
-  label: string
-  text: string
-}
-
-export interface DistortionInstance {
-  id: string
-  distortionId: Distortion['id']
-  explanation: string
-  label: string
-  timestamp?: number
-}
+import { DISTORTION_LABELS } from './constants'
 
 export interface Entry {
   id: string
   title?: string
+  category?: string
   rawText: string
+  reframe?: Reframe
   distortions?: DistortionInstance[]
-  reframes?: Reframe[]
-  tags?: string[]
+  strategies?: string[]
   createdAt: number
   updatedAt?: number
-  reviewedAt?: number
-  reviewCount?: number
   isPinned?: boolean
 }
 
-export interface EntryInput {
+export type EntryListener = (entries: Entry[]) => void
+
+export interface Reframe {
   id: string
-  rawText: string
-  createdAt: number
+  entryId: Entry['id']
+  text: string
+  explanation: string
 }
 
-export type EntryListener = (entries: Entry[]) => void
+export interface Distortion {
+  id: DistortionType
+  label: (typeof DISTORTION_LABELS)[DistortionType]
+  description: string
+  examples?: string[]
+  strategies?: string[]
+}
+
+export interface DistortionInstance {
+  id: string
+  label: (typeof DISTORTION_LABELS)[DistortionType]
+  distortionId: Distortion['id']
+  description: string
+  confidenceScore?: number
+}
+
+export enum DistortionType {
+  AllOrNothingThinking = 'all-or-nothing-thinking',
+  Overgeneralization = 'overgeneralization',
+  MentalFilter = 'mental-filter',
+  DisqualifyingThePositive = 'disqualifying-the-positive',
+  JumpingToConclusions = 'jumping-to-conclusions',
+  Magnification = 'magnification',
+  EmotionalReasoning = 'emotional-reasoning',
+  ShouldStatements = 'should-statements',
+  Labeling = 'labeling',
+  Personalization = 'personalization',
+  Catastrophizing = 'catastrophizing',
+  Blaming = 'blaming',
+  FortuneTelling = 'fortune-telling',
+  MindReading = 'mind-reading',
+  Minimization = 'minimization',
+}

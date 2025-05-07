@@ -1,5 +1,5 @@
 import React from 'react'
-import { Entry } from '@theragpt/logic'
+import { DISTORTIONS, Entry } from '@theragpt/logic'
 import { Badge } from '../../ui/badge'
 
 interface EntryItemAnalysisPanelProps {
@@ -29,19 +29,35 @@ export const EntryItemAnalysisPanel = ({
       >
         {/* Why the positive thought is realistic */}
         <div className="space-y-3">
-          <h4 className="font-medium text-slate-700">
-            Why the reframed thought is realistic
-          </h4>
+          <h4 className="font-medium text-slate-700 subheading">Rationale</h4>
           <div className="pl-4 border-l-2 border-green-100 bg-green-50 p-3 rounded">
-            <p className="text-slate-700">{entry.reframes?.[0]?.explanation}</p>
+            <p className="text-slate-700 text-lg">
+              {entry.reframe?.explanation}
+            </p>
           </div>
         </div>
+
+        {/* Strategies Section */}
+        {entry.strategies && entry.strategies.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-slate-700 subheading">
+              Strategies
+            </h4>
+            <div className="space-y-4 pl-3">
+              {entry.strategies?.map((strategy, index) => (
+                <p key={index} className="text-slate-600 text-lg">
+                  {strategy}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Cognitive Distortions Section */}
         {entry.distortions && entry.distortions.length > 0 && (
           <div className="space-y-3">
-            <h4 className="font-medium text-slate-700">
-              Distortions found in your original thought
+            <h4 className="font-medium text-slate-700 subheading">
+              Distortions
             </h4>
             <div className="space-y-4 pl-3">
               {entry.distortions?.map((distortion, index) => (
@@ -55,15 +71,18 @@ export const EntryItemAnalysisPanel = ({
                     </Badge>
                   </div>
                   <div className="pl-4 border-l-2 border-slate-100 space-y-2">
-                    <p className="text-slate-600">{distortion.explanation}</p>
                     <div className="bg-slate-50 p-2 rounded border border-slate-100">
-                      <p className="text-slate-500 text-xs">
-                        <span className="font-medium">
-                          Evidence in thought:
-                        </span>{' '}
-                        {distortion.explanation}
+                      <p className="text-slate-500 text-md">
+                        {
+                          DISTORTIONS.find(
+                            d => d.id === distortion.distortionId,
+                          )?.description
+                        }
                       </p>
                     </div>
+                    <p className="text-slate-600 text-lg">
+                      {distortion.description}
+                    </p>
                   </div>
                 </div>
               ))}

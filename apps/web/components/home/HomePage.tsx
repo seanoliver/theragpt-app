@@ -1,7 +1,6 @@
 'use client'
 
 import { HeroSection } from '@/apps/web/components/home/HeroSection'
-import { Footer } from '@/apps/web/components/layout/Footer'
 import { Header } from '@/apps/web/components/layout/Header'
 
 export const HomePage = () => {
@@ -13,7 +12,6 @@ export const HomePage = () => {
           <HeroSection />
         </div>
       </div>
-      <Footer className="absolute bottom-0 w-full" />
     </main>
   )
 }

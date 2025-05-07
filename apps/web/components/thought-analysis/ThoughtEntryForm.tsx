@@ -1,76 +1,17 @@
 'use client'
 
-import type React from 'react'
-
 import { Textarea } from '@/apps/web/components/ui/textarea'
-import {
-  analyzeThought,
-  useEntryStore,
-  analyzeAndSaveThought,
-} from '@theragpt/logic'
-import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRef, useState } from 'react'
 import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
 import { ThoughtStarters } from './ThoughtStarters'
 import { ThoughtStartersButton } from './ThoughtStartersButton'
-import { AnalysisResult } from '@theragpt/logic'
-
+import { useAnalyzeThought } from './useAnalyzeThought'
 export const ThoughtEntryForm = () => {
   // Local component state
-  const [thought, setThought] = useState('')
-  const [analysisResult, setAnalysisResult] = useState<
-    AnalysisResult | undefined
-  >(undefined)
+  const { handleSubmit, isLoading, thought, setThought } = useAnalyzeThought()
+
   const [showStarters, setShowStarters] = useState(false)
   const startersRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
-
-  const isLoading = useEntryStore(state => state.isLoading)
-  const setLoading = useEntryStore(state => state.setLoading)
-  const setError = useEntryStore(state => state.setError)
-
-  const hasAutoSaved = useRef(false)
-  useEffect(() => {
-    if (analysisResult && !hasAutoSaved.current) {
-      handleSave()
-      hasAutoSaved.current = true
-    }
-  }, [analysisResult])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!thought.trim()) return
-    setLoading(true)
-
-    try {
-      const result = await analyzeThought(thought)
-      setAnalysisResult(result)
-    } catch (error) {
-      console.error('Error analyzing thought:', error)
-      setError('Failed to analyze thought')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleSave = async () => {
-    if (!thought) return
-
-    try {
-      setLoading(true)
-      const { analysisResult: savedResult, entry } =
-        await analyzeAndSaveThought(thought)
-      if (!analysisResult) {
-        setAnalysisResult(savedResult)
-      }
-      router.push(`/entry/${entry.id}`)
-    } catch (error) {
-      console.error('Error saving entry:', error)
-      setError('Failed to save entry')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleThoughtStarterClick = (starter: string) => {
     setThought(starter)
@@ -88,7 +29,7 @@ export const ThoughtEntryForm = () => {
         <form onSubmit={handleSubmit} className="relative space-y-4">
           <Textarea
             placeholder="What's a negative thought that's been bothering you?"
-            className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
+            className="min-h-[120px] p-4 shadow-md border-0 dark:border-0 focus:border-0 dark:focus:border-0 focus:ring-0 dark:focus:ring-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm font-semibold"
             value={thought}
             onChange={e => setThought(e.target.value)}
             required
