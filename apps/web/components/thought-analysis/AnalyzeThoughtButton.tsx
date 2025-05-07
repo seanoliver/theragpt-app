@@ -17,7 +17,7 @@ export const AnalyzeThoughtButton = ({
       className={`
       bg-gradient-to-r from-purple-500 to-indigo-500
       hover:from-purple-600 hover:to-indigo-600
-      border-0
+      dark:text-slate-50 border-0
       transition-opacity duration-500 ease-in-out
       ${isLoading || !thought.trim() ? 'opacity-50 cursor-not-allowed' : 'opacity-100'}
     `}

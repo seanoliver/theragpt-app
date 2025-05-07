@@ -24,8 +24,26 @@ const oxygen = Oxygen({
 
 export const metadata: Metadata = {
   title: 'TheraGPT - AI-Assisted CBT Journaling',
-  description: 'Process negative thoughts with AI-generated CBT techniques',
+  description:
+    'TheraGPT is an AI-powered journal that helps you quickly record and process negative thoughts with CBT techniques.',
+  openGraph: {
+    title: 'TheraGPT - AI-Assisted CBT Journaling',
+    description:
+      'TheraGPT is an AI-powered journal that helps you quickly record and process negative thoughts with CBT techniques.',
+    siteName: 'TheraGPT',
+    images: [
+      {
+        url: 'https://theragpt.ai/og-image.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+    url: 'https://theragpt.ai/',
+  },
 }
+
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -19,7 +19,7 @@ export const ThoughtStartersButton = ({
       type="button"
       variant="outline"
       size="icon"
-      className={`bg-purple-50 border-0 rounded-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${
+      className={`bg-purple-100 dark:bg-purple-900 border-0 rounded-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${
         thought.length === 0
           ? 'opacity-100 pointer-events-auto'
           : 'opacity-0 pointer-events-none'
@@ -32,9 +32,9 @@ export const ThoughtStartersButton = ({
       }}
     >
       {showStarters ? (
-        <ChevronDown className="h-5 w-5 text-purple-500" />
+        <ChevronDown className="h-5 w-5 text-purple-500 dark:text-purple-400" />
       ) : (
-        <Sparkles className="h-5 w-5 text-purple-500" />
+        <Sparkles className="h-5 w-5 text-purple-500 dark:text-purple-400" />
       )}
     </Button>
   )

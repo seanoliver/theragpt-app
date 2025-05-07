@@ -2,7 +2,7 @@ import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
 import { callLLM, LLMModel } from '@theragpt/llm'
 import { NextRequest, NextResponse } from 'next/server'
 
-const TEMPERATURE = 0.7
+const TEMPERATURE = 0.3
 
 export const POST = async (req: NextRequest) => {
   try {

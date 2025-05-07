@@ -10,6 +10,13 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import TheraGPTLogo from '@/apps/web/public/assets/theragpt-logo.svg'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from '@/apps/web/components/ui/navigation-menu'
 
 const MENU_ITEMS = [
   {
@@ -38,17 +45,29 @@ export const Header = () => {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          {MENU_ITEMS.map(item => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <NavigationMenu className="hidden md:flex items-center space-x-8">
+          <NavigationMenuList>
+            {MENU_ITEMS.map(item => (
+              <NavigationMenuItem key={item.href}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
+                >
+                  <NavigationMenuLink
+                    className={navigationMenuTriggerStyle()}
+                    asChild
+                  >
+                    <Link href={item.href}>{item.label}</Link>
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+            <NavigationMenuItem>
+              <ThemeToggle />
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="md:hidden flex items-center">
           <ThemeToggle />
