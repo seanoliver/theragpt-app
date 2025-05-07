@@ -3,34 +3,56 @@
 import { Badge } from '@/apps/web/components/ui/badge'
 import { Button } from '@/apps/web/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/apps/web/components/ui/card'
-import { Entry, entryService } from '@theragpt/logic'
+import { useStreamEntry } from '@/apps/web/lib/llm/useStreamEntry'
+import { getAnalyzePrompt } from '@/packages/prompts/src'
+import { Entry, useEntryStore } from '@theragpt/logic'
 import { formatDistanceToNow } from 'date-fns'
-import { CalendarIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import {
+  CalendarIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Loader2,
+} from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel'
-
 interface EntryItemProps {
   entryId: string
 }
 
 export const EntryItem = ({ entryId }: EntryItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [entry, setEntry] = useState<Entry | null>(null)
+  const entry = useEntryStore(state =>
+    state.entries.find(e => e.id === entryId),
+  )
+  const updateEntryById = useEntryStore(state => state.updateEntryById)
 
   useEffect(() => {
-    const fetchEntry = async () => {
-      const entry = await entryService.getById(entryId)
-      if (entry) {
-        setEntry(entry)
-      }
-    }
-    fetchEntry()
-  }, [entryId])
+    console.log('entry changed', entry)
+  }, [entry])
+
+  const prompt = useMemo(
+    () => (entry ? getAnalyzePrompt({ rawText: entry.rawText }) : ''),
+    [entry?.rawText],
+  )
+  const thought = useMemo(() => entry?.rawText || '', [entry?.rawText])
+
+  const { isStreaming } = useStreamEntry({
+    endpoint: '/api/analyze-stream',
+    prompt,
+    thought,
+    onPatch: patch => {
+      const sanitized = { ...patch, id: entryId }
+      updateEntryById(entryId, sanitized)
+    },
+    onComplete: finalEntryJSON => {
+      const sanitized = { ...finalEntryJSON, id: entryId }
+      updateEntryById(entryId, sanitized)
+    },
+  })
 
   if (!entry) {
     return <div>Loading...</div>
   }
-
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -53,15 +75,26 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
           )}
 
           <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-            <p className="text-xl font-medium text-slate-800 mb-6">
-              {entry.reframe?.text}
-            </p>
+            {isStreaming ? (
+              <div className="flex flex-col items-center justify-center py-6">
+                <Loader2 className="h-8 w-8 animate-spin text-indigo-500 mb-4" />
+                <p className="text-lg text-slate-600">
+                  Analyzing your thought...
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="text-xl font-medium text-slate-800 mb-6">
+                  {entry.reframe?.text}
+                </p>
 
-            <div className="pt-3 border-t border-dashed border-slate-200">
-              <p className="text-md text-slate-400 line-through italic">
-                {entry.rawText}
-              </p>
-            </div>
+                <div className="pt-3 border-t border-dashed border-slate-200">
+                  <p className="text-md text-slate-400 line-through italic">
+                    {entry.rawText}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
 
           <Button
@@ -87,7 +120,11 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
             )}
           </Button>
 
-          <EntryItemAnalysisPanel entry={entry} isExpanded={isExpanded} />
+          <EntryItemAnalysisPanel
+            entry={entry}
+            isExpanded={isExpanded}
+            isStreaming={isStreaming}
+          />
         </div>
       </CardContent>
     </Card>
