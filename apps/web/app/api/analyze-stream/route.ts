@@ -40,19 +40,13 @@ export async function POST(req: NextRequest) {
           systemPrompt:
             'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
         })
-        console.log('🔴 llmStream', llmStream)
-
         for await (const chunk of llmStream) {
           // Add the chunk to our buffer
           buffer += chunk
 
-          console.log('Buffer:', buffer)
-
           try {
             // Try to parse the buffer as JSON to see if we have a complete object
             const parsed = JSON.parse(buffer)
-
-            console.log('Parsed:', parsed)
 
             // Compare with previousParsed and emit updated fields
             for (const key in parsed) {
@@ -77,8 +71,7 @@ export async function POST(req: NextRequest) {
                 `data: ${JSON.stringify({ type: 'complete', content: parsed })}\n\n`,
               ),
             )
-
-            console.log('Sent complete object:', parsed)
+            console.log('✅ Sent complete object:', parsed)
 
             // Reset buffer after successful parse
             buffer = ''
@@ -93,6 +86,14 @@ export async function POST(req: NextRequest) {
             console.log('Sent chunk:', chunk)
           }
         }
+
+        // Send the final complete event with the accumulated data
+        controller.enqueue(
+          encoder.encode(
+            `data: ${JSON.stringify({ type: 'complete', content: previousParsed })}\n\n`,
+          ),
+        )
+        console.log('Sent final complete object:', previousParsed)
 
         // Close the stream
         controller.close()

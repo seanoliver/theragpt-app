@@ -25,21 +25,10 @@ export const useStreamEntry = ({
   const controllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
-    console.group('🧠 useStreamEntry Effect')
-    console.log('prompt:', prompt)
-    console.log('thought:', thought)
-    console.log('entryText:', entryText)
-    console.log('rawThought:', rawThought)
-    console.log('isStreaming:', isStreaming)
-    console.log('error:', error)
-    console.log('hasStreamedRef.current:', hasStreamedRef.current)
-    console.groupEnd()
     if (!prompt || !thought || hasStreamedRef.current) return
 
     hasStreamedRef.current = true
     const start = async () => {
-      console.log('🔴 start')
-      // Reset state to clear any previous values
       setIsStreaming(true)
       setError(null)
       setEntryText('')
@@ -77,34 +66,33 @@ export const useStreamEntry = ({
           for (const rawEvent of events) {
             if (!rawEvent.startsWith('data: ')) continue
 
-            const prefix = 'data: '
+              const prefix = 'data: '
             const json = rawEvent.startsWith(prefix)
               ? JSON.parse(rawEvent.slice(prefix.length))
               : JSON.parse(rawEvent)
 
-            if (!json) continue
+              if (!json) continue
 
-            const { type, content, field, value } = json
+              const { type, content, field, value } = json
 
-            // TODO: Handle the different components of the stream
-            if (type === 'thought') {
-              setRawThought(content)
-              console.log('🔵 SET RAW THOUGHT', content)
-            } else if (type === 'field') {
+              if (type === 'thought') {
+                setRawThought(content)
+                console.log('🔵 SET RAW THOUGHT', content)
+              } else if (type === 'field') {
               if (onPatch) {
-                console.log('🟢 onPatch', field, value)
-                onPatch({ [field]: value })
-              }
-            } else if (type === 'complete') {
-              console.log('🟠 onComplete', content)
-              if (onComplete) onComplete(content)
-              setIsStreaming(false)
-              return
-            } else if (type === 'error') {
-              console.log('🟣 onError', content)
-              setError(content)
-              setIsStreaming(false)
-              return
+                  console.log('🟢 onPatch', field, value)
+                  onPatch({ [field]: value })
+                }
+              } else if (type === 'complete') {
+                console.log('🟠 onComplete', content)
+                if (onComplete) onComplete(content)
+                setIsStreaming(false)
+                return
+              } else if (type === 'error') {
+                console.log('🟣 onError', content)
+                setError(content)
+                setIsStreaming(false)
+                return
             }
           }
 
