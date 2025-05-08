@@ -1,6 +1,7 @@
+import { cloneDeep, merge } from 'lodash'
 import { create } from 'zustand'
-import { Entry } from './types'
 import { entryService } from './entry.service'
+import { Entry } from './types'
 
 export interface EntryStore {
   // State
@@ -8,6 +9,9 @@ export interface EntryStore {
   isLoading: boolean
   error: string | null
   hasInitialized: boolean
+
+  streamingEntryId: string | null
+  setStreamingEntryId: (id: string | null) => void
 
   // Sync/Init
   initialize: () => Promise<void>
@@ -17,6 +21,7 @@ export interface EntryStore {
   addEntry: (params: Entry) => Promise<Entry | undefined>
   updateEntry: (entry: Entry) => Promise<void>
   deleteEntry: (id: string) => Promise<void>
+  updateEntryById: (id: string, patch: Partial<Entry>) => Promise<void>
 
   // Local state only (optional, nice to have)
   setLoading: (isLoading: boolean) => void
@@ -31,6 +36,9 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
   isLoading: false,
   error: null,
   hasInitialized: false,
+
+  streamingEntryId: null,
+  setStreamingEntryId: (id: string | null) => set({ streamingEntryId: id }),
 
   initialize: async () => {
     // Prevent duplicate initializations
@@ -90,6 +98,18 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
       set({ error: 'Failed to update entry' })
       console.error('Error updating entry: ', error)
     }
+  },
+
+  updateEntryById: async (id, patch) => {
+    set(state => ({
+      entries: state.entries.map(entry => {
+        if (entry.id !== id) return entry
+        const cleanedPatch = { ...patch, id }
+        const entryCopy = cloneDeep(entry)
+        merge(entryCopy, cleanedPatch)
+        return entryCopy
+      }),
+    }))
   },
 
   deleteEntry: async id => {
