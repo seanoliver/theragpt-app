@@ -1,4 +1,6 @@
 import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
+import { extractJsonKeysDotNotation } from '@/packages/logic/src'
+import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
 import { LLMModel } from '@theragpt/llm'
 import { streamLLM } from '@theragpt/llm/src/router'
 import { NextRequest } from 'next/server'
@@ -23,12 +25,6 @@ export async function POST(req: NextRequest) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        // Send the raw thought text first so the client can create a partial entry
-        controller.enqueue(
-          encoder.encode(
-            `data: ${JSON.stringify({ type: 'thought', content: thought })}\n\n`,
-          ),
-        )
         // Initialize a buffer to accumulate JSON chunks
         let buffer = ''
         let previousParsed: Record<string, any> = {}
@@ -41,7 +37,6 @@ export async function POST(req: NextRequest) {
             'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
         })
         for await (const chunk of llmStream) {
-          // Add the chunk to our buffer
           buffer += chunk
 
           try {
@@ -65,25 +60,26 @@ export async function POST(req: NextRequest) {
               }
             }
 
-            // If we successfully parsed, send the complete object
             controller.enqueue(
               encoder.encode(
                 `data: ${JSON.stringify({ type: 'complete', content: parsed })}\n\n`,
               ),
             )
+
             console.log('✅ Sent complete object:', parsed)
 
-            // Reset buffer after successful parse
             buffer = ''
           } catch (e) {
-            // If parsing fails, it means we have an incomplete JSON object
-            // Send the chunk as a partial update
-            controller.enqueue(
-              encoder.encode(
-                `data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`,
-              ),
-            )
-            console.log('Sent chunk:', chunk)
+            // If parsing fails, parse incomplete JSON as if it were a complete object
+            const incompleteJSON = parseIncompleteJSONStream(buffer)
+
+            if (incompleteJSON) {
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({ type: 'complete', content: incompleteJSON })}\n\n`,
+                ),
+              )
+            }
           }
         }
 

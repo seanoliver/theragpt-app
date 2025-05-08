@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { DISTORTIONS, Entry } from '@theragpt/logic'
 import { Badge } from '../../ui/badge'
 import { Loader2 } from 'lucide-react'
@@ -30,47 +30,53 @@ export const EntryItemAnalysisPanel = ({
           transition: 'opacity 300ms ease-in-out',
         }}
       >
-        {isStreaming ? (
-          <div className="flex flex-col items-center justify-center py-6">
-            <Loader2 className="h-6 w-6 animate-spin text-indigo-500 mb-3" />
-            <p className="text-md text-slate-600">Analyzing your thought pattern...</p>
-          </div>
-        ) : (
-          <>
-            {/* Why the positive thought is realistic */}
-            <div className="space-y-3">
-              <h4 className="font-medium text-slate-700 subheading">Rationale</h4>
-              <div className="pl-4 border-l-2 border-green-100 bg-green-50 p-3 rounded">
-                <p className="text-slate-700 text-lg">
-                  {entry.reframe?.explanation}
-                </p>
-              </div>
+        {/* Always show content, even during streaming */}
+        <>
+          {/* Show loading indicator at the top during streaming */}
+          {isStreaming && (
+            <div className="flex items-center justify-center py-2 mb-4">
+              <Loader2 className="h-5 w-5 animate-spin text-indigo-500 mr-2" />
+              <p className="text-sm text-slate-600">Analyzing in progress...</p>
             </div>
+          )}
+          {/* Why the positive thought is realistic */}
+          <div className="space-y-3">
+            <h4 className="font-medium text-slate-700 subheading">Rationale</h4>
+            <div className="pl-4 border-l-2 border-green-100 p-3 rounded transition-all duration-300">
+              <p className="text-slate-700 text-lg">
+                {entry.reframe?.explanation}
+              </p>
+            </div>
+          </div>
 
-            {/* Strategies Section */}
-            {entry.strategies && entry.strategies.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="font-medium text-slate-700 subheading">
-                  Strategies
-                </h4>
-                <div className="space-y-4 pl-3">
-                  {entry.strategies?.map((strategy, index) => (
+          {/* Strategies Section */}
+          {entry.strategies && entry.strategies.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-medium text-slate-700 subheading">
+                Strategies
+              </h4>
+              <div className="space-y-4 pl-3 transition-all duration-300">
+                {Array.isArray(entry.strategies) &&
+                  entry.strategies.map((strategy, index) => (
                     <p key={index} className="text-slate-600 text-lg">
                       {strategy}
                     </p>
                   ))}
-                </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Cognitive Distortions Section */}
-            {entry.distortions && entry.distortions.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="font-medium text-slate-700 subheading">
-                  Distortions
-                </h4>
-                <div className="space-y-4 pl-3">
-                  {entry.distortions?.map((distortion, index) => (
+          {/* Cognitive Distortions Section */}
+          {entry.distortions && entry.distortions.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-medium text-slate-700 subheading">
+                Distortions
+              </h4>
+              <div
+                className="space-y-4 pl-3 transition-all duration-300">
+              >
+                {Array.isArray(entry.distortions) &&
+                  entry.distortions.map((distortion, index) => (
                     <div key={index} className="space-y-2">
                       <div className="flex items-start">
                         <Badge
@@ -96,11 +102,10 @@ export const EntryItemAnalysisPanel = ({
                       </div>
                     </div>
                   ))}
-                </div>
               </div>
-            )}
-          </>
-        )}
+            </div>
+          )}
+        </>
       </div>
     </div>
   )
