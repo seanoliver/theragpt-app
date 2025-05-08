@@ -9,6 +9,9 @@ const envSchema = z.object({
   // API keys only available server-side
   OPENAI_API_KEY: z.string().optional(),
   THERAGPT_API_BASE_URL: z.string().url().optional(),
+  // Supabase configuration
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_ANON_KEY: z.string().optional(),
 })
 
 // Type for the environment variables
@@ -26,6 +29,9 @@ export const getEnvironment = (serverSide = false): Environment => {
       (process.env.NODE_ENV === 'production'
         ? 'https://example.com'
         : 'http://localhost:3000'),
+    // Supabase configuration
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   }
 
   // Validate environment
