@@ -2,10 +2,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   env: {
     node: true,
     browser: true,
@@ -13,22 +10,28 @@ module.exports = {
   },
   rules: {
     // No semicolons
-    'semi': ['error', 'never'],
+    semi: ['error', 'never'],
     // Line length is handled by Prettier
     'max-len': 'off',
     // Prefer arrow functions
     'prefer-arrow-callback': 'error',
-    'func-style': ['error', 'expression', { 'allowArrowFunctions': true }],
+    'func-style': ['error', 'expression', { allowArrowFunctions: true }],
     // Other common rules
-    'no-console': ['warn', {
-      allow: ['warn', 'error', 'info', 'debug']
-    }],
+    'no-console': [
+      'warn',
+      {
+        allow: ['warn', 'error', 'info', 'debug'],
+      },
+    ],
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', {
-      'argsIgnorePattern': '^_',
-      'varsIgnorePattern': '^_'
-    }],
-    'quotes': ['error', 'single'],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
+    quotes: ['error', 'single'],
     'object-curly-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'always-multiline'],
     '@typescript-eslint/no-explicit-any': 'off',

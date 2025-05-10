@@ -58,41 +58,34 @@ export const useStreamEntry = ({
 
           const chunk = decoder.decode(value)
           buffer += chunk
-          console.log('🟤 BUFFER', buffer)
 
           const events = buffer.split('\n\n')
-          console.log('🟡 EVENTS', events)
 
           for (const rawEvent of events) {
             if (!rawEvent.startsWith('data: ')) continue
 
-              const prefix = 'data: '
+            const prefix = 'data: '
             const json = rawEvent.startsWith(prefix)
               ? JSON.parse(rawEvent.slice(prefix.length))
               : JSON.parse(rawEvent)
 
-              if (!json) continue
+            if (!json) continue
 
-              const { type, content, field, value } = json
+            const { type, content, field, value } = json
 
-              if (type === 'thought') {
-                setRawThought(content)
-                console.log('🔵 SET RAW THOUGHT', content)
-              } else if (type === 'field') {
+            if (type === 'thought') {
+              setRawThought(content)
               if (onPatch) {
-                  console.log('🟢 onPatch', field, value)
-                  onPatch({ [field]: value })
-                }
-              } else if (type === 'complete') {
-                console.log('🟠 onComplete', content)
-                if (onComplete) onComplete(content)
-                setIsStreaming(false)
-                return
-              } else if (type === 'error') {
-                console.log('🟣 onError', content)
-                setError(content)
-                setIsStreaming(false)
-                return
+                onPatch({ [field]: value })
+              }
+            } else if (type === 'complete') {
+              if (onComplete) onComplete(content)
+              setIsStreaming(false)
+              return
+            } else if (type === 'error') {
+              setError(content)
+              setIsStreaming(false)
+              return
             }
           }
 
@@ -117,7 +110,6 @@ export const useStreamEntry = ({
 
     return () => {
       if (controllerRef.current && !controllerRef.current.signal.aborted) {
-        console.log('🧹 Aborting in-flight fetch...')
         controllerRef.current.abort()
       }
     }

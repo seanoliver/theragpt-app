@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
 import { DISTORTIONS, Entry } from '@theragpt/logic'
-import { Badge } from '../../ui/badge'
 import { Loader2 } from 'lucide-react'
+import { Badge } from '../../ui/badge'
 
 interface EntryItemAnalysisPanelProps {
   entry: Entry
@@ -72,9 +71,7 @@ export const EntryItemAnalysisPanel = ({
               <h4 className="font-medium text-slate-700 subheading">
                 Distortions
               </h4>
-              <div
-                className="space-y-4 pl-3 transition-all duration-300">
-              >
+              <div className="space-y-4 pl-3 transition-all duration-300">
                 {Array.isArray(entry.distortions) &&
                   entry.distortions.map((distortion, index) => (
                     <div key={index} className="space-y-2">
