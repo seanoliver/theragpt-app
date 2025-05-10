@@ -233,7 +233,6 @@ copies or substantial portions of the Software.
 
 - [OpenAI](https://openai.com/) for their API that powers our AI-assisted features
 - [Next.js](https://nextjs.org/) for their excellent framework
-- All our [contributors](https://github.com/yourusername/theragpt-app/graphs/contributors) who have helped shape this project
 
 ---
 
