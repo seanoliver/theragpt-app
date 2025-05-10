@@ -2,8 +2,7 @@ import type React from 'react'
 import type { Metadata } from 'next'
 import { Quicksand, Lora, Oxygen } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
-import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
+import { Providers } from '@/apps/web/components/providers'
 import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
 import { Footer } from '../components/layout/Footer'
 
@@ -54,20 +53,13 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} ${lora.variable} ${oxygen.variable} font-oxygen antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <EntryStoreProvider>
-            <BackgroundTexture />
-            <div className="min-h-screen relative z-10">
-              {children}
-              <Footer className="absolute bottom-0 w-full" />
-            </div>
-          </EntryStoreProvider>
-        </ThemeProvider>
+        <Providers>
+          <BackgroundTexture />
+          <div className="min-h-screen relative z-10">
+            {children}
+            <Footer className="absolute bottom-0 w-full" />
+          </div>
+        </Providers>
       </body>
     </html>
   )
