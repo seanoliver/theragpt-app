@@ -187,11 +187,15 @@ For more detailed information, see our [Contributing Guide](CONTRIBUTING.md).
 
 ### Is my data private?
 
-Yes! Your journal entries and thought analyses are private by default. We do not share your data with third parties, and all processing happens on your device when possible.
+Yes! Your journal entries and thought analyses are private by default. We do not share your data with third parties, and all data is stored locally on your device unless you opt-in to persistent storage via Supabase.
 
 ### Is TheraGPT free to use?
 
 TheraGPT is currently free to use. In the future, we may introduce a subscription tier for AI usage after a certain amount of daily queries to cover API costs. However, the source code will always remain open, allowing you to self-host the application.
+
+### Can I use TheraGPT without a user account?
+
+Yes! You can use TheraGPT without creating an account. All of your historical journal entries will be stored locally on your device. However, you can store your journal entries in our cloud database if you'd prefer by creating a user account.
 
 ### Can TheraGPT replace professional therapy?
 
