@@ -44,6 +44,7 @@ export const streamPromptOutput = async (
 
     let buffer = ''
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const { done, value } = await reader.read()
       if (done) break
@@ -64,15 +65,6 @@ export const streamPromptOutput = async (
           // Emit structured event
           onEvent({ type, content, field, value })
 
-          if (type === 'thought') {
-            console.log('🔵 SET RAW THOUGHT', content)
-          } else if (type === 'field') {
-            console.log('🟢 onPatch', field, value)
-          } else if (type === 'complete') {
-            console.log('🟠 onComplete', content)
-          } else if (type === 'error') {
-            console.log('🟣 onError', content)
-          }
         } catch (err) {
           console.error('Error parsing SSE chunk:', err)
         }
@@ -101,7 +93,7 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
   let inString = false
   let escape = false
   const stack: string[] = []
-  let lastValidChar = -1
+  let _lastValidChar = -1
 
   for (let i = 0; i < streamed.length; i++) {
     const char = streamed[i]
@@ -114,7 +106,7 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
         escape = true
       } else if (char === '"') {
         inString = false
-        lastValidChar = i
+        _lastValidChar = i
       }
       continue
     }
@@ -127,12 +119,12 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
     // Track nested structure
     if (char === '{' || char === '[') {
       stack.push(char)
-      lastValidChar = i
+      _lastValidChar = i
     } else if (char === '}' || char === ']') {
       const last = stack[stack.length - 1]
       if ((char === '}' && last === '{') || (char === ']' && last === '[')) {
         stack.pop()
-        lastValidChar = i
+        _lastValidChar = i
       } else {
         // mismatched close — try to fix it by treating it as the correct closing bracket
         // for the last opener on the stack, if any
@@ -142,12 +134,12 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
             // Replace ] with }
             buffer = buffer.substring(0, buffer.length - 1) + '}'
             stack.pop()
-            lastValidChar = i
+            _lastValidChar = i
           } else if (opener === '[' && char === '}') {
             // Replace } with ]
             buffer = buffer.substring(0, buffer.length - 1) + ']'
             stack.pop()
-            lastValidChar = i
+            _lastValidChar = i
           } else {
             // Can't fix this mismatch, break
             break
@@ -188,12 +180,13 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
     return JSON.parse(buffer)
   } catch (e) {
     // If parsing failed, try a more aggressive approach for unclosed strings
+    console.error('Error parsing incomplete JSON stream:', e)
     try {
       // Find all potential unclosed strings and close them
-      const fixedBuffer = buffer.replace(/("(?:\\.|[^"\\])*?)(?=[,}\]:])(?!")/g, '$1"');
-      return JSON.parse(fixedBuffer);
+      const fixedBuffer = buffer.replace(/("(?:\\.|[^"\\])*?)(?=[,}\]:])(?!")/g, '$1"')
+      return JSON.parse(fixedBuffer)
     } catch {
-      return null;
+      return null
     }
   }
 }

@@ -1,5 +1,4 @@
 import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
-import { extractJsonKeysDotNotation } from '@/packages/logic/src'
 import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
 import { LLMModel } from '@theragpt/llm'
 import { streamLLM } from '@theragpt/llm/src/router'
@@ -7,15 +6,14 @@ import { NextRequest } from 'next/server'
 
 const TEMPERATURE = 0.3
 
-export async function POST(req: NextRequest) {
+export const POST = async (req: NextRequest) => {
   let prompt = ''
-  let thought = ''
 
   try {
     const body = await req.json()
     prompt = body.prompt
-    thought = body.thought
   } catch (error) {
+    console.error(error)
     return new Response('Invalid request body', { status: 400 })
   }
 
@@ -27,7 +25,7 @@ export async function POST(req: NextRequest) {
       try {
         // Initialize a buffer to accumulate JSON chunks
         let buffer = ''
-        let previousParsed: Record<string, any> = {}
+        const previousParsed: Record<string, any> = {}
 
         // Stream the LLM response using the streamLLM function from the router
         const llmStream = streamLLM(LLMModel.GPT_4O, registry, {
@@ -49,8 +47,6 @@ export async function POST(req: NextRequest) {
                 Object.prototype.hasOwnProperty.call(parsed, key) &&
                 parsed[key] !== previousParsed[key]
               ) {
-                console.log('Sending field:', key, parsed[key])
-
                 controller.enqueue(
                   encoder.encode(
                     `data: ${JSON.stringify({ type: 'field', field: key, value: parsed[key] })}\n\n`,
@@ -65,13 +61,11 @@ export async function POST(req: NextRequest) {
                 `data: ${JSON.stringify({ type: 'complete', content: parsed })}\n\n`,
               ),
             )
-
-            console.log('✅ Sent complete object:', parsed)
-
             buffer = ''
           } catch (e) {
             // If parsing fails, parse incomplete JSON as if it were a complete object
             const incompleteJSON = parseIncompleteJSONStream(buffer)
+            console.error('error', e)
 
             if (incompleteJSON) {
               controller.enqueue(
@@ -89,7 +83,6 @@ export async function POST(req: NextRequest) {
             `data: ${JSON.stringify({ type: 'complete', content: previousParsed })}\n\n`,
           ),
         )
-        console.log('Sent final complete object:', previousParsed)
 
         // Close the stream
         controller.close()

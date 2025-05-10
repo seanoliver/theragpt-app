@@ -36,7 +36,7 @@ export const extractJsonKeysFromPartial = (input: string): Set<string> => {
 
   let match: RegExpExecArray | null
   let lastIndex = 0
-  let currentArrayIndexStack: number[] = []
+  const currentArrayIndexStack: number[] = []
 
   while ((match = keyRegex.exec(input)) !== null) {
     const key = match[1]
@@ -108,7 +108,7 @@ export const extractJsonKeysFromPartial = (input: string): Set<string> => {
 export const extractJsonKeysDotNotation = (input: string): Set<string> => {
   const result = new Set<string>()
 
-  function traverse(value: any, path: string[] = []) {
+  const traverse = (value: any, path: string[] = []) => {
     if (Array.isArray(value)) {
       value.forEach((item, index) => {
         const nextPath = [...path, `[${index}]`]

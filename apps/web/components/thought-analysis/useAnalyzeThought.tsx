@@ -1,13 +1,12 @@
 import { useEntryStore } from '@/packages/logic/src/entry/entry.store'
-import { fetchPromptOutput } from '@/packages/logic/src/workflows/thought-analysis.workflow'
+import { DistortionType, Entry } from '@/packages/logic/src/entry/types'
 import {
-  streamPromptOutput,
   StreamEvent,
+  streamPromptOutput,
 } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
 import { getAnalyzePrompt } from '@theragpt/prompts'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Entry, DistortionType } from '@/packages/logic/src/entry/types'
 
 export const useAnalyzeThought = () => {
   const addEntry = useEntryStore(state => state.addEntry)
@@ -61,10 +60,6 @@ export const useAnalyzeThought = () => {
 
       streamPromptOutput(prompt, thought, (event: StreamEvent) => {
         const { type, content, field, value } = event
-        console.group('🔄 Stream event:', type)
-        console.log('🔄 Field:', field)
-        console.log('🔄 Value:', value)
-        console.groupEnd()
         let needsStoreUpdate = false
 
         if (type === 'thought') {
@@ -78,11 +73,13 @@ export const useAnalyzeThought = () => {
             (streamPatch as any)[field] &&
             typeof (streamPatch as any)[field] === 'object'
           ) {
+            // eslint-disable-next-line no-extra-semi
             ;(streamPatch as any)[field] = {
               ...((streamPatch as any)[field] || {}),
               ...value,
             }
           } else {
+            // eslint-disable-next-line no-extra-semi
             ;(streamPatch as any)[field] = value
           }
           needsStoreUpdate = true
@@ -92,7 +89,6 @@ export const useAnalyzeThought = () => {
           content !== undefined &&
           content !== null
         ) {
-          console.log(`📝 Received chunk for field ${field}:`, content)
           const keys = field.split('.')
           let tempObj = streamPatch as any
           for (let i = 0; i < keys.length - 1; i++) {
@@ -102,10 +98,6 @@ export const useAnalyzeThought = () => {
           // Append content to the target string property
           tempObj[keys[keys.length - 1]] =
             (tempObj[keys[keys.length - 1]] || '') + String(content)
-          console.log(
-            `📝 Updated streamPatch for ${field}:`,
-            tempObj[keys[keys.length - 1]],
-          )
           needsStoreUpdate = true
         } else if (type === 'complete') {
           // `content` is the final, complete entry data.
@@ -140,8 +132,6 @@ export const useAnalyzeThought = () => {
         }
 
         if (needsStoreUpdate) {
-          console.log('🔄 Updating entry with streamPatch:', streamPatch)
-
           // Ensure distortions and strategies are always arrays
           if (
             streamPatch.distortions &&
@@ -223,11 +213,6 @@ export const useAnalyzeThought = () => {
           if (currentDisplayState.reframe) {
             currentDisplayState.reframe.entryId = entryId
           }
-
-          console.log(
-            '🔄 Updating entry with currentDisplayState:',
-            currentDisplayState,
-          )
           updateEntry(currentDisplayState)
         }
       })
