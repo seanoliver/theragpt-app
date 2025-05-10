@@ -125,6 +125,7 @@ theragpt-app/
 - **State Management**: Zustand
 - **AI Integration**: OpenAI API
 - **Analytics**: PostHog (optional)
+- **Storage**: Supabase (optional), Local Storage/ASyncStorage (default)
 - **Package Manager**: PNPM
 - **Monorepo**: Turborepo
 - **Mobile (Planned)**: Expo (React Native)
