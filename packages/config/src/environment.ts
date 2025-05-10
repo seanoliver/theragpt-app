@@ -9,9 +9,15 @@ const envSchema = z.object({
   // API keys only available server-side
   OPENAI_API_KEY: z.string().optional(),
   THERAGPT_API_BASE_URL: z.string().url().optional(),
-  // Supabase configuration
-  SUPABASE_URL: z.string().url().optional(),
-  SUPABASE_ANON_KEY: z.string().optional(),
+  // Supabase configuration - required
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_ANON_KEY: z.string(),
+  // Next.js public environment variables
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
+  // Optional Supabase configuration
+  SUPABASE_SERVICE_ROLE: z.string().optional(),
+  SUPABASE_JWT_SECRET: z.string().optional(),
 })
 
 // Type for the environment variables
@@ -30,16 +36,19 @@ export const getEnvironment = (serverSide = false): Environment => {
         ? 'https://example.com'
         : 'http://localhost:3000'),
     // Supabase configuration
-    SUPABASE_URL: process.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+    SUPABASE_URL: process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    // Next.js public environment variables
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   }
 
   // Validate environment
   const result = envSchema.safeParse(env)
 
   if (!result.success) {
-    console.error('Invalid environment configuration:', result.error)
-    throw new Error('Invalid environment configuration')
+    console.error('Missing required environment variables:', result.error)
+    throw new Error(`Environment configuration error: ${result.error.message}`)
   }
 
   return result.data

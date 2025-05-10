@@ -1,39 +1,18 @@
 import { v4 as uuidv4 } from 'uuid'
 import { supabaseAuthService } from '../auth/supabase-auth.service'
 import { SupabaseClient } from '@supabase/supabase-js'
-import { Entry, Reframe, DistortionInstance, EntryListener } from './types'
+import { Entry } from './types'
+import { BaseEntryService } from './base-entry.service'
 
 /**
  * Service for managing entries in Supabase
  */
-export class SupabaseEntryService {
+export class SupabaseEntryService extends BaseEntryService {
   private supabase: SupabaseClient
-  private entryCache: Entry[] | null = null
-  private entryMap: Map<string, Entry> = new Map()
-  private listeners: EntryListener[] = []
 
   constructor() {
+    super()
     this.supabase = supabaseAuthService.getSupabaseClient()
-  }
-
-  /**
-   * Subscribe to entry changes
-   * @param listener Function to call when entries change
-   * @returns Unsubscribe function
-   */
-  subscribe(listener: EntryListener) {
-    this.listeners.push(listener)
-    return () => {
-      this.listeners = this.listeners.filter(l => l !== listener)
-    }
-  }
-
-  /**
-   * Notify all listeners of entry changes
-   * @param entries Updated entries
-   */
-  private notifyListeners(entries: Entry[]) {
-    this.listeners.forEach(listener => listener(entries))
   }
 
   /**
@@ -397,15 +376,6 @@ export class SupabaseEntryService {
     // Update the cache and notify listeners
     const entries = await this.getAll()
     this.notifyListeners(entries)
-  }
-
-  /**
-   * Update the cache with new entries
-   * @param entries New entries
-   */
-  private updateCache(entries: Entry[]): void {
-    this.entryCache = entries
-    this.entryMap = new Map(entries.map(entry => [entry.id, entry]))
   }
 
   /**

@@ -57,6 +57,7 @@ Always use a ternary to ensure a <Text> node is rendered in all cases, or move t
 <Text>{showArchiveBulletSeparator ? ' • ' : ''}</Text>
 ```
 **Note**: In React Native, children of <Text> must always be valid nodes (string or <Text>), never false/null/undefined. Using && or short-circuit logic can result in invalid children and runtime errors.
+
 ### Mistake: Incorrect dependency scope for shared lib/utils.ts
 **Wrong**:
 ```
@@ -71,3 +72,39 @@ Since lib/utils.ts is only used by the web app, 'clsx' should be added to apps/w
 - Use combination of `max-h-0`/`max-h-[size]`, `opacity-0`/`opacity-100`, and `overflow-hidden` with `transition-all` for slide animations
 - Example implementation in ThoughtEntryForm.tsx where ThoughtStarters panel slides down from underneath the textarea
 - Apply `transition-all duration-300 ease-in-out` for smooth animations
+
+### Singleton Pattern: Simplified direct instance export
+**Wrong**:
+```typescript
+export class ServiceProvider {
+  private static instance: ServiceProvider
+
+  private constructor() {
+    // initialization
+  }
+
+  public static getInstance(): ServiceProvider {
+    if (!ServiceProvider.instance) {
+      ServiceProvider.instance = new ServiceProvider()
+    }
+    return ServiceProvider.instance
+  }
+}
+
+export const serviceProvider = ServiceProvider.getInstance()
+```
+
+**Correct**:
+```typescript
+export class ServiceProvider {
+  public static instance = new ServiceProvider()
+
+  private constructor() {
+    // initialization
+  }
+}
+
+export const serviceProvider = ServiceProvider.instance
+```
+
+**Note**: The simplified pattern avoids redundant getInstance method when we're already exporting a singleton instance. This makes the code cleaner and more maintainable.

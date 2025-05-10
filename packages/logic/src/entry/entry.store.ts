@@ -1,7 +1,7 @@
 import { cloneDeep, merge } from 'lodash'
 import { create } from 'zustand'
-import { entryService } from './entry.service'
 import { Entry } from './types'
+import { entryServiceProvider } from './entry-service-provider'
 
 export interface EntryStore {
   // State
@@ -46,6 +46,8 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
     set({ isLoading: true })
     try {
+      // Get the current entry service from the provider
+      const entryService = entryServiceProvider.getCurrentService()
       const entries = await entryService.init()
       set({ entries, isLoading: false, hasInitialized: true })
 
@@ -68,6 +70,8 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
   addEntry: async params => {
     try {
+      // Get the current entry service from the provider
+      const entryService = entryServiceProvider.getCurrentService()
       const newEntry = await entryService.create(params)
       set(state => {
         const alreadyExists = state.entries.some(
@@ -88,6 +92,8 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
   updateEntry: async params => {
     try {
+      // Get the current entry service from the provider
+      const entryService = entryServiceProvider.getCurrentService()
       const updatedEntry = await entryService.update(params)
       set(state => ({
         entries: state.entries.map(entry =>
@@ -114,6 +120,8 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
   deleteEntry: async id => {
     try {
+      // Get the current entry service from the provider
+      const entryService = entryServiceProvider.getCurrentService()
       await entryService.deleteEntry(id)
       set(state => ({
         entries: state.entries.filter(entry => entry.id !== id),

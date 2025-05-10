@@ -1,27 +1,15 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
-import { Entry, EntryListener } from './types'
+import { Entry } from './types'
+import { BaseEntryService } from './base-entry.service'
 
-export class EntryService {
+export class EntryService extends BaseEntryService {
   private storageService: StorageService
   private storageKey = 'theragpt_entries'
-  private entryCache: Entry[] | null = null
-  private entryMap: Map<string, Entry> = new Map()
-  private listeners: EntryListener[] = []
 
   constructor(storageService: StorageService) {
+    super()
     this.storageService = storageService
-  }
-
-  subscribe(listener: EntryListener) {
-    this.listeners.push(listener)
-    return () => {
-      this.listeners = this.listeners.filter(l => l !== listener)
-    }
-  }
-
-  private notifyListeners(entries: Entry[]) {
-    this.listeners.forEach(listener => listener(entries))
   }
 
   async init(): Promise<Entry[]> {
@@ -110,7 +98,7 @@ export class EntryService {
     }
   }
 
-  private async saveAllEntries(entries: Entry[]): Promise<void> {
+  protected async saveAllEntries(entries: Entry[]): Promise<void> {
     try {
       await this.storageService.setItem(this.storageKey, entries)
       this.updateCache(entries)
@@ -119,7 +107,7 @@ export class EntryService {
     }
   }
 
-  private updateCache(entries: Entry[]): void {
+  protected updateCache(entries: Entry[]): void {
     this.entryCache = entries
     this.entryMap = new Map(entries.map(entry => [entry.id, entry]))
   }
