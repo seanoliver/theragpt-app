@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: 'TheraGPT',
     images: [
       {
-        url: 'https://theragpt.ai/og-image.png',
+        url: '../public/assets/theragpt-social.png',
         width: 1200,
         height: 630,
       },
