@@ -2,6 +2,7 @@ import type React from 'react'
 import type { Metadata } from 'next'
 import { Quicksand, Lora, Oxygen } from 'next/font/google'
 import './globals.css'
+import { PostHogProvider } from '../components/PostHogProvider'
 import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
 import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
 import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
@@ -51,28 +52,28 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${quicksand.variable} ${lora.variable} ${oxygen.variable} font-oxygen antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <EntryStoreProvider>
-            <BackgroundTexture />
-            <div className="min-h-screen relative z-10">
-              {children}
-              <Footer className="absolute bottom-0 w-full" />
-            </div>
-          </EntryStoreProvider>
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <EntryStoreProvider>
+              <BackgroundTexture />
+              <div className="min-h-screen relative z-10">
+                {children}
+                <Footer className="absolute bottom-0 w-full" />
+              </div>
+            </EntryStoreProvider>
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   )
