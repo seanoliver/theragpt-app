@@ -422,3 +422,90 @@ async getById(id: string): Promise<Entry | undefined> {
 }
 ```
 **Note**: In server components, the entryMap might be empty because it hasn't been initialized yet. The getById method should check if the entryMap is empty and load entries from storage before attempting to retrieve an entry by ID.
+
+### Mistake: Using OpenAI SDK types in Anthropic client
+**Wrong**:
+```typescript
+import { Anthropic } from '@anthropic-ai/sdk'
+const messages: ChatCompletionMessageParam[] = [
+  {
+    role: 'system',
+    content: systemPrompt,
+  } as ChatCompletionMessageParam,
+  { role: 'user', content: prompt } as ChatCompletionMessageParam,
+]
+const result = response.content?.[0] ?? ''
+```
+
+**Correct**:
+```typescript
+import { Anthropic } from '@anthropic-ai/sdk'
+import type { MessageParam, TextBlock, ContentBlock } from '@anthropic-ai/sdk/resources'
+
+// Use MessageParam instead of ChatCompletionMessageParam
+const messages: MessageParam[] = [
+  { role: 'user', content: prompt },
+]
+
+// Use system parameter instead of system message
+const response = await this.client.messages.create({
+  model,
+  max_tokens: maxTokens ?? 1000,
+  messages,
+  temperature,
+  system: systemPrompt, // System prompt goes here, not in messages array
+})
+
+// Handle ContentBlock response with type checking
+private isTextBlock(block: ContentBlock): block is TextBlock {
+  return block.type === 'text'
+}
+
+const firstBlock = response.content[0]
+const result = this.isTextBlock(firstBlock) ? firstBlock.text : ''
+```
+
+**Note**: Anthropic SDK uses different types and structure than OpenAI:
+- Messages use `MessageParam` type from `@anthropic-ai/sdk/resources`
+- System prompts go in the `system` parameter, not as a message
+- Response content is an array of `ContentBlock` that need type checking
+- For streaming, check for `content_block_delta` type and `text_delta` content
+
+### Mistake: Using outdated or incorrect Claude model names
+**Wrong**:
+```typescript
+export enum LLMModel {
+  CLAUDE_3_OPUS = 'claude-3-opus',
+  CLAUDE_3_SONNET = 'claude-3-sonnet',
+  CLAUDE_3_HAIKU = 'claude-3-haiku',
+}
+```
+
+**Correct**:
+```typescript
+export enum LLMModel {
+  // Anthropic Claude 4 (Latest Generation - Released May 2025)
+  CLAUDE_4_OPUS = 'claude-opus-4-20250514',
+  CLAUDE_4_SONNET = 'claude-sonnet-4-20250514',
+
+  // Anthropic Claude 3.7 (Released Feb 2025)
+  CLAUDE_3_7_SONNET = 'claude-3-7-sonnet-20250219',
+
+  // Anthropic Claude 3.5 (Current generation as of 2024)
+  CLAUDE_3_5_SONNET_V2 = 'claude-3-5-sonnet-20241022',
+  CLAUDE_3_5_SONNET = 'claude-3-5-sonnet-20240620',
+  CLAUDE_3_5_HAIKU = 'claude-3-5-haiku-20241022',
+
+  // Anthropic Claude 3 (Legacy - with date stamps)
+  CLAUDE_3_OPUS = 'claude-3-opus-20240229',
+  CLAUDE_3_SONNET = 'claude-3-sonnet-20240229',
+  CLAUDE_3_HAIKU = 'claude-3-haiku-20240307',
+}
+```
+
+**Note**: Anthropic model names include specific date stamps for versioning. Key updates:
+- Claude 4 models (Opus 4, Sonnet 4) are the latest generation with hybrid reasoning
+- Claude 3.7 Sonnet introduced extended thinking capabilities
+- Claude 3.5 models include v2 updates and Haiku variant
+- All model names include date stamps (YYYYMMDD format) for precise versioning
+- Model names follow pattern: `claude-[generation]-[model]-[date]` or `claude-[model]-[generation]-[date]`

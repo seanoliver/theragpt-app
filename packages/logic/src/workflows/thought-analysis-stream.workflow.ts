@@ -20,6 +20,7 @@ export const streamPromptOutput = async (
   onEvent: StreamEventCallback,
   endpoint: string = '/api/analyze-stream',
   signal?: AbortSignal,
+  model?: string,
 ): Promise<void> => {
   try {
     const response = await fetch(endpoint, {
@@ -27,7 +28,7 @@ export const streamPromptOutput = async (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt, thought }),
+      body: JSON.stringify({ prompt, thought, model }),
       signal,
     })
 

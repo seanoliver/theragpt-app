@@ -72,6 +72,14 @@ Since lib/utils.ts is only used by the web app, 'clsx' should be added to apps/w
 - Example implementation in ThoughtEntryForm.tsx where ThoughtStarters panel slides down from underneath the textarea
 - Apply `transition-all duration-300 ease-in-out` for smooth animations
 
+### AI Model Selection Implementation (TheraGPT Web)
+- **Component**: `ModelSelector.tsx` provides dropdown for Claude 4 Sonnet, Claude 3.7 Sonnet, GPT 4o, and GPT 4.1
+- **Integration**: Added to `ThoughtEntryForm.tsx` above the textarea with proper state management
+- **API Updates**: Both `/api/analyze` and `/api/analyze-stream` routes accept `model` parameter
+- **State Flow**: `useAnalyzeThought` hook manages `selectedModel` state and passes it to `streamPromptOutput`
+- **Default Model**: Claude 4 Sonnet (`LLMModel.CLAUDE_4_SONNET`) for superior reasoning capabilities
+- **Styling**: Consistent with TheraGPT's glass-panel design with purple accent hover states
+
 ### Project Overview: TheraGPT
 - **Purpose**: AI-powered CBT journal for mental health - analyzes troubling thoughts, identifies cognitive distortions, provides reframing strategies
 - **Architecture**: Turborepo monorepo with apps/web (Next.js - primary platform), apps/mobile (Expo/RN - in development), shared packages for logic/llm/prompts/config

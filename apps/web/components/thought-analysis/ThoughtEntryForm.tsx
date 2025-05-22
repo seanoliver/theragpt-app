@@ -1,14 +1,22 @@
 'use client'
 
-import { Textarea } from '@/apps/web/components/ui/textarea'
-import { useRef, useState } from 'react'
-import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
-import { ThoughtStarters } from './ThoughtStarters'
-import { ThoughtStartersButton } from './ThoughtStartersButton'
-import { useAnalyzeThought } from './useAnalyzeThought'
+import { Textarea } from '@/apps/web/components/ui/textarea';
+import { useRef, useState } from 'react';
+import { AnalyzeThoughtButton } from './AnalyzeThoughtButton';
+import { ModelSelector } from './ModelSelector';
+import { ThoughtStarters } from './ThoughtStarters';
+import { ThoughtStartersButton } from './ThoughtStartersButton';
+import { useAnalyzeThought } from './useAnalyzeThought';
 export const ThoughtEntryForm = () => {
   // Local component state
-  const { handleSubmit, isLoading, thought, setThought } = useAnalyzeThought()
+  const {
+    handleSubmit,
+    isLoading,
+    thought,
+    setThought,
+    selectedModel,
+    setSelectedModel,
+  } = useAnalyzeThought()
 
   const [showStarters, setShowStarters] = useState(false)
   const startersRef = useRef<HTMLDivElement>(null)
@@ -26,6 +34,13 @@ export const ThoughtEntryForm = () => {
   return (
     <div>
       <div className="flex-col">
+        <div className="mb-4">
+          <ModelSelector
+            selectedModel={selectedModel}
+            onModelChange={setSelectedModel}
+            disabled={isLoading}
+          />
+        </div>
         <form onSubmit={handleSubmit} className="relative space-y-4">
           <Textarea
             placeholder="What's a negative thought that's been bothering you?"
