@@ -14,7 +14,6 @@ export const createLLMRegistry = (): ClientRegistry => {
 
   return createClientRegistry({
     openAIApiKey: process.env.OPENAI_API_KEY,
-    // Add other provider API keys as needed
-    // anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY,
   })
 }

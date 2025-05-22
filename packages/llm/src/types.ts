@@ -42,10 +42,22 @@ export enum LLMModel {
   GPT_4_32K = 'gpt-4-32k',
   GPT_4O = 'gpt-4o',
 
-  // Anthropic
-  CLAUDE_3_OPUS = 'claude-3-opus',
-  CLAUDE_3_SONNET = 'claude-3-sonnet',
-  CLAUDE_3_HAIKU = 'claude-3-haiku',
+  // Anthropic Claude 4 (Latest Generation)
+  CLAUDE_4_OPUS = 'claude-opus-4-20250514',
+  CLAUDE_4_SONNET = 'claude-sonnet-4-20250514',
+
+  // Anthropic Claude 3.7
+  CLAUDE_3_7_SONNET = 'claude-3-7-sonnet-20250219',
+
+  // Anthropic Claude 3.5
+  CLAUDE_3_5_SONNET_V2 = 'claude-3-5-sonnet-20241022',
+  CLAUDE_3_5_SONNET = 'claude-3-5-sonnet-20240620',
+  CLAUDE_3_5_HAIKU = 'claude-3-5-haiku-20241022',
+
+  // Anthropic Claude 3 (Legacy)
+  CLAUDE_3_OPUS = 'claude-3-opus-20240229',
+  CLAUDE_3_SONNET = 'claude-3-sonnet-20240229',
+  CLAUDE_3_HAIKU = 'claude-3-haiku-20240307',
 }
 
 export const MODEL_PROVIDER_MAP: Record<LLMModel, LLMProvider> = {
@@ -55,7 +67,19 @@ export const MODEL_PROVIDER_MAP: Record<LLMModel, LLMProvider> = {
   [LLMModel.GPT_4_32K]: LLMProvider.OpenAI,
   [LLMModel.GPT_4O]: LLMProvider.OpenAI,
 
-  // Anthropic
+  // Anthropic Claude 4
+  [LLMModel.CLAUDE_4_OPUS]: LLMProvider.Anthropic,
+  [LLMModel.CLAUDE_4_SONNET]: LLMProvider.Anthropic,
+
+  // Anthropic Claude 3.7
+  [LLMModel.CLAUDE_3_7_SONNET]: LLMProvider.Anthropic,
+
+  // Anthropic Claude 3.5
+  [LLMModel.CLAUDE_3_5_SONNET_V2]: LLMProvider.Anthropic,
+  [LLMModel.CLAUDE_3_5_SONNET]: LLMProvider.Anthropic,
+  [LLMModel.CLAUDE_3_5_HAIKU]: LLMProvider.Anthropic,
+
+  // Anthropic Claude 3 (Legacy)
   [LLMModel.CLAUDE_3_OPUS]: LLMProvider.Anthropic,
   [LLMModel.CLAUDE_3_SONNET]: LLMProvider.Anthropic,
   [LLMModel.CLAUDE_3_HAIKU]: LLMProvider.Anthropic,
