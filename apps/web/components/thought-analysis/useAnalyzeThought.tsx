@@ -1,9 +1,10 @@
 import { useEntryStore } from '@/packages/logic/src/entry/entry.store'
 import { DistortionType, Entry } from '@/packages/logic/src/entry/types'
 import {
-  StreamEvent,
-  streamPromptOutput,
+    StreamEvent,
+    streamPromptOutput,
 } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
+import { LLMModel } from '@theragpt/llm'
 import { getAnalyzePrompt } from '@theragpt/prompts'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -19,6 +20,7 @@ export const useAnalyzeThought = () => {
   const router = useRouter()
 
   const [thought, setThought] = useState('')
+  const [selectedModel, setSelectedModel] = useState<LLMModel>(LLMModel.CLAUDE_4_SONNET)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -58,9 +60,12 @@ export const useAnalyzeThought = () => {
 
       const streamPatch: Partial<Entry> = {}
 
-      streamPromptOutput(prompt, thought, (event: StreamEvent) => {
-        const { type, content, field, value } = event
-        let needsStoreUpdate = false
+      streamPromptOutput(
+        prompt,
+        thought,
+        (event: StreamEvent) => {
+          const { type, content, field, value } = event
+          let needsStoreUpdate = false
 
         if (type === 'thought') {
           streamPatch.rawText = content
@@ -215,7 +220,11 @@ export const useAnalyzeThought = () => {
           }
           updateEntry(currentDisplayState)
         }
-      })
+      },
+      '/api/analyze-stream',
+      undefined,
+      selectedModel
+      )
 
       // 3. Redirect immediately
       router.push(`/entry/${entryId}`)
@@ -233,5 +242,7 @@ export const useAnalyzeThought = () => {
     error,
     thought,
     setThought,
+    selectedModel,
+    setSelectedModel,
   }
 }

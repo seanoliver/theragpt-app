@@ -1,17 +1,19 @@
-import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
-import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
-import { LLMModel } from '@theragpt/llm'
-import { streamLLM } from '@theragpt/llm/src/router'
-import { NextRequest } from 'next/server'
+import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry';
+import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow';
+import { LLMModel } from '@theragpt/llm';
+import { streamLLM } from '@theragpt/llm/src/router';
+import { NextRequest } from 'next/server';
 
 const TEMPERATURE = 0.3
 
 export const POST = async (req: NextRequest) => {
   let prompt = ''
+  let model = LLMModel.GPT_4O // default model
 
   try {
     const body = await req.json()
     prompt = body.prompt
+    model = body.model || LLMModel.GPT_4O
   } catch (error) {
     console.error(error)
     return new Response('Invalid request body', { status: 400 })
@@ -28,7 +30,7 @@ export const POST = async (req: NextRequest) => {
         const previousParsed: Record<string, any> = {}
 
         // Stream the LLM response using the streamLLM function from the router
-        const llmStream = streamLLM(LLMModel.GPT_4O, registry, {
+        const llmStream = streamLLM(model, registry, {
           prompt,
           temperature: TEMPERATURE,
           systemPrompt:

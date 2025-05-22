@@ -1,15 +1,15 @@
-import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
-import { callLLM, LLMModel } from '@theragpt/llm'
-import { NextRequest, NextResponse } from 'next/server'
+import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry';
+import { callLLM, LLMModel } from '@theragpt/llm';
+import { NextRequest, NextResponse } from 'next/server';
 
 const TEMPERATURE = 0.3
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { prompt } = await req.json()
+    const { prompt, model = LLMModel.GPT_4O } = await req.json()
     const registry = createLLMRegistry()
 
-    const llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
+    const llmResponse = await callLLM(model, registry, {
       prompt,
       temperature: TEMPERATURE,
       systemPrompt:
