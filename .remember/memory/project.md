@@ -71,3 +71,11 @@ Since lib/utils.ts is only used by the web app, 'clsx' should be added to apps/w
 - Use combination of `max-h-0`/`max-h-[size]`, `opacity-0`/`opacity-100`, and `overflow-hidden` with `transition-all` for slide animations
 - Example implementation in ThoughtEntryForm.tsx where ThoughtStarters panel slides down from underneath the textarea
 - Apply `transition-all duration-300 ease-in-out` for smooth animations
+
+### Project Overview: TheraGPT
+- **Purpose**: AI-powered CBT journal for mental health - analyzes troubling thoughts, identifies cognitive distortions, provides reframing strategies
+- **Architecture**: Turborepo monorepo with apps/web (Next.js - primary platform), apps/mobile (Expo/RN - in development), shared packages for logic/llm/prompts/config
+- **Tech Stack**: Next.js + Tailwind (web), React Native/Expo (mobile), Zustand state management, OpenAI API, PNPM package manager
+- **Key Features**: AI thought analysis, cognitive distortion identification, CBT techniques, offline support, privacy-focused (local storage default)
+- **Current State**: Web app production-ready at theragpt.ai, mobile app in active development with Cards/Review/Archive/Onboarding screens
+- **State Management**: Uses Zustand (useCardStore) for mobile card state, shared types via @theragpt/logic package
