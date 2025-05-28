@@ -106,6 +106,7 @@ export const useAnalyzeThought = () => {
             ...streamPatch, // Intermediate streamed data
             ...content, // Final data from stream (should override streamPatch if fields overlap)
             id: entryId, // Ensure ID
+            createdAt: partialEntry.createdAt, // Preserve original timestamp
           }
           if (finalEntry.reframe) finalEntry.reframe.entryId = entryId // Ensure reframe.entryId
           updateEntry(finalEntry)

@@ -4,7 +4,7 @@ import { Badge } from '@/apps/web/components/ui/badge'
 import { Button } from '@/apps/web/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/apps/web/components/ui/card'
 import { useEntryStore } from '@theragpt/logic'
-import { formatDistanceToNow } from 'date-fns'
+import { formatRelativeTime } from '@/lib/date-utils'
 import {
   CalendarIcon,
   ChevronDownIcon,
@@ -36,9 +36,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <CalendarIcon className="h-4 w-4" />
           <span>
-            {formatDistanceToNow(new Date(entry.createdAt), {
-              addSuffix: true,
-            })}
+            {formatRelativeTime(entry.createdAt)}
           </span>
         </div>
         <Badge variant="outline">{entry.category}</Badge>
