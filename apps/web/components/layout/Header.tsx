@@ -49,18 +49,17 @@ export const Header = () => {
           <NavigationMenuList>
             {MENU_ITEMS.map(item => (
               <NavigationMenuItem key={item.href}>
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
+                <NavigationMenuLink
+                  className={navigationMenuTriggerStyle()}
+                  asChild
                 >
-                  <NavigationMenuLink
-                    className={navigationMenuTriggerStyle()}
-                    asChild
+                  <Link
+                    href={item.href}
+                    className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
                   >
                     {item.label}
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
             <NavigationMenuItem>
