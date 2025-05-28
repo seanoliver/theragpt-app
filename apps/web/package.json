@@ -24,7 +24,6 @@
     "@theragpt/logic": "workspace:*",
     "@theragpt/prompts": "workspace:*",
     "class-variance-authority": "^0.7.1",
-    "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.503.0",
     "motion": "^12.9.4",

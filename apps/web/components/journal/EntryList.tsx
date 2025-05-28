@@ -2,6 +2,7 @@
 
 import { Card } from '@/apps/web/components/ui/card'
 import { useEntryStore } from '@theragpt/logic'
+import { compareTimestampsDesc } from '@/lib/date-utils'
 import Link from 'next/link'
 import { EntryItem } from './EntryItem/EntryItem'
 import { useEntryStoreInitialized } from './store/EntryStoreProvider'
@@ -12,7 +13,7 @@ export const EntryList = () => {
 
   // Sort entries by createdAt date (newest first)
   const sortedEntries = [...entries].sort(
-    (a, b) => (b.createdAt || 0) - (a.createdAt || 0),
+    (a, b) => compareTimestampsDesc(a.createdAt, b.createdAt),
   )
 
   if (isLoading || !initialized) {
