@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import { ThemeToggle } from './theme/ThemeToggle'
+import { TrackedLink } from './TrackedLink'
 import { Menu } from 'lucide-react'
 import Image from 'next/image'
 import {
@@ -53,12 +54,14 @@ export const Header = () => {
                   className={navigationMenuTriggerStyle()}
                   asChild
                 >
-                  <Link
+                  <TrackedLink
                     href={item.href}
                     className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-body"
+                    ctaText={item.label}
+                    ctaLocation="header_nav"
                   >
                     {item.label}
-                  </Link>
+                  </TrackedLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -80,7 +83,13 @@ export const Header = () => {
             <DropdownMenuContent align="end" className="glass-panel">
               {MENU_ITEMS.map(item => (
                 <DropdownMenuItem asChild key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <TrackedLink 
+                    href={item.href}
+                    ctaText={item.label}
+                    ctaLocation="header_mobile_menu"
+                  >
+                    {item.label}
+                  </TrackedLink>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
