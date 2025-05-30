@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
 import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
 import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
 import { Footer } from '../components/layout/Footer'
+import { PageTracker } from '@/apps/web/components/layout/PageTracker'
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -66,6 +67,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <EntryStoreProvider>
+              <PageTracker />
               <BackgroundTexture />
               <div className="min-h-screen relative z-10">
                 {children}

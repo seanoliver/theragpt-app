@@ -7,6 +7,8 @@ import {
 import { getAnalyzePrompt } from '@theragpt/prompts'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useTracking } from '@/apps/web/lib/analytics/useTracking'
+import { usePathname } from 'next/navigation'
 
 export const useAnalyzeThought = () => {
   const addEntry = useEntryStore(state => state.addEntry)
@@ -17,16 +19,29 @@ export const useAnalyzeThought = () => {
   const setError = useEntryStore(state => state.setError)
   const setStreamingEntryId = useEntryStore(state => state.setStreamingEntryId)
   const router = useRouter()
+  const { track } = useTracking()
+  const pathname = usePathname()
 
   const [thought, setThought] = useState('')
+  const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!thought.trim()) return
+    
+    // Track thought submission
+    const entryMethod = pathname === '/' ? 'homepage' : 'new_entry_page'
+    track('thought_submitted', {
+      thought_length: thought.trim().length,
+      entry_method: entryMethod,
+      thought_starter_used: false, // Will be overridden if thought starter was used
+    })
+
     setLoading(true)
-    setLoading(true) // setLoading was already called, ensure it's true
     setError(null) // Clear previous errors
+    const startTime = Date.now()
+    setAnalysisStartTime(startTime)
 
     try {
       const prompt = getAnalyzePrompt({ rawText: thought })
@@ -55,6 +70,12 @@ export const useAnalyzeThought = () => {
 
       const entryId = partialEntry.id
       setStreamingEntryId(entryId)
+
+      // Track analysis start
+      track('thought_analysis_started', {
+        entry_id: entryId,
+        thought_length: thought.trim().length,
+      })
 
       const streamPatch: Partial<Entry> = {}
 
@@ -111,10 +132,31 @@ export const useAnalyzeThought = () => {
           if (finalEntry.reframe) finalEntry.reframe.entryId = entryId // Ensure reframe.entryId
           updateEntry(finalEntry)
           setStreamingEntryId(null)
+          
+          // Track successful analysis completion
+          if (analysisStartTime) {
+            track('thought_analysis_completed', {
+              entry_id: entryId,
+              analysis_duration_ms: Date.now() - analysisStartTime,
+              distortions_found: finalEntry.distortions?.length || 0,
+              has_reframe: Boolean(finalEntry.reframe?.text),
+            })
+          }
+          
           return // Exit callback
         } else if (type === 'error') {
           console.error('Streaming error:', content)
           setError(typeof content === 'string' ? content : 'Streaming error')
+          
+          // Track analysis failure
+          if (analysisStartTime) {
+            track('thought_analysis_failed', {
+              entry_id: entryId,
+              error_type: typeof content === 'string' ? content : 'Unknown error',
+              analysis_duration_ms: Date.now() - analysisStartTime,
+            })
+          }
+          
           const errorEntryPayload = {
             ...partialEntry,
             ...streamPatch,
@@ -223,6 +265,15 @@ export const useAnalyzeThought = () => {
     } catch (error) {
       console.error('Error analyzing thought:', error)
       setError('Failed to analyze thought')
+      
+      // Track general failure
+      if (analysisStartTime) {
+        track('thought_analysis_failed', {
+          entry_id: 'unknown',
+          error_type: error instanceof Error ? error.message : 'Unknown error',
+          analysis_duration_ms: Date.now() - analysisStartTime,
+        })
+      }
     } finally {
       setLoading(false)
     }

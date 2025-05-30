@@ -5,11 +5,13 @@ import { Loader2 } from 'lucide-react'
 interface AnalyzeThoughtButtonProps {
   isLoading: boolean
   thought: string
+  entryMethod: 'homepage' | 'new_entry_page'
 }
 
 export const AnalyzeThoughtButton = ({
   isLoading,
   thought,
+  entryMethod: _entryMethod,
 }: AnalyzeThoughtButtonProps) => {
   return (
     <Button

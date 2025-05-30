@@ -3,15 +3,28 @@
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { Button } from '../../ui/button'
+import { useTracking } from '@/apps/web/lib/analytics/useTracking'
 
 export const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()
+  const { track } = useTracking()
+
+  const handleThemeToggle = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light'
+    
+    track('theme_toggled', {
+      previous_theme: theme as 'light' | 'dark' | 'system',
+      new_theme: newTheme,
+    })
+    
+    setTheme(newTheme)
+  }
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      onClick={handleThemeToggle}
       className="text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 rounded-full"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

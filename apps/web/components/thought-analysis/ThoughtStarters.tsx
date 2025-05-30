@@ -70,7 +70,7 @@ const thoughtStarterCategories = [
 ]
 
 interface ThoughtStartersProps {
-  onSelect: (starter: string) => void
+  onSelect: (starter: string, index: number) => void
 }
 
 export const ThoughtStarters = ({ onSelect }: ThoughtStartersProps) => {
@@ -156,7 +156,7 @@ export const ThoughtStarters = ({ onSelect }: ThoughtStartersProps) => {
                 <Card
                   key={index}
                   className="p-3 cursor-pointer hover:shadow-md transition-all border-purple-100 dark:border-purple-900/30 hover:border-purple-300 dark:hover:border-purple-700 bg-white/70 dark:bg-slate-800/70"
-                  onClick={() => onSelect(starter)}
+                  onClick={() => onSelect(starter, index)}
                 >
                   <div className="flex flex-col gap-2">
                     <Badge

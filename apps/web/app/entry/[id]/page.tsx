@@ -1,4 +1,5 @@
 import { EntryItem } from '@/apps/web/components/journal/EntryItem/EntryItem'
+import { EntryPageTracker } from '@/apps/web/components/journal/EntryPageTracker'
 import { Header } from '@/apps/web/components/layout/Header'
 import { Button } from '@/apps/web/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
@@ -37,6 +38,7 @@ export default async function EntryDetailPage({
         </h1>
 
         <div className="animate-fade-in">
+          <EntryPageTracker entryId={resolvedParams.id} />
           <EntryItem entryId={resolvedParams.id} />
         </div>
       </div>
