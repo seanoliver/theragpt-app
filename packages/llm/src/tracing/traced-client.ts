@@ -1,6 +1,7 @@
 import { LLMCallOptions, LLMClient, LLMProvider } from '../types'
 import { PostHogLLMTracer } from './posthog-tracer'
 import { v4 as uuidv4 } from 'uuid'
+import { getLLMContext } from './context'
 
 export class TracedLLMClient implements LLMClient {
   constructor(
@@ -12,6 +13,17 @@ export class TracedLLMClient implements LLMClient {
   async call(opts: LLMCallOptions): Promise<string> {
     const requestId = uuidv4()
     const startTime = Date.now()
+    
+    // Get context from async local storage
+    const context = getLLMContext()
+    const userId = opts.userId || context?.userId
+    
+    // Merge metadata from context and options
+    const metadata = {
+      ...context?.metadata,
+      session_id: context?.sessionId,
+      request_path: context?.requestPath,
+    }
 
     try {
       // Trace the start of the request
@@ -19,7 +31,8 @@ export class TracedLLMClient implements LLMClient {
         ...opts,
         provider: this.provider,
         requestId,
-        userId: opts.userId,
+        userId,
+        metadata,
       })
 
       // Make the actual LLM call
@@ -33,7 +46,7 @@ export class TracedLLMClient implements LLMClient {
       // Trace the successful completion
       await this.tracer.traceEnd({
         requestId,
-        userId: opts.userId,
+        userId,
         model: opts.model,
         provider: this.provider,
         responseText: content,
@@ -47,7 +60,7 @@ export class TracedLLMClient implements LLMClient {
       // Trace the error
       await this.tracer.traceEnd({
         requestId,
-        userId: opts.userId,
+        userId,
         model: opts.model,
         provider: this.provider,
         responseText: '',
@@ -68,6 +81,17 @@ export class TracedLLMClient implements LLMClient {
     const startTime = Date.now()
     let chunkIndex = 0
     let fullResponse = ''
+    
+    // Get context from async local storage
+    const context = getLLMContext()
+    const userId = opts.userId || context?.userId
+    
+    // Merge metadata from context and options
+    const metadata = {
+      ...context?.metadata,
+      session_id: context?.sessionId,
+      request_path: context?.requestPath,
+    }
 
     try {
       // Trace the start of the stream
@@ -75,7 +99,8 @@ export class TracedLLMClient implements LLMClient {
         ...opts,
         provider: this.provider,
         requestId,
-        userId: opts.userId,
+        userId,
+        metadata,
       })
 
       // Stream from the actual client
@@ -85,7 +110,7 @@ export class TracedLLMClient implements LLMClient {
         // Trace stream chunks
         await this.tracer.traceStream({
           requestId,
-          userId: opts.userId,
+          userId,
           model: opts.model,
           provider: this.provider,
           chunk,
@@ -98,7 +123,7 @@ export class TracedLLMClient implements LLMClient {
       // Trace successful stream completion
       await this.tracer.traceEnd({
         requestId,
-        userId: opts.userId,
+        userId,
         model: opts.model,
         provider: this.provider,
         responseText: fullResponse,
@@ -108,7 +133,7 @@ export class TracedLLMClient implements LLMClient {
       // Trace stream error
       await this.tracer.traceEnd({
         requestId,
-        userId: opts.userId,
+        userId,
         model: opts.model,
         provider: this.provider,
         responseText: fullResponse,
