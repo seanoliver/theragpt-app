@@ -28,11 +28,12 @@ export class PostHogLLMTracer {
       provider: LLMProvider 
       requestId: string
       userId?: string
+      metadata?: Record<string, any>
     }
   ): Promise<void> {
     if (!this.enabled || !this.posthog) return
 
-    const { model, provider, requestId, userId, prompt, systemPrompt, temperature, maxTokens } = options
+    const { model, provider, requestId, userId, prompt, systemPrompt, temperature, maxTokens, metadata } = options
 
     this.posthog.capture({
       distinctId: userId || 'anonymous',
@@ -47,6 +48,9 @@ export class PostHogLLMTracer {
         temperature,
         max_tokens: maxTokens,
         timestamp: new Date().toISOString(),
+        // Include first 100 chars of prompt for debugging (sanitized)
+        prompt_preview: prompt.substring(0, 100),
+        ...metadata,
       },
     })
   }

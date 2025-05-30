@@ -18,6 +18,9 @@ export const POST = async (req: NextRequest) => {
   }
 
   const registry = createLLMRegistry()
+  
+  // Extract user ID from headers or session if available
+  const userId = req.headers.get('x-user-id') || undefined
 
   const encoder = new TextEncoder()
   const stream = new ReadableStream({
@@ -33,6 +36,7 @@ export const POST = async (req: NextRequest) => {
           temperature: TEMPERATURE,
           systemPrompt:
             'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+          userId,
         })
         for await (const chunk of llmStream) {
           buffer += chunk

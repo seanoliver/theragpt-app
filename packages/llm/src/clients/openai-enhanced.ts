@@ -1,8 +1,11 @@
-import { LLMCallOptions, LLMClient, LLMProvider } from '../types'
+import { LLMCallOptions, LLMClient, LLMProvider, LLMResponse } from '../types'
 import { OpenAI } from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
 
-export class OpenAIClient implements LLMClient {
+/**
+ * Enhanced OpenAI client that returns usage information along with the response
+ */
+export class OpenAIEnhancedClient implements LLMClient {
   private client: OpenAI
 
   constructor(apiKey: string) {
@@ -22,7 +25,7 @@ export class OpenAIClient implements LLMClient {
     maxTokens,
     systemPrompt,
     logger,
-  }: LLMCallOptions): Promise<string> {
+  }: LLMCallOptions): Promise<LLMResponse> {
     const messages: ChatCompletionMessageParam[] = [
       ...(systemPrompt
         ? [
@@ -43,15 +46,21 @@ export class OpenAIClient implements LLMClient {
       response_format: { type: 'json_object' },
     })
 
-    const result = response.choices?.[0]?.message?.content ?? ''
+    const content = response.choices?.[0]?.message?.content ?? ''
+    const usage = response.usage ? {
+      promptTokens: response.usage.prompt_tokens,
+      completionTokens: response.usage.completion_tokens,
+      totalTokens: response.usage.total_tokens,
+    } : undefined
+
     logger?.({ 
       model, 
       provider: LLMProvider.OpenAI, 
-      result,
+      result: content,
       usage: response.usage
     })
 
-    return result
+    return { content, usage }
   }
 
   async *stream({

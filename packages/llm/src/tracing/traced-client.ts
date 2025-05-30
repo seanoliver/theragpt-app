@@ -25,17 +25,24 @@ export class TracedLLMClient implements LLMClient {
       // Make the actual LLM call
       const result = await this.client.call(opts)
 
+      // Handle both string and LLMResponse formats
+      const isLLMResponse = typeof result === 'object' && 'content' in result
+      const content = isLLMResponse ? result.content : result
+      const usage = isLLMResponse ? result.usage : undefined
+
       // Trace the successful completion
       await this.tracer.traceEnd({
         requestId,
         userId: opts.userId,
         model: opts.model,
         provider: this.provider,
-        responseText: result,
+        responseText: content,
         durationMs: Date.now() - startTime,
+        tokenUsage: usage,
       })
 
-      return result
+      // Return string content for backward compatibility
+      return content
     } catch (error) {
       // Trace the error
       await this.tracer.traceEnd({

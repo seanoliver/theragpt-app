@@ -9,11 +9,15 @@ export const POST = async (req: NextRequest) => {
     const { prompt } = await req.json()
     const registry = createLLMRegistry()
 
+    // Extract user ID from headers or session if available
+    const userId = req.headers.get('x-user-id') || undefined
+
     const llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
       prompt,
       temperature: TEMPERATURE,
       systemPrompt:
         'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+      userId,
     })
 
     return NextResponse.json({ result: llmResponse })
