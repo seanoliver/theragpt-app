@@ -1,25 +1,38 @@
 import { LLMClientConfig, LLMProvider, ClientRegistry } from './types'
 import { OpenAIClient } from './clients/openai'
-import { PostHogLLMTracer, TracingConfig } from './tracing/posthog-tracer'
-import { TracedLLMClient } from './tracing/traced-client'
+import { OpenAIPostHogClientV2 } from './clients/openai-posthog-v2'
+import { PostHog } from 'posthog-node'
 
 export interface RegistryConfig extends LLMClientConfig {
-  tracing?: TracingConfig
+  posthog?: {
+    apiKey: string
+    host?: string
+    enabled?: boolean
+  }
 }
 
 export const createClientRegistry = (
   config: RegistryConfig,
 ): ClientRegistry => {
   const registry: ClientRegistry = {}
-  
-  // Create tracer if configured
-  const tracer = config.tracing ? new PostHogLLMTracer(config.tracing) : null
 
   if (config.openAIApiKey) {
-    const client = new OpenAIClient(config.openAIApiKey)
-    registry[LLMProvider.OpenAI] = tracer 
-      ? new TracedLLMClient(client, LLMProvider.OpenAI, tracer)
-      : client
+    // Use PostHog-wrapped client if PostHog is enabled
+    if (config.posthog?.enabled && config.posthog?.apiKey) {
+      const posthogClient = new PostHog(config.posthog.apiKey, {
+        host: config.posthog.host || 'https://app.posthog.com',
+        flushAt: 1,
+        flushInterval: 0,
+      })
+      
+      registry[LLMProvider.OpenAI] = new OpenAIPostHogClientV2(
+        config.openAIApiKey,
+        posthogClient
+      )
+    } else {
+      // Fallback to regular OpenAI client
+      registry[LLMProvider.OpenAI] = new OpenAIClient(config.openAIApiKey)
+    }
   }
 
   return registry

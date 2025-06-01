@@ -24,11 +24,13 @@
   "license": "MIT",
   "packageManager": "pnpm@10.7.1",
   "dependencies": {
+    "@posthog/ai": "^4.4.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "expo-blur": "^14.0.3",
     "expo-linear-gradient": "^14.0.2",
     "html-entities": "2.5.3",
+    "posthog-node": "^4.18.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.77.0",
