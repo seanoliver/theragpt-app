@@ -65,7 +65,7 @@ export class OpenAIPostHogClientV2 implements LLMClient {
       model, 
       provider: LLMProvider.OpenAI, 
       result: content,
-      usage: response.usage
+      usage: response.usage,
     })
 
     return { content, usage }

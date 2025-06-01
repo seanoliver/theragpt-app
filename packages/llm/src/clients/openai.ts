@@ -48,7 +48,7 @@ export class OpenAIClient implements LLMClient {
       model, 
       provider: LLMProvider.OpenAI, 
       result,
-      usage: response.usage
+      usage: response.usage,
     })
 
     return result

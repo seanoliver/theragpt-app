@@ -13,16 +13,16 @@ export const llmContextStorage = new AsyncLocalStorage<LLMContext>()
 /**
  * Get the current LLM context
  */
-export function getLLMContext(): LLMContext | undefined {
+export const getLLMContext = (): LLMContext | undefined => {
   return llmContextStorage.getStore()
 }
 
 /**
  * Run a function with LLM context
  */
-export function withLLMContext<T>(
+export const withLLMContext = <T>(
   context: LLMContext,
   fn: () => T | Promise<T>
-): T | Promise<T> {
+): T | Promise<T> => {
   return llmContextStorage.run(context, fn)
 }
