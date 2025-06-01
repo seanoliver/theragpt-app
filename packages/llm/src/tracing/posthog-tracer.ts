@@ -13,7 +13,7 @@ export class PostHogLLMTracer {
 
   constructor(config: TracingConfig) {
     this.enabled = config.enabled ?? true
-    
+
     if (this.enabled && config.apiKey) {
       this.posthog = new PostHog(config.apiKey, {
         host: config.host || 'https://app.posthog.com',
@@ -24,16 +24,26 @@ export class PostHogLLMTracer {
   }
 
   async traceStart(
-    options: LLMCallOptions & { 
-      provider: LLMProvider 
+    options: LLMCallOptions & {
+      provider: LLMProvider
       requestId: string
       userId?: string
       metadata?: Record<string, any>
-    }
+    },
   ): Promise<void> {
     if (!this.enabled || !this.posthog) return
 
-    const { model, provider, requestId, userId, prompt, systemPrompt, temperature, maxTokens, metadata } = options
+    const {
+      model,
+      provider,
+      requestId,
+      userId,
+      prompt,
+      systemPrompt,
+      temperature,
+      maxTokens,
+      metadata,
+    } = options
 
     this.posthog.capture({
       distinctId: userId || 'anonymous',
@@ -55,25 +65,32 @@ export class PostHogLLMTracer {
     })
   }
 
-  async traceEnd(
-    options: {
-      requestId: string
-      userId?: string
-      model: string
-      provider: LLMProvider
-      responseText: string
-      durationMs: number
-      error?: Error
-      tokenUsage?: {
-        promptTokens?: number
-        completionTokens?: number
-        totalTokens?: number
-      }
+  async traceEnd(options: {
+    requestId: string
+    userId?: string
+    model: string
+    provider: LLMProvider
+    responseText: string
+    durationMs: number
+    error?: Error
+    tokenUsage?: {
+      promptTokens?: number
+      completionTokens?: number
+      totalTokens?: number
     }
-  ): Promise<void> {
+  }): Promise<void> {
     if (!this.enabled || !this.posthog) return
 
-    const { requestId, userId, model, provider, responseText, durationMs, error, tokenUsage } = options
+    const {
+      requestId,
+      userId,
+      model,
+      provider,
+      responseText,
+      durationMs,
+      error,
+      tokenUsage,
+    } = options
 
     this.posthog.capture({
       distinctId: userId || 'anonymous',
@@ -95,16 +112,14 @@ export class PostHogLLMTracer {
     })
   }
 
-  async traceStream(
-    options: {
-      requestId: string
-      userId?: string
-      model: string
-      provider: LLMProvider
-      chunk: string
-      chunkIndex: number
-    }
-  ): Promise<void> {
+  async traceStream(options: {
+    requestId: string
+    userId?: string
+    model: string
+    provider: LLMProvider
+    chunk: string
+    chunkIndex: number
+  }): Promise<void> {
     if (!this.enabled || !this.posthog) return
 
     // Only trace every 10th chunk to avoid overwhelming the system
