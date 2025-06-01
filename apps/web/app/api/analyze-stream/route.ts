@@ -1,6 +1,6 @@
 import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
 import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
-import { LLMModel } from '@theragpt/llm'
+import { LLMModel, withLLMContext } from '@theragpt/llm'
 import { streamLLM } from '@theragpt/llm/src/router'
 import { NextRequest } from 'next/server'
 
@@ -18,6 +18,11 @@ export const POST = async (req: NextRequest) => {
   }
 
   const registry = createLLMRegistry()
+  
+  // Extract context from headers
+  const userId = req.headers.get('x-user-id') || undefined
+  const sessionId = req.headers.get('x-session-id') || undefined
+  const requestPath = req.headers.get('x-request-path') || undefined
 
   const encoder = new TextEncoder()
   const stream = new ReadableStream({
@@ -27,13 +32,17 @@ export const POST = async (req: NextRequest) => {
         let buffer = ''
         const previousParsed: Record<string, any> = {}
 
-        // Stream the LLM response using the streamLLM function from the router
-        const llmStream = streamLLM(LLMModel.GPT_4O, registry, {
-          prompt,
-          temperature: TEMPERATURE,
-          systemPrompt:
-            'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
-        })
+        // Stream the LLM response with context
+        const llmStream = await withLLMContext(
+          { userId, sessionId, requestPath },
+          async () => streamLLM(LLMModel.GPT_4O, registry, {
+            prompt,
+            temperature: TEMPERATURE,
+            systemPrompt:
+              'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+            userId,
+          })
+        )
         for await (const chunk of llmStream) {
           buffer += chunk
 

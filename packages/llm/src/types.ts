@@ -9,8 +9,17 @@ export interface LLMCallOptions {
   responseFormat?: 'text' | 'json_object'
 }
 
+export interface LLMResponse {
+  content: string
+  usage?: {
+    promptTokens?: number
+    completionTokens?: number
+    totalTokens?: number
+  }
+}
+
 export interface LLMClient {
-  call(opts: LLMCallOptions): Promise<string>
+  call(opts: LLMCallOptions): Promise<string | LLMResponse>
   stream?(opts: LLMCallOptions): AsyncGenerator<string>
   toolCall?(opts: LLMCallOptions & { tools: any[] }): Promise<any>
   functionCall?(opts: LLMCallOptions & { functionName: string }): Promise<any>

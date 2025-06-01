@@ -73,3 +73,7 @@ logs
 # Cache
 .eslintcache
 .cache
+
+# AI Coding Tools
+.claude/*
+.cursor/*

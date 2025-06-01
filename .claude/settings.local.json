@@ -6,7 +6,12 @@
       "Bash(pnpm tsc:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm lint:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "WebFetch(domain:posthog.com)",
+      "Bash(pnpm add:*)",
+      "Bash(git push:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm install:*)"
     ],
     "deny": []
   }

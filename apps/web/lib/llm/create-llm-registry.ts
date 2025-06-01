@@ -16,5 +16,10 @@ export const createLLMRegistry = (): ClientRegistry => {
     openAIApiKey: process.env.OPENAI_API_KEY,
     // Add other provider API keys as needed
     // anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+    posthog: {
+      apiKey: process.env.NEXT_PUBLIC_POSTHOG_KEY || '',
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+      enabled: process.env.POSTHOG_LLM_TRACING_ENABLED === 'true',
+    },
   })
 }

@@ -1,17 +1,24 @@
-import { LLMCallOptions, LLMClient, LLMProvider } from '../types'
-import { OpenAI } from 'openai'
+import { LLMCallOptions, LLMClient, LLMProvider, LLMResponse } from '../types'
+import { OpenAI as PostHogOpenAI } from '@posthog/ai'
+import { PostHog } from 'posthog-node'
 import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
 
-export class OpenAIClient implements LLMClient {
-  private client: OpenAI
+/**
+ * OpenAI client with PostHog LLM observability
+ * Uses PostHog's official AI wrapper for automatic tracking
+ */
+export class OpenAIPostHogClientV2 implements LLMClient {
+  private client: PostHogOpenAI
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, posthogClient: PostHog) {
     if (!apiKey) {
       throw new Error('OpenAI API key is required')
     }
 
-    this.client = new OpenAI({
+    // Initialize PostHog-wrapped OpenAI client
+    this.client = new PostHogOpenAI({
       apiKey,
+      posthog: posthogClient,
     })
   }
 
@@ -22,7 +29,8 @@ export class OpenAIClient implements LLMClient {
     maxTokens,
     systemPrompt,
     logger,
-  }: LLMCallOptions): Promise<string> {
+    userId,
+  }: LLMCallOptions): Promise<LLMResponse> {
     const messages: ChatCompletionMessageParam[] = [
       ...(systemPrompt
         ? [
@@ -35,23 +43,32 @@ export class OpenAIClient implements LLMClient {
       { role: 'user', content: prompt } as ChatCompletionMessageParam,
     ]
 
+    // Create the completion request with PostHog tracking
     const response = await this.client.chat.completions.create({
       model,
       messages,
       temperature,
       max_completion_tokens: maxTokens,
       response_format: { type: 'json_object' },
+      // PostHog monitoring parameters
+      posthogDistinctId: userId || 'anonymous',
     })
 
-    const result = response.choices?.[0]?.message?.content ?? ''
+    const content = response.choices?.[0]?.message?.content ?? ''
+    const usage = response.usage ? {
+      promptTokens: response.usage.prompt_tokens,
+      completionTokens: response.usage.completion_tokens,
+      totalTokens: response.usage.total_tokens,
+    } : undefined
+
     logger?.({ 
       model, 
       provider: LLMProvider.OpenAI, 
-      result,
+      result: content,
       usage: response.usage,
     })
 
-    return result
+    return { content, usage }
   }
 
   async *stream({
@@ -60,6 +77,7 @@ export class OpenAIClient implements LLMClient {
     temperature,
     maxTokens,
     systemPrompt,
+    userId,
   }: LLMCallOptions): AsyncGenerator<string> {
     const messages: ChatCompletionMessageParam[] = [
       ...(systemPrompt
@@ -80,6 +98,8 @@ export class OpenAIClient implements LLMClient {
       max_completion_tokens: maxTokens,
       stream: true,
       response_format: { type: 'json_object' },
+      // PostHog monitoring parameters
+      posthogDistinctId: userId || 'anonymous',
     })
 
     for await (const chunk of stream) {

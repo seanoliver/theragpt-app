@@ -17,7 +17,10 @@ export const callLLM = async (
     throw new Error(`No registered client for provider: ${provider}`)
   }
 
-  return client.call({ model, ...opts })
+  const result = await client.call({ model, ...opts })
+  
+  // Handle both string and LLMResponse formats for backward compatibility
+  return typeof result === 'string' ? result : result.content
 }
 
 export const streamLLM = async function* (

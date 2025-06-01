@@ -1,5 +1,5 @@
 import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
-import { callLLM, LLMModel } from '@theragpt/llm'
+import { callLLM, LLMModel, withLLMContext } from '@theragpt/llm'
 import { NextRequest, NextResponse } from 'next/server'
 
 const TEMPERATURE = 0.3
@@ -9,12 +9,24 @@ export const POST = async (req: NextRequest) => {
     const { prompt } = await req.json()
     const registry = createLLMRegistry()
 
-    const llmResponse = await callLLM(LLMModel.GPT_4O, registry, {
-      prompt,
-      temperature: TEMPERATURE,
-      systemPrompt:
-        'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
-    })
+    // Extract context from headers
+    const userId = req.headers.get('x-user-id') || undefined
+    const sessionId = req.headers.get('x-session-id') || undefined
+    const requestPath = req.headers.get('x-request-path') || undefined
+
+    // Run LLM call with context
+    const llmResponse = await withLLMContext(
+      { userId, sessionId, requestPath },
+      async () => {
+        return callLLM(LLMModel.GPT_4O, registry, {
+          prompt,
+          temperature: TEMPERATURE,
+          systemPrompt:
+            'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+          userId,
+        })
+      }
+    )
 
     return NextResponse.json({ result: llmResponse })
   } catch (error: any) {
