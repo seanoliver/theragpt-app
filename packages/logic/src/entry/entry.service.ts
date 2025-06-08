@@ -1,6 +1,13 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
+import { supabase } from '@theragpt/config'
 import { Entry, EntryListener } from './types'
+import {
+  mapDbEntryToAppEntry,
+  mapAppEntryToDbEntry,
+  mapAppReframeToDbReframe,
+  mapAppDistortionInstanceToDb,
+} from './type-mappers'
 
 export class EntryService {
   private storageService: StorageService
@@ -8,9 +15,19 @@ export class EntryService {
   private entryCache: Entry[] | null = null
   private entryMap: Map<string, Entry> = new Map()
   private listeners: EntryListener[] = []
+  private isOnline: boolean = true
 
   constructor(storageService: StorageService) {
     this.storageService = storageService
+    this.checkOnlineStatus()
+  }
+
+  private checkOnlineStatus() {
+    if (typeof navigator !== 'undefined') {
+      this.isOnline = navigator.onLine
+      window.addEventListener('online', () => { this.isOnline = true })
+      window.addEventListener('offline', () => { this.isOnline = false })
+    }
   }
 
   subscribe(listener: EntryListener) {
@@ -26,10 +43,32 @@ export class EntryService {
 
   async init(): Promise<Entry[]> {
     try {
-      // Then initialize entries
-      const existingEntries = await this.getAll()
-      this.notifyListeners(existingEntries)
-      return existingEntries
+      let entries: Entry[] = []
+      
+      if (this.isOnline) {
+        // Try to fetch from Supabase first
+        try {
+          const { data: { user } } = await supabase.auth.getUser()
+          if (user) {
+            entries = await this.fetchFromSupabase()
+            // Cache to local storage for offline access
+            await this.saveToLocalStorage(entries)
+          } else {
+            // No user, fall back to local storage
+            entries = await this.getFromLocalStorage()
+          }
+        } catch (supabaseError) {
+          console.warn('Failed to fetch from Supabase, falling back to local storage', supabaseError)
+          entries = await this.getFromLocalStorage()
+        }
+      } else {
+        // Offline, use local storage
+        entries = await this.getFromLocalStorage()
+      }
+
+      this.updateCache(entries)
+      this.notifyListeners(entries)
+      return entries
     } catch (error) {
       console.error('Error initializing entries', error as Error)
       return []
@@ -43,9 +82,23 @@ export class EntryService {
       createdAt: Date.now(),
     }
 
+    try {
+      if (this.isOnline) {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          // Save to Supabase
+          await this.saveEntryToSupabase(entry)
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to save to Supabase, saving locally', error)
+    }
+
+    // Always save to local storage as backup
     const entries = await this.getAll()
     entries.push(entry)
-    await this.saveAllEntries(entries)
+    await this.saveToLocalStorage(entries)
+    this.updateCache(entries)
     this.notifyListeners(entries)
 
     return entry
@@ -60,7 +113,7 @@ export class EntryService {
     }
 
     const entry = entries[index]
-    entries[index] = {
+    const updatedEntry: Entry = {
       ...entry,
       rawText: params.rawText ?? entry.rawText,
       distortions: params.distortions ?? entry.distortions,
@@ -73,20 +126,55 @@ export class EntryService {
       updatedAt: Date.now(),
     }
 
-    await this.saveAllEntries(entries)
+    try {
+      if (this.isOnline) {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          // Update in Supabase
+          await this.updateEntryInSupabase(updatedEntry)
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to update in Supabase, updating locally', error)
+    }
+
+    // Always update local storage
+    entries[index] = updatedEntry
+    await this.saveToLocalStorage(entries)
+    this.updateCache(entries)
     this.notifyListeners(entries)
 
-    return entries[index]
+    return updatedEntry
   }
 
   async getAll(): Promise<Entry[]> {
     if (this.entryCache) return this.entryCache
+    
     try {
-      const data = await this.storageService.getItem<Entry[]>(this.storageKey)
-      this.updateCache(data || [])
-      return this.entryCache!
+      let entries: Entry[] = []
+      
+      if (this.isOnline) {
+        try {
+          const { data: { user } } = await supabase.auth.getUser()
+          if (user) {
+            entries = await this.fetchFromSupabase()
+            // Cache to local storage
+            await this.saveToLocalStorage(entries)
+          } else {
+            entries = await this.getFromLocalStorage()
+          }
+        } catch (supabaseError) {
+          console.warn('Failed to fetch from Supabase, using local storage', supabaseError)
+          entries = await this.getFromLocalStorage()
+        }
+      } else {
+        entries = await this.getFromLocalStorage()
+      }
+      
+      this.updateCache(entries)
+      return entries
     } catch (error) {
-      console.error('Error getting entries from storage', error as Error)
+      console.error('Error getting entries', error as Error)
       return []
     }
   }
@@ -101,22 +189,121 @@ export class EntryService {
   }
 
   async deleteEntry(id: string): Promise<void> {
+    try {
+      if (this.isOnline) {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          // Delete from Supabase
+          await this.deleteEntryFromSupabase(id)
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to delete from Supabase, deleting locally', error)
+    }
+
+    // Always delete from local storage
     const entries = await this.getAll()
     const index = entries.findIndex(a => a.id === id)
     if (index !== -1) {
       entries.splice(index, 1)
-      await this.saveAllEntries(entries)
+      await this.saveToLocalStorage(entries)
+      this.updateCache(entries)
       this.notifyListeners(entries)
     }
   }
 
-  private async saveAllEntries(entries: Entry[]): Promise<void> {
+  // Local storage methods
+  private async saveToLocalStorage(entries: Entry[]): Promise<void> {
     try {
       await this.storageService.setItem(this.storageKey, entries)
-      this.updateCache(entries)
     } catch (error) {
       console.error('Error saving entries to storage', error as Error)
     }
+  }
+
+  private async getFromLocalStorage(): Promise<Entry[]> {
+    try {
+      const data = await this.storageService.getItem<Entry[]>(this.storageKey)
+      return data || []
+    } catch (error) {
+      console.error('Error getting entries from storage', error as Error)
+      return []
+    }
+  }
+
+  // Supabase methods
+  private async fetchFromSupabase(): Promise<Entry[]> {
+    const { data, error } = await supabase
+      .from('entries')
+      .select(`
+        *,
+        reframes(*),
+        distortion_instances(*, distortions(*))
+      `)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+
+    return data.map(dbEntry => {
+      const reframes = dbEntry.reframes || []
+      const distortionInstances = dbEntry.distortion_instances || []
+      return mapDbEntryToAppEntry(dbEntry, reframes, distortionInstances)
+    })
+  }
+
+  private async saveEntryToSupabase(entry: Entry): Promise<void> {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('User not authenticated')
+
+    // Insert the main entry
+    const dbEntry = mapAppEntryToDbEntry(entry)
+    const { error: entryError } = await supabase
+      .from('entries')
+      .insert({ ...dbEntry, user_id: user.id })
+
+    if (entryError) throw entryError
+
+    // Insert reframe if exists
+    if (entry.reframe) {
+      const dbReframe = mapAppReframeToDbReframe(entry.reframe)
+      const { error: reframeError } = await supabase
+        .from('reframes')
+        .insert(dbReframe)
+
+      if (reframeError) throw reframeError
+    }
+
+    // Insert distortion instances if exist
+    if (entry.distortions && entry.distortions.length > 0) {
+      const dbDistortions = entry.distortions.map(d => mapAppDistortionInstanceToDb(d, entry.id))
+      const { error: distortionsError } = await supabase
+        .from('distortion_instances')
+        .insert(dbDistortions)
+
+      if (distortionsError) throw distortionsError
+    }
+  }
+
+  private async updateEntryInSupabase(entry: Entry): Promise<void> {
+    const dbEntry = mapAppEntryToDbEntry(entry)
+    const { error } = await supabase
+      .from('entries')
+      .update(dbEntry)
+      .eq('id', entry.id)
+
+    if (error) throw error
+
+    // Note: For reframes and distortions, you might want to implement
+    // more sophisticated update logic depending on your needs
+  }
+
+  private async deleteEntryFromSupabase(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('entries')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
   }
 
   private updateCache(entries: Entry[]): void {
