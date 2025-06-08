@@ -10,14 +10,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import TheraGPTLogo from '@/apps/web/public/assets/theragpt-logo.svg'
+import TheraGPTLogo from '@/public/assets/theragpt-logo.svg'
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-} from '@/apps/web/components/ui/navigation-menu'
+} from '@/components/ui/navigation-menu'
 
 const MENU_ITEMS = [
   {

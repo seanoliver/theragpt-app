@@ -1,8 +1,8 @@
 'use client'
 
-import { Badge } from '@/apps/web/components/ui/badge'
-import { Button } from '@/apps/web/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/apps/web/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useEntryStore } from '@theragpt/logic'
 import { formatRelativeTime } from '@/lib/date-utils'
 import {

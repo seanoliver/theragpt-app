@@ -9,7 +9,7 @@ interface MigrationStatusProps {
   onComplete?: () => void
 }
 
-export function MigrationStatus({ onComplete }: MigrationStatusProps) {
+export const MigrationStatus = ({ onComplete }: MigrationStatusProps) => {
   const { isAuthenticated } = useAuth()
   const {
     isMigrating,

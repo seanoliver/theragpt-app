@@ -1,7 +1,7 @@
-import { EntryItem } from '@/apps/web/components/journal/EntryItem/EntryItem'
-import { EntryPageTracker } from '@/apps/web/components/journal/EntryPageTracker'
-import { Header } from '@/apps/web/components/layout/Header'
-import { Button } from '@/apps/web/components/ui/button'
+import { EntryItem } from '@/components/journal/EntryItem/EntryItem'
+import { EntryPageTracker } from '@/components/journal/EntryPageTracker'
+import { Header } from '@/components/layout/Header'
+import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 /**

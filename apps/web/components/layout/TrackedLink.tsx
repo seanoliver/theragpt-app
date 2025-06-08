@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useTracking } from '@/apps/web/lib/analytics/useTracking'
+import { useTracking } from '@/lib/analytics/useTracking'
 
 interface TrackedLinkProps {
   href: string

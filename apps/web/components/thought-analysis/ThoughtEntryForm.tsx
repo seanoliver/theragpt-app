@@ -1,12 +1,12 @@
 'use client'
 
-import { Textarea } from '@/apps/web/components/ui/textarea'
+import { Textarea } from '@/components/ui/textarea'
 import { useRef, useState, useEffect } from 'react'
 import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
 import { ThoughtStarters } from './ThoughtStarters'
 import { ThoughtStartersButton } from './ThoughtStartersButton'
 import { useAnalyzeThought } from './useAnalyzeThought'
-import { useTracking } from '@/apps/web/lib/analytics/useTracking'
+import { useTracking } from '@/lib/analytics/useTracking'
 import { usePathname } from 'next/navigation'
 export const ThoughtEntryForm = () => {
   // Local component state

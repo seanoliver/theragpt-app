@@ -1,5 +1,5 @@
-import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
-import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
+import { createLLMRegistry } from '@/lib/llm/create-llm-registry'
+import { parseIncompleteJSONStream } from '@theragpt/logic/src/workflows/thought-analysis-stream.workflow'
 import { LLMModel, withLLMContext } from '@theragpt/llm'
 import { streamLLM } from '@theragpt/llm/src/router'
 import { NextRequest } from 'next/server'

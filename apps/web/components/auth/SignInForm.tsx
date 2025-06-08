@@ -12,7 +12,7 @@ interface SignInFormProps {
   onSwitchToReset?: () => void
 }
 
-export function SignInForm({ onSuccess, onSwitchToSignUp, onSwitchToReset }: SignInFormProps) {
+export const SignInForm = ({ onSuccess, onSwitchToSignUp, onSwitchToReset }: SignInFormProps) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { signIn, isLoading, error, clearError } = useSignIn()

@@ -1,6 +1,6 @@
-import { EntryList } from '@/apps/web/components/journal/EntryList'
-import { Header } from '@/apps/web/components/layout/Header'
-import { Button } from '@/apps/web/components/ui/button'
+import { EntryList } from '@/components/journal/EntryList'
+import { Header } from '@/components/layout/Header'
+import { Button } from '@/components/ui/button'
 import { PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 

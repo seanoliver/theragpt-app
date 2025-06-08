@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 import { Quicksand, Lora, Oxygen } from 'next/font/google'
 import './globals.css'
 import { PostHogProvider } from '../components/PostHogProvider'
-import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
-import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
-import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
+import { ThemeProvider } from '@/components/layout/theme/ThemeProvider'
+import { EntryStoreProvider } from '@/components/journal/store/EntryStoreProvider'
+import { BackgroundTexture } from '@/components/layout/BackgroundTexture'
 import { Footer } from '../components/layout/Footer'
-import { PageTracker } from '@/apps/web/components/layout/PageTracker'
+import { PageTracker } from '@/components/layout/PageTracker'
 
 const quicksand = Quicksand({
   subsets: ['latin'],

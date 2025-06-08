@@ -13,7 +13,7 @@ interface AuthModalProps {
   onClose?: () => void
 }
 
-export function AuthModal({ defaultMode = 'signin', onSuccess, onClose }: AuthModalProps) {
+export const AuthModal = ({ defaultMode = 'signin', onSuccess, onClose }: AuthModalProps) => {
   const [mode, setMode] = useState<AuthMode>(defaultMode)
 
   const handleSuccess = () => {

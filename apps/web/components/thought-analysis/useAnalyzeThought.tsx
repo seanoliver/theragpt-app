@@ -1,13 +1,13 @@
-import { useEntryStore } from '@/packages/logic/src/entry/entry.store'
-import { DistortionType, Entry } from '@/packages/logic/src/entry/types'
+import { useEntryStore } from '@theragpt/logic/src/entry/entry.store'
+import { DistortionType, Entry } from '@theragpt/logic/src/entry/types'
 import {
   StreamEvent,
   streamPromptOutput,
-} from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
+} from '@theragpt/logic/src/workflows/thought-analysis-stream.workflow'
 import { getAnalyzePrompt } from '@theragpt/prompts'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useTracking } from '@/apps/web/lib/analytics/useTracking'
+import { useTracking } from '@/lib/analytics/useTracking'
 import { usePathname } from 'next/navigation'
 
 export const useAnalyzeThought = () => {

@@ -6,7 +6,7 @@ interface AuthProviderProps {
   children: React.ReactNode
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <LogicAuthProvider autoInitialize={true}>
       {children}

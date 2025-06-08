@@ -1,6 +1,6 @@
 'use client'
 
-import { Card } from '@/apps/web/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { useEntryStore } from '@theragpt/logic'
 import { compareTimestampsDesc } from '@/lib/date-utils'
 import Link from 'next/link'

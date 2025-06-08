@@ -15,7 +15,7 @@ interface UserMenuProps {
   onSignOut?: () => void
 }
 
-export function UserMenu({ onSignOut }: UserMenuProps) {
+export const UserMenu = ({ onSignOut }: UserMenuProps) => {
   const { user } = useAuth()
   const { signOut, isLoading } = useSignOut()
 
