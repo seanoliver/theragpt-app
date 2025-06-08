@@ -23,7 +23,7 @@ export class EntryService {
   }
 
   private checkOnlineStatus() {
-    if (typeof navigator !== 'undefined') {
+    if (typeof navigator !== 'undefined' && typeof window !== 'undefined') {
       this.isOnline = navigator.onLine
       window.addEventListener('online', () => { this.isOnline = true })
       window.addEventListener('offline', () => { this.isOnline = false })
