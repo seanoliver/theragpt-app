@@ -4,21 +4,27 @@ import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider, usePostHog } from 'posthog-js/react'
 import { Suspense, useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useAuth } from '@theragpt/logic'
 
 export const PostHogProvider = ({
   children,
 }: {
   children: React.ReactNode
 }) => {
+  const { isInitialized } = useAuth()
+
   useEffect(() => {
+    if (!isInitialized) return
+    console.log('Auth isInitialized', isInitialized)
+
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-      api_host: '/ingest',
+      api_host: process.env.NEXT_PUBLIC_POSTHOG_API_HOST!,
       ui_host: 'https://us.posthog.com',
       capture_pageview: true,
       capture_pageleave: true,
       debug: process.env.NODE_ENV === 'development',
     })
-  }, [])
+  }, [isInitialized])
 
   return (
     <PHProvider client={posthog}>

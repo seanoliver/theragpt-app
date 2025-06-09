@@ -60,8 +60,8 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} ${lora.variable} ${oxygen.variable} font-oxygen antialiased`}
       >
-        <PostHogProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <PostHogProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
@@ -77,8 +77,8 @@ export default function RootLayout({
                 </div>
               </EntryStoreProvider>
             </ThemeProvider>
-          </AuthProvider>
-        </PostHogProvider>
+          </PostHogProvider>
+        </AuthProvider>
       </body>
     </html>
   )
