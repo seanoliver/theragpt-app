@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Quicksand, Lora, Oxygen } from 'next/font/google'
 import './globals.css'
 import { PostHogProvider } from '../components/PostHogProvider'
+import { AuthProvider } from '../components/auth/AuthProvider'
 import { ThemeProvider } from '@/components/layout/theme/ThemeProvider'
 import { EntryStoreProvider } from '@/components/journal/store/EntryStoreProvider'
 import { BackgroundTexture } from '@/components/layout/BackgroundTexture'
@@ -60,21 +61,23 @@ export default function RootLayout({
         className={`${quicksand.variable} ${lora.variable} ${oxygen.variable} font-oxygen antialiased`}
       >
         <PostHogProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <EntryStoreProvider>
-              <PageTracker />
-              <BackgroundTexture />
-              <div className="min-h-screen relative z-10">
-                {children}
-                <Footer className="absolute bottom-0 w-full" />
-              </div>
-            </EntryStoreProvider>
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <EntryStoreProvider>
+                <PageTracker />
+                <BackgroundTexture />
+                <div className="min-h-screen relative z-10">
+                  {children}
+                  <Footer className="absolute bottom-0 w-full" />
+                </div>
+              </EntryStoreProvider>
+            </ThemeProvider>
+          </AuthProvider>
         </PostHogProvider>
       </body>
     </html>

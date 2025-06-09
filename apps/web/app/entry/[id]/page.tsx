@@ -1,23 +1,38 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 import { EntryItem } from '@/components/journal/EntryItem/EntryItem'
 import { EntryPageTracker } from '@/components/journal/EntryPageTracker'
 import { Header } from '@/components/layout/Header'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-/**
- * IMPORTANT: This is a workaround for a type issue in Next.js 15.3.x
- *
- * In Next.js 15.3.x, the type system expects `params` in dynamic route components
- * to be a Promise<{ id: string }>, not a direct object { id: string }.
- *
- * This is unusual, and doesn't align with the standard Next.js behavior and documentation.
- */
-export default async function EntryDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const resolvedParams = await params
+import { useRouteProtection } from '@/lib/auth-utils'
+import { AuthLoadingSpinner } from '@/components/auth/AuthLoadingSpinner'
+
+export default function EntryDetailPage() {
+  const params = useParams()
+  const { shouldShowLoading, shouldRender } = useRouteProtection()
+  const [entryId, setEntryId] = useState<string>('')
+
+  useEffect(() => {
+    if (params?.id) {
+      setEntryId(Array.isArray(params.id) ? params.id[0] : params.id)
+    }
+  }, [params])
+
+  if (shouldShowLoading) {
+    return <AuthLoadingSpinner />
+  }
+
+  if (!shouldRender) {
+    return null
+  }
+
+  if (!entryId) {
+    return <AuthLoadingSpinner />
+  }
 
   return (
     <main className="min-h-screen">
@@ -38,8 +53,8 @@ export default async function EntryDetailPage({
         </h1>
 
         <div className="animate-fade-in">
-          <EntryPageTracker entryId={resolvedParams.id} />
-          <EntryItem entryId={resolvedParams.id} />
+          <EntryPageTracker entryId={entryId} />
+          <EntryItem entryId={entryId} />
         </div>
       </div>
     </main>
