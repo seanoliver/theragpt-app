@@ -1,18 +1,18 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useEntryStore } from '@theragpt/logic'
-import { formatRelativeTime } from '@/lib/date-utils'
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { formatRelativeTime } from '@/lib/date-utils';
+import { useEntryStore } from '@theragpt/logic';
 import {
   CalendarIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   Loader2,
-} from 'lucide-react'
-import { useState } from 'react'
-import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel'
+} from 'lucide-react';
+import { useState } from 'react';
+import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel';
 interface EntryItemProps {
   entryId: string
 }
@@ -44,27 +44,27 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
       <CardContent className="space-y-4">
         <div className="space-y-4">
           {entry.title && (
-            <h3 className="font-medium text-lg text-slate-900">
+            <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
               {entry.title}
             </h3>
           )}
 
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 relative">
+          <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg border border-slate-100 dark:border-slate-700 relative">
             {isStreaming && (
-              <div className="absolute top-2 right-2 flex items-center text-xs text-indigo-500">
+              <div className="absolute top-2 right-2 flex items-center text-xs text-indigo-500 dark:text-indigo-400">
                 <Loader2 className="h-4 w-4 animate-spin mr-1" />
                 <span>Analyzing...</span>
               </div>
             )}
-            <p className="text-xl font-medium text-slate-800 mb-6 transition-all duration-300">
+            <p className="text-xl font-medium text-slate-800 dark:text-slate-200 mb-6 transition-all duration-300">
               {entry.reframe?.text ||
                 (isStreaming
                   ? 'Generating reframe...'
                   : 'No reframe available.')}
             </p>
 
-            <div className="pt-3 border-t border-dashed border-slate-200">
-              <p className="text-md text-slate-400 line-through italic transition-all duration-300">
+            <div className="pt-3 border-t border-dashed border-slate-200 dark:border-slate-600">
+              <p className="text-md text-slate-400 dark:text-slate-500 line-through italic transition-all duration-300">
                 {entry.rawText}
               </p>
             </div>
@@ -93,7 +93,7 @@ const ExpandButton = ({
     <Button
       variant="ghost"
       size="sm"
-      className="w-full text-slate-500 mt-2 flex items-center justify-center"
+      className="w-full text-slate-500 dark:text-slate-400 mt-2 flex items-center justify-center"
       onClick={e => {
         e.stopPropagation()
         e.preventDefault()
