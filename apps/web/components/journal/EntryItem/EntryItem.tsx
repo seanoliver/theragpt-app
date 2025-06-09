@@ -30,6 +30,8 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
   if (!entry) {
     return <div>Loading...</div>
   }
+
+  if (!isStreaming && !entry?.reframe?.text) return null
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">

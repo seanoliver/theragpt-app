@@ -61,13 +61,13 @@ export const streamPromptOutput = async (
           const json = JSON.parse(rawEvent.slice(6))
           const { type, content, field, value, chunkNumber } = json
 
-          // For chunk events, content is required but other fields are optional
-          // For other events, content is required
-          if (!type || (type !== 'chunk' && !content)) continue
-
-          // Emit structured event with all available fields
-          onEvent({ type, content, field, value, ...(chunkNumber && { chunkNumber }) })
-
+          onEvent({
+            type,
+            content,
+            field,
+            value,
+            ...(chunkNumber && { chunkNumber }),
+          })
         } catch (err) {
           console.error('Error parsing SSE chunk:', err)
         }

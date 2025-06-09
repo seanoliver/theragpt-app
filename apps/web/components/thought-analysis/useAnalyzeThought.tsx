@@ -23,7 +23,9 @@ export const useAnalyzeThought = () => {
   const pathname = usePathname()
 
   const [thought, setThought] = useState('')
-  const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(null)
+  const [analysisStartTime, setAnalysisStartTime] = useState<number | null>(
+    null,
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -83,8 +85,6 @@ export const useAnalyzeThought = () => {
         const { type, content, field, value } = event
         let needsStoreUpdate = false
 
-        console.log('[UI] Received event:', { type, content, field, value })
-
         if (type === 'field' && field && typeof field === 'string') {
           // If value is an object, merge it with existing streamPatch for that field
           if (
@@ -106,7 +106,10 @@ export const useAnalyzeThought = () => {
         } else if (type === 'chunk') {
           // Handle raw chunk data from API - just log for debugging
           // The API sends chunk events with raw content and chunkNumber for debugging
-          console.log('[UI] Received chunk:', { content, chunkNumber: (event as any).chunkNumber })
+          console.log('[UI] Received chunk:', {
+            content,
+            chunkNumber: (event as any).chunkNumber,
+          })
           // Don't update UI state for raw chunks - field events handle the actual updates
         } else if (type === 'complete') {
           // `content` is the final, complete entry data.
@@ -140,7 +143,8 @@ export const useAnalyzeThought = () => {
           if (analysisStartTime) {
             track('thought_analysis_failed', {
               entry_id: entryId,
-              error_type: typeof content === 'string' ? content : 'Unknown error',
+              error_type:
+                typeof content === 'string' ? content : 'Unknown error',
               analysis_duration_ms: Date.now() - analysisStartTime,
             })
           }

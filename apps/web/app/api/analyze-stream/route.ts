@@ -31,7 +31,6 @@ export const POST = async (req: NextRequest) => {
         // Initialize a buffer to accumulate JSON chunks
         let buffer = ''
         const previousParsed: Record<string, any> = {}
-        let hasCompletedOnce = false
         let chunkCount = 0
 
         // Helper function for deep equality comparison
@@ -81,60 +80,49 @@ export const POST = async (req: NextRequest) => {
 
           console.log(`[Chunk ${chunkCount}] Buffer length: ${buffer.length}, Content: ${buffer.slice(-100)}`)
 
-          try {
-            // Try to parse the buffer as JSON to see if we have a complete object
-            const parsed = JSON.parse(buffer)
-            console.log(`[Chunk ${chunkCount}] Successfully parsed JSON:`, parsed)
+          // Always try to parse incomplete JSON first for streaming updates
+          let currentParsed: Record<string, any> = {}
+          let isCompleteJSON = false
 
-            // Compare with previousParsed and emit updated fields using deep equality
-            for (const key in parsed) {
+          // First, try to parse as complete JSON
+          try {
+            currentParsed = JSON.parse(buffer)
+            isCompleteJSON = true
+            console.log(`[Chunk ${chunkCount}] Successfully parsed complete JSON:`, currentParsed)
+          } catch (parseError) {
+            // If complete JSON parsing fails, try incomplete JSON parsing
+            try {
+              const incompleteJSON = parseIncompleteJSONStream(buffer)
+              if (incompleteJSON && Object.keys(incompleteJSON).length > 0) {
+                currentParsed = incompleteJSON
+                console.log(`[Chunk ${chunkCount}] Parsed incomplete JSON:`, incompleteJSON)
+              }
+            } catch (incompleteError) {
+              console.log(`[Chunk ${chunkCount}] Both complete and incomplete JSON parsing failed`)
+              // Continue to next chunk if we can't parse anything
+              continue
+            }
+          }
+
+          // If we have any parsed data, check for field updates
+          if (Object.keys(currentParsed).length > 0) {
+            for (const key in currentParsed) {
               if (
-                Object.prototype.hasOwnProperty.call(parsed, key) &&
-                !deepEqual(parsed[key], previousParsed[key])
+                Object.prototype.hasOwnProperty.call(currentParsed, key) &&
+                !deepEqual(currentParsed[key], previousParsed[key])
               ) {
-                console.log(`[Chunk ${chunkCount}] Field updated: ${key}`)
+                console.log(`[Chunk ${chunkCount}] Field updated: ${key} (${isCompleteJSON ? 'complete' : 'partial'})`)
                 controller.enqueue(
                   encoder.encode(
-                    `data: ${JSON.stringify({ type: 'field', field: key, value: parsed[key] })}\n\n`,
+                    `data: ${JSON.stringify({
+                      type: 'field',
+                      field: key,
+                      value: currentParsed[key],
+                      isComplete: isCompleteJSON
+                    })}\n\n`,
                   ),
                 )
-                previousParsed[key] = parsed[key]
-              }
-            }
-
-            // Only send complete event once we have a fully formed object
-            // Don't clear buffer immediately - keep accumulating until we're sure we have complete data
-            hasCompletedOnce = true
-
-          } catch (parseError) {
-            console.log(`[Chunk ${chunkCount}] JSON parse failed, continuing to accumulate. Error:`, parseError)
-
-            // Don't immediately try parseIncompleteJSONStream on every failed parse
-            // Only attempt it if we have substantial content and haven't completed once
-            if (buffer.length > 100 && !hasCompletedOnce) {
-              try {
-                const incompleteJSON = parseIncompleteJSONStream(buffer)
-                if (incompleteJSON && Object.keys(incompleteJSON).length > 0) {
-                  console.log(`[Chunk ${chunkCount}] Parsed incomplete JSON:`, incompleteJSON)
-
-                  // Compare with previousParsed and emit updated fields
-                  for (const key in incompleteJSON) {
-                    if (
-                      Object.prototype.hasOwnProperty.call(incompleteJSON, key) &&
-                      !deepEqual(incompleteJSON[key], previousParsed[key])
-                    ) {
-                      console.log(`[Chunk ${chunkCount}] Incomplete field updated: ${key}`)
-                      controller.enqueue(
-                        encoder.encode(
-                          `data: ${JSON.stringify({ type: 'field', field: key, value: incompleteJSON[key] })}\n\n`,
-                        ),
-                      )
-                      previousParsed[key] = incompleteJSON[key]
-                    }
-                  }
-                }
-              } catch (incompleteError) {
-                console.log(`[Chunk ${chunkCount}] Incomplete JSON parsing also failed:`, incompleteError)
+                previousParsed[key] = currentParsed[key]
               }
             }
           }
