@@ -12,6 +12,7 @@ export class MigrationService {
     try {
       const { data: { user } } = await getSupabaseClient().auth.getUser()
       if (!user) {
+        // eslint-disable-next-line no-console
         console.warn('User not authenticated, skipping migration')
         return
       }
@@ -19,6 +20,7 @@ export class MigrationService {
       // Get existing entries from local storage
       const localEntries = await entryService['getFromLocalStorage']()
       if (localEntries.length === 0) {
+        // eslint-disable-next-line no-console
         console.log('No local entries to migrate')
         return
       }
@@ -30,10 +32,12 @@ export class MigrationService {
         .limit(1)
 
       if (existingEntries && existingEntries.length > 0) {
+        // eslint-disable-next-line no-console
         console.log('User already has entries in Supabase, skipping migration')
         return
       }
 
+      // eslint-disable-next-line no-console
       console.log(`Starting migration of ${localEntries.length} entries...`)
 
       // Migrate each entry
@@ -41,6 +45,7 @@ export class MigrationService {
         await this.migrateEntry(entry, user.id)
       }
 
+      // eslint-disable-next-line no-console
       console.log('Migration completed successfully')
     } catch (error) {
       console.error('Migration failed:', error)
@@ -92,6 +97,7 @@ export class MigrationService {
   static async clearLocalStorageAfterMigration(entryService: EntryService): Promise<void> {
     try {
       await entryService['storageService'].removeItem('theragpt_entries')
+      // eslint-disable-next-line no-console
       console.log('Local storage cleared after migration')
     } catch (error) {
       console.error('Failed to clear local storage:', error)

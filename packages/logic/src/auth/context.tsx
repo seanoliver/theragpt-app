@@ -12,7 +12,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ 
   children, 
-  autoInitialize = true 
+  autoInitialize = true, 
 }) => {
   const store = useAuthStore()
 

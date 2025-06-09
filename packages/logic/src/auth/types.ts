@@ -1,12 +1,8 @@
 import type { User, Session } from '@supabase/supabase-js'
 
-export interface AuthUser extends User {
-  // Add any additional user properties we might need
-}
+export type AuthUser = User
 
-export interface AuthSession extends Session {
-  // Add any additional session properties we might need
-}
+export type AuthSession = Session
 
 export interface AuthContextValue {
   user: AuthUser | null

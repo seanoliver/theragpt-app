@@ -50,23 +50,21 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const { data: { session }, error } = await getSupabaseClient().auth.getSession()
       
       if (error) {
-        console.error('Error getting session:', error)
         set({ error: error.message })
       } else {
         set({ 
           session, 
-          user: session?.user || null 
+          user: session?.user || null, 
         })
       }
 
       // Listen for auth changes
       getSupabaseClient().auth.onAuthStateChange((event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id)
         
         set({ 
           session, 
           user: session?.user || null,
-          error: null
+          error: null,
         })
 
         // Handle specific auth events
@@ -101,7 +99,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
       // Supabase will trigger onAuthStateChange if signup is successful
       return { user: data.user, error: null }
-    } catch (error) {
+    } catch {
       const errorMessage = 'An unexpected error occurred during sign up'
       set({ error: errorMessage })
       return { user: null, error: { message: errorMessage } as AuthError }
@@ -127,7 +125,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
       // Supabase will trigger onAuthStateChange if signin is successful
       return { user: data.user, error: null }
-    } catch (error) {
+    } catch {
       const errorMessage = 'An unexpected error occurred during sign in'
       set({ error: errorMessage })
       return { user: null, error: { message: errorMessage } as AuthError }
@@ -172,7 +170,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       }
 
       return { error: null }
-    } catch (error) {
+    } catch {
       const errorMessage = 'An unexpected error occurred during password reset'
       set({ error: errorMessage })
       return { error: { message: errorMessage } as AuthError }

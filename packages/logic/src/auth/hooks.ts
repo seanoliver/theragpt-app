@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from './context'
-import { useAuthStore } from './auth.store'
 import { MigrationService, entryService } from '../entry'
 
 /**
@@ -209,7 +208,6 @@ export const useAuthMigration = () => {
 
   const triggerMigration = async () => {
     if (!user || !isAuthenticated) {
-      console.warn('Cannot migrate: user not authenticated')
       return
     }
 
@@ -219,7 +217,6 @@ export const useAuthMigration = () => {
     try {
       await MigrationService.migrateLocalEntriesToSupabase(entryService)
       setMigrationComplete(true)
-      console.log('Migration completed successfully')
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Migration failed'
       setMigrationError(errorMessage)

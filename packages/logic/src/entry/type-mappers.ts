@@ -9,11 +9,11 @@ export type DbDistortionInstance = Tables<'distortion_instances'>
 
 // Type mapping functions to convert between your app types and database types
 
-export function mapDbEntryToAppEntry(
+export const mapDbEntryToAppEntry = (
   dbEntry: DbEntry,
   reframes?: DbReframe[],
   distortionInstances?: (DbDistortionInstance & { distortions?: Tables<'distortions'> })[]
-): Entry {
+): Entry => {
   return {
     id: dbEntry.id,
     title: dbEntry.title || undefined,
@@ -28,7 +28,7 @@ export function mapDbEntryToAppEntry(
   }
 }
 
-export function mapAppEntryToDbEntry(entry: Entry): DbEntryInsert {
+export const mapAppEntryToDbEntry = (entry: Entry): DbEntryInsert => {
   return {
     id: entry.id,
     title: entry.title || null,
@@ -41,7 +41,7 @@ export function mapAppEntryToDbEntry(entry: Entry): DbEntryInsert {
   }
 }
 
-export function mapDbReframeToAppReframe(dbReframe: DbReframe): Reframe {
+export const mapDbReframeToAppReframe = (dbReframe: DbReframe): Reframe => {
   return {
     id: dbReframe.id,
     entryId: dbReframe.entry_id,
@@ -50,7 +50,7 @@ export function mapDbReframeToAppReframe(dbReframe: DbReframe): Reframe {
   }
 }
 
-export function mapAppReframeToDbReframe(reframe: Reframe): Omit<TablesInsert<'reframes'>, 'id'> {
+export const mapAppReframeToDbReframe = (reframe: Reframe): Omit<TablesInsert<'reframes'>, 'id'> => {
   return {
     entry_id: reframe.entryId,
     text: reframe.text,
@@ -58,9 +58,9 @@ export function mapAppReframeToDbReframe(reframe: Reframe): Omit<TablesInsert<'r
   }
 }
 
-export function mapDbDistortionInstanceToApp(
+export const mapDbDistortionInstanceToApp = (
   dbInstance: DbDistortionInstance & { distortions?: Tables<'distortions'> }
-): DistortionInstance {
+): DistortionInstance => {
   return {
     id: dbInstance.id,
     label: dbInstance.distortions?.label || getDistortionLabel(dbInstance.distortion_id),
@@ -70,10 +70,10 @@ export function mapDbDistortionInstanceToApp(
   }
 }
 
-export function mapAppDistortionInstanceToDb(
+export const mapAppDistortionInstanceToDb = (
   instance: DistortionInstance,
   entryId: string
-): Omit<TablesInsert<'distortion_instances'>, 'id'> {
+): Omit<TablesInsert<'distortion_instances'>, 'id'> => {
   return {
     entry_id: entryId,
     distortion_id: instance.distortionId as Database['public']['Enums']['distortion_type'],
@@ -83,7 +83,7 @@ export function mapAppDistortionInstanceToDb(
 }
 
 // Helper function to get distortion label from ID
-function getDistortionLabel(distortionId: string): string {
+const getDistortionLabel = (distortionId: string): string => {
   const labelMap: Record<string, string> = {
     'all-or-nothing-thinking': 'All-or-Nothing Thinking',
     'overgeneralization': 'Overgeneralization',
