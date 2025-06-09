@@ -1,15 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 import * as SecureStore from 'expo-secure-store'
+import { getSupabaseConfig } from '@theragpt/config'
 import type { Database } from '@theragpt/config/src/database.types'
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'Missing Supabase configuration. Please set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-  )
-}
+// Get configuration from shared config
+const config = getSupabaseConfig()
 
 // Custom storage adapter for React Native using Expo SecureStore
 const ExpoSecureStoreAdapter = {
@@ -24,7 +19,7 @@ const ExpoSecureStoreAdapter = {
   },
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient<Database>(config.url, config.anonKey, {
   auth: {
     storage: ExpoSecureStoreAdapter,
     autoRefreshToken: true,
@@ -32,3 +27,13 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: false, // We don't want this on mobile
   },
 })
+
+// Lazy client instance for consistency with web
+let _supabaseClient: ReturnType<typeof createClient<Database>> | null = null
+
+export const getSupabaseClient = () => {
+  if (!_supabaseClient) {
+    _supabaseClient = supabase
+  }
+  return _supabaseClient
+}

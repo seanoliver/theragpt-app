@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
-import { supabase } from '@theragpt/config'
+import { getSupabaseClient } from '@theragpt/config'
 import { Entry, EntryListener } from './types'
 import {
   mapDbEntryToAppEntry,
@@ -48,7 +48,7 @@ export class EntryService {
       if (this.isOnline) {
         // Try to fetch from Supabase first
         try {
-          const { data: { user } } = await supabase.auth.getUser()
+          const { data: { user } } = await getSupabaseClient().auth.getUser()
           if (user) {
             entries = await this.fetchFromSupabase()
             // Cache to local storage for offline access
@@ -84,7 +84,7 @@ export class EntryService {
 
     try {
       if (this.isOnline) {
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user } } = await getSupabaseClient().auth.getUser()
         if (user) {
           // Save to Supabase
           await this.saveEntryToSupabase(entry)
@@ -128,7 +128,7 @@ export class EntryService {
 
     try {
       if (this.isOnline) {
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user } } = await getSupabaseClient().auth.getUser()
         if (user) {
           // Update in Supabase
           await this.updateEntryInSupabase(updatedEntry)
@@ -155,7 +155,7 @@ export class EntryService {
       
       if (this.isOnline) {
         try {
-          const { data: { user } } = await supabase.auth.getUser()
+          const { data: { user } } = await getSupabaseClient().auth.getUser()
           if (user) {
             entries = await this.fetchFromSupabase()
             // Cache to local storage
@@ -191,7 +191,7 @@ export class EntryService {
   async deleteEntry(id: string): Promise<void> {
     try {
       if (this.isOnline) {
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user } } = await getSupabaseClient().auth.getUser()
         if (user) {
           // Delete from Supabase
           await this.deleteEntryFromSupabase(id)
@@ -233,7 +233,7 @@ export class EntryService {
 
   // Supabase methods
   private async fetchFromSupabase(): Promise<Entry[]> {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabaseClient()
       .from('entries')
       .select(`
         *,
@@ -252,12 +252,12 @@ export class EntryService {
   }
 
   private async saveEntryToSupabase(entry: Entry): Promise<void> {
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } } = await getSupabaseClient().auth.getUser()
     if (!user) throw new Error('User not authenticated')
 
     // Insert the main entry
     const dbEntry = mapAppEntryToDbEntry(entry)
-    const { error: entryError } = await supabase
+    const { error: entryError } = await getSupabaseClient()
       .from('entries')
       .insert({ ...dbEntry, user_id: user.id })
 
@@ -266,7 +266,7 @@ export class EntryService {
     // Insert reframe if exists
     if (entry.reframe) {
       const dbReframe = mapAppReframeToDbReframe(entry.reframe)
-      const { error: reframeError } = await supabase
+      const { error: reframeError } = await getSupabaseClient()
         .from('reframes')
         .insert(dbReframe)
 
@@ -276,7 +276,7 @@ export class EntryService {
     // Insert distortion instances if exist
     if (entry.distortions && entry.distortions.length > 0) {
       const dbDistortions = entry.distortions.map(d => mapAppDistortionInstanceToDb(d, entry.id))
-      const { error: distortionsError } = await supabase
+      const { error: distortionsError } = await getSupabaseClient()
         .from('distortion_instances')
         .insert(dbDistortions)
 
@@ -286,7 +286,7 @@ export class EntryService {
 
   private async updateEntryInSupabase(entry: Entry): Promise<void> {
     const dbEntry = mapAppEntryToDbEntry(entry)
-    const { error } = await supabase
+    const { error } = await getSupabaseClient()
       .from('entries')
       .update(dbEntry)
       .eq('id', entry.id)
@@ -298,7 +298,7 @@ export class EntryService {
   }
 
   private async deleteEntryFromSupabase(id: string): Promise<void> {
-    const { error } = await supabase
+    const { error } = await getSupabaseClient()
       .from('entries')
       .delete()
       .eq('id', id)

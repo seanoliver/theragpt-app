@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { supabase } from '@theragpt/config'
+import { getSupabaseClient } from '@theragpt/config'
 import type { User, Session, AuthError } from '@supabase/supabase-js'
 
 export interface AuthStore {
@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     
     try {
       // Get initial session
-      const { data: { session }, error } = await supabase.auth.getSession()
+      const { data: { session }, error } = await getSupabaseClient().auth.getSession()
       
       if (error) {
         console.error('Error getting session:', error)
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       }
 
       // Listen for auth changes
-      supabase.auth.onAuthStateChange((event, session) => {
+      getSupabaseClient().auth.onAuthStateChange((event, session) => {
         console.log('Auth state changed:', event, session?.user?.id)
         
         set({ 
@@ -89,7 +89,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await getSupabaseClient().auth.signUp({
         email,
         password,
       })
@@ -115,7 +115,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await getSupabaseClient().auth.signInWithPassword({
         email,
         password,
       })
@@ -141,7 +141,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const { error } = await supabase.auth.signOut()
+      const { error } = await getSupabaseClient().auth.signOut()
       
       if (error) {
         set({ error: error.message })
@@ -162,7 +162,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({ isLoading: true, error: null })
     
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await getSupabaseClient().auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       })
 

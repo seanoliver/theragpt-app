@@ -1,4 +1,4 @@
-import { supabase } from '@theragpt/config'
+import { getSupabaseClient } from '@theragpt/config'
 import { EntryService } from './entry.service'
 import { Entry } from './types'
 import { mapAppEntryToDbEntry, mapAppReframeToDbReframe, mapAppDistortionInstanceToDb } from './type-mappers'
@@ -10,7 +10,7 @@ export class MigrationService {
    */
   static async migrateLocalEntriesToSupabase(entryService: EntryService): Promise<void> {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await getSupabaseClient().auth.getUser()
       if (!user) {
         console.warn('User not authenticated, skipping migration')
         return
@@ -24,7 +24,7 @@ export class MigrationService {
       }
 
       // Check if user already has entries in Supabase
-      const { data: existingEntries } = await supabase
+      const { data: existingEntries } = await getSupabaseClient()
         .from('entries')
         .select('id')
         .limit(1)
@@ -51,7 +51,7 @@ export class MigrationService {
   private static async migrateEntry(entry: Entry, userId: string): Promise<void> {
     // Insert the main entry
     const dbEntry = mapAppEntryToDbEntry(entry)
-    const { error: entryError } = await supabase
+    const { error: entryError } = await getSupabaseClient()
       .from('entries')
       .insert({ ...dbEntry, user_id: userId })
 
@@ -63,7 +63,7 @@ export class MigrationService {
     // Insert reframe if exists
     if (entry.reframe) {
       const dbReframe = mapAppReframeToDbReframe(entry.reframe)
-      const { error: reframeError } = await supabase
+      const { error: reframeError } = await getSupabaseClient()
         .from('reframes')
         .insert(dbReframe)
 
@@ -75,7 +75,7 @@ export class MigrationService {
     // Insert distortion instances if exist
     if (entry.distortions && entry.distortions.length > 0) {
       const dbDistortions = entry.distortions.map(d => mapAppDistortionInstanceToDb(d, entry.id))
-      const { error: distortionsError } = await supabase
+      const { error: distortionsError } = await getSupabaseClient()
         .from('distortion_instances')
         .insert(dbDistortions)
 

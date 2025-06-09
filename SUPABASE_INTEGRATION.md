@@ -32,7 +32,9 @@ The Supabase database now has these tables:
 To use Supabase features, users need to be authenticated.
 
 ```typescript
-import { supabase } from '@theragpt/config'
+import { getSupabaseClient } from '@theragpt/config'
+
+const supabase = getSupabaseClient()
 
 // Sign up
 const { data, error } = await supabase.auth.signUp({
@@ -58,7 +60,7 @@ For users with existing local data, run migration after authentication:
 import { MigrationService, entryService } from '@theragpt/logic'
 
 // After user signs in
-const { data: { user } } = await supabase.auth.getUser()
+const { data: { user } } = await getSupabaseClient().auth.getUser()
 if (user) {
   try {
     await MigrationService.migrateLocalEntriesToSupabase(entryService)
@@ -89,10 +91,10 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 
 ### Supabase Client Access
 ```typescript
-import { supabase } from '@theragpt/config'
+import { getSupabaseClient } from '@theragpt/config'
 
 // The client is fully typed with your database schema
-const { data, error } = await supabase
+const { data, error } = await getSupabaseClient()
   .from('entries')
   .select('*')
 ```

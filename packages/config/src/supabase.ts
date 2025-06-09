@@ -34,5 +34,12 @@ export const createSupabaseClient = () => {
   })
 }
 
-// Export client instance
-export const supabase = createSupabaseClient()
+// Lazy client instance
+let _supabaseClient: ReturnType<typeof createClient<Database>> | null = null
+
+export const getSupabaseClient = () => {
+  if (!_supabaseClient) {
+    _supabaseClient = createSupabaseClient()
+  }
+  return _supabaseClient
+}
