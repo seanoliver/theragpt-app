@@ -19,13 +19,13 @@ export const SignInForm = ({ onSuccess, onSwitchToSignUp, onSwitchToReset }: Sig
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!email || !password) {
       return
     }
 
     const result = await signIn(email, password)
-    
+
     if (result.user && !result.error) {
       onSuccess?.()
     }
@@ -71,16 +71,16 @@ export const SignInForm = ({ onSuccess, onSwitchToSignUp, onSwitchToReset }: Sig
               disabled={isLoading}
             />
           </div>
-          
+
           {error && (
             <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
               {error}
             </div>
           )}
 
-          <Button 
-            type="submit" 
-            className="w-full" 
+          <Button
+            type="submit"
+            className="w-full"
             disabled={isLoading || !email || !password}
           >
             {isLoading ? 'Signing in...' : 'Sign In'}
@@ -98,7 +98,7 @@ export const SignInForm = ({ onSuccess, onSwitchToSignUp, onSwitchToReset }: Sig
               Forgot your password?
             </button>
           </div>
-          
+
           <div className="text-center">
             <span className="text-sm text-muted-foreground">
               Don't have an account?{' '}

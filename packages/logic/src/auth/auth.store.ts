@@ -35,41 +35,39 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   isLoading: false,
   isInitialized: false,
   error: null,
-
-  // Computed getter
-  get isAuthenticated() {
-    return !!get().user
-  },
+  isAuthenticated: false,
 
   // Initialize auth state and listen for changes
   initialize: async () => {
     set({ isLoading: true })
-    
+
     try {
       // Get initial session
       const { data: { session }, error } = await getSupabaseClient().auth.getSession()
-      
+
       if (error) {
         set({ error: error.message })
       } else {
-        set({ 
-          session, 
-          user: session?.user || null, 
+        set({
+          session,
+          user: session?.user || null,
         })
       }
 
       // Listen for auth changes
       getSupabaseClient().auth.onAuthStateChange((event, session) => {
-        
-        set({ 
-          session, 
+        const isAuthenticated = !!session?.user
+
+        set({
+          session,
           user: session?.user || null,
+          isAuthenticated,
           error: null,
         })
 
         // Handle specific auth events
         if (event === 'SIGNED_OUT') {
-          set({ user: null, session: null })
+          set({ user: null, session: null, isAuthenticated: false })
         }
       })
 
@@ -85,7 +83,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   // Sign up with email/password
   signUp: async (email: string, password: string) => {
     set({ isLoading: true, error: null })
-    
+
     try {
       const { data, error } = await getSupabaseClient().auth.signUp({
         email,
@@ -111,7 +109,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   // Sign in with email/password
   signIn: async (email: string, password: string) => {
     set({ isLoading: true, error: null })
-    
+
     try {
       const { data, error } = await getSupabaseClient().auth.signInWithPassword({
         email,
@@ -137,15 +135,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   // Sign out
   signOut: async () => {
     set({ isLoading: true, error: null })
-    
+
     try {
       const { error } = await getSupabaseClient().auth.signOut()
-      
+
       if (error) {
         set({ error: error.message })
         console.error('Error signing out:', error)
       }
-      
+
       // onAuthStateChange will handle clearing user/session state
     } catch (error) {
       console.error('Error signing out:', error)
@@ -158,7 +156,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   // Reset password
   resetPassword: async (email: string) => {
     set({ isLoading: true, error: null })
-    
+
     try {
       const { error } = await getSupabaseClient().auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
