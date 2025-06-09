@@ -10,6 +10,7 @@ export interface StreamEvent {
   content: any
   field?: string
   value?: any
+  chunkNumber?: number
 }
 
 export type StreamEventCallback = (event: StreamEvent) => void
@@ -58,12 +59,14 @@ export const streamPromptOutput = async (
 
         try {
           const json = JSON.parse(rawEvent.slice(6))
-          const { type, content, field, value } = json
+          const { type, content, field, value, chunkNumber } = json
 
-          if (!type || !content) continue
+          // For chunk events, content is required but other fields are optional
+          // For other events, content is required
+          if (!type || (type !== 'chunk' && !content)) continue
 
-          // Emit structured event
-          onEvent({ type, content, field, value })
+          // Emit structured event with all available fields
+          onEvent({ type, content, field, value, ...(chunkNumber && { chunkNumber }) })
 
         } catch (err) {
           console.error('Error parsing SSE chunk:', err)

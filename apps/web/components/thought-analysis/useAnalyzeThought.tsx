@@ -29,7 +29,7 @@ export const useAnalyzeThought = () => {
     e.preventDefault()
 
     if (!thought.trim()) return
-    
+
     // Track thought submission
     const entryMethod = pathname === '/' ? 'homepage' : 'new_entry_page'
     track('thought_submitted', {
@@ -83,10 +83,9 @@ export const useAnalyzeThought = () => {
         const { type, content, field, value } = event
         let needsStoreUpdate = false
 
-        if (type === 'thought') {
-          streamPatch.rawText = content
-          needsStoreUpdate = true
-        } else if (type === 'field' && field && typeof field === 'string') {
+        console.log('[UI] Received event:', { type, content, field, value })
+
+        if (type === 'field' && field && typeof field === 'string') {
           // If value is an object, merge it with existing streamPatch for that field
           if (
             typeof value === 'object' &&
@@ -104,22 +103,11 @@ export const useAnalyzeThought = () => {
             ;(streamPatch as any)[field] = value
           }
           needsStoreUpdate = true
-        } else if (
-          type === 'chunk' &&
-          typeof field === 'string' &&
-          content !== undefined &&
-          content !== null
-        ) {
-          const keys = field.split('.')
-          let tempObj = streamPatch as any
-          for (let i = 0; i < keys.length - 1; i++) {
-            tempObj[keys[i]] = tempObj[keys[i]] || {} // Ensure path exists
-            tempObj = tempObj[keys[i]]
-          }
-          // Append content to the target string property
-          tempObj[keys[keys.length - 1]] =
-            (tempObj[keys[keys.length - 1]] || '') + String(content)
-          needsStoreUpdate = true
+        } else if (type === 'chunk') {
+          // Handle raw chunk data from API - just log for debugging
+          // The API sends chunk events with raw content and chunkNumber for debugging
+          console.log('[UI] Received chunk:', { content, chunkNumber: (event as any).chunkNumber })
+          // Don't update UI state for raw chunks - field events handle the actual updates
         } else if (type === 'complete') {
           // `content` is the final, complete entry data.
           const finalEntry = {
@@ -132,7 +120,7 @@ export const useAnalyzeThought = () => {
           if (finalEntry.reframe) finalEntry.reframe.entryId = entryId // Ensure reframe.entryId
           updateEntry(finalEntry)
           setStreamingEntryId(null)
-          
+
           // Track successful analysis completion
           if (analysisStartTime) {
             track('thought_analysis_completed', {
@@ -142,12 +130,12 @@ export const useAnalyzeThought = () => {
               has_reframe: Boolean(finalEntry.reframe?.text),
             })
           }
-          
+
           return // Exit callback
         } else if (type === 'error') {
-          console.error('Streaming error:', content)
+          console.error('[UI] Streaming error:', content)
           setError(typeof content === 'string' ? content : 'Streaming error')
-          
+
           // Track analysis failure
           if (analysisStartTime) {
             track('thought_analysis_failed', {
@@ -156,7 +144,7 @@ export const useAnalyzeThought = () => {
               analysis_duration_ms: Date.now() - analysisStartTime,
             })
           }
-          
+
           const errorEntryPayload = {
             ...partialEntry,
             ...streamPatch,
@@ -172,6 +160,9 @@ export const useAnalyzeThought = () => {
           updateEntry(errorEntryPayload)
           setStreamingEntryId(null)
           return // Exit callback
+        } else {
+          // Log unhandled event types for debugging
+          console.warn('[UI] Unhandled event type:', type, event)
         }
 
         if (needsStoreUpdate) {
@@ -265,7 +256,7 @@ export const useAnalyzeThought = () => {
     } catch (error) {
       console.error('Error analyzing thought:', error)
       setError('Failed to analyze thought')
-      
+
       // Track general failure
       if (analysisStartTime) {
         track('thought_analysis_failed', {
