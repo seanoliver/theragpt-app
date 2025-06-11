@@ -1,5 +1,5 @@
 import { useEntryStore } from '@theragpt/logic/src/entry/entry.store'
-import { DistortionType, Entry } from '@theragpt/logic/src/entry/types'
+import { DistortionType, Entry, DistortionInstance } from '@theragpt/logic/src/entry/types'
 import {
   StreamEvent,
   streamPromptOutput,
@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useTracking } from '@/lib/analytics/useTracking'
 import { usePathname } from 'next/navigation'
+import { v4 as uuidv4 } from 'uuid'
 
 export const useAnalyzeThought = () => {
   const addEntry = useEntryStore(state => state.addEntry)
@@ -49,16 +50,18 @@ export const useAnalyzeThought = () => {
       const prompt = getAnalyzePrompt({ rawText: thought })
 
       // 1. Create a partial entry immediately
+      const entryId = uuidv4()
+
       const partialEntryData = {
-        id: '', // ID will be assigned by addEntry
+        id: entryId,
         rawText: thought,
         title: '',
         category: '',
         createdAt: Date.now(),
         distortions: [],
         reframe: {
-          id: '',
-          entryId: '',
+          id: `${entryId}-reframe`,
+          entryId: entryId,
           text: 'Analyzing your thought...',
           explanation: 'Please wait while we analyze your thought...',
         },
@@ -70,7 +73,7 @@ export const useAnalyzeThought = () => {
         throw new Error('Failed to create partial entry')
       }
 
-      const entryId = partialEntry.id
+      console.log('[useAnalyzeThought] Created partial entry:', partialEntry.id)
       setStreamingEntryId(entryId)
 
       // Track analysis start
@@ -86,21 +89,35 @@ export const useAnalyzeThought = () => {
         let needsStoreUpdate = false
 
         if (type === 'field' && field && typeof field === 'string') {
+          // Special handling for distortions to ensure proper IDs
+          if (field === 'distortions' && Array.isArray(value)) {
+            const distortionsWithIds: DistortionInstance[] = (value as DistortionInstance[]).map((distortion: DistortionInstance) => ({
+              ...distortion,
+              id: distortion.id || uuidv4(),
+            }));
+            (streamPatch as any)[field] = distortionsWithIds
+          }
+          // Special handling for reframe to ensure proper IDs
+          else if (field === 'reframe' && typeof value === 'object' && value !== null) {
+            (streamPatch as any)[field] = {
+              ...value,
+              id: (value as any).id || `${entryId}-reframe`,
+              entryId: entryId,
+            }
+          }
           // If value is an object, merge it with existing streamPatch for that field
-          if (
+          else if (
             typeof value === 'object' &&
             value !== null &&
             (streamPatch as any)[field] &&
             typeof (streamPatch as any)[field] === 'object'
           ) {
-            // eslint-disable-next-line no-extra-semi
-            ;(streamPatch as any)[field] = {
+            (streamPatch as any)[field] = {
               ...((streamPatch as any)[field] || {}),
               ...value,
             }
           } else {
-            // eslint-disable-next-line no-extra-semi
-            ;(streamPatch as any)[field] = value
+            (streamPatch as any)[field] = value
           }
           needsStoreUpdate = true
         } else if (type === 'chunk') {
@@ -120,7 +137,23 @@ export const useAnalyzeThought = () => {
             id: entryId, // Ensure ID
             createdAt: partialEntry.createdAt, // Preserve original timestamp
           }
-          if (finalEntry.reframe) finalEntry.reframe.entryId = entryId // Ensure reframe.entryId
+
+          // Ensure reframe has proper IDs
+          if (finalEntry.reframe) {
+            finalEntry.reframe.entryId = entryId
+            if (!finalEntry.reframe.id) {
+              finalEntry.reframe.id = `${entryId}-reframe`
+            }
+          }
+
+          // Ensure all distortions have proper UUIDs
+          if (finalEntry.distortions && Array.isArray(finalEntry.distortions)) {
+            finalEntry.distortions = finalEntry.distortions.map((distortion: DistortionInstance) => ({
+              ...distortion,
+              id: distortion.id || uuidv4(),
+            }))
+          }
+
           updateEntry(finalEntry)
           setStreamingEntryId(null)
 
@@ -179,7 +212,7 @@ export const useAnalyzeThought = () => {
               // If it's a string (from streaming), convert to a placeholder array item
               streamPatch.distortions = [
                 {
-                  id: Date.now().toString(),
+                  id: uuidv4(),
                   label: 'Processing...',
                   distortionId: DistortionType.AllOrNothingThinking, // Use a valid enum value
                   description: String(streamPatch.distortions),
@@ -251,6 +284,8 @@ export const useAnalyzeThought = () => {
           if (currentDisplayState.reframe) {
             currentDisplayState.reframe.entryId = entryId
           }
+
+          console.log('[useAnalyzeThought] Updating entry during streaming:', entryId)
           updateEntry(currentDisplayState)
         }
       })

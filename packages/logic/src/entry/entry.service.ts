@@ -5,8 +5,6 @@ import { Entry, EntryListener } from './types'
 import {
   mapDbEntryToAppEntry,
   mapAppEntryToDbEntry,
-  mapAppReframeToDbReframe,
-  mapAppDistortionInstanceToDb,
 } from './type-mappers'
 
 export class EntryService {
@@ -44,7 +42,7 @@ export class EntryService {
   async init(): Promise<Entry[]> {
     try {
       let entries: Entry[] = []
-      
+
       if (this.isOnline) {
         // Try to fetch from Supabase first
         try {
@@ -108,22 +106,37 @@ export class EntryService {
     const entries = await this.getAll()
     const index = entries.findIndex(a => a.id === params.id)
 
-    if (index === -1) {
-      throw new Error(`Entry with ID ${params.id} not found`)
-    }
+    let updatedEntry: Entry
 
-    const entry = entries[index]
-    const updatedEntry: Entry = {
-      ...entry,
-      rawText: params.rawText ?? entry.rawText,
-      distortions: params.distortions ?? entry.distortions,
-      reframe: params.reframe ?? entry.reframe,
-      title: params.title ?? entry.title,
-      category: params.category ?? entry.category,
-      createdAt: params.createdAt ?? entry.createdAt,
-      strategies: params.strategies ?? entry.strategies,
-      isPinned: params.isPinned ?? entry.isPinned,
-      updatedAt: Date.now(),
+    if (index === -1) {
+      // Entry not found in local cache - this can happen during streaming
+      // Create the entry with the provided params
+      console.warn(`Entry with ID ${params.id} not found in cache, creating new entry`)
+      updatedEntry = {
+        ...params,
+        updatedAt: Date.now(),
+      }
+
+      // Add to local cache
+      entries.push(updatedEntry)
+    } else {
+      // Entry found, update it
+      const entry = entries[index]
+      updatedEntry = {
+        ...entry,
+        rawText: params.rawText ?? entry.rawText,
+        distortions: params.distortions ?? entry.distortions,
+        reframe: params.reframe ?? entry.reframe,
+        title: params.title ?? entry.title,
+        category: params.category ?? entry.category,
+        createdAt: params.createdAt ?? entry.createdAt,
+        strategies: params.strategies ?? entry.strategies,
+        isPinned: params.isPinned ?? entry.isPinned,
+        updatedAt: Date.now(),
+      }
+
+      // Update in local cache
+      entries[index] = updatedEntry
     }
 
     try {
@@ -139,7 +152,6 @@ export class EntryService {
     }
 
     // Always update local storage
-    entries[index] = updatedEntry
     await this.saveToLocalStorage(entries)
     this.updateCache(entries)
     this.notifyListeners(entries)
@@ -149,10 +161,10 @@ export class EntryService {
 
   async getAll(): Promise<Entry[]> {
     if (this.entryCache) return this.entryCache
-    
+
     try {
       let entries: Entry[] = []
-      
+
       if (this.isOnline) {
         try {
           const { data: { user } } = await getSupabaseClient().auth.getUser()
@@ -170,7 +182,7 @@ export class EntryService {
       } else {
         entries = await this.getFromLocalStorage()
       }
-      
+
       this.updateCache(entries)
       return entries
     } catch (error) {
@@ -235,53 +247,25 @@ export class EntryService {
   private async fetchFromSupabase(): Promise<Entry[]> {
     const { data, error } = await getSupabaseClient()
       .from('entries')
-      .select(`
-        *,
-        reframes(*),
-        distortion_instances(*, distortions(*))
-      `)
+      .select('*')
       .order('created_at', { ascending: false })
 
     if (error) throw error
 
-    return data.map(dbEntry => {
-      const reframes = dbEntry.reframes || []
-      const distortionInstances = dbEntry.distortion_instances || []
-      return mapDbEntryToAppEntry(dbEntry, reframes, distortionInstances)
-    })
+    return data.map(dbEntry => mapDbEntryToAppEntry(dbEntry))
   }
 
   private async saveEntryToSupabase(entry: Entry): Promise<void> {
     const { data: { user } } = await getSupabaseClient().auth.getUser()
     if (!user) throw new Error('User not authenticated')
 
-    // Insert the main entry
+    // Insert the entry with all data in one table
     const dbEntry = mapAppEntryToDbEntry(entry)
-    const { error: entryError } = await getSupabaseClient()
+    const { error } = await getSupabaseClient()
       .from('entries')
       .insert({ ...dbEntry, user_id: user.id })
 
-    if (entryError) throw entryError
-
-    // Insert reframe if exists
-    if (entry.reframe) {
-      const dbReframe = mapAppReframeToDbReframe(entry.reframe)
-      const { error: reframeError } = await getSupabaseClient()
-        .from('reframes')
-        .insert(dbReframe)
-
-      if (reframeError) throw reframeError
-    }
-
-    // Insert distortion instances if exist
-    if (entry.distortions && entry.distortions.length > 0) {
-      const dbDistortions = entry.distortions.map(d => mapAppDistortionInstanceToDb(d, entry.id))
-      const { error: distortionsError } = await getSupabaseClient()
-        .from('distortion_instances')
-        .insert(dbDistortions)
-
-      if (distortionsError) throw distortionsError
-    }
+    if (error) throw error
   }
 
   private async updateEntryInSupabase(entry: Entry): Promise<void> {
@@ -292,9 +276,6 @@ export class EntryService {
       .eq('id', entry.id)
 
     if (error) throw error
-
-    // Note: For reframes and distortions, you might want to implement
-    // more sophisticated update logic depending on your needs
   }
 
   private async deleteEntryFromSupabase(id: string): Promise<void> {

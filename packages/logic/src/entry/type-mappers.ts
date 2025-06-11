@@ -4,23 +4,50 @@ import { Entry, Reframe, DistortionInstance, DistortionType } from './types'
 // Database types
 export type DbEntry = Tables<'entries'>
 export type DbEntryInsert = TablesInsert<'entries'>
-export type DbReframe = Tables<'reframes'>
-export type DbDistortionInstance = Tables<'distortion_instances'>
 
 // Type mapping functions to convert between your app types and database types
 
-export const mapDbEntryToAppEntry = (
-  dbEntry: DbEntry,
-  reframes?: DbReframe[],
-  distortionInstances?: (DbDistortionInstance & { distortions?: Tables<'distortions'> })[]
-): Entry => {
+export const mapDbEntryToAppEntry = (dbEntry: DbEntry): Entry => {
+  // Parse distortions from JSON
+  let distortions: DistortionInstance[] | undefined = undefined
+  if (dbEntry.distortions) {
+    try {
+      const parsedDistortions = Array.isArray(dbEntry.distortions)
+        ? dbEntry.distortions
+        : JSON.parse(dbEntry.distortions as string)
+
+      if (Array.isArray(parsedDistortions)) {
+        distortions = parsedDistortions.map((d: any) => ({
+          id: d.id || '',
+          label: d.label || getDistortionLabel(d.distortionId),
+          distortionId: d.distortionId as DistortionType,
+          description: d.description || '',
+          confidenceScore: d.confidenceScore || undefined,
+        }))
+      }
+    } catch (error) {
+      console.warn('Failed to parse distortions JSON:', error)
+    }
+  }
+
+  // Create reframe object if reframe data exists
+  let reframe: Reframe | undefined = undefined
+  if (dbEntry.reframe_text && dbEntry.reframe_explanation) {
+    reframe = {
+      id: `${dbEntry.id}-reframe`, // Generate consistent ID based on entry ID
+      entryId: dbEntry.id,
+      text: dbEntry.reframe_text,
+      explanation: dbEntry.reframe_explanation,
+    }
+  }
+
   return {
     id: dbEntry.id,
     title: dbEntry.title || undefined,
     category: dbEntry.category || undefined,
     rawText: dbEntry.raw_text,
-    reframe: reframes?.[0] ? mapDbReframeToAppReframe(reframes[0]) : undefined,
-    distortions: distortionInstances?.map(mapDbDistortionInstanceToApp) || undefined,
+    reframe,
+    distortions,
     strategies: dbEntry.strategies || undefined,
     createdAt: new Date(dbEntry.created_at).getTime(),
     updatedAt: dbEntry.updated_at ? new Date(dbEntry.updated_at).getTime() : undefined,
@@ -29,6 +56,12 @@ export const mapDbEntryToAppEntry = (
 }
 
 export const mapAppEntryToDbEntry = (entry: Entry): DbEntryInsert => {
+  // Serialize distortions to JSON
+  let distortionsJson = null
+  if (entry.distortions && entry.distortions.length > 0) {
+    distortionsJson = JSON.stringify(entry.distortions)
+  }
+
   return {
     id: entry.id,
     title: entry.title || null,
@@ -38,47 +71,9 @@ export const mapAppEntryToDbEntry = (entry: Entry): DbEntryInsert => {
     is_pinned: entry.isPinned || false,
     created_at: new Date(entry.createdAt).toISOString(),
     updated_at: entry.updatedAt ? new Date(entry.updatedAt).toISOString() : undefined,
-  }
-}
-
-export const mapDbReframeToAppReframe = (dbReframe: DbReframe): Reframe => {
-  return {
-    id: dbReframe.id,
-    entryId: dbReframe.entry_id,
-    text: dbReframe.text,
-    explanation: dbReframe.explanation,
-  }
-}
-
-export const mapAppReframeToDbReframe = (reframe: Reframe): Omit<TablesInsert<'reframes'>, 'id'> => {
-  return {
-    entry_id: reframe.entryId,
-    text: reframe.text,
-    explanation: reframe.explanation,
-  }
-}
-
-export const mapDbDistortionInstanceToApp = (
-  dbInstance: DbDistortionInstance & { distortions?: Tables<'distortions'> }
-): DistortionInstance => {
-  return {
-    id: dbInstance.id,
-    label: dbInstance.distortions?.label || getDistortionLabel(dbInstance.distortion_id),
-    distortionId: dbInstance.distortion_id as DistortionType,
-    description: dbInstance.description,
-    confidenceScore: dbInstance.confidence_score || undefined,
-  }
-}
-
-export const mapAppDistortionInstanceToDb = (
-  instance: DistortionInstance,
-  entryId: string
-): Omit<TablesInsert<'distortion_instances'>, 'id'> => {
-  return {
-    entry_id: entryId,
-    distortion_id: instance.distortionId as Database['public']['Enums']['distortion_type'],
-    description: instance.description,
-    confidence_score: instance.confidenceScore || null,
+    reframe_text: entry.reframe?.text || null,
+    reframe_explanation: entry.reframe?.explanation || null,
+    distortions: distortionsJson,
   }
 }
 

@@ -86,6 +86,9 @@ export type Database = {
           title: string | null
           updated_at: string | null
           user_id: string | null
+          reframe_text: string | null
+          reframe_explanation: string | null
+          distortions: Json | null
         }
         Insert: {
           category?: string | null
@@ -97,6 +100,9 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           user_id?: string | null
+          reframe_text?: string | null
+          reframe_explanation?: string | null
+          distortions?: Json | null
         }
         Update: {
           category?: string | null
@@ -108,8 +114,19 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           user_id?: string | null
+          reframe_text?: string | null
+          reframe_explanation?: string | null
+          distortions?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'entries_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
       }
       reframes: {
         Row: {

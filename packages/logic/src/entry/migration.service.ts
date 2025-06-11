@@ -1,7 +1,7 @@
 import { getSupabaseClient } from '@theragpt/config'
 import { EntryService } from './entry.service'
 import { Entry } from './types'
-import { mapAppEntryToDbEntry, mapAppReframeToDbReframe, mapAppDistortionInstanceToDb } from './type-mappers'
+import { mapAppEntryToDbEntry } from './type-mappers'
 
 export class MigrationService {
   /**
@@ -54,39 +54,14 @@ export class MigrationService {
   }
 
   private static async migrateEntry(entry: Entry, userId: string): Promise<void> {
-    // Insert the main entry
+    // Insert the entry with all data in one table (simplified model)
     const dbEntry = mapAppEntryToDbEntry(entry)
-    const { error: entryError } = await getSupabaseClient()
+    const { error } = await getSupabaseClient()
       .from('entries')
       .insert({ ...dbEntry, user_id: userId })
 
-    if (entryError) {
-      console.error(`Failed to migrate entry ${entry.id}:`, entryError)
-      return
-    }
-
-    // Insert reframe if exists
-    if (entry.reframe) {
-      const dbReframe = mapAppReframeToDbReframe(entry.reframe)
-      const { error: reframeError } = await getSupabaseClient()
-        .from('reframes')
-        .insert(dbReframe)
-
-      if (reframeError) {
-        console.warn(`Failed to migrate reframe for entry ${entry.id}:`, reframeError)
-      }
-    }
-
-    // Insert distortion instances if exist
-    if (entry.distortions && entry.distortions.length > 0) {
-      const dbDistortions = entry.distortions.map(d => mapAppDistortionInstanceToDb(d, entry.id))
-      const { error: distortionsError } = await getSupabaseClient()
-        .from('distortion_instances')
-        .insert(dbDistortions)
-
-      if (distortionsError) {
-        console.warn(`Failed to migrate distortions for entry ${entry.id}:`, distortionsError)
-      }
+    if (error) {
+      console.error(`Failed to migrate entry ${entry.id}:`, error)
     }
   }
 
