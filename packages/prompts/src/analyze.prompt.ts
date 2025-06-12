@@ -21,7 +21,6 @@ ${distortionList}
 For **each distortion**:
 - Quote the exact wording or a short phrase from the thought that shows the distortion (e.g. "I'm terrible at my job").
 - In **3–5 concise sentences**, explain why this quote suggests the distortion. Speak warmly in "you" language but avoid absolute statements—use phrases like "might", "could", or "tends to".
-- Include a **confidence score** from 0 to 1 indicating how likely the distortion is present.
 
 2. Write a **reframed version** of this thought. Make it feel more balanced, compassionate, and believable—like something a wise, grounded friend might say. Avoid toxic positivity. Focus on emotional honesty, healthy realism, and validation.
 
