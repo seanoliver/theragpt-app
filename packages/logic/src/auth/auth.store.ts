@@ -1,6 +1,6 @@
-import { create } from 'zustand'
+import type { AuthError, Session, User } from '@supabase/supabase-js'
 import { getSupabaseClient } from '@theragpt/config'
-import type { User, Session, AuthError } from '@supabase/supabase-js'
+import { create } from 'zustand'
 
 export interface AuthStore {
   // State
@@ -11,8 +11,14 @@ export interface AuthStore {
   error: string | null
 
   // Auth actions
-  signUp: (email: string, password: string) => Promise<{ user: User | null; error: AuthError | null }>
-  signIn: (email: string, password: string) => Promise<{ user: User | null; error: AuthError | null }>
+  signUp: (
+    email: string,
+    password: string,
+  ) => Promise<{ user: User | null; error: AuthError | null }>
+  signIn: (
+    email: string,
+    password: string,
+  ) => Promise<{ user: User | null; error: AuthError | null }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>
 
@@ -28,7 +34,7 @@ export interface AuthStore {
   get isAuthenticated(): boolean
 }
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
+export const useAuthStore = create<AuthStore>((set, _get) => ({
   // Initial state
   user: null,
   session: null,
@@ -43,7 +49,10 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     try {
       // Get initial session
-      const { data: { session }, error } = await getSupabaseClient().auth.getSession()
+      const {
+        data: { session },
+        error,
+      } = await getSupabaseClient().auth.getSession()
 
       if (error) {
         set({ error: error.message })
@@ -111,10 +120,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      const { data, error } = await getSupabaseClient().auth.signInWithPassword({
-        email,
-        password,
-      })
+      const { data, error } = await getSupabaseClient().auth.signInWithPassword(
+        {
+          email,
+          password,
+        },
+      )
 
       if (error) {
         set({ error: error.message })
@@ -158,9 +169,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      const { error } = await getSupabaseClient().auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      })
+      const { error } = await getSupabaseClient().auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: `${window.location.origin}/reset-password`,
+        },
+      )
 
       if (error) {
         set({ error: error.message })

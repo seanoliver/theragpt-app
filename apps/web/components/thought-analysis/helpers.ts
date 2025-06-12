@@ -1,4 +1,4 @@
-import { DistortionType, Entry, StreamEvent } from '@theragpt/logic';
+import { DistortionType, Entry, StreamEvent } from '@theragpt/logic'
 
 /** Returns true if the event is a field update (has a string field and correct type) */
 export const isFieldEvent = (type: string, field: unknown): boolean =>

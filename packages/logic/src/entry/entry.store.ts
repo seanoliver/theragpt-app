@@ -106,7 +106,9 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
 
       if (entryIndex === -1) {
         // Entry not found in store - this can happen during streaming
-        console.warn(`Entry with ID ${id} not found in store, creating new entry`)
+        console.warn(
+          `Entry with ID ${id} not found in store, creating new entry`,
+        )
         const newEntry = {
           id,
           ...patch,
@@ -115,7 +117,7 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
         } as Entry
 
         return {
-          entries: [...state.entries, newEntry]
+          entries: [...state.entries, newEntry],
         }
       }
 

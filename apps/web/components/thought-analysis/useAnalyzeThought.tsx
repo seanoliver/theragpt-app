@@ -15,7 +15,6 @@ import {
   handleComplete,
   handleError,
   logChunk,
-  normalizePatchArrays,
 } from './helpers'
 
 export const useAnalyzeThought = () => {

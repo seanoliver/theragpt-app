@@ -1,18 +1,18 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { formatRelativeTime } from '@/lib/date-utils';
-import { useEntryStore } from '@theragpt/logic';
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { formatRelativeTime } from '@/lib/date-utils'
+import { useEntryStore } from '@theragpt/logic'
 import {
   CalendarIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   Loader2,
-} from 'lucide-react';
-import { useState } from 'react';
-import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel';
+} from 'lucide-react'
+import { useState } from 'react'
+import { EntryItemAnalysisPanel } from './EntryItemAnalysisPanel'
 interface EntryItemProps {
   entryId: string
 }
@@ -40,9 +40,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
           <CalendarIcon className="h-4 w-4" />
-          <span>
-            {formatRelativeTime(entry.createdAt)}
-          </span>
+          <span>{formatRelativeTime(entry.createdAt)}</span>
         </div>
         <Badge variant="outline">{entry.category}</Badge>
       </CardHeader>

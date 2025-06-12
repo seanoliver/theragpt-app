@@ -1,4 +1,4 @@
-import { DISTORTION_LABELS } from './constants';
+import { DISTORTION_LABELS } from './constants'
 
 export interface Entry {
   id: string
