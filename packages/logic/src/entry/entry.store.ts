@@ -7,6 +7,7 @@ export interface EntryStore {
   // State
   entries: Entry[]
   isLoading: boolean
+
   error: string | null
   hasInitialized: boolean
 
@@ -36,7 +37,6 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
   isLoading: false,
   error: null,
   hasInitialized: false,
-
   streamingEntryId: null,
   setStreamingEntryId: (id: string | null) => set({ streamingEntryId: id }),
 

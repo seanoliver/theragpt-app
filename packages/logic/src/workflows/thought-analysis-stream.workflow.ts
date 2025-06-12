@@ -2,6 +2,7 @@ export type StreamEventType =
   | 'thought'
   | 'field'
   | 'chunk'
+  | 'update'
   | 'complete'
   | 'error'
 
@@ -15,6 +16,10 @@ export interface StreamEvent {
 
 export type StreamEventCallback = (event: StreamEvent) => void
 
+/**
+ * Fetch and stream the output of a prompt to the client in the form of a
+ * parsed JSON object that can be consumed directly by the client.
+ */
 export const streamPromptOutput = async (
   prompt: string,
   thought: string,
@@ -44,35 +49,87 @@ export const streamPromptOutput = async (
     const decoder = new TextDecoder()
 
     let buffer = ''
+    let chunkCount = 0
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const { done, value } = await reader.read()
       if (done) break
 
-      buffer += decoder.decode(value, { stream: true })
-      const events = buffer.split('\n\n')
-      buffer = events.pop() || ''
+      const chunk = decoder.decode(value, { stream: true })
+      buffer += chunk
+      chunkCount++
 
-      for (const rawEvent of events) {
-        if (!rawEvent.startsWith('data: ')) continue
+      // Emit chunk event for debugging
+      onEvent({
+        type: 'chunk',
+        content: chunk,
+        chunkNumber: chunkCount,
+      })
 
+      // Try to parse the accumulated buffer
+      let currentParsed: any = null
+      let isCompleteJSON = false
+
+      // First, try to parse as complete JSON
+      try {
+        currentParsed = JSON.parse(buffer)
+        isCompleteJSON = true
+      } catch (parseError) {
+        // If complete JSON parsing fails, try incomplete JSON parsing
         try {
-          const json = JSON.parse(rawEvent.slice(6))
-          const { type, content, field, value, chunkNumber } = json
+          const incompleteJSON = parseIncompleteJSONStream(buffer)
+          if (incompleteJSON && typeof incompleteJSON === 'object') {
+            currentParsed = incompleteJSON
+          }
+        } catch (incompleteError) {
+          // Both parsing methods failed, continue accumulating
+          continue
+        }
+      }
 
-          onEvent({
-            type,
-            content,
-            field,
-            value,
-            ...(chunkNumber && { chunkNumber }),
-          })
-        } catch (err) {
-          console.error('Error parsing SSE chunk:', err)
+      // If we have any parsed data, emit it
+      if (currentParsed) {
+        onEvent({
+          type: 'update',
+          content: currentParsed,
+          field: isCompleteJSON ? 'complete' : 'partial',
+        })
+      }
+
+      // If we have complete JSON, we're done
+      if (isCompleteJSON) {
+        onEvent({
+          type: 'complete',
+          content: currentParsed,
+        })
+        return
+      }
+    }
+
+    // Final processing - try one more parse
+    let finalParsed = null
+    if (buffer.trim()) {
+      try {
+        finalParsed = JSON.parse(buffer)
+      } catch (finalParseError) {
+        try {
+          const incompleteJSON = parseIncompleteJSONStream(buffer)
+          if (incompleteJSON && typeof incompleteJSON === 'object') {
+            finalParsed = incompleteJSON
+          }
+        } catch (incompleteError) {
+          // Use empty object if nothing could be parsed
+          finalParsed = {}
         }
       }
     }
+
+    onEvent({
+      type: 'complete',
+      content: finalParsed || {},
+    })
+
   } catch (err: unknown) {
     console.error('Error streaming thought analysis:', err)
     onEvent({
@@ -181,12 +238,14 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
 
   try {
     return JSON.parse(buffer)
-  } catch (e) {
+  } catch {
     // If parsing failed, try a more aggressive approach for unclosed strings
-    console.error('Error parsing incomplete JSON stream:', e)
     try {
       // Find all potential unclosed strings and close them
-      const fixedBuffer = buffer.replace(/("(?:\\.|[^"\\])*?)(?=[,}\]:])(?!")/g, '$1"')
+      const fixedBuffer = buffer.replace(
+        /("(?:\\.|[^"\\])*?)(?=[,}\]:])(?!")/g,
+        '$1"',
+      )
       return JSON.parse(fixedBuffer)
     } catch {
       return null

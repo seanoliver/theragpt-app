@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+'use client'
+
+import { useState } from 'react'
 import { useAuth } from './context'
-import { MigrationService, entryService } from '../entry'
 
 /**
  * Hook to check if user is authenticated
@@ -66,7 +67,7 @@ export const useSignUp = () => {
   const handleSignUp = async (email: string, password: string) => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const result = await signUp(email, password)
       if (result.error) {
@@ -103,7 +104,7 @@ export const useSignIn = () => {
   const handleSignIn = async (email: string, password: string) => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const result = await signIn(email, password)
       if (result.error) {
@@ -164,7 +165,7 @@ export const usePasswordReset = () => {
     setIsLoading(true)
     setError(null)
     setIsSuccess(false)
-    
+
     try {
       const result = await resetPassword(email)
       if (result.error) {
@@ -174,7 +175,8 @@ export const usePasswordReset = () => {
       }
       return result
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Password reset failed'
+      const errorMessage =
+        err instanceof Error ? err.message : 'Password reset failed'
       setError(errorMessage)
       return { error: { message: errorMessage } }
     } finally {
@@ -194,89 +196,4 @@ export const usePasswordReset = () => {
     isSuccess,
     clearState,
   }
-}
-
-/**
- * Hook to automatically migrate local data after authentication
- * Call this hook in components that need to handle post-auth migration
- */
-export const useAuthMigration = () => {
-  const { user, isAuthenticated } = useAuth()
-  const [isMigrating, setIsMigrating] = useState(false)
-  const [migrationError, setMigrationError] = useState<string | null>(null)
-  const [migrationComplete, setMigrationComplete] = useState(false)
-
-  const triggerMigration = async () => {
-    if (!user || !isAuthenticated) {
-      return
-    }
-
-    setIsMigrating(true)
-    setMigrationError(null)
-    
-    try {
-      await MigrationService.migrateLocalEntriesToSupabase(entryService)
-      setMigrationComplete(true)
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Migration failed'
-      setMigrationError(errorMessage)
-      console.error('Migration failed:', error)
-    } finally {
-      setIsMigrating(false)
-    }
-  }
-
-  const clearMigrationState = () => {
-    setMigrationError(null)
-    setMigrationComplete(false)
-  }
-
-  return {
-    triggerMigration,
-    isMigrating,
-    migrationError,
-    migrationComplete,
-    clearMigrationState,
-  }
-}
-
-/**
- * Hook that automatically triggers migration when user first authenticates
- * Use this in your app root or main layout component
- */
-export const useAutoMigration = (enabled: boolean = true) => {
-  const { user, isAuthenticated, isInitialized } = useAuth()
-  const [hasTriggeredMigration, setHasTriggeredMigration] = useState(false)
-  const migration = useAuthMigration()
-
-  useEffect(() => {
-    if (
-      enabled &&
-      isAuthenticated &&
-      isInitialized &&
-      user &&
-      !hasTriggeredMigration &&
-      !migration.isMigrating
-    ) {
-      migration.triggerMigration()
-      setHasTriggeredMigration(true)
-    }
-  }, [
-    enabled,
-    isAuthenticated,
-    isInitialized,
-    user,
-    hasTriggeredMigration,
-    migration.isMigrating,
-    migration.triggerMigration,
-  ])
-
-  // Reset flag when user signs out
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setHasTriggeredMigration(false)
-    }
-  }, [isAuthenticated])
-
-  return migration
 }

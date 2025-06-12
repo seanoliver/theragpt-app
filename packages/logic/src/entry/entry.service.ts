@@ -20,6 +20,10 @@ export class EntryService {
     this.checkOnlineStatus()
   }
 
+  /**
+   * Sets the current online status of the user. This is used in the service
+   * to determine whether to fetch and save to Supabase or local storage.
+   */
   private checkOnlineStatus() {
     if (typeof navigator !== 'undefined' && typeof window !== 'undefined') {
       this.isOnline = navigator.onLine
@@ -31,7 +35,7 @@ export class EntryService {
   subscribe(listener: EntryListener) {
     this.listeners.push(listener)
     return () => {
-      this.listeners = this.listeners.filter(l => l !== listener)
+      this.listeners = this.listeners.filter(l => l !== listener) // Function reference is used to filter the listener
     }
   }
 
@@ -84,7 +88,6 @@ export class EntryService {
       if (this.isOnline) {
         const { data: { user } } = await getSupabaseClient().auth.getUser()
         if (user) {
-          // Save to Supabase
           await this.saveEntryToSupabase(entry)
         }
       }
@@ -126,7 +129,8 @@ export class EntryService {
         ...entry,
         rawText: params.rawText ?? entry.rawText,
         distortions: params.distortions ?? entry.distortions,
-        reframe: params.reframe ?? entry.reframe,
+        reframeText: params.reframeText ?? entry.reframeText,
+        reframeExplanation: params.reframeExplanation ?? entry.reframeExplanation,
         title: params.title ?? entry.title,
         category: params.category ?? entry.category,
         createdAt: params.createdAt ?? entry.createdAt,

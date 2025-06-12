@@ -1,5 +1,5 @@
 import type { Tables, TablesInsert, Database } from '@theragpt/config'
-import { Entry, Reframe, DistortionInstance, DistortionType } from './types'
+import { Entry, DistortionInstance, DistortionType } from './types'
 
 // Database types
 export type DbEntry = Tables<'entries'>
@@ -18,26 +18,13 @@ export const mapDbEntryToAppEntry = (dbEntry: DbEntry): Entry => {
 
       if (Array.isArray(parsedDistortions)) {
         distortions = parsedDistortions.map((d: any) => ({
-          id: d.id || '',
           label: d.label || getDistortionLabel(d.distortionId),
-          distortionId: d.distortionId as DistortionType,
+          type: d.distortionId as DistortionType,
           description: d.description || '',
-          confidenceScore: d.confidenceScore || undefined,
         }))
       }
     } catch (error) {
       console.warn('Failed to parse distortions JSON:', error)
-    }
-  }
-
-  // Create reframe object if reframe data exists
-  let reframe: Reframe | undefined = undefined
-  if (dbEntry.reframe_text && dbEntry.reframe_explanation) {
-    reframe = {
-      id: `${dbEntry.id}-reframe`, // Generate consistent ID based on entry ID
-      entryId: dbEntry.id,
-      text: dbEntry.reframe_text,
-      explanation: dbEntry.reframe_explanation,
     }
   }
 
@@ -46,7 +33,8 @@ export const mapDbEntryToAppEntry = (dbEntry: DbEntry): Entry => {
     title: dbEntry.title || undefined,
     category: dbEntry.category || undefined,
     rawText: dbEntry.raw_text,
-    reframe,
+    reframeText: dbEntry.reframe_text || undefined,
+    reframeExplanation: dbEntry.reframe_explanation || undefined,
     distortions,
     strategies: dbEntry.strategies || undefined,
     createdAt: new Date(dbEntry.created_at).getTime(),
@@ -71,8 +59,8 @@ export const mapAppEntryToDbEntry = (entry: Entry): DbEntryInsert => {
     is_pinned: entry.isPinned || false,
     created_at: new Date(entry.createdAt).toISOString(),
     updated_at: entry.updatedAt ? new Date(entry.updatedAt).toISOString() : undefined,
-    reframe_text: entry.reframe?.text || null,
-    reframe_explanation: entry.reframe?.explanation || null,
+    reframe_text: entry.reframeText || null,
+    reframe_explanation: entry.reframeExplanation || null,
     distortions: distortionsJson,
   }
 }

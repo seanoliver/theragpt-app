@@ -43,7 +43,7 @@ export const EntryItemAnalysisPanel = ({
             <h4 className="font-medium text-slate-700 dark:text-slate-300 subheading">Rationale</h4>
             <div className="pl-4 border-l-2 border-green-100 dark:border-green-800 p-3 rounded transition-all duration-300">
               <p className="text-slate-700 dark:text-slate-300 text-lg">
-                {entry.reframe?.explanation}
+                {entry.reframeExplanation}
               </p>
             </div>
           </div>
@@ -88,7 +88,7 @@ export const EntryItemAnalysisPanel = ({
                           <p className="text-slate-500 dark:text-slate-400 text-md">
                             {
                               DISTORTIONS.find(
-                                d => d.id === distortion.distortionId,
+                                d => d.id === distortion.type,
                               )?.description
                             }
                           </p>

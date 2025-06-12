@@ -12,6 +12,4 @@ export {
   useSignIn,
   useSignOut,
   usePasswordReset,
-  useAuthMigration,
-  useAutoMigration,
 } from '@theragpt/logic'

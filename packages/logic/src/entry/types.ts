@@ -1,11 +1,12 @@
-import { DISTORTION_LABELS } from './constants'
+import { DISTORTION_LABELS } from './constants';
 
 export interface Entry {
   id: string
   title?: string
   category?: string
   rawText: string
-  reframe?: Reframe
+  reframeText?: string
+  reframeExplanation?: string
   distortions?: DistortionInstance[]
   strategies?: string[]
   createdAt: number
@@ -14,13 +15,6 @@ export interface Entry {
 }
 
 export type EntryListener = (entries: Entry[]) => void
-
-export interface Reframe {
-  id: string
-  entryId: Entry['id']
-  text: string
-  explanation: string
-}
 
 export interface Distortion {
   id: DistortionType
@@ -31,11 +25,9 @@ export interface Distortion {
 }
 
 export interface DistortionInstance {
-  id: string
   label: (typeof DISTORTION_LABELS)[DistortionType]
-  distortionId: Distortion['id']
+  type: Distortion['id']
   description: string
-  confidenceScore?: number
 }
 
 export enum DistortionType {
