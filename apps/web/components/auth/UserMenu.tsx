@@ -41,17 +41,21 @@ export const UserMenu = ({ onSignOut }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm">
-            {getInitials(user.email || 'U')}
-          </div>
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 hover:text-primary-foreground/90"
+        >
+          {getInitials(user.email ?? 'U')}
+          {/* <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm">
+            {getInitials(user.email ?? 'U')}
+          </div> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.user_metadata?.full_name || 'User'}
+              {user.user_metadata?.full_name || user.email?.split('@')[0]}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
@@ -59,7 +63,7 @@ export const UserMenu = ({ onSignOut }: UserMenuProps) => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={handleSignOut}
           disabled={isLoading}
           className="cursor-pointer"
