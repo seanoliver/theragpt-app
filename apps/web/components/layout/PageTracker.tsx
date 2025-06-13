@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useTracking } from '@/apps/web/lib/analytics/useTracking'
+import { useTracking } from '@/lib/analytics/useTracking'
 import { usePathname } from 'next/navigation'
 
 export const PageTracker = () => {

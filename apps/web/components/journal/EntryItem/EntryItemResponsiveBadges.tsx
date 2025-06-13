@@ -1,5 +1,4 @@
 import { DistortionInstance } from '@theragpt/logic'
-import React from 'react'
 import { DistortionBadge } from '../../shared/DistortionBadge'
 
 interface EntryItemResponsiveBadgesProps {
@@ -48,19 +47,19 @@ export const EntryItemResponsiveBadges = ({
           <>
             {/* Mobile: show +N if more than 1 */}
             {total > 1 && (
-              <span className="inline md:hidden text-xs text-slate-500 px-1">
+              <span className="inline md:hidden text-xs text-slate-500 dark:text-slate-400 px-1">
                 +{total - 1}
               </span>
             )}
             {/* md: show +N if more than 2 */}
             {total > 2 && (
-              <span className="hidden md:inline lg:hidden text-xs text-slate-500 px-1">
+              <span className="hidden md:inline lg:hidden text-xs text-slate-500 dark:text-slate-400 px-1">
                 +{total - 2}
               </span>
             )}
             {/* lg: show +N if more than 3 */}
             {total > 3 && (
-              <span className="hidden lg:inline text-xs text-slate-500 px-1">
+              <span className="hidden lg:inline text-xs text-slate-500 dark:text-slate-400 px-1">
                 +{total - 3}
               </span>
             )}

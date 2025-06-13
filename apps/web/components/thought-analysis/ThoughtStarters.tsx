@@ -1,20 +1,20 @@
 'use client'
 
-import { Badge } from '@/apps/web/components/ui/badge'
-import { Card } from '@/apps/web/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/apps/web/components/ui/select'
+} from '@/components/ui/select'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/apps/web/components/ui/tabs'
+} from '@/components/ui/tabs'
 import { Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

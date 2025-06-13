@@ -1,10 +1,24 @@
-import { EntryList } from '@/apps/web/components/journal/EntryList'
-import { Header } from '@/apps/web/components/layout/Header'
-import { Button } from '@/apps/web/components/ui/button'
+'use client'
+
+import { EntryList } from '@/components/journal/EntryList'
+import { Header } from '@/components/layout/Header'
+import { Button } from '@/components/ui/button'
 import { PlusCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useRouteProtection } from '@/lib/auth-utils'
+import { AuthLoadingSpinner } from '@/components/auth/AuthLoadingSpinner'
 
 export default function JournalPage() {
+  const { shouldShowLoading, shouldRender } = useRouteProtection()
+
+  if (shouldShowLoading) {
+    return <AuthLoadingSpinner />
+  }
+
+  if (!shouldRender) {
+    return null
+  }
+
   return (
     <main className="min-h-screen">
       <Header />

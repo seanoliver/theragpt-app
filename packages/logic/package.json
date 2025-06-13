@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",
+    "@supabase/supabase-js": "^2.50.0",
     "@theragpt/config": "workspace:*",
     "json5": "^2.2.3",
     "lodash": "^4.17.21",
