@@ -46,11 +46,13 @@ export const mapDbEntryToAppEntry = (dbEntry: DbEntry): Entry => {
 }
 
 export const mapAppEntryToDbEntry = (entry: Entry): DbEntryInsert => {
-  // Serialize distortions to JSON
-  let distortionsJson = null
+  let distortionsJson: string | null = null
   if (entry.distortions && entry.distortions.length > 0) {
     distortionsJson = JSON.stringify(entry.distortions)
   }
+
+  console.log('[🔴 Type Mappers] entry', entry)
+  console.log('[🔴 Type Mappers] distortionsJson', distortionsJson)
 
   return {
     id: entry.id,

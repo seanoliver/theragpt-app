@@ -38,13 +38,22 @@ export const handleComplete = (
   updateEntry: (entry: Entry) => void,
   setStreamingEntryId: (id: string | null) => void,
 ) => {
-  const finalEntry: Entry = {
-    ...partialEntry,
-    ...patch,
-    ...content,
-    id: entryId,
-    createdAt: partialEntry.createdAt,
-  }
+  // If content is null or empty, don't spread it at all - just use partialEntry + patch
+  const finalEntry: Entry =
+    content && typeof content === 'object' && Object.keys(content).length > 0
+      ? {
+          ...partialEntry,
+          ...patch,
+          ...content,
+          id: entryId,
+          createdAt: partialEntry.createdAt,
+        }
+      : {
+          ...partialEntry,
+          ...patch,
+          id: entryId,
+          createdAt: partialEntry.createdAt,
+        }
 
   if (Array.isArray(finalEntry.distortions)) {
     finalEntry.distortions = finalEntry.distortions.map(d => ({

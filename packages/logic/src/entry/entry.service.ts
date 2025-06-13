@@ -107,6 +107,7 @@ export class EntryService {
 
   async update(params: Entry): Promise<Entry> {
     const entries = await this.getAll()
+
     const index = entries.findIndex(a => a.id === params.id)
 
     let updatedEntry: Entry
@@ -273,6 +274,7 @@ export class EntryService {
   }
 
   private async updateEntryInSupabase(entry: Entry): Promise<void> {
+    console.log('[🔴 Entry Service] updateEntryInSupabase', entry)
     const dbEntry = mapAppEntryToDbEntry(entry)
     const { error } = await getSupabaseClient()
       .from('entries')

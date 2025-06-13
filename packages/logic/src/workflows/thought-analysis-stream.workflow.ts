@@ -79,7 +79,7 @@ export const streamPromptOutput = async (
         // If complete JSON parsing fails, try incomplete JSON parsing
         try {
           const incompleteJSON = parseIncompleteJSONStream(buffer)
-          if (incompleteJSON && typeof incompleteJSON === 'object') {
+          if (incompleteJSON && typeof incompleteJSON === 'object' && Object.keys(incompleteJSON).length > 0) {
             currentParsed = incompleteJSON
           }
         } catch {
@@ -115,19 +115,20 @@ export const streamPromptOutput = async (
       } catch {
         try {
           const incompleteJSON = parseIncompleteJSONStream(buffer)
-          if (incompleteJSON && typeof incompleteJSON === 'object') {
+          if (incompleteJSON && typeof incompleteJSON === 'object' && Object.keys(incompleteJSON).length > 0) {
             finalParsed = incompleteJSON
           }
         } catch {
-          // Use empty object if nothing could be parsed
-          finalParsed = {}
+          // Parsing failed - don't emit content that would overwrite valid data
         }
       }
     }
 
+    // Always emit 'complete' event to signal end of stream
+    // Only include content if we successfully parsed meaningful data
     onEvent({
       type: 'complete',
-      content: finalParsed || {},
+      content: finalParsed && Object.keys(finalParsed).length > 0 ? finalParsed : null,
     })
   } catch (err: unknown) {
     console.error('Error streaming thought analysis:', err)

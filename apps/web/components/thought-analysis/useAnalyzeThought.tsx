@@ -44,7 +44,9 @@ export const useAnalyzeThought = () => {
             partialEntry,
             entryId,
           )
+          console.log('[UI] updatedEntry', updatedEntry)
           updateEntry(updatedEntry)
+          console.log('[UI] updateEntry(updatedEntry)', updatedEntry)
         },
         100,
         {
@@ -116,7 +118,7 @@ export const useAnalyzeThought = () => {
           Object.assign(streamPatch, content)
           needsStoreUpdate = true
         } else if (type === 'chunk') {
-          logChunk(event)
+          // no-op
         } else if (type === 'complete') {
           // Clear any pending debounced updates
           if (throttledUpdate) {

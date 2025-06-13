@@ -29,16 +29,7 @@ export const EntryItemAnalysisPanel = ({
           transition: 'opacity 300ms ease-in-out',
         }}
       >
-        {/* Always show content, even during streaming */}
         <>
-          {/* Show loading indicator at the top during streaming */}
-          {isStreaming && (
-            <div className="flex items-center justify-center py-2 mb-4">
-              <Loader2 className="h-5 w-5 animate-spin text-indigo-500 dark:text-indigo-400 mr-2" />
-              <p className="text-sm text-slate-600 dark:text-slate-400">Analyzing in progress...</p>
-            </div>
-          )}
-          {/* Why the positive thought is realistic */}
           <div className="space-y-3">
             <h4 className="font-medium text-slate-700 dark:text-slate-300 subheading">Rationale</h4>
             <div className="pl-4 border-l-2 border-green-100 dark:border-green-800 p-3 rounded transition-all duration-300">
@@ -48,7 +39,6 @@ export const EntryItemAnalysisPanel = ({
             </div>
           </div>
 
-          {/* Strategies Section */}
           {entry.strategies && entry.strategies.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-medium text-slate-700 dark:text-slate-300 subheading">
@@ -65,7 +55,6 @@ export const EntryItemAnalysisPanel = ({
             </div>
           )}
 
-          {/* Cognitive Distortions Section */}
           {entry.distortions && entry.distortions.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-medium text-slate-700 dark:text-slate-300 subheading">

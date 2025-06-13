@@ -18,20 +18,22 @@ interface EntryItemProps {
 }
 
 export const EntryItem = ({ entryId }: EntryItemProps) => {
-  const [isExpanded, setIsExpanded] = useState(true) // Default to expanded on detail page
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const entry = useEntryStore(state =>
     state.entries.find(e => e.id === entryId),
   )
-
-  console.log('[UI] Entry:', entry)
 
   const streamingEntryId = useEntryStore(state => state.streamingEntryId)
 
   const isStreaming = streamingEntryId === entryId
 
   if (!entry) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex items-center justify-center w-full h-40">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+      </div>
+    )
   }
 
   if (!isStreaming && !entry?.reframeText) return null
@@ -56,7 +58,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
             {isStreaming && (
               <div className="absolute top-2 right-2 flex items-center text-xs text-indigo-500 dark:text-indigo-400">
                 <Loader2 className="h-4 w-4 animate-spin mr-1" />
-                <span>Analyzing...</span>
+                <span>Thinking...</span>
               </div>
             )}
             <p className="text-xl font-medium text-slate-800 dark:text-slate-200 mb-6 transition-all duration-300">
