@@ -1,17 +1,16 @@
 import { DISTORTIONS, Entry } from '@theragpt/logic'
-import { Loader2 } from 'lucide-react'
 import { Badge } from '../../ui/badge'
 
 interface EntryItemAnalysisPanelProps {
   entry: Entry
   isExpanded: boolean
-  isStreaming?: boolean
+  _isStreaming?: boolean
 }
 
 export const EntryItemAnalysisPanel = ({
   entry,
   isExpanded,
-  isStreaming = false,
+  _isStreaming = false,
 }: EntryItemAnalysisPanelProps) => {
   return (
     <div

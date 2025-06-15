@@ -79,7 +79,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
           <EntryItemAnalysisPanel
             entry={entry}
             isExpanded={isExpanded}
-            isStreaming={isStreaming}
+            _isStreaming={isStreaming}
           />
         </div>
       </CardContent>

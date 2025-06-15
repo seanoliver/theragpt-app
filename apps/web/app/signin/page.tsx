@@ -37,7 +37,7 @@ const SignInPageContent = () => {
 
   const handleSwitchToReset = () => {
     // TODO: Implement password reset page
-    console.log('Password reset not implemented yet')
+    console.warn('Password reset not implemented yet')
   }
 
   return (

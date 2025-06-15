@@ -15,7 +15,7 @@ export const PostHogProvider = ({
 
   useEffect(() => {
     if (!isInitialized) return
-    console.log('Auth isInitialized', isInitialized)
+    console.debug('Auth isInitialized', isInitialized)
 
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_API_HOST!,

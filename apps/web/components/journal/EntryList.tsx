@@ -16,7 +16,7 @@ export const EntryList = () => {
     (a, b) => compareTimestampsDesc(a.createdAt, b.createdAt),
   )
 
-  console.log('sortedEntries', sortedEntries)
+  console.debug('sortedEntries', sortedEntries)
 
   if (isLoading || !initialized) {
     return (

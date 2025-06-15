@@ -51,9 +51,6 @@ export const mapAppEntryToDbEntry = (entry: Entry): DbEntryInsert => {
     distortionsJson = JSON.stringify(entry.distortions)
   }
 
-  console.log('[🔴 Type Mappers] entry', entry)
-  console.log('[🔴 Type Mappers] distortionsJson', distortionsJson)
-
   return {
     id: entry.id,
     title: entry.title || null,
