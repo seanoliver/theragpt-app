@@ -1,11 +1,8 @@
+import { getSupabaseClient } from '@theragpt/config'
 import { v4 as uuidv4 } from 'uuid'
 import { storageService, StorageService } from '../storage'
-import { getSupabaseClient } from '@theragpt/config'
+import { mapAppEntryToDbEntry, mapDbEntryToAppEntry } from './type-mappers'
 import { Entry, EntryListener } from './types'
-import {
-  mapDbEntryToAppEntry,
-  mapAppEntryToDbEntry,
-} from './type-mappers'
 
 export class EntryService {
   private storageService: StorageService
@@ -27,8 +24,12 @@ export class EntryService {
   private checkOnlineStatus() {
     if (typeof navigator !== 'undefined' && typeof window !== 'undefined') {
       this.isOnline = navigator.onLine
-      window.addEventListener('online', () => { this.isOnline = true })
-      window.addEventListener('offline', () => { this.isOnline = false })
+      window.addEventListener('online', () => {
+        this.isOnline = true
+      })
+      window.addEventListener('offline', () => {
+        this.isOnline = false
+      })
     }
   }
 
@@ -50,7 +51,9 @@ export class EntryService {
       if (this.isOnline) {
         // Try to fetch from Supabase first
         try {
-          const { data: { user } } = await getSupabaseClient().auth.getUser()
+          const {
+            data: { user },
+          } = await getSupabaseClient().auth.getUser()
           if (user) {
             entries = await this.fetchFromSupabase()
             // Cache to local storage for offline access
@@ -60,7 +63,10 @@ export class EntryService {
             entries = await this.getFromLocalStorage()
           }
         } catch (supabaseError) {
-          console.warn('Failed to fetch from Supabase, falling back to local storage', supabaseError)
+          console.warn(
+            'Failed to fetch from Supabase, falling back to local storage',
+            supabaseError,
+          )
           entries = await this.getFromLocalStorage()
         }
       } else {
@@ -86,7 +92,9 @@ export class EntryService {
 
     try {
       if (this.isOnline) {
-        const { data: { user } } = await getSupabaseClient().auth.getUser()
+        const {
+          data: { user },
+        } = await getSupabaseClient().auth.getUser()
         if (user) {
           await this.saveEntryToSupabase(entry)
         }
@@ -114,7 +122,9 @@ export class EntryService {
     if (index === -1) {
       // Entry not found in local cache - this can happen during streaming
       // Create the entry with the provided params
-      console.warn(`Entry with ID ${params.id} not found in cache, creating new entry`)
+      console.warn(
+        `Entry with ID ${params.id} not found in cache, creating new entry`,
+      )
       updatedEntry = {
         ...params,
         updatedAt: Date.now(),
@@ -130,7 +140,8 @@ export class EntryService {
         rawText: params.rawText ?? entry.rawText,
         distortions: params.distortions ?? entry.distortions,
         reframeText: params.reframeText ?? entry.reframeText,
-        reframeExplanation: params.reframeExplanation ?? entry.reframeExplanation,
+        reframeExplanation:
+          params.reframeExplanation ?? entry.reframeExplanation,
         title: params.title ?? entry.title,
         category: params.category ?? entry.category,
         createdAt: params.createdAt ?? entry.createdAt,
@@ -145,7 +156,9 @@ export class EntryService {
 
     try {
       if (this.isOnline) {
-        const { data: { user } } = await getSupabaseClient().auth.getUser()
+        const {
+          data: { user },
+        } = await getSupabaseClient().auth.getUser()
         if (user) {
           // Update in Supabase
           await this.updateEntryInSupabase(updatedEntry)
@@ -171,7 +184,9 @@ export class EntryService {
 
       if (this.isOnline) {
         try {
-          const { data: { user } } = await getSupabaseClient().auth.getUser()
+          const {
+            data: { user },
+          } = await getSupabaseClient().auth.getUser()
           if (user) {
             entries = await this.fetchFromSupabase()
             // Cache to local storage
@@ -180,7 +195,10 @@ export class EntryService {
             entries = await this.getFromLocalStorage()
           }
         } catch (supabaseError) {
-          console.warn('Failed to fetch from Supabase, using local storage', supabaseError)
+          console.warn(
+            'Failed to fetch from Supabase, using local storage',
+            supabaseError,
+          )
           entries = await this.getFromLocalStorage()
         }
       } else {
@@ -207,7 +225,9 @@ export class EntryService {
   async deleteEntry(id: string): Promise<void> {
     try {
       if (this.isOnline) {
-        const { data: { user } } = await getSupabaseClient().auth.getUser()
+        const {
+          data: { user },
+        } = await getSupabaseClient().auth.getUser()
         if (user) {
           // Delete from Supabase
           await this.deleteEntryFromSupabase(id)
@@ -260,7 +280,9 @@ export class EntryService {
   }
 
   private async saveEntryToSupabase(entry: Entry): Promise<void> {
-    const { data: { user } } = await getSupabaseClient().auth.getUser()
+    const {
+      data: { user },
+    } = await getSupabaseClient().auth.getUser()
     if (!user) throw new Error('User not authenticated')
 
     // Insert the entry with all data in one table
@@ -274,9 +296,9 @@ export class EntryService {
 
   private async updateEntryInSupabase(entry: Entry): Promise<void> {
     const dbEntry = mapAppEntryToDbEntry(entry)
-    
+
     // Only update fields that are not null/undefined to avoid overwriting existing data
-    const updateData: Partial<typeof dbEntry> = {}
+    const updateData: Record<string, unknown> = {}
     Object.keys(dbEntry).forEach(key => {
       const value = dbEntry[key as keyof typeof dbEntry]
       if (value !== null && value !== undefined) {
