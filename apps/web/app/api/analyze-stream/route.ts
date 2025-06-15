@@ -26,7 +26,6 @@ export const POST = async (req: NextRequest) => {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        // Stream the LLM response with context - just pass through raw chunks
         const llmStream = await withLLMContext(
           { userId, sessionId, requestPath },
           async () =>
@@ -44,11 +43,9 @@ export const POST = async (req: NextRequest) => {
           controller.enqueue(encoder.encode(chunk))
         }
 
-        // Close the stream
         controller.close()
       } catch (error: any) {
         console.error('[Error] Stream processing error:', error)
-        // Send error message as raw text
         controller.enqueue(
           encoder.encode(`Error: ${error.message || 'An error occurred'}`),
         )

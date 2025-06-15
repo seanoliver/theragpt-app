@@ -61,6 +61,7 @@ export const handleComplete = (
     }))
   }
 
+  console.log('🔵 handleComplete: About to call updateEntry with finalEntry:', finalEntry)
   updateEntry(finalEntry)
   setStreamingEntryId(null)
 
@@ -139,8 +140,8 @@ export const buildCurrentDisplayState = (
   createdAt: partialEntry.createdAt,
   updatedAt: Date.now(),
   isPinned: patch.isPinned ?? partialEntry.isPinned ?? false,
-  distortions: patch.distortions ?? [],
-  strategies: patch.strategies ?? [],
+  distortions: patch.distortions ?? partialEntry.distortions ?? [],
+  strategies: patch.strategies ?? partialEntry.strategies ?? [],
   reframeText: patch.reframeText ?? partialEntry.reframeText ?? '',
   reframeExplanation:
     patch.reframeExplanation ?? partialEntry.reframeExplanation ?? '',

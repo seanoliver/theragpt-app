@@ -6,7 +6,6 @@ import {
   streamPromptOutput,
 } from '@theragpt/logic/src/workflows/thought-analysis-stream.workflow'
 import { getAnalyzePrompt } from '@theragpt/prompts'
-import throttle from 'lodash.throttle'
 import { usePathname, useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -25,6 +24,8 @@ export const useAnalyzeThought = () => {
   const error = useEntryStore(state => state.error)
   const setError = useEntryStore(state => state.setError)
   const setStreamingEntryId = useEntryStore(state => state.setStreamingEntryId)
+  const setEntries = useEntryStore(state => state.setEntries)
+  const entries = useEntryStore(state => state.entries)
   const router = useRouter()
   const { track } = useTracking()
   const pathname = usePathname()
@@ -34,29 +35,6 @@ export const useAnalyzeThought = () => {
     null,
   )
 
-  // Throttled update mechanism using lodash
-  const throttledUpdate = useMemo(
-    () =>
-      throttle(
-        (partialEntry: Entry, streamPatch: Partial<Entry>, entryId: string) => {
-          const updatedEntry = buildCurrentDisplayState(
-            streamPatch,
-            partialEntry,
-            entryId,
-          )
-          console.log('[UI] updatedEntry', updatedEntry)
-          updateEntry(updatedEntry)
-          console.log('[UI] updateEntry(updatedEntry)', updatedEntry)
-        },
-        100,
-        {
-          // Update every 100ms max
-          leading: true, // Call immediately on first invocation
-          trailing: true, // Call after the wait period if invoked again
-        },
-      ),
-    [updateEntry],
-  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -120,11 +98,6 @@ export const useAnalyzeThought = () => {
         } else if (type === 'chunk') {
           // no-op
         } else if (type === 'complete') {
-          // Clear any pending debounced updates
-          if (throttledUpdate) {
-            throttledUpdate(partialEntry, streamPatch, entryId)
-          }
-
           const finalEntry = handleComplete(
             content,
             partialEntry,
@@ -133,6 +106,7 @@ export const useAnalyzeThought = () => {
             updateEntry,
             setStreamingEntryId,
           )
+          console.log('🔴 finalEntry', finalEntry)
 
           if (analysisStartTime) {
             track('thought_analysis_completed', {
@@ -145,10 +119,6 @@ export const useAnalyzeThought = () => {
 
           return
         } else if (type === 'error') {
-          // Clear any pending debounced updates
-          if (throttledUpdate) {
-            throttledUpdate(partialEntry, streamPatch, entryId)
-          }
 
           const errorEntry = handleError(
             content,
@@ -174,9 +144,16 @@ export const useAnalyzeThought = () => {
         }
 
         if (needsStoreUpdate) {
-          if (throttledUpdate) {
-            throttledUpdate(partialEntry, streamPatch, entryId)
-          }
+          const updatedEntry = buildCurrentDisplayState(
+            streamPatch,
+            partialEntry,
+            entryId,
+          )
+          // Update UI state only during streaming - don't persist to database
+          const updatedEntries = entries.map(entry =>
+            entry.id === entryId ? updatedEntry : entry
+          )
+          setEntries(updatedEntries)
         }
       })
 

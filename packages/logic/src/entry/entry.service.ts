@@ -80,8 +80,8 @@ export class EntryService {
   async create(params: Entry): Promise<Entry> {
     const entry: Entry = {
       ...params,
-      id: uuidv4(),
-      createdAt: Date.now(),
+      id: params.id || uuidv4(), // Use provided ID or generate new one
+      createdAt: params.createdAt || Date.now(),
     }
 
     try {
@@ -101,7 +101,6 @@ export class EntryService {
     await this.saveToLocalStorage(entries)
     this.updateCache(entries)
     this.notifyListeners(entries)
-
     return entry
   }
 
@@ -274,11 +273,20 @@ export class EntryService {
   }
 
   private async updateEntryInSupabase(entry: Entry): Promise<void> {
-    console.log('[🔴 Entry Service] updateEntryInSupabase', entry)
     const dbEntry = mapAppEntryToDbEntry(entry)
+    
+    // Only update fields that are not null/undefined to avoid overwriting existing data
+    const updateData: Partial<typeof dbEntry> = {}
+    Object.keys(dbEntry).forEach(key => {
+      const value = dbEntry[key as keyof typeof dbEntry]
+      if (value !== null && value !== undefined) {
+        updateData[key as keyof typeof dbEntry] = value
+      }
+    })
+
     const { error } = await getSupabaseClient()
       .from('entries')
-      .update(dbEntry)
+      .update(updateData)
       .eq('id', entry.id)
 
     if (error) throw error
