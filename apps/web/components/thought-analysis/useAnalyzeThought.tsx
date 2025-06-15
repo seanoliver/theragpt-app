@@ -106,7 +106,6 @@ export const useAnalyzeThought = () => {
             updateEntry,
             setStreamingEntryId,
           )
-          console.log('🔴 finalEntry', finalEntry)
 
           if (analysisStartTime) {
             track('thought_analysis_completed', {

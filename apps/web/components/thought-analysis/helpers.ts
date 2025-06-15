@@ -61,7 +61,6 @@ export const handleComplete = (
     }))
   }
 
-  console.log('🔵 handleComplete: About to call updateEntry with finalEntry:', finalEntry)
   updateEntry(finalEntry)
   setStreamingEntryId(null)
 
