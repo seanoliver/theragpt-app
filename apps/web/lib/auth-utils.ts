@@ -73,7 +73,7 @@ export const useAuthRedirect = () => {
 
   const redirectAfterAuth = () => {
     const redirectPath = getRedirectPath()
-    console.log('redirectAfterAuth redirectPath', redirectPath)
+    console.debug('redirectAfterAuth redirectPath', redirectPath)
     router.push(redirectPath)
   }
 

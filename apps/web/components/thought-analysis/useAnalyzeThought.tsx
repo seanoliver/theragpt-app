@@ -7,13 +7,12 @@ import {
 } from '@theragpt/logic/src/workflows/thought-analysis-stream.workflow'
 import { getAnalyzePrompt } from '@theragpt/prompts'
 import { usePathname, useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import {
   buildCurrentDisplayState,
   handleComplete,
   handleError,
-  logChunk,
 } from './helpers'
 
 export const useAnalyzeThought = () => {

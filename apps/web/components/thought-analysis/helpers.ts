@@ -20,7 +20,7 @@ export const updateField = <T extends Record<string, any>>(
 
 /** Logs raw chunk events for debugging, including chunk number */
 export const logChunk = (event: StreamEvent) => {
-  console.log('[UI] Received chunk:', {
+  console.debug('[UI] Received chunk:', {
     content: event.content,
     chunkNumber: (event as any).chunkNumber,
   })
