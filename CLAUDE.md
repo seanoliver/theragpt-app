@@ -94,3 +94,36 @@ This is a monorepo with the following structure:
 4. Avoid semicolons
 5. Use appropriate console methods (not console.log)
 6. Run linting after making changes: `pnpm lint`
+
+## Critical Linting Rules to Remember
+
+**ALWAYS apply these rules when writing/editing code:**
+
+### String Quotes
+- ❌ `"string"` or `"path/to/file"`
+- ✅ `'string'` or `'path/to/file'`
+- This applies to ALL strings: JSX props, template literals, object properties, etc.
+
+### Trailing Commas
+- ❌ Missing trailing comma in multiline objects/arrays/function parameters
+- ✅ Always include trailing comma:
+```typescript
+// ✅ Correct
+const props = {
+  onDismiss,
+  className = '',  // <- trailing comma required
+}
+
+// ✅ Correct
+const array = [
+  'item1',
+  'item2',  // <- trailing comma required
+]
+```
+
+### Common Mistakes to Avoid
+1. Double quotes in any context (JSX attributes, strings, imports)
+2. Missing trailing commas in multiline structures
+3. Using `console.log` instead of `console.warn/error/info/debug`
+
+**Always run `pnpm lint` after making changes to catch these early!**
