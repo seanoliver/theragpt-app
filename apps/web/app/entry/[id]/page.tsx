@@ -8,12 +8,14 @@ import { Header } from '@/components/layout/Header'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { useRouteProtection } from '@/lib/auth-utils'
+import { useIsAuthenticated, useAuthLoading } from '@theragpt/logic'
 import { AuthLoadingSpinner } from '@/components/auth/AuthLoadingSpinner'
+import { SignupEncouragement } from '@/components/auth/SignupEncouragement'
 
 export default function EntryDetailPage() {
   const params = useParams()
-  const { shouldShowLoading, shouldRender } = useRouteProtection()
+  const isAuthenticated = useIsAuthenticated()
+  const { isInitialized } = useAuthLoading()
   const [entryId, setEntryId] = useState<string>('')
 
   useEffect(() => {
@@ -22,12 +24,8 @@ export default function EntryDetailPage() {
     }
   }, [params])
 
-  if (shouldShowLoading) {
+  if (!isInitialized) {
     return <AuthLoadingSpinner />
-  }
-
-  if (!shouldRender) {
-    return null
   }
 
   if (!entryId) {
@@ -38,19 +36,25 @@ export default function EntryDetailPage() {
     <main className="min-h-screen">
       <Header />
       <div className="container max-w-3xl mx-auto px-4 py-12">
-        <Link href="/journal">
+        <Link href={isAuthenticated ? '/journal' : '/'}>
           <Button
             variant="ghost"
             className="mb-6 text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50/50 dark:hover:bg-purple-900/20"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Journal
+            {isAuthenticated ? 'Back to Journal' : 'Back to Home'}
           </Button>
         </Link>
 
         <h1 className="text-3xl font-bold gradient-text mb-8 font-heading">
           Journal Entry
         </h1>
+
+        {!isAuthenticated && (
+          <div className="mb-6">
+            <SignupEncouragement />
+          </div>
+        )}
 
         <div className="animate-fade-in">
           <EntryPageTracker entryId={entryId} />
