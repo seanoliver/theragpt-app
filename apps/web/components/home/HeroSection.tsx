@@ -11,8 +11,8 @@ export const HeroSection = (): JSX.Element => {
             Your thoughts deserve a second opinion.
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 w-full subheading">
-            TheraGPT helps you analyze and reframe unhelpful thoughts—so you can
-            think clearer, feel stronger.
+            TheraGPT helps you analyze and reframe unhelpful thoughts so you can
+            think clearer and feel stronger.
           </p>
           <div className="animate-slide-up">
             {/* <Card className="glass-panel shadow-lg p-8"> */}
