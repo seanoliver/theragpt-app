@@ -1,6 +1,6 @@
 'use client'
 
-import { Card } from '@/apps/web/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { useEntryStore } from '@theragpt/logic'
 import { compareTimestampsDesc } from '@/lib/date-utils'
 import Link from 'next/link'
@@ -15,6 +15,8 @@ export const EntryList = () => {
   const sortedEntries = [...entries].sort(
     (a, b) => compareTimestampsDesc(a.createdAt, b.createdAt),
   )
+
+  console.debug('sortedEntries', sortedEntries)
 
   if (isLoading || !initialized) {
     return (

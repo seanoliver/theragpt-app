@@ -1,35 +1,48 @@
-import { EntryItem } from '@/apps/web/components/journal/EntryItem/EntryItem'
-import { EntryPageTracker } from '@/apps/web/components/journal/EntryPageTracker'
-import { Header } from '@/apps/web/components/layout/Header'
-import { Button } from '@/apps/web/components/ui/button'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { EntryItem } from '@/components/journal/EntryItem/EntryItem'
+import { EntryPageTracker } from '@/components/journal/EntryPageTracker'
+import { Header } from '@/components/layout/Header'
+import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-/**
- * IMPORTANT: This is a workaround for a type issue in Next.js 15.3.x
- *
- * In Next.js 15.3.x, the type system expects `params` in dynamic route components
- * to be a Promise<{ id: string }>, not a direct object { id: string }.
- *
- * This is unusual, and doesn't align with the standard Next.js behavior and documentation.
- */
-export default async function EntryDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const resolvedParams = await params
+import { useIsAuthenticated, useAuthLoading } from '@theragpt/logic'
+import { AuthLoadingSpinner } from '@/components/auth/AuthLoadingSpinner'
+import { SignupEncouragement } from '@/components/auth/SignupEncouragement'
+
+export default function EntryDetailPage() {
+  const params = useParams()
+  const isAuthenticated = useIsAuthenticated()
+  const { isInitialized } = useAuthLoading()
+  const [entryId, setEntryId] = useState<string>('')
+
+  useEffect(() => {
+    if (params?.id) {
+      setEntryId(Array.isArray(params.id) ? params.id[0] : params.id)
+    }
+  }, [params])
+
+  if (!isInitialized) {
+    return <AuthLoadingSpinner />
+  }
+
+  if (!entryId) {
+    return <AuthLoadingSpinner />
+  }
 
   return (
     <main className="min-h-screen">
       <Header />
       <div className="container max-w-3xl mx-auto px-4 py-12">
-        <Link href="/journal">
+        <Link href={isAuthenticated ? '/journal' : '/'}>
           <Button
             variant="ghost"
             className="mb-6 text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50/50 dark:hover:bg-purple-900/20"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Journal
+            {isAuthenticated ? 'Back to Journal' : 'Back to Home'}
           </Button>
         </Link>
 
@@ -37,9 +50,15 @@ export default async function EntryDetailPage({
           Journal Entry
         </h1>
 
+        {!isAuthenticated && (
+          <div className="mb-6">
+            <SignupEncouragement />
+          </div>
+        )}
+
         <div className="animate-fade-in">
-          <EntryPageTracker entryId={resolvedParams.id} />
-          <EntryItem entryId={resolvedParams.id} />
+          <EntryPageTracker entryId={entryId} />
+          <EntryItem entryId={entryId} />
         </div>
       </div>
     </main>

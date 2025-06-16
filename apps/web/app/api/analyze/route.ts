@@ -1,4 +1,4 @@
-import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
+import { createLLMRegistry } from '@/lib/llm/create-llm-registry'
 import { callLLM, LLMModel, withLLMContext } from '@theragpt/llm'
 import { NextRequest, NextResponse } from 'next/server'
 

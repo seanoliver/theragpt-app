@@ -19,7 +19,7 @@ importers:
     dependencies:
       '@posthog/ai':
         specifier: ^4.4.0
-        version: 4.4.0(axios@1.9.0)(posthog-node@4.18.0)(react@18.3.1)(ws@8.18.1)
+        version: 4.4.0(axios@1.9.0)(posthog-node@4.18.0)(react@18.3.1)(ws@8.18.2)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -117,6 +117,9 @@ importers:
       '@react-native-async-storage/async-storage':
         specifier: 1.23.1
         version: 1.23.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
+      '@supabase/supabase-js':
+        specifier: ^2.50.0
+        version: 2.50.0
       '@theragpt/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -153,6 +156,9 @@ importers:
       expo-router:
         specifier: ~4.0.20
         version: 4.0.20(0463518ea7bd9a3d0d0d28503503d455)
+      expo-secure-store:
+        specifier: ^14.2.3
+        version: 14.2.3(expo@52.0.46(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)))(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))
       expo-status-bar:
         specifier: ~2.0.1
         version: 2.0.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -259,9 +265,15 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      lodash.throttle:
+        specifier: ^4.1.1
+        version: 4.1.1
       lucide-react:
         specifier: ^0.503.0
         version: 0.503.0(react@18.3.1)
@@ -276,7 +288,7 @@ importers:
         version: 0.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       openai:
         specifier: ^4.96.2
-        version: 4.96.2(ws@8.18.1)(zod@3.24.3)
+        version: 4.96.2(ws@8.18.2)(zod@3.24.3)
       posthog-js:
         specifier: ^1.242.1
         version: 1.242.1
@@ -305,6 +317,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17.16
         version: 4.17.16
+      '@types/lodash.throttle':
+        specifier: ^4.1.9
+        version: 4.1.9
       '@types/uuid':
         specifier: ^9.0.8
         version: 9.0.8
@@ -321,13 +336,17 @@ importers:
         specifier: ^3.4.17
         version: 3.4.17
 
-  packages/config: {}
+  packages/config:
+    dependencies:
+      '@supabase/supabase-js':
+        specifier: ^2.50.0
+        version: 2.50.0
 
   packages/llm:
     dependencies:
       '@posthog/ai':
         specifier: ^4.4.0
-        version: 4.4.0(axios@1.9.0)(posthog-node@4.18.0)(react@18.3.1)(ws@8.18.1)
+        version: 4.4.0(axios@1.9.0)(posthog-node@4.18.0)(react@18.3.1)(ws@8.18.2)
       '@react-native-async-storage/async-storage':
         specifier: ^1.19.3
         version: 1.23.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
@@ -339,7 +358,7 @@ importers:
         version: link:../logic
       openai:
         specifier: ^4.96.2
-        version: 4.96.2(ws@8.18.1)(zod@3.24.3)
+        version: 4.96.2(ws@8.18.2)(zod@3.24.3)
       posthog-node:
         specifier: ^4.18.0
         version: 4.18.0
@@ -359,6 +378,9 @@ importers:
       '@react-native-async-storage/async-storage':
         specifier: ^1.19.3
         version: 1.24.0(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))
+      '@supabase/supabase-js':
+        specifier: ^2.50.0
+        version: 2.50.0
       '@theragpt/config':
         specifier: workspace:*
         version: link:../config
@@ -1225,7 +1247,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {'0': node >=0.10.0}
+    engines: {node: '>=0.10.0'}
 
   '@expo/cli@0.22.26':
     resolution: {integrity: sha512-I689wc8Fn/AX7aUGiwrh3HnssiORMJtR2fpksX+JIe8Cj/EDleblYMSwRPd0025wrwOV9UN1KM/RuEt/QjCS3Q==}
@@ -2344,6 +2366,28 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
+  '@supabase/auth-js@2.70.0':
+    resolution: {integrity: sha512-BaAK/tOAZFJtzF1sE3gJ2FwTjLf4ky3PSvcvLGEgEmO4BSBkwWKu8l67rLLIBZPDnCyV7Owk2uPyKHa0kj5QGg==}
+
+  '@supabase/functions-js@2.4.4':
+    resolution: {integrity: sha512-WL2p6r4AXNGwop7iwvul2BvOtuJ1YQy8EbOd0dhG1oN1q8el/BIRSFCFnWAMM/vJJlHWLi4ad22sKbKr9mvjoA==}
+
+  '@supabase/node-fetch@2.6.15':
+    resolution: {integrity: sha512-1ibVeYUacxWYi9i0cf5efil6adJ9WRyZBLivgjs+AUpewx1F3xPi7gLgaASI2SmIQxPoCEjAsLAzKPgMJVgOUQ==}
+    engines: {node: 4.x || >=6.0.0}
+
+  '@supabase/postgrest-js@1.19.4':
+    resolution: {integrity: sha512-O4soKqKtZIW3olqmbXXbKugUtByD2jPa8kL2m2c1oozAO11uCcGrRhkZL0kVxjBLrXHE0mdSkFsMj7jDSfyNpw==}
+
+  '@supabase/realtime-js@2.11.10':
+    resolution: {integrity: sha512-SJKVa7EejnuyfImrbzx+HaD9i6T784khuw1zP+MBD7BmJYChegGxYigPzkKX8CK8nGuDntmeSD3fvriaH0EGZA==}
+
+  '@supabase/storage-js@2.7.1':
+    resolution: {integrity: sha512-asYHcyDR1fKqrMpytAS1zjyEfvxuOIp1CIXX7ji4lHHcJKqyk+sLl/Vxgm4sN6u8zvuUtae9e4kDxQP2qrwWBA==}
+
+  '@supabase/supabase-js@2.50.0':
+    resolution: {integrity: sha512-M1Gd5tPaaghYZ9OjeO1iORRqbTWFEz/cF3pPubRnMPzA+A8SiUsXXWDP+DWsASZcjEcVEcVQIAF38i5wrijYOg==}
+
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
 
@@ -2402,6 +2446,9 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
+  '@types/lodash.throttle@4.1.9':
+    resolution: {integrity: sha512-PCPVfpfueguWZQB7pJQK890F2scYKoDUL3iM522AptHWn7d5NQmeS/LTEHIcLr5PaTzl3dK2Z0xSUHHTHwaL5g==}
+
   '@types/lodash@4.17.16':
     resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
 
@@ -2416,6 +2463,9 @@ packages:
 
   '@types/node@22.15.2':
     resolution: {integrity: sha512-uKXqKN9beGoMdBfcaTY1ecwz6ctxuJAcUlwE55938g0ZJ8lRxwAZqRz2AJ4pzpt5dHdTPMB863UZ0ESiFUcP7A==}
+
+  '@types/phoenix@1.6.6':
+    resolution: {integrity: sha512-PIzZZlEppgrpoT2QgbnDU+MMzuR6BbCjllj0bM70lWoejMeNJAxCchxnv7J3XFkI8MpygtRpzXrIlmWUBclP5A==}
 
   '@types/prop-types@15.7.14':
     resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
@@ -2439,6 +2489,9 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+
+  '@types/ws@8.18.1':
+    resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
 
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -3801,6 +3854,11 @@ packages:
         optional: true
       react-native-reanimated:
         optional: true
+
+  expo-secure-store@14.2.3:
+    resolution: {integrity: sha512-hYBbaAD70asKTFd/eZBKVu+9RTo9OSTMMLqXtzDF8ndUGjpc6tmRCoZtrMHlUo7qLtwL5jm+vpYVBWI8hxh/1Q==}
+    peerDependencies:
+      expo: '*'
 
   expo-status-bar@2.0.1:
     resolution: {integrity: sha512-AkIPX7jWHRPp83UBZ1iXtVvyr0g+DgBVvIXTtlmPtmUsm8Vq9Bb5IGj86PW8osuFlgoTVAg7HI/+Ok7yEYwiRg==}
@@ -6933,6 +6991,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.18.2:
+    resolution: {integrity: sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xcode@3.0.1:
     resolution: {integrity: sha512-kCz5k7J7XbJtjABOvkc5lJmkiDh8VhjVCGNiqdKCscmVpdVUpEAyXv1xmCLkQJ5dsHqx3IPO4XW+NTDhU/fatA==}
     engines: {node: '>=10.0.0'}
@@ -8660,14 +8730,14 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3))':
+  '@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.20
-      langsmith: 0.3.29(openai@4.96.2(ws@8.18.1)(zod@3.24.3))
+      langsmith: 0.3.29(openai@4.96.2(ws@8.18.2)(zod@3.24.3))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -8677,20 +8747,20 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.5.11(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3)))(ws@8.18.1)':
+  '@langchain/openai@0.5.11(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3)))(ws@8.18.2)':
     dependencies:
-      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3))
+      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3))
       js-tiktoken: 1.0.20
-      openai: 4.96.2(ws@8.18.1)(zod@3.24.3)
+      openai: 4.96.2(ws@8.18.2)(zod@3.24.3)
       zod: 3.24.3
       zod-to-json-schema: 3.24.5(zod@3.24.3)
     transitivePeerDependencies:
       - encoding
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3)))':
     dependencies:
-      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3))
+      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3))
       js-tiktoken: 1.0.20
 
   '@napi-rs/wasm-runtime@0.2.9':
@@ -8753,13 +8823,13 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@posthog/ai@4.4.0(axios@1.9.0)(posthog-node@4.18.0)(react@18.3.1)(ws@8.18.1)':
+  '@posthog/ai@4.4.0(axios@1.9.0)(posthog-node@4.18.0)(react@18.3.1)(ws@8.18.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.36.3
-      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3))
+      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3))
       ai: 4.3.16(react@18.3.1)(zod@3.24.3)
-      langchain: 0.3.27(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3)))(axios@1.9.0)(openai@4.96.2(ws@8.18.1)(zod@3.24.3))(ws@8.18.1)
-      openai: 4.96.2(ws@8.18.1)(zod@3.24.3)
+      langchain: 0.3.27(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3)))(axios@1.9.0)(openai@4.96.2(ws@8.18.2)(zod@3.24.3))(ws@8.18.2)
+      openai: 4.96.2(ws@8.18.2)(zod@3.24.3)
       posthog-node: 4.18.0
       uuid: 11.1.0
       zod: 3.24.3
@@ -9673,6 +9743,48 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
+  '@supabase/auth-js@2.70.0':
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+
+  '@supabase/functions-js@2.4.4':
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+
+  '@supabase/node-fetch@2.6.15':
+    dependencies:
+      whatwg-url: 5.0.0
+
+  '@supabase/postgrest-js@1.19.4':
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+
+  '@supabase/realtime-js@2.11.10':
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+      '@types/phoenix': 1.6.6
+      '@types/ws': 8.18.1
+      ws: 8.18.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@supabase/storage-js@2.7.1':
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+
+  '@supabase/supabase-js@2.50.0':
+    dependencies:
+      '@supabase/auth-js': 2.70.0
+      '@supabase/functions-js': 2.4.4
+      '@supabase/node-fetch': 2.6.15
+      '@supabase/postgrest-js': 1.19.4
+      '@supabase/realtime-js': 2.11.10
+      '@supabase/storage-js': 2.7.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@swc/counter@0.1.3': {}
 
   '@swc/helpers@0.5.15':
@@ -9745,6 +9857,10 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
+  '@types/lodash.throttle@4.1.9':
+    dependencies:
+      '@types/lodash': 4.17.16
+
   '@types/lodash@4.17.16': {}
 
   '@types/node-fetch@2.6.12':
@@ -9764,6 +9880,8 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/phoenix@1.6.6': {}
+
   '@types/prop-types@15.7.14': {}
 
   '@types/react-dom@18.3.6(@types/react@18.3.20)':
@@ -9782,6 +9900,10 @@ snapshots:
   '@types/uuid@10.0.0': {}
 
   '@types/uuid@9.0.8': {}
+
+  '@types/ws@8.18.1':
+    dependencies:
+      '@types/node': 22.15.2
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -11398,6 +11520,10 @@ snapshots:
       - react-native
       - supports-color
 
+  expo-secure-store@14.2.3(expo@52.0.46(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)))(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)):
+    dependencies:
+      expo: 52.0.46(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@expo/metro-runtime@4.0.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1)))(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+
   expo-status-bar@2.0.1(react-native@0.77.0(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli-server-api@18.0.0)(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -12556,15 +12682,15 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  langchain@0.3.27(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3)))(axios@1.9.0)(openai@4.96.2(ws@8.18.1)(zod@3.24.3))(ws@8.18.1):
+  langchain@0.3.27(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3)))(axios@1.9.0)(openai@4.96.2(ws@8.18.2)(zod@3.24.3))(ws@8.18.2):
     dependencies:
-      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3))
-      '@langchain/openai': 0.5.11(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3)))(ws@8.18.1)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.1)(zod@3.24.3)))
+      '@langchain/core': 0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3))
+      '@langchain/openai': 0.5.11(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3)))(ws@8.18.2)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.57(openai@4.96.2(ws@8.18.2)(zod@3.24.3)))
       js-tiktoken: 1.0.20
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.29(openai@4.96.2(ws@8.18.1)(zod@3.24.3))
+      langsmith: 0.3.29(openai@4.96.2(ws@8.18.2)(zod@3.24.3))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 10.0.0
@@ -12578,7 +12704,7 @@ snapshots:
       - openai
       - ws
 
-  langsmith@0.3.29(openai@4.96.2(ws@8.18.1)(zod@3.24.3)):
+  langsmith@0.3.29(openai@4.96.2(ws@8.18.2)(zod@3.24.3)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -12588,7 +12714,7 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.96.2(ws@8.18.1)(zod@3.24.3)
+      openai: 4.96.2(ws@8.18.2)(zod@3.24.3)
 
   language-subtag-registry@0.3.23: {}
 
@@ -13222,7 +13348,7 @@ snapshots:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
-  openai@4.96.2(ws@8.18.1)(zod@3.24.3):
+  openai@4.96.2(ws@8.18.2)(zod@3.24.3):
     dependencies:
       '@types/node': 18.19.87
       '@types/node-fetch': 2.6.12
@@ -13232,7 +13358,7 @@ snapshots:
       formdata-node: 4.4.1
       node-fetch: 2.7.0
     optionalDependencies:
-      ws: 8.18.1
+      ws: 8.18.2
       zod: 3.24.3
     transitivePeerDependencies:
       - encoding
@@ -14888,6 +15014,8 @@ snapshots:
   ws@7.5.10: {}
 
   ws@8.18.1: {}
+
+  ws@8.18.2: {}
 
   xcode@3.0.1:
     dependencies:
