@@ -36,7 +36,9 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
     )
   }
 
-  if (!isStreaming && !entry?.reframeText) return null
+  // Show component if: streaming, has reframed content, or has raw text to display
+  const hasContent = entry?.rawText || entry?.reframeText
+  if (!isStreaming && !hasContent) return null
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md hover:shadow-lg glass-panel transition-all duration-300 mb-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
