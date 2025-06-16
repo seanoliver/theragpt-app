@@ -1,6 +1,6 @@
-import { createLLMRegistry } from '@/lib/llm/create-llm-registry'
 import { LLMModel, streamLLM, withLLMContext } from '@theragpt/llm'
 import { NextRequest } from 'next/server'
+import { createLLMRegistry } from '../../../lib/llm/create-llm-registry'
 
 const TEMPERATURE = 0.3
 
