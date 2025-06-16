@@ -4,29 +4,35 @@ import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 export const BackgroundTexture = () => {
-  const { theme } = useTheme()
+  const { theme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [animationsEnabled, setAnimationsEnabled] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    // Enable animations after a short delay to ensure DOM is stable
+    const timer = setTimeout(() => {
+      setAnimationsEnabled(true)
+    }, 100)
+    return () => clearTimeout(timer)
   }, [])
 
-  if (!mounted) {
-    return (
-      <div className="fixed inset-0 bg-gradient-radial from-white to-slate-50 dark:from-slate-950 dark:to-slate-900" />
-    )
-  }
-
-  const isDark = theme === 'dark'
+  // Use resolvedTheme for better theme detection, fallback to system preference
+  const isDark = mounted ? (resolvedTheme === 'dark' || theme === 'dark') : 
+    (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
   return (
     <div className="fixed inset-0 overflow-hidden">
-      {/* Animated base gradient background */}
-      <div className="absolute inset-0 animate-gradient-slow">
-        <div className="absolute inset-0 bg-gradient-radial from-white to-slate-50 dark:from-slate-950 dark:to-slate-900 opacity-100" />
-        <div className="absolute inset-0 bg-gradient-radial from-white -translate-x-[15%] translate-y-[10%] to-slate-50 dark:from-slate-950 dark:to-slate-900 opacity-0 animate-gradient-pulse" />
-        <div className="absolute inset-0 bg-gradient-radial from-white translate-x-[15%] translate-y-[10%] to-slate-50 dark:from-slate-950 dark:to-slate-900 opacity-0 animate-gradient-pulse-delay" />
-      </div>
+      {/* Base gradient background - always visible */}
+      <div className="absolute inset-0 bg-gradient-radial from-white to-slate-50 dark:from-slate-950 dark:to-slate-900" />
+      
+      {/* Animated base gradient background - only when animations are enabled */}
+      {animationsEnabled && (
+        <div className="absolute inset-0 animate-gradient-slow">
+          <div className="absolute inset-0 bg-gradient-radial from-white -translate-x-[15%] translate-y-[10%] to-slate-50 dark:from-slate-950 dark:to-slate-900 opacity-0 animate-gradient-pulse" />
+          <div className="absolute inset-0 bg-gradient-radial from-white translate-x-[15%] translate-y-[10%] to-slate-50 dark:from-slate-950 dark:to-slate-900 opacity-0 animate-gradient-pulse-delay" />
+        </div>
+      )}
 
       {/* Subtle texture overlay - different settings for light/dark mode */}
       {!isDark ? (
@@ -47,88 +53,81 @@ export const BackgroundTexture = () => {
         />
       )}
 
-      {/* Gradient blobs for light mode with enhanced animation */}
-      {!isDark && (
-        <>
-          <div className="absolute top-[10%] left-[15%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] rounded-full bg-purple-100/50 blur-[80px] animate-blob-enhanced" />
-          <div
-            className="absolute top-[40%] right-[15%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] rounded-full bg-indigo-100/50 blur-[80px] animate-blob-enhanced"
-            style={{ animationDelay: '2s' }}
-          />
-          <div
-            className="absolute bottom-[10%] left-[35%] w-[35vw] h-[35vw] max-w-[550px] max-h-[550px] rounded-full bg-blue-100/40 blur-[80px] animate-blob-enhanced"
-            style={{ animationDelay: '4s' }}
-          />
-          <div
-            className="absolute top-[60%] left-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] rounded-full bg-pink-100/30 blur-[80px] animate-blob-enhanced"
-            style={{ animationDelay: '6s' }}
-          />
-        </>
+      {/* Gradient blobs - always visible, animations only when enabled */}
+      <div className="absolute top-[10%] left-[15%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] rounded-full bg-purple-100/50 dark:bg-purple-900/30 blur-[80px]" 
+           style={{ animation: animationsEnabled ? 'blob-enhanced 20s infinite alternate' : 'none' }} />
+      <div
+        className="absolute top-[40%] right-[15%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] rounded-full bg-indigo-100/50 dark:bg-indigo-900/30 blur-[80px]"
+        style={{ 
+          animation: animationsEnabled ? 'blob-enhanced 20s infinite alternate' : 'none',
+          animationDelay: animationsEnabled ? '2s' : '0s',
+        }}
+      />
+      <div
+        className="absolute bottom-[10%] left-[35%] w-[35vw] h-[35vw] max-w-[550px] max-h-[550px] rounded-full bg-blue-100/40 dark:bg-blue-900/25 blur-[80px]"
+        style={{ 
+          animation: animationsEnabled ? 'blob-enhanced 20s infinite alternate' : 'none',
+          animationDelay: animationsEnabled ? '4s' : '0s',
+        }}
+      />
+      <div
+        className="absolute top-[60%] left-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] rounded-full bg-pink-100/30 dark:bg-pink-900/20 blur-[80px]"
+        style={{ 
+          animation: animationsEnabled ? 'blob-enhanced 20s infinite alternate' : 'none',
+          animationDelay: animationsEnabled ? '6s' : '0s',
+        }}
+      />
+
+      {/* Enhanced floating particles - only when animations are enabled and mounted */}
+      {animationsEnabled && mounted && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {Array.from({ length: 8 }).map((_, i) => {
+            // Reduce particle count for better performance
+            const isGlowParticle = i % 3 === 0
+            const useAltAnimation = i % 2 === 0
+
+            const size = isGlowParticle ? 4 : 3 // Fixed sizes to avoid layout shifts
+
+            const colors = [
+              'bg-purple-400/60 dark:bg-purple-300/60',
+              'bg-indigo-400/60 dark:bg-indigo-300/60',
+              'bg-blue-400/60 dark:bg-blue-300/60',
+              'bg-pink-400/60 dark:bg-pink-300/60',
+            ]
+
+            const colorIndex = i % colors.length
+
+            // Fixed positions to avoid layout shifts
+            const positions = [
+              { top: 10, left: 20 },
+              { top: 30, left: 70 },
+              { top: 60, left: 15 },
+              { top: 80, left: 85 },
+              { top: 20, left: 50 },
+              { top: 50, left: 30 },
+              { top: 70, left: 80 },
+              { top: 40, left: 10 },
+            ]
+
+            const position = positions[i]
+
+            return (
+              <div
+                key={i}
+                className={`absolute rounded-full ${colors[colorIndex]} ${isGlowParticle ? 'shadow-sm' : ''}`}
+                style={{
+                  width: `${size}px`,
+                  height: `${size}px`,
+                  top: `${position.top}%`,
+                  left: `${position.left}%`,
+                  animation: `${useAltAnimation ? 'float-particle-alt' : 'float-particle'} ${25 + i * 3}s linear infinite`,
+                  animationDelay: `${i * 2}s`,
+                }}
+              />
+            )
+          })}
+        </div>
       )}
-
-      {/* Gradient blobs for dark mode with enhanced animation */}
-      {isDark && (
-        <>
-          <div className="absolute top-[10%] left-[15%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] rounded-full bg-purple-900/30 blur-[80px] animate-blob-enhanced" />
-          <div
-            className="absolute top-[40%] right-[15%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] rounded-full bg-indigo-900/30 blur-[80px] animate-blob-enhanced"
-            style={{ animationDelay: '2s' }}
-          />
-          <div
-            className="absolute bottom-[10%] left-[35%] w-[35vw] h-[35vw] max-w-[550px] max-h-[550px] rounded-full bg-blue-900/25 blur-[80px] animate-blob-enhanced"
-            style={{ animationDelay: '4s' }}
-          />
-          <div
-            className="absolute top-[60%] left-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] rounded-full bg-pink-900/20 blur-[80px] animate-blob-enhanced"
-            style={{ animationDelay: '6s' }}
-          />
-        </>
-      )}
-
-      {/* Enhanced floating particles with more visibility and variety */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 15 }).map((_, i) => {
-          // Determine if this will be a "glow" particle (more visible)
-          const isGlowParticle = i % 3 === 0
-          // Use alternate animation for some particles
-          const useAltAnimation = i % 2 === 0
-
-          const size = isGlowParticle
-            ? Math.random() * 5 + 3
-            : Math.random() * 4 + 2
-
-          // Different colors for variety
-          const lightModeColors = [
-            'bg-purple-400', 'bg-indigo-400', 'bg-blue-400', 'bg-pink-400',
-          ]
-          const darkModeColors = [
-            'dark:bg-purple-300', 'dark:bg-indigo-300', 'dark:bg-blue-300', 'dark:bg-pink-300',
-          ]
-
-          const colorIndex = i % lightModeColors.length
-
-          // Randomize starting positions more
-          const topPosition = Math.random() * 120 - 20 // -20% to 100%
-          const leftPosition = Math.random() * 120 - 10 // -10% to 110%
-
-          return (
-            <div
-              key={i}
-              className={`absolute rounded-full ${lightModeColors[colorIndex]} ${darkModeColors[colorIndex]} ${useAltAnimation ? 'animate-float-particle-alt' : 'animate-float-particle'} ${isGlowParticle ? 'shadow-md' : ''}`}
-              style={{
-                width: `${size}px`,
-                height: `${size}px`,
-                top: `${topPosition}%`,
-                left: `${leftPosition}%`,
-                opacity: isGlowParticle ? 0.8 : 0.6,
-                filter: isGlowParticle ? 'blur(0.5px)' : 'none',
-                animationDuration: `${Math.random() * 15 + 15}s`,
-                animationDelay: `${Math.random() * 10}s`,
-              }}
-            />
-          )
-        })}
-      </div>
     </div>
   )
 }
