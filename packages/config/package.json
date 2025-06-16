@@ -8,5 +8,8 @@
     "lint": "eslint .",
     "build": "tsc",
     "clean": "rm -rf .turbo node_modules dist"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0"
   }
 }

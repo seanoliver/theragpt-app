@@ -7,6 +7,7 @@ export interface EntryStore {
   // State
   entries: Entry[]
   isLoading: boolean
+
   error: string | null
   hasInitialized: boolean
 
@@ -36,7 +37,6 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
   isLoading: false,
   error: null,
   hasInitialized: false,
-
   streamingEntryId: null,
   setStreamingEntryId: (id: string | null) => set({ streamingEntryId: id }),
 
@@ -101,15 +101,37 @@ export const useEntryStore = create<EntryStore>((set, get) => ({
   },
 
   updateEntryById: async (id, patch) => {
-    set(state => ({
-      entries: state.entries.map(entry => {
-        if (entry.id !== id) return entry
-        const cleanedPatch = { ...patch, id }
-        const entryCopy = cloneDeep(entry)
-        merge(entryCopy, cleanedPatch)
-        return entryCopy
-      }),
-    }))
+    set(state => {
+      const entryIndex = state.entries.findIndex(entry => entry.id === id)
+
+      if (entryIndex === -1) {
+        // Entry not found in store - this can happen during streaming
+        console.warn(
+          `Entry with ID ${id} not found in store, creating new entry`,
+        )
+        const newEntry = {
+          id,
+          ...patch,
+          createdAt: patch.createdAt || Date.now(),
+          updatedAt: Date.now(),
+        } as Entry
+
+        return {
+          entries: [...state.entries, newEntry],
+        }
+      }
+
+      // Entry found, update it
+      return {
+        entries: state.entries.map(entry => {
+          if (entry.id !== id) return entry
+          const cleanedPatch = { ...patch, id }
+          const entryCopy = cloneDeep(entry)
+          merge(entryCopy, cleanedPatch)
+          return entryCopy
+        }),
+      }
+    })
   },
 
   deleteEntry: async id => {

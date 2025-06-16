@@ -1,13 +1,14 @@
 'use client'
 
-import { Textarea } from '@/apps/web/components/ui/textarea'
+import { Textarea } from '@/components/ui/textarea'
 import { useRef, useState, useEffect } from 'react'
 import { AnalyzeThoughtButton } from './AnalyzeThoughtButton'
 import { ThoughtStarters } from './ThoughtStarters'
 import { ThoughtStartersButton } from './ThoughtStartersButton'
 import { useAnalyzeThought } from './useAnalyzeThought'
-import { useTracking } from '@/apps/web/lib/analytics/useTracking'
+import { useTracking } from '@/lib/analytics/useTracking'
 import { usePathname } from 'next/navigation'
+
 export const ThoughtEntryForm = () => {
   // Local component state
   const { handleSubmit, isLoading, thought, setThought } = useAnalyzeThought()
@@ -29,8 +30,9 @@ export const ThoughtEntryForm = () => {
       starter_text: starter,
       starter_position: index,
     })
-    
+
     setThought(starter)
+
     const textarea = document.querySelector('textarea')
     if (textarea) {
       textarea.focus()
@@ -125,8 +127,8 @@ export const ThoughtEntryForm = () => {
               showStarters={showStarters}
               setShowStarters={handleShowStarters}
             />
-            <AnalyzeThoughtButton 
-              isLoading={isLoading} 
+            <AnalyzeThoughtButton
+              isLoading={isLoading}
               thought={thought}
               entryMethod={getEntryMethod()}
             />

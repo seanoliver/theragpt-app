@@ -2,6 +2,7 @@ export type StreamEventType =
   | 'thought'
   | 'field'
   | 'chunk'
+  | 'update'
   | 'complete'
   | 'error'
 
@@ -10,10 +11,15 @@ export interface StreamEvent {
   content: any
   field?: string
   value?: any
+  chunkNumber?: number
 }
 
 export type StreamEventCallback = (event: StreamEvent) => void
 
+/**
+ * Fetch and stream the output of a prompt to the client in the form of a
+ * parsed JSON object that can be consumed directly by the client.
+ */
 export const streamPromptOutput = async (
   prompt: string,
   thought: string,
@@ -43,33 +49,87 @@ export const streamPromptOutput = async (
     const decoder = new TextDecoder()
 
     let buffer = ''
+    let chunkCount = 0
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const { done, value } = await reader.read()
       if (done) break
 
-      buffer += decoder.decode(value, { stream: true })
-      const events = buffer.split('\n\n')
-      buffer = events.pop() || ''
+      const chunk = decoder.decode(value, { stream: true })
+      buffer += chunk
+      chunkCount++
 
-      for (const rawEvent of events) {
-        if (!rawEvent.startsWith('data: ')) continue
+      // Emit chunk event for debugging
+      onEvent({
+        type: 'chunk',
+        content: chunk,
+        chunkNumber: chunkCount,
+      })
 
+      // Try to parse the accumulated buffer
+      let currentParsed: any = null
+      let isCompleteJSON = false
+
+      // First, try to parse as complete JSON
+      try {
+        currentParsed = JSON.parse(buffer)
+        isCompleteJSON = true
+      } catch {
+        // If complete JSON parsing fails, try incomplete JSON parsing
         try {
-          const json = JSON.parse(rawEvent.slice(6))
-          const { type, content, field, value } = json
+          const incompleteJSON = parseIncompleteJSONStream(buffer)
+          if (incompleteJSON && typeof incompleteJSON === 'object' && Object.keys(incompleteJSON).length > 0) {
+            currentParsed = incompleteJSON
+          }
+        } catch {
+          // Both parsing methods failed, continue accumulating
+          continue
+        }
+      }
 
-          if (!type || !content) continue
+      // If we have any parsed data, emit it
+      if (currentParsed) {
+        onEvent({
+          type: 'update',
+          content: currentParsed,
+          field: isCompleteJSON ? 'complete' : 'partial',
+        })
+      }
 
-          // Emit structured event
-          onEvent({ type, content, field, value })
+      // If we have complete JSON, we're done
+      if (isCompleteJSON) {
+        onEvent({
+          type: 'complete',
+          content: currentParsed,
+        })
+        return
+      }
+    }
 
-        } catch (err) {
-          console.error('Error parsing SSE chunk:', err)
+    // Final processing - try one more parse
+    let finalParsed = null
+    if (buffer.trim()) {
+      try {
+        finalParsed = JSON.parse(buffer)
+      } catch {
+        try {
+          const incompleteJSON = parseIncompleteJSONStream(buffer)
+          if (incompleteJSON && typeof incompleteJSON === 'object' && Object.keys(incompleteJSON).length > 0) {
+            finalParsed = incompleteJSON
+          }
+        } catch {
+          // Parsing failed - don't emit content that would overwrite valid data
         }
       }
     }
+
+    // Always emit 'complete' event to signal end of stream
+    // Only include content if we successfully parsed meaningful data
+    onEvent({
+      type: 'complete',
+      content: finalParsed && Object.keys(finalParsed).length > 0 ? finalParsed : null,
+    })
   } catch (err: unknown) {
     console.error('Error streaming thought analysis:', err)
     onEvent({
@@ -178,12 +238,14 @@ export const parseIncompleteJSONStream = (streamed: string): any | null => {
 
   try {
     return JSON.parse(buffer)
-  } catch (e) {
+  } catch {
     // If parsing failed, try a more aggressive approach for unclosed strings
-    console.error('Error parsing incomplete JSON stream:', e)
     try {
       // Find all potential unclosed strings and close them
-      const fixedBuffer = buffer.replace(/("(?:\\.|[^"\\])*?)(?=[,}\]:])(?!")/g, '$1"')
+      const fixedBuffer = buffer.replace(
+        /("(?:\\.|[^"\\])*?)(?=[,}\]:])(?!")/g,
+        '$1"',
+      )
       return JSON.parse(fixedBuffer)
     } catch {
       return null

@@ -11,8 +11,20 @@
       "Bash(pnpm add:*)",
       "Bash(git push:*)",
       "Bash(ls:*)",
-      "Bash(pnpm install:*)"
+      "Bash(pnpm install:*)",
+      "Bash(supabase init:*)",
+      "Bash(supabase link:*)",
+      "Bash(supabase db:*)",
+      "mcp__supabase__get_anon_key",
+      "Bash(mkdir:*)",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__generate_typescript_types"
     ],
     "deny": []
-  }
+  },
+  "includeCoAuthoredBy": false,
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

@@ -1,8 +1,6 @@
-import { createLLMRegistry } from '@/apps/web/lib/llm/create-llm-registry'
-import { parseIncompleteJSONStream } from '@/packages/logic/src/workflows/thought-analysis-stream.workflow'
-import { LLMModel, withLLMContext } from '@theragpt/llm'
-import { streamLLM } from '@theragpt/llm/src/router'
+import { LLMModel, streamLLM, withLLMContext } from '@theragpt/llm'
 import { NextRequest } from 'next/server'
+import { createLLMRegistry } from '@/lib/llm/create-llm-registry'
 
 const TEMPERATURE = 0.3
 
@@ -18,7 +16,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   const registry = createLLMRegistry()
-  
+
   // Extract context from headers
   const userId = req.headers.get('x-user-id') || undefined
   const sessionId = req.headers.get('x-session-id') || undefined
@@ -28,90 +26,33 @@ export const POST = async (req: NextRequest) => {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        // Initialize a buffer to accumulate JSON chunks
-        let buffer = ''
-        const previousParsed: Record<string, any> = {}
-
-        // Stream the LLM response with context
         const llmStream = await withLLMContext(
           { userId, sessionId, requestPath },
-          async () => streamLLM(LLMModel.GPT_4O, registry, {
-            prompt,
-            temperature: TEMPERATURE,
-            systemPrompt:
-              'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
-            userId,
-          })
+          async () =>
+            streamLLM(LLMModel.GPT_4O, registry, {
+              prompt,
+              temperature: TEMPERATURE,
+              systemPrompt:
+                'You are a helpful assistant that responds only with valid JSON. Your responses must be parseable by JSON.parse().',
+              userId,
+            }),
         )
+
         for await (const chunk of llmStream) {
-          buffer += chunk
-
-          try {
-            // Try to parse the buffer as JSON to see if we have a complete object
-            const parsed = JSON.parse(buffer)
-
-            // Compare with previousParsed and emit updated fields
-            for (const key in parsed) {
-              if (
-                Object.prototype.hasOwnProperty.call(parsed, key) &&
-                parsed[key] !== previousParsed[key]
-              ) {
-                controller.enqueue(
-                  encoder.encode(
-                    `data: ${JSON.stringify({ type: 'field', field: key, value: parsed[key] })}\n\n`,
-                  ),
-                )
-                previousParsed[key] = parsed[key]
-              }
-            }
-
-            controller.enqueue(
-              encoder.encode(
-                `data: ${JSON.stringify({ type: 'complete', content: parsed })}\n\n`,
-              ),
-            )
-            buffer = ''
-          } catch (e) {
-            // If parsing fails, parse incomplete JSON as if it were a complete object
-            const incompleteJSON = parseIncompleteJSONStream(buffer)
-            console.error('error', e)
-
-            if (incompleteJSON) {
-              controller.enqueue(
-                encoder.encode(
-                  `data: ${JSON.stringify({ type: 'complete', content: incompleteJSON })}\n\n`,
-                ),
-              )
-            }
-          }
+          // Just send the raw chunk without any processing
+          controller.enqueue(encoder.encode(chunk))
         }
 
-        // Send the final complete event with the accumulated data
-        controller.enqueue(
-          encoder.encode(
-            `data: ${JSON.stringify({ type: 'complete', content: previousParsed })}\n\n`,
-          ),
-        )
-
-        // Close the stream
         controller.close()
       } catch (error: any) {
-        // Send error message
+        console.error('[Error] Stream processing error:', error)
         controller.enqueue(
-          encoder.encode(
-            `data: ${JSON.stringify({ type: 'error', content: error.message || 'An error occurred' })}\n\n`,
-          ),
+          encoder.encode(`Error: ${error.message || 'An error occurred'}`),
         )
         controller.close()
       }
     },
   })
 
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
-    },
-  })
+  return new Response(stream)
 }

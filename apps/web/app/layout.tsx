@@ -3,11 +3,12 @@ import type { Metadata } from 'next'
 import { Quicksand, Lora, Oxygen } from 'next/font/google'
 import './globals.css'
 import { PostHogProvider } from '../components/PostHogProvider'
-import { ThemeProvider } from '@/apps/web/components/layout/theme/ThemeProvider'
-import { EntryStoreProvider } from '@/apps/web/components/journal/store/EntryStoreProvider'
-import { BackgroundTexture } from '@/apps/web/components/layout/BackgroundTexture'
+import { AuthProvider } from '../components/auth/AuthProvider'
+import { ThemeProvider } from '@/components/layout/theme/ThemeProvider'
+import { EntryStoreProvider } from '@/components/journal/store/EntryStoreProvider'
+import { BackgroundTexture } from '@/components/layout/BackgroundTexture'
 import { Footer } from '../components/layout/Footer'
-import { PageTracker } from '@/apps/web/components/layout/PageTracker'
+import { PageTracker } from '@/components/layout/PageTracker'
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -59,23 +60,25 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} ${lora.variable} ${oxygen.variable} font-oxygen antialiased`}
       >
-        <PostHogProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <EntryStoreProvider>
-              <PageTracker />
-              <BackgroundTexture />
-              <div className="min-h-screen relative z-10">
-                {children}
-                <Footer className="absolute bottom-0 w-full" />
-              </div>
-            </EntryStoreProvider>
-          </ThemeProvider>
-        </PostHogProvider>
+        <AuthProvider>
+          <PostHogProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <EntryStoreProvider>
+                <PageTracker />
+                <BackgroundTexture />
+                <div className="min-h-screen relative z-10">
+                  {children}
+                  <Footer className="absolute bottom-0 w-full" />
+                </div>
+              </EntryStoreProvider>
+            </ThemeProvider>
+          </PostHogProvider>
+        </AuthProvider>
       </body>
     </html>
   )

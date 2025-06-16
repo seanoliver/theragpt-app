@@ -1,8 +1,22 @@
-import { Header } from '@/apps/web/components/layout/Header'
-import { ThoughtEntryForm } from '@/apps/web/components/thought-analysis/ThoughtEntryForm'
-import { Card } from '@/apps/web/components/ui/card'
+'use client'
+
+import { Header } from '@/components/layout/Header'
+import { ThoughtEntryForm } from '@/components/thought-analysis/ThoughtEntryForm'
+import { Card } from '@/components/ui/card'
+import { useRouteProtection } from '@/lib/auth-utils'
+import { AuthLoadingSpinner } from '@/components/auth/AuthLoadingSpinner'
 
 export default function NewEntryPage() {
+  const { shouldShowLoading, shouldRender } = useRouteProtection()
+
+  if (shouldShowLoading) {
+    return <AuthLoadingSpinner />
+  }
+
+  if (!shouldRender) {
+    return null
+  }
+
   return (
     <main className="min-h-screen">
       <Header />

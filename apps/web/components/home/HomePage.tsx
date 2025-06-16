@@ -1,7 +1,7 @@
 'use client'
 
-import { HeroSection } from '@/apps/web/components/home/HeroSection'
-import { Header } from '@/apps/web/components/layout/Header'
+import { HeroSection } from '@/components/home/HeroSection'
+import { Header } from '@/components/layout/Header'
 
 export const HomePage = () => {
   return (
