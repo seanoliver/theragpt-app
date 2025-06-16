@@ -16,8 +16,6 @@ export const EntryList = () => {
     (a, b) => compareTimestampsDesc(a.createdAt, b.createdAt),
   )
 
-  console.debug('sortedEntries', sortedEntries)
-
   if (isLoading || !initialized) {
     return (
       <Card className="glass-panel p-6 text-center text-slate-600 dark:text-slate-300">
