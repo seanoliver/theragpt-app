@@ -3,7 +3,6 @@
 import { Card } from '@/components/ui/card'
 import { useEntryStore } from '@theragpt/logic'
 import { compareTimestampsDesc } from '@/lib/date-utils'
-import Link from 'next/link'
 import { EntryItem } from './EntryItem/EntryItem'
 import { useEntryStoreInitialized } from './store/EntryStoreProvider'
 
@@ -12,8 +11,8 @@ export const EntryList = () => {
   const { initialized } = useEntryStoreInitialized()
 
   // Sort entries by createdAt date (newest first)
-  const sortedEntries = [...entries].sort(
-    (a, b) => compareTimestampsDesc(a.createdAt, b.createdAt),
+  const sortedEntries = [...entries].sort((a, b) =>
+    compareTimestampsDesc(a.createdAt, b.createdAt),
   )
 
   if (isLoading || !initialized) {
@@ -39,9 +38,9 @@ export const EntryList = () => {
         </Card>
       ) : (
         sortedEntries.map(entry => (
-          <Link href={`/entry/${entry.id}`} key={entry.id}>
+          <div key={entry.id} className="w-full max-w-4xl mx-auto">
             <EntryItem key={entry.id} entryId={entry.id} />
-          </Link>
+          </div>
         ))
       )}
     </div>

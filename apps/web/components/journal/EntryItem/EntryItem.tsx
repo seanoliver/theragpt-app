@@ -44,6 +44,7 @@ export const EntryItem = ({ entryId }: EntryItemProps) => {
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <EntryItemHeader
+          entryId={entryId}
           title={entry.title}
           category={entry.category}
           createdAt={entry.createdAt}
